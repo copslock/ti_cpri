@@ -91,8 +91,8 @@ CL_FLAGS = --endian=little \
 	   --diag_wrap=off \
 	   --diag_warning=225 \
 	   --display_error_number \
+	   --hardware_mac=on \
            --code_address_listing_unit=word \
-	   --hardware_mac=on
 
 FLAGS = -al \
 	--preproc_with_compile \

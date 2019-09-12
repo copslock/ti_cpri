@@ -58,7 +58,6 @@
 ;---------------------------------------------------
 
 ;----------------------DEFINES------------------------
- .include "rtu_psi_loopback.h"
 
 ;global PSI state
 	.asg	b0, ssmask  ; mask of threads that are stalled.
@@ -180,24 +179,10 @@ $7:	qbbc	$1, r2, 23	 ; r2.t23
 	set	Ctx.ippc_flags, Ctx.ippc_flags, f_crcinpkt
 
 $1:
- .if $isdefed("LOOPBACK_TEST")
-	set	Ctx.ippc_flags, Ctx.ippc_flags, f_crcinpkt
- .endif
- .if $isdefed("LOOPBACK_TEST2")
-	clr	Ctx.ippc_flags, Ctx.ippc_flags, f_crcinpkt ;crc not in pkt
- .endif
-
 	set	Ctx.ippc_forward, Ctx.ippc_forward, our_port ;to keep it local
 	;//set portq
 	and	Ctx.ippc_res, r4.b3, 0x07  ;ippc_res set to dst tag hi 
 	mov	Ctx.ippc_totlen, r3.w0 ;check rate
- .if $isdefed("PSILOOP")
-	add	Ctx.ippc_totlen, Ctx.ippc_totlen, 4   ;add 'crc' bytes
- .endif
- .if $isdefed("LOOPBACK_TEST")
-	mov	Ctx.ippc_totlen, 512  ;hard code because it will be 0xffff
- .endif
-
  .if $isdefed("TX_RATE_LIMITER")
 	mov	r3, GRrtu.ActThrdNum
 	qbbc	$6, Ctx.he_flags, r3
@@ -409,9 +394,6 @@ DO_WRITE64	.macro	unit, len
 DO_EOP	.macro	stall_exit
 ;build common parts of descriptor
 	mov	r8.w0, Ctx.ippc_curlen        ;len
- .if $isdefed("PSILOOP")
-	add r8.w0, r8.w0, 4  ;include 'dummy' crc
- .endif
 	ldi	r8.b2, FROM_US_V
 	qbbs	no_crc?, Ctx.ippc_flags, f_crcinpkt
 	set	r8.t16 ;force tx to get hw to do crc

@@ -98,16 +98,10 @@ res		.ushort
 ds_flags	.ushort	;descriptor info
 stash_ds_flags	.ushort
 stash_tx_len	.ushort
-pp_afs_tx	.ubyte	;cnt of bytes sent so far
-pp_afs_rem	.ubyte	;addFragSz of remote  (64-256)
-pp_ppok		.ubyte	;flags
-pp_count	.ubyte	;[256] counter of preemptions
+;
+res2		.uint
 	.endstruct ;Struct_TXTASK
 
-f_pp_active  	.set	0  ;preemption featue active  on this port
-f_pp_enufsent	.set	1  ;enough bytes sent
-f_pp_enufleft	.set	2  ;enough bytes remain
-PPOK		.set	0x7
 
 TxRegs	.sassign r21, Struct_TXTASK
 
@@ -123,7 +117,7 @@ bg_cnt		.uint	; BG loop counter
 psi2h_active	.ubyte	; 1 - active, 0 - idle
 res9		.ubyte	;
 len2host	.ushort	;
-borg_limit	.ushort ;
+res10		.ushort ;
 len_orig	.ushort ;
 	.endstruct ;Struct_BGTASK
 
