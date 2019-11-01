@@ -1,0 +1,9 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/sample/src/pcie_sample.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/sample/am57x/src/pcie_sample_board.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/sample/am572x/armv7/bios/pcie_sample_wSoCLib.cfg" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/EDMA/commonEDMA.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/EDMA/PCIeEDMA.h" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/EDMA/PCIeDMA.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/EDMA/PCIeEDMAselector.c" 
+-ccs.setCompilerOptions "-c -mfloat-abi=hard -DSOC_AM572x -g -gstrict-dwarf -gdwarf-3 -finstrument-functions -Wall -MMD -MP  -I${PDK_INSTALL_PATH}/ti/drv/pcie/example/sample/src -I${PDK_INSTALL_PATH}/ti/drv/pcie/example/sample/am57x/src"  -rtsc.enableRtsc
+-ccs.setLinkerOptions " -lgcc -lm -lrdimon -nostartfiles -static -Wl,--gc-sections -L$(BIOS_INSTALL_PATH)/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/fpu"

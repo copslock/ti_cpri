@@ -1,0 +1,559 @@
+
+utils.importFile("printusage.bld");
+
+
+var print_buffer = new Array();
+print_buffer.help="";
+print_buffer.header="";
+print_buffer.body="";
+print_buffer.other="";
+
+ var source = new Array();
+
+ source.files = new Array();
+
+ source.hfiles = new Array();
+
+ source.PackageArtifacts = new Array();
+
+ source.Executables = new Array();
+
+  var libParams_speed = {copts:"", aopts:"", defs:""};  /* compiler options for speed optimization */
+  var libParams_size  = {copts:"", aopts:"", defs:""};  /* compiler options for size optimization */
+
+   /* Executable options for speed optimization */
+  var exeParams_speed = {
+                          copts:"", 
+                          aopts:"",
+                          linkTemplate:"",
+                          cfgScript: "test.cfg",
+                          lopts:"",  
+                          exportExe: false,
+                          exportCfg: false
+                        }; 
+
+  var exeParams_size = {
+                          copts:"", 
+                          aopts:"",
+                          linkTemplate:"",
+                          cfgScript: "test.cfg",
+                          lopts:"",
+                          exportExe: false,
+                          exportCfg: false   
+                        };
+
+  var commonC54xCopts = " -pds815 -pds817 -ss -k -ms -g -as -dC548 -mf -v548";
+  var commonC54xAopts = " -s -dC548 -mf -v548";
+
+  var c54_libParams = 
+         {
+            copts: commonC54xCopts,
+            aopts: commonC54xAopts
+         };  /* compiler options for speed optimization */
+
+  
+  var commonC55xCopts = " -c -pds1112 -pds825 -pds838 -pds828 -pds827 -pds77 -pds837 -pds824 -vcpu:2.1 -mg -ss -k";
+      commonC55xCopts += " -dC5510 -as -g --ptrdiff_size=16";
+  var commonC55xAopts = " -vcpu:2.1 -as -al -g";
+  var C55xSpeedOpts = " -o2 -mn";
+  var C55xSizeOpts = " -ms";
+
+  var c55_libParams_speed = 
+         {
+            copts: commonC55xCopts+C55xSpeedOpts,
+            aopts: commonC55xAopts
+         };  /* compiler options for speed optimization */
+
+  var c55_libParams_size  = 
+         {
+            copts: commonC55xCopts+C55xSpeedOpts+C55xSizeOpts,
+            aopts: commonC55xAopts
+         };  /* compiler options for size optimization */
+
+
+  var commonC64xCopts = " -c -k -q --mem_model:data=far -al -pds1111 -pds827 -pds824 -pds837 -pds1037 -pds195 -pdsw225";
+      commonC64xCopts += " -pdsw994 -pdsw262 -pds77 -pden -pds232 --consultant -mw -os -g -mi10000 -as -ss";
+  var commonC64xAopts = " -ea.s -c -k -mi1000";
+  var C64xSpeedOpts = " -o3 --optimize_with_debug";
+  var C64xSizeOpts = " -ms3";
+
+
+  var c64_libParams_speed = 
+       {
+          copts: commonC64xCopts + C64xSpeedOpts,
+          aopts: commonC64xAopts
+       };  /* compiler options for speed optimization */
+
+  var c64_libParams_size  = 
+       {
+          copts: commonC64xCopts + C64xSpeedOpts + C64xSizeOpts,
+          aopts: commonC64xAopts
+       };  /* compiler options for size optimization */
+
+
+
+  var ext;
+  var fileArray = new Array();
+  var count = 0;
+  var delivery_type = "obj";
+
+
+/* parse input arguments */
+function parseArgs(arguments,targs)
+{
+  var temp_targs=targs;
+  var target_supported = "no";
+
+  for (var k = 0; k < arguments.length; k++) {
+  switch (arguments[k]) {
+    case "all":
+	  break;
+    case "c64Ple":
+      temp_targs = [C64P];
+      break;
+    case "c64Pbe":
+      temp_targs = [C64P_big_endian];
+      break;
+    case "c64le":
+      temp_targs = [C64];
+      break;
+    case "c64Pe":
+      temp_targs = [C64_big_endian];
+      break;
+    case "c55l":
+      temp_targs = [C55_large];
+      break;
+    case "c55s":
+      temp_targs = [C55];
+      break;
+    case "c54f":
+      temp_targs = [C54_far];
+      break;
+    case "c54n":
+      temp_targs = [C54];
+      break;
+    case "obj":
+      delivery_type = "obj";
+      break;
+    case "src":
+      delivery_type = "src";
+      break;
+    case "help":
+      print_buffer.help = "general";
+      break;
+    case "covrun": /* don't default this one, see config.bld */
+      break;
+    case "default": /* this is not an error */
+      break;
+     }
+  }
+  if( targs != temp_targs)
+  {
+    for( var i=0; i < targs.length; i++)
+	{
+	   if(temp_targs[0] == targs[i])
+	   {
+	     target_supported = "yes";
+	   }
+     
+    }
+	if(target_supported == "no")
+	{
+      print_buffer.other+="Target "+temp_targs[0]+" is not supported\n";
+	  print_buffer.help = "general";
+	}
+  }
+  if(print_buffer.help == "general")
+  {
+    print_buffer = printUsage(print_buffer);
+
+  }
+
+  return[temp_targs,print_buffer];
+}
+
+function createLib(pkgname, targArray, source)
+{
+       
+  var target;
+
+  for(var k=0;k<targArray.length;k++)
+  {
+  targ=targArray[k];    
+  
+  var dstDir = "c" + targ.suffix;
+
+    switch(targ)
+    {
+
+
+    case C54: 
+      libParams_speed=c54_libParams;
+      libParams_size=c54_libParams;
+      target="c54";
+      ext = "c54n";
+      break;
+
+    case C55: 
+      libParams_speed=c55_libParams_speed;
+      libParams_size=c55_libParams_size;
+      target="c55";
+      ext = "c55s";
+      break;
+      break;
+
+    case C55_large: 
+      libParams_speed=c55_libParams_speed;
+      libParams_size=c55_libParams_size;
+      target="c55";
+      ext = "c55l";
+      break;
+
+    case C64:
+      libParams_speed=c64_libParams_speed;
+      libParams_size=c64_libParams_size;
+      target="c64";
+      ext = "c64le";
+      break;
+
+
+
+    case C64_big_endian:       
+      libParams_speed=c64_libParams_speed;
+      libParams_size=c64_libParams_size;
+      target="c64";
+      ext = "c64be";
+      break;
+
+
+    case C64P:
+      libParams_speed=c64_libParams_speed;
+      libParams_size=c64_libParams_size;
+      target="c64";
+      ext = "c64Ple";
+      break;
+
+
+
+    case C64P_big_endian:       
+      libParams_speed=c64_libParams_speed;
+      libParams_size=c64_libParams_size;
+      target="c64";
+      ext = "c64Pbe";
+      break;
+
+      }
+  
+
+    var clib=""; 
+    var alib=""; 
+    var cmlib="";
+
+    for(var i=0;i < source.files.length;i++)
+    {
+         /* set the defaults if not defined */
+
+         if(source.files[i].compile == undefined)
+            source.files[i].compile="true";
+         
+         if(source.files[i].target == undefined)
+            source.files[i].target="common";
+         
+         if(source.files[i].compiler_flags == undefined)
+            source.files[i].compiler_flags="default-speed";
+         
+         if(source.files[i].cmodel == undefined)
+            source.files[i].cmodel="no";
+         
+         if(source.files[i].base_directory == undefined)
+            source.files[i].base_directory=".";
+         
+         if(source.files[i].def_flags == undefined)
+            source.files[i].def_flags="";
+
+
+
+         /* Check if the following list needs to be compiled */
+         if(source.files[i].compile=="true")
+         {
+             var flags;
+             /* Compile for default speed options */             
+             if(source.files[i].compiler_flags=="default-speed")
+             {
+                flags=libParams_speed;
+             }
+             /* Compile for default size options */             
+             else if(source.files[i].compiler_flags=="default-size")
+             {
+                flags=libParams_size;
+             }
+             /* Compile for with user defined options */             
+             else
+             {
+                flags=libParams_speed;
+                flags.copts=source.files[i].compiler_flags;
+                flags.aopts=source.files[i].compiler_flags;
+             }
+
+            /*User Pre-defines for C files*/
+            flags.copts += source.files[i].def_flags;   
+
+            /*User Pre-defines for asm files*/
+            flags.aopts += source.files[i].def_flags;
+
+            /* Construct the source file with complete address and differentiate c and assembly files */
+            cfiles=[];
+            afiles=[];
+            countc=0;
+            counta=0;
+            for(var l=0;l < source.files[i].files.length; l++)
+            { 
+               var temp = source.files[i].files[l].split(".");
+               if(temp[1]=="c")
+               {
+                 cfiles[countc++]= source.files[i].base_directory+"/"+source.files[i].files[l];
+               }
+               else if(temp[1]=="s" || temp[1]=="sa")
+               {
+                 afiles[counta++]= source.files[i].base_directory+"/"+source.files[i].files[l];
+               }
+               else
+                print("invalid file extension  "+ source.files[i].files[l]);
+              
+            }
+
+           if((source.files[i].target==target) || (source.files[i].target=="common"))
+           {
+             if(source.files[i].cmodel=="yes")
+             {
+              if(cmlib=="")
+              {
+                cmlib = Pkg.addLibrary(dstDir + "/"+pkgname+"_cm", targ);
+              }
+                cmlib.addObjects(cfiles,flags); 
+             }
+             else
+             {
+                if(cfiles.length > 0)
+                {
+                  if(clib=="")
+                  {
+                      clib = Pkg.addLibrary(dstDir + "/"+pkgname+"_c", targ);
+                  }
+                  clib.addObjects(cfiles,flags); 
+                }
+                if(afiles.length > 0)
+               {
+                 if(alib=="")
+                 {
+                    alib = Pkg.addLibrary(dstDir + "/"+pkgname+"_a", targ);
+                 }
+                    alib.addObjects(afiles,flags); 
+
+               }
+             }
+
+           }
+           
+           
+         }
+          
+    }
+
+       
+      if(cmlib != "")
+         fileArray[count++] = dstDir + "/"+pkgname+"_cm.a" + targ.suffix;
+      else if(clib != "")
+         fileArray[count++] = dstDir + "/"+pkgname+"_c.a" + targ.suffix;
+      else if(alib != "")
+         fileArray[count++] = dstDir + "/"+pkgname+"_a.a" + targ.suffix;
+      
+
+ 
+
+    for(var i=0; i < source.hfiles.length; i++)
+    {   
+
+      if(source.hfiles[i].delivery_type == undefined)
+         source.hfiles[i].delivery_type="obj";
+         
+      if(source.hfiles[i].base_directory == undefined)
+         source.hfiles[i].base_directory=".";
+
+      if(source.hfiles[i].target == undefined)
+         source.hfiles[i].target="common";
+
+       if(source.hfiles[i].delivery_type=="obj")
+       {
+         if(source.hfiles[i].target=="common" || source.hfiles[i].target==target)
+         {  
+          for(var j=0;j< source.hfiles[i].files.length; j++)
+          {
+            fileArray[count++]=source.hfiles[i].base_directory+"/"+source.hfiles[i].files[j];
+          } 
+         } 
+       }
+       if(source.hfiles[i].delivery_type==delivery_type)
+       {
+         if(source.hfiles[i].target=="common" || source.hfiles[i].target==target)
+         {
+          for(var j=0;j< source.hfiles[i].files.length; j++)
+          {
+            fileArray[count++]=source.hfiles[i].base_directory+"/"+source.hfiles[i].files[j];
+          } 
+
+         }
+
+       }
+    }
+
+
+   for(var i=0; i < source.PackageArtifacts.length; i++)
+   { 
+     if((source.PackageArtifacts[i].delivery_type==delivery_type)
+          || (source.PackageArtifacts[i].delivery_type == "obj"))
+     {
+          for(var j=0;j< source.PackageArtifacts[i].files.length; j++)
+          {
+            fileArray[count++]=source.PackageArtifacts[i].files[j];
+          } 
+     }
+
+   }
+   }
+ return [Pkg];
+}                      
+
+function createExe(library_name,targArray, source)
+{
+       
+  var target;
+
+  for(var k=0;k<targArray.length;k++)
+  {
+    targ=targArray[k]; 
+     
+    for(var n=0;n<source.Executables.length;n++)
+    {
+  
+        var dstDir = "c" + targ.suffix;
+
+        switch(targ)
+        {
+
+    case C54: 
+        exeParams_speed.copts = c54_libParams.copts;
+        exeParams_speed.aopts = c54_libParams.aopts;
+        ext = "c54n";
+        break;
+
+    case C55: 
+       exeParams_speed.copts = c55_libParams_speed.copts;
+       exeParams_speed.aopts = c55_libParams_speed.aopts;
+       target="c55";
+       ext = "c55s";
+      break;
+
+    case C55_large: 
+      exeParams_speed.copts = c55_libParams_speed.copts;
+      exeParams_speed.aopts = c55_libParams_speed.aopts;
+      target="c55";
+      ext = "c55l";
+      break;
+
+    case C64:
+      exeParams_speed.copts = c64_libParams_speed.copts;
+      exeParams_speed.aopts = c64_libParams_speed.aopts;
+      target="c64";
+      ext = "c64le";
+      break;
+
+    case C64_big_endian:       
+      exeParams_speed.copts = c64_libParams_speed.copts;
+      exeParams_speed.aopts = c64_libParams_speed.aopts;
+      target="c64";
+      ext = "c64be";
+      break;
+
+
+    case C64P:
+      exeParams_speed.copts = c64_libParams_speed.copts;
+      exeParams_speed.aopts = c64_libParams_speed.aopts;
+      target="c64";
+      ext = "c64Ple";
+      break;
+
+
+
+    case C64P_big_endian:  
+      exeParams_speed.copts = c64_libParams_speed.copts;
+      exeParams_speed.aopts = c64_libParams_speed.aopts;     
+      target="c64";
+      ext = "c64Pbe";
+      break;
+
+     }
+
+     if(source.Executables[n].target==ext)
+       {   
+         createLib(library_name,targs, source);
+         
+        /* Common Executable configuration */
+         if(source.Executables[n].linkTemplate == undefined)
+         {
+           exeParams_speed.linkTemplate = source.Executables[n].base_directory+"/"+ source.Executables[n].exe_name+".xdt";
+         }
+         else
+         {
+           exeParams_speed.linkTemplate = source.Executables[n].base_directory+"/"+source.Executables[n].linkTemplate;
+         }
+
+         if (delivery_type == "src")
+         { 
+             exeParams_speed.exportExe = true;
+             exeParams_speed.exportCfg = true;  
+             fileArray[count++]=exeParams_speed.linkTemplate;
+             fileArray[count++]=source.Executables[n].base_directory+"/"+source.Executables[n].exe_name+".cmd";
+
+         }  
+      
+         Pkg.addExecutable (source.Executables[n].exe_name, targ, source.Executables[n].platform,
+                                              exeParams_speed).addObjects(source.Executables[n].test_file);
+
+    
+   }
+  }  
+  }
+ return [Pkg];
+}                      
+
+
+
+function createTar(pkgName,targArray)
+ {
+  var xmltree;
+  var pkgName;
+  if(targArray.length > 1)
+    ext="all"; 
+
+   rel_name = "ti_mas_"+pkgName+"_" + delivery_type + "_" + ext;
+   for (var i = 0; i < version.length; i++) {
+         rel_name = rel_name + "_" + version[i];
+      }
+
+  
+     if (delivery_type == "obj") {
+       var obj = Pkg.addRelease(rel_name);
+       obj.otherFiles = fileArray;
+       Pkg.defaultRelease = obj;
+     }
+     else if (delivery_type == "src") {
+       var src = Pkg.addRelease (rel_name, {exportSrc: true});
+       src.otherFiles = fileArray;
+       Pkg.defaultRelease = src;
+     } 
+             
+}                   
+
+
+

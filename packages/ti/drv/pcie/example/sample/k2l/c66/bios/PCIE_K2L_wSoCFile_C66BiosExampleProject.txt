@@ -1,0 +1,8 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/soc/k2l/src/pcie_soc.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/sample/src/pcie_sample.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/sample/k2l/c66/bios/pcie_sample_wSoCFile.cfg"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/EDMA/commonEDMA.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/EDMA/PCIeEDMA.h" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/EDMA/PCIeDMA.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/EDMA/PCIeEDMAselector.c" 
+-ccs.setCompilerOptions " -mv6600 -g -DDEVICE_K2L --diag_warning=225 -I${PDK_INSTALL_PATH} -I${PDK_INSTALL_PATH}/ti/drv/pcie/example/sample/src --entry_parm=address --exit_hook=ti_utils_exit --exit_parm=address --entry_hook=ti_utils_entry" -rtsc.enableRtsc

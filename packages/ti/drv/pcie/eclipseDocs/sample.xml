@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+    <name>PCIE LLD </name>
+    <id>ti.drv.pcie</id>
+    <version>2.00.00.00</version>
+    <companyName>Texas Instruments Inc.</companyName>
+    <companyUrl>http://www.ti.com</companyUrl>
+    <copyRightNotice>Copyright Texas Instruments 2009-2012</copyRightNotice>
+
+    <licenseNotice>
+      Released under the Eclipse Public License 1.0 (http://www.eclipse.org/legal/epl-v10.html)
+    </licenseNotice>
+
+    <installLocation>../../..</installLocation>
+    <repository>../../../packages</repository>
+
+    <docsLoc>../../../packages/ti/drv/pcie/docs</docsLoc>
+
+    <folderPrefix>PCIE LLD</folderPrefix>
+
+</product>

@@ -1,0 +1,6 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/soc/am571x/src/pcie_soc.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/sample/src/pcie_sample.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/sample/am57x/src/pcie_sample_board.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/sample/am571x/m4/bios/pcie_m4_idkAM571x_wSoCFile.cfg" 
+-ccs.setCompilerOptions "-qq -pdsw255 -DMAKEFILE_BUILD -mv7M4 --float_support=vfplib --abi=eabi -g -DPCIESS1_X2 -DSOC_AM571x -DAM5XX_FAMILY_BUILD -Dti_targets_arm_elf_M4 -I${PDK_INSTALL_PATH}/ti/drv/pcie -I${PDK_INSTALL_PATH}/ti/drv/pcie/example/sample/src -I${PDK_INSTALL_PATH}/ti/drv/pcie/example/sample/am57x/src   --entry_parm=address --exit_hook=ti_utils_exit --exit_parm=address --entry_hook=ti_utils_entry "  -rtsc.enableRtsc
+-ccs.setLinkerOptions "--strict_compatibility=on"

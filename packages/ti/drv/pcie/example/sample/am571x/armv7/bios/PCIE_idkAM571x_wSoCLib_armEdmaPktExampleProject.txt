@@ -1,0 +1,7 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/sample/src/pcie_sample.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/sample/am57x/src/pcie_sample_board.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/sample/am571x/armv7/bios/pcie_edmapkt.cfg" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/edmaPktBench/edmaPktBench.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pcie/example/edmaPktBench/edmaPktMsiBench.c" 
+-ccs.setCompilerOptions "-c -mfloat-abi=hard -DPCIESS1_X2 -DSOC_AM571x -DEDMAPKTBENCH -g -gstrict-dwarf -gdwarf-3 -finstrument-functions -Wall -MMD -MP  -I${PDK_INSTALL_PATH}/ti/drv/pcie/example/sample/src -I${PDK_INSTALL_PATH}/ti/drv/pcie/example/sample/am57x/src"  -rtsc.enableRtsc
+-ccs.setLinkerOptions " -lgcc -lm -lrdimon -nostartfiles -static -Wl,--gc-sections -L$(BIOS_INSTALL_PATH)/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/fpu"
