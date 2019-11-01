@@ -1,0 +1,18 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the FVID2 Driver
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for the FVID2 driver
+ *  and is responsible for configuration of the paths for the various 
+ *  tools required to build the driver.
+ *
+ * Copyright (C) 2018, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Configure the FVID2 Release Version Information */
+var fvid2DriverReleaseVersion = (""+Pkg.version.replace(/\s/g, "")).split(',');
+
+var Build = xdc.useModule('xdc.bld.BuildEnvironment');
+Build.useTargets=null;
