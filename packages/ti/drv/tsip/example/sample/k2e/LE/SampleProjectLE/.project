@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>SampleProjectLE</name>
+	<comment></comment>
+	<projects>
+		<project>SampleProjectLE_configuration</project>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
+		<nature>com.ti.ccstudio.managedbuild.core.ccsNature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>sample_osal.c</name>
+			<type>1</type>
+			<locationURI>TSIP_INSTALL_PATH/ti/drv/tsip/example/sample/sample_osal.c</locationURI>
+		</link>
+		<link>
+			<name>sample.cmd</name>
+			<type>1</type>
+			<locationURI>TSIP_INSTALL_PATH/ti/drv/tsip/example/sample/sample.cmd</locationURI>
+		</link>
+		<link>
+			<name>sample.c</name>
+			<type>1</type>
+			<locationURI>TSIP_INSTALL_PATH/ti/drv/tsip/example/sample/sample.c</locationURI>
+		</link>
+		<link>
+			<name>sample_app.c</name>
+			<type>1</type>
+			<locationURI>TSIP_INSTALL_PATH/ti/drv/tsip/example/sample/sample_app.c</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

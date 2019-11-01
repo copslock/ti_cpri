@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?fileVersion 3.1.0?>
+
+<ManagedProjectBuildInfo>
+<project id="TestProject_LEConfig.com.ti.ccstudio.buildDefinitions.C6000.ProjectType.317347360" name="C6000" projectType="com.ti.ccstudio.buildDefinitions.C6000.ProjectType">
+<configuration artifactExtension="cmd" artifactName="configPkg/linker" description="" id="com.ti.ccstudio.buildDefinitions.C6000.Default.926361781" name="Default" parent="com.ti.ccstudio.buildDefinitions.C6000.Default">
+<toolChain id="com.ti.ccstudio.buildDefinitions.C6000_7.2.exe.DebugToolchain.1402672534" name="TI Code Generation Tools" superClass="com.ti.ccstudio.buildDefinitions.C6000_7.2.exe.DebugToolchain" targetTool="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.1933445585">
+<option id="com.ti.ccstudio.buildDefinitions.core.OPT_TAGS.100206876" superClass="com.ti.ccstudio.buildDefinitions.core.OPT_TAGS" valueType="stringList">
+<listOptionValue builtIn="false" value="DEVICE_CONFIGURATION_ID=com.ti.ccstudio.deviceModel.C6000.GenericC64xPlusDevice"/>
+<listOptionValue builtIn="false" value="DEVICE_ENDIANNESS=little"/>
+<listOptionValue builtIn="false" value="OUTPUT_FORMAT=ELF"/>
+<listOptionValue builtIn="false" value="CCS_MBS_VERSION=4.2.0"/>
+<listOptionValue builtIn="false" value="XDC_VERSION=3.20.02.59"/>
+<listOptionValue builtIn="false" value="RTSC_PRODUCTS=com.ti.rtsc.SYSBIOS:6.30.02.42;"/>
+<listOptionValue builtIn="false" value="OUTPUT_TYPE=rtscConfiguration"/>
+</option>
+<option id="com.ti.ccstudio.buildDefinitions.core.OPT_CODEGEN_VERSION.1947259253" superClass="com.ti.ccstudio.buildDefinitions.core.OPT_CODEGEN_VERSION" value="7.1.0B2" valueType="string"/>
+<tool id="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.1933445585" name="XDCtools" superClass="com.ti.rtsc.buildDefinitions.XDC_3.16.tool">
+<option id="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.CODEGEN_TOOL_DIR.1540475130" superClass="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.CODEGEN_TOOL_DIR" value="&quot;${CG_TOOL_ROOT}&quot;" valueType="string"/>
+<option id="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.TARGET.1102805787" superClass="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.TARGET" value="ti.targets.elf.C66" valueType="string"/>
+<option id="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.PLATFORM.631871329" superClass="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.PLATFORM" value="ti.platforms.simTCI6608" valueType="string"/>
+<option id="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.BUILD_PROFILE.12851348" superClass="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.BUILD_PROFILE" value="debug" valueType="string"/>
+<option id="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.XDC_PATH.1534838983" superClass="com.ti.rtsc.buildDefinitions.XDC_3.16.tool.XDC_PATH" valueType="includePath">
+<listOptionValue builtIn="false" value="&quot;${BIOS_CG_ROOT}/packages&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${TSIP_INSTALL_PATH}&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${CSL_INSTALL_PATH}&quot;"/>
+</option>
+</tool>
+<macros expandEnvironmentMacros="true"/>
+</toolChain>
+</configuration>
+<macros/>
+</project>
+</ManagedProjectBuildInfo>

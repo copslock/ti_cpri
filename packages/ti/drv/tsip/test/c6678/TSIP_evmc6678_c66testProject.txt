@@ -1,0 +1,7 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/tsip/test/c6678/test.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/tsip/test/c6678/test_c6678.cfg"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/tsip/test/c6678/test.cmd"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/tsip/test/c6678/test_app.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/tsip/test/c6678/test_osal.c"
+-ccs.setCompilerOptions " -mv6600 -g --diag_warning=225 -DSOC_C6678 -I${PDK_INSTALL_PATH}"  -rtsc.enableRtsc
+

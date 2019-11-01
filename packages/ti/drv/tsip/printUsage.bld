@@ -1,0 +1,17 @@
+
+function printUsage(print_buffer)
+{
+  print_buffer.other+="\nUSAGE:\n";
+  print_buffer.header+="xdc XDCARGS=\"<arguments>\" [release]\n";
+  print_buffer.body+="  Where the arguments are as follows:\n"
+  print_buffer.body+="  all src - build all supported targets for source delivery\n";
+  print_buffer.body+="  all obj - build all supported targets for object delivery\n";
+  print_buffer.body+="  all     - build all supported targets for object delivery\n";
+  print_buffer.body+="  no arguments - build all supported targets for object delivery\n";
+  print_buffer.body+="    <arch> obj - build object delivery for <arch> target where <arch> is c55l, c64Ple or c64Pbe\n";
+  print_buffer.body+="    <arch> src - build srouce delivery for <arch> target where <arch> is c55l, c64Ple or c64Pbe\n";
+  print_buffer.body+="    <args> release - generate release tarball either source or object based on <args> as described above \
+ e.g. XDCARGS=\"c55l obj\" release   will produce release tarball of object delivery for c55l\n";
+
+  return  print_buffer;
+}

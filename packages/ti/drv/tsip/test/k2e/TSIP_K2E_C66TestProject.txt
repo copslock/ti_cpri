@@ -1,0 +1,7 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/tsip/test/k2e/test.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/tsip/test/k2e/test_k2e.cfg"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/tsip/test/k2e/test.cmd"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/tsip/test/k2e/test_app.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/tsip/test/k2e/test_osal.c"
+-ccs.setCompilerOptions " -mv6600 -g --diag_warning=225 -DDEVICE_K2E -I${PDK_INSTALL_PATH}"  -rtsc.enableRtsc
+

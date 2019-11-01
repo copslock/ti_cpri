@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+    <name>TSIP LLD </name>
+    <id>ti.drv.tsip</id>
+    <version>1.00.00.04</version>
+    <companyName>Texas Instruments Inc.</companyName>
+    <companyUrl>http://ti.com</companyUrl>
+    <copyRightNotice>Copyright Texas Instruments 2009-2011</copyRightNotice>
+
+    <licenseNotice>
+      Released under the Eclipse Public License 1.0 (http://www.eclipse.org/legal/epl-v10.html)
+    </licenseNotice>
+
+    <installLocation>../../..</installLocation>
+    <repository>../../../packages</repository>
+
+    <docsLoc>../../../packages/ti/drv/tsip/docs</docsLoc>
+
+    <folderPrefix>C6498 TSIP LLD</folderPrefix>
+
+</product>

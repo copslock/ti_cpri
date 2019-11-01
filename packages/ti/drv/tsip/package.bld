@@ -1,0 +1,109 @@
+/******************************************************************************
+ * FILE PURPOSE: Build description for the TSIP LLD Package
+ ******************************************************************************
+ * FILE NAME: package.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build specification and description for the TSIP LLD
+ *  
+ *  The file takes the following parameters from the command line through the
+ *  XDCARGS variable.
+ *      XDCARGS[0] = TSIP LLD Install Type 
+ *      Valid Values are "TAR" or "SETUP"
+ *      DEFAULT is "SETUP"
+ *
+ *  Example for a valid command:
+ *      xdc XDCARGS="SETUP" release   
+ *
+ * Copyright (C) 2009-2010, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* List of all subdirectories that combine to make the TSIP LLD Package. */
+var subDirectories = [ "src", "docs", "example", "test" ];
+
+var tsiplldInstallType;
+
+/* Check if we need to create the Makefiles? */
+var miniBuild = java.lang.System.getenv("MINI_PACKAGE");
+
+/* Determine if we need to create the InstallJammer Application or not? 
+ * TSIP LLD Deliverables be either of the following formats:
+ *  - TAR Ball Package
+ *  - Setup Executable 
+ * DEFAULT is a TAR Executable. */
+
+if ((arguments[0] != "TAR") && (arguments[0] != "SETUP"))
+    tsiplldInstallType = "TAR";
+else
+    tsiplldInstallType = arguments[0];
+
+/* Irrespective of the InstallType we always create a TAR Ball Package as a part
+ * of the RTSC Build. Here we determine the name of the TAR Ball Package
+ *  Format is as follows:
+ *      tsiplld_<version> */
+var tsiplldRTSCFileName = "tsiplld" + "_" + tsiplldPartNumber + "_" +
+                         tsiplldReleaseVersion[0] + "_" +  tsiplldReleaseVersion[1] + "_" + 
+                         tsiplldReleaseVersion[2]  + "_" + tsiplldReleaseVersion[3];
+
+/******************************************************************
+ ************************ Release Banner **************************
+ ******************************************************************/
+
+print ("************* TSIP LLD Build Information *************");
+print ("TSIP LLD Install             : " + tsiplldInstallType);
+print ("TSIP LLD Version             : " + tsiplldReleaseVersion);
+print ("Tools Directory            : " + toolsBaseDir);
+print ("RTSC File Name	           : " + tsiplldRTSCFileName);
+print ("TSIP LLD Path                : " + tsiplldPath);
+print ("Coverity Analysis          : " + (coverityAnalysis == "ON" ? "ON" : "OFF"));
+print ("C66 LE opts               : " + C66LE.ccOpts.prefix);
+print ("***********************************************************");
+
+/* Create the release package for the TSIP LLD */
+Pkg.defaultRelease = Pkg.addRelease (tsiplldRTSCFileName, {prefix: "./packages/"});
+
+/* Cycle through all the sub-directories and build all the files */
+for (var i = 0; i < subDirectories.length; i++) 
+{
+    /* Load the capsule in the sub directory. */
+    var caps = xdc.loadCapsule (subDirectories[i]+"/Module.xs");
+
+    print ("Building directory " + subDirectories[i]);
+
+    /* Build the capsule. */
+    caps.modBuild();
+
+    /* Package the module.xs files for building via package */
+    Pkg.otherFiles[Pkg.otherFiles.length++] = subDirectories[i]+"/Module.xs";
+}
+
+/* Package the remaining files */
+Pkg.otherFiles[Pkg.otherFiles.length++] = "config.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "tsip.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "tsip_cfg.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "tsip_osal.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "tsipver.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "tsipver.h.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/Doxyfile";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/doxyfile.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/buildlib.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "makefile";
+
+/* Generate Users Manual Doxyfile */
+var tplt = xdc.loadTemplate("./docs/doxyfile.xdt");
+tplt.genFile("./docs/Doxyfile",tsiplldReleaseVersion); 
+
+/* Generate Settings.xdc */
+var tplt = xdc.loadTemplate("./Settings.xdc.xdt");
+tplt.genFile("./Settings.xdc",tsiplldReleaseVersion); 
+
+/* Generate paver.h */
+var tplt = xdc.loadTemplate("./tsipver.h.xdt");
+tplt.genFile("./tsipver.h",tsiplldReleaseVersion);      
+
+    

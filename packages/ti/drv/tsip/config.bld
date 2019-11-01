@@ -1,0 +1,124 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the TSIP LLD
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for the TSIP LLD
+ *  and is responsible for configuration of the paths for the various 
+ *  tools required to build the driver.
+ *
+ * Copyright (C) 2009-2013, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Get the Tools Base directory from the Environment Variable. */
+var toolsBaseDir = java.lang.System.getenv("C6X_GEN_INSTALL_PATH");
+
+/* Check if we need to create the Makefiles? */
+var miniBuild = java.lang.System.getenv("MINI_PACKAGE");
+
+/* Get the extended debug flags */
+var extDbgFlags = java.lang.System.getenv("EXTDBGFLAGS");
+/* Get the base directory for the TSIP LLD Package */
+var tsiplldPath = new java.io.File(".//").getPath();
+
+/* This is the part Number for which the TSIP LLD is being created */
+var tsiplldPartNumber = java.lang.System.getenv("PARTNO");
+
+if(tsiplldPartNumber == null)
+{
+    tsiplldPartNumber = "TCI6608";
+}
+
+/* Include Path */
+var tsiplldIncPath = " -i" + tsiplldPath;
+
+/* Configure the TSIP LLD Version Information */
+var tsiplldReleaseVersion = [01,00,00,06];
+
+/* TSIP LLD Coverity Analysis: Check the environment variable to determine if Static
+ * Analysis has to be done on the driver Code base or not? */
+var tsipCoverityAnalysis = java.lang.System.getenv("STATIC_ANALYZE");
+
+/* C66 ELF compiler configuration for Little Endian Mode. */
+var C66LE          = xdc.useModule('ti.targets.elf.C66');
+C66LE.rootDir       = toolsBaseDir;
+C66LE.ccOpts.prefix  = "-mo -o3 -q -k -eo.o";
+if(extDbgFlags)     
+    C66LE.ccOpts.prefix = C66LE.ccOpts.prefix + " " + extDbgFlags; 
+    
+/* Check if we need to run the STATIC Analysis or not? */
+var coverityAnalysis = java.lang.System.getenv("STATIC_ANALYZE");
+
+/* Setup the Coverity Filters to perform Static Analysis. */
+if (coverityAnalysis == "ON") {
+    var coverityInstallPath = java.lang.System.getenv("STATIC_ANALYZE_PATH");
+    var cfgBase = xdc.getPackageBase("tisb.coverity.filters") + "cfg";
+
+    var coverityFilter = [
+    {
+        moduleName: "tisb.coverity.filters.Coverity",
+        params: {
+            cfgDir:  cfgBase,  // The Coverity configuration file directory
+            rootDir: coverityInstallPath,
+            outDir: xdc.csd() + "cov_out",
+            analyzeLibs: true
+        }
+    },
+    ];
+
+    /* Run the coverity filters on the LE Build only. */
+    C66LE.profiles["release"].filters = coverityFilter;
+}
+
+if (miniBuild == "ON") 
+{
+
+    var makeC66LEFilter = {
+        moduleName: "build.filter.Make",
+        params: {
+          makefileName: "simpleC66LE.mak",
+        }
+    };
+
+    C66LE.profiles["release"].filters[C66LE.profiles["release"].filters.length++] = makeC66LEFilter;
+
+}
+
+Build.targets = [ C66LE ];
+
+/* Grab input from XDCARGS */
+var buildArguments  = [];
+
+/* Construct the build arguments */
+for (var tmp=0; arguments[tmp] != undefined; tmp++)
+{
+
+    /* If no arguments are provided, override for building all */
+    if ( ( arguments.length == 1) && (arguments[tmp].equals("./config.bld")) )
+        buildArguments[buildArguments.length++] = "all";
+    else
+        buildArguments[buildArguments.length++] = arguments[tmp];
+}
+
+var devices = [];
+var devicesCCOpt = [];
+
+
+if ( ( buildArguments.indexOf("k2e") != -1 )  ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    print ("adding k2e to build");
+    devices.push("k2e/c66");
+    devicesCCOpt.push(" -DDEVICE_K2E");
+}
+
+if  ( ( buildArguments.indexOf("c6678") != -1 ) ||
+      ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    print ("adding c6678 to build");
+    devices.push("c6678/c66");
+    devicesCCOpt.push(" -DSOC_C6678");
+}
+ 
+
