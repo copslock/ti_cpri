@@ -1,0 +1,83 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the IQN2 LLD
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for IQN2 LLD
+ *  and is responsible for configuration of the paths for the various tools
+ *  required to build IQN2 LLD.
+ *
+ * Copyright (C) 2012-2013, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Get the Tools Base directory from the Environment Variable. */
+var toolsBaseDir = java.lang.System.getenv("C6X_GEN_INSTALL_PATH");
+
+/* Get the base directory for the IQN2 LLD Package */
+var lldPath = new java.io.File(".//").getPath();
+
+var lldInstallType;
+
+/* Read the part number from the environment variable. */
+var lldPartNumber = java.lang.System.getenv("PARTNO");
+
+/* Include Path */
+/* var lldIncludePath = " -i" + lldPath + "/src" + " -i" + lldPath  + " -i" + lldPath + "/test";*/
+var lldIncludePath = " ";
+
+/* Configure the IQN2 LLD Release Version Information */
+/* 3 steps: remove SPACE and TAB, convert to string and split to make array */
+var lldReleaseVersion = (""+Pkg.version.replace(/\s/g, "")).split(',');
+
+/* IQN2 LLD Coverity Analysis: Check the environment variable to determine if Static
+ * Analysis has to be done on the IQN2 LLD Code base or not? */
+var lldCoverityAnalysis = java.lang.System.getenv("LLDCOV");
+
+/* C66 ELF compiler configuration for Little Endian Mode. */
+var C66LE           = xdc.useModule('ti.targets.elf.C66');
+C66LE.rootDir       = toolsBaseDir;
+C66LE.ccOpts.prefix = "-mo -g -mn -o3 -k -eo.o --verbose_diagnostics --display_error_number --diag_error=225 --diag_error=9 --diag_warning=179 --diag_remark=880 --diag_remark=188 --mem_model:data=far";
+
+/* Check if we need to run the STATIC Analysis or not? */
+var coverityAnalysis = java.lang.System.getenv("STATIC_ANALYZE");
+
+/* Setup the Coverity Filters to perform Static Analysis. */
+if (coverityAnalysis == "ON") {
+    var coverityInstallPath = java.lang.System.getenv("STATIC_ANALYZE_PATH");
+    var cfgBase = xdc.getPackageBase("tisb.coverity.filters") + "cfg";
+
+    var coverityFilter = [
+    {
+        moduleName: "tisb.coverity.filters.Coverity",
+        params: {
+            cfgDir:  cfgBase,  // The Coverity configuration file directory
+            rootDir: coverityInstallPath,
+            outDir: xdc.csd() + "cov_out",
+            analyzeLibs: true
+        }
+    },
+    ];
+
+    /* Run the coverity filters on the LE Build only. */
+    C66LE.profiles["release"].filters = coverityFilter;
+}
+
+/* Check if we need to create the Makefiles? */
+var miniBuild = java.lang.System.getenv("MINI_PACKAGE");
+if (miniBuild == "ON")
+{
+    /* Add the filter for simple Makefile generation. */
+
+    var makeC66LEFilter = {
+        moduleName: "build.filter.Make",
+        params: {
+          makefileName: "simpleC66LE.mak",
+        }
+    };
+    C66LE.profiles["release"].filters[C66LE.profiles["release"].filters.length++] = makeC66LEFilter;
+    
+}
+
+/* List all the build targets here. */
+Build.targets = [ C66LE ];

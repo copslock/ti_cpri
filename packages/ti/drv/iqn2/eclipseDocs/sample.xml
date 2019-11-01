@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+    <name>IQN2 LLD</name>
+    <id>ti.drv.iqn2</id>
+    <version>1.00.00.00</version>
+    <companyName>Texas Instruments Inc.</companyName>
+    <companyUrl>http://ti.com</companyUrl>
+    <copyRightNotice>Copyright Texas Instruments 2013</copyRightNotice>
+
+    <licenseNotice>
+      Released under the Eclipse Public License 1.0 (http://www.eclipse.org/legal/epl-v10.html)
+    </licenseNotice>
+
+    <installLocation>../../..</installLocation>
+    <repository>../../../packages</repository>
+
+    <docsLoc>../../../packages/ti/drv/iqn2/docs</docsLoc>
+
+    <folderPrefix>IQN2 LLD</folderPrefix>
+</product>

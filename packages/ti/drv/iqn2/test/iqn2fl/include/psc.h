@@ -1,0 +1,393 @@
+#ifndef PSC_H
+#define PSC_H
+
+#define PSC_PID               0x000
+#define PSC_RSV00_START       0x004
+#define PSC_RSV00_END         0x00F
+
+#define PSC_GBLCTL            0x010
+#define PSC_GBLSTAT           0x014
+#define PSC_INTEVAL           0x018
+#define PSC_IPWKCNT           0x01C
+#define PSC_RSV01_START       0x020
+#define PSC_RSV01_END         0x03F
+
+#define PSC_MERRPR0           0x040
+#define PSC_MERRPR1           0x044
+#define PSC_UNUSED_REG0       0x048
+#define PSC_UNUSED_REG1       0x04C
+#define PSC_MERRCR0           0x050
+#define PSC_MERRCR1           0x054
+#define PSC_UNUSED_REG2       0x058
+#define PSC_UNUSED_REG3       0x05C
+#define PSC_PERRPR            0x060
+#define PSC_PERRPR_H          0x064
+#define PSC_PERRCR            0x068
+#define PSC_PERRCR_H          0x06C
+#define PSC_EPCPR             0x070
+#define PSC_EPCPR_H           0x074
+#define PSC_EPCCR             0x078
+#define PSC_EPCCR_H           0x07C
+#define PSC_RAILSTAT          0x100
+#define PSC_RAILCTL           0x104
+#define PSC_RAILSEL           0x108
+#define PSC_RAILSEL_H         0x10C
+
+#define PSC_RSV07_START       0x110
+#define PSC_RSV07_END         0x11F
+
+#define PSC_PTCMD             0x120
+#define PSC_PTCMD_H           0x124
+#define PSC_PTSTAT            0x128
+#define PSC_PTSTAT_H          0x12C
+
+
+#define PSC_RSV08_START       0x130
+#define PSC_RSV08_END         0x1FF
+
+#define PSC_PDSTAT00          0x200
+#define PSC_PDSTAT01          0x204
+#define PSC_PDSTAT02          0x208
+#define PSC_PDSTAT03          0x20C
+#define PSC_PDSTAT04          0x210
+#define PSC_PDSTAT05          0x214
+#define PSC_PDSTAT06          0x218
+#define PSC_PDSTAT07          0x21C
+#define PSC_PDSTAT08          0x220
+#define PSC_PDSTAT09          0x224
+#define PSC_PDSTAT10          0x228
+#define PSC_PDSTAT11          0x22C
+#define PSC_PDSTAT12          0x230
+#define PSC_PDSTAT13          0x234
+#define PSC_PDSTAT14          0x238
+#define PSC_PDSTAT15          0x23C
+#define PSC_PDSTAT16          0x240
+#define PSC_PDSTAT17          0x244
+#define PSC_PDSTAT18          0x248
+#define PSC_PDSTAT19          0x24C
+#define PSC_PDSTAT20          0x250
+#define PSC_PDSTAT21          0x254
+#define PSC_PDSTAT22          0x258
+#define PSC_PDSTAT23          0x25C
+#define PSC_PDSTAT24          0x260
+#define PSC_PDSTAT25          0x264
+#define PSC_PDSTAT26          0x268
+#define PSC_PDSTAT27          0x26C
+#define PSC_PDSTAT28          0x270
+#define PSC_PDSTAT29          0x274
+#define PSC_PDSTAT30          0x278
+#define PSC_PDSTAT31          0x27C
+#define PSC_PDSTAT32          0x280
+#define PSC_PDSTAT33          0x284
+#define PSC_PDSTAT34          0x288
+#define PSC_RSV09_START       0x28C
+#define PSC_RSV09_END         0x2FF
+
+#define PSC_PDCTL00           0x300
+#define PSC_PDCTL01           0x304
+#define PSC_PDCTL02           0x308
+#define PSC_PDCTL03           0x30C
+#define PSC_PDCTL04           0x310
+#define PSC_PDCTL05           0x314
+#define PSC_PDCTL06           0x318
+#define PSC_PDCTL07           0x31C
+#define PSC_PDCTL08           0x320
+#define PSC_PDCTL09           0x324
+#define PSC_PDCTL10           0x328
+#define PSC_PDCTL11           0x32C
+#define PSC_PDCTL12           0x330
+#define PSC_PDCTL13           0x334
+#define PSC_PDCTL14           0x338
+#define PSC_PDCTL15           0x33C
+#define PSC_PDCTL16           0x340
+#define PSC_PDCTL17           0x344
+#define PSC_PDCTL18           0x348
+#define PSC_PDCTL19           0x34C
+#define PSC_PDCTL20           0x350
+#define PSC_PDCTL21           0x354
+#define PSC_PDCTL22           0x358
+#define PSC_PDCTL23           0x35C
+#define PSC_PDCTL24           0x360
+#define PSC_PDCTL25           0x364
+#define PSC_PDCTL26           0x368
+#define PSC_PDCTL27           0x36C
+#define PSC_PDCTL28           0x370
+#define PSC_PDCTL29           0x374
+#define PSC_PDCTL30           0x378
+#define PSC_PDCTL31           0x37C
+#define PSC_PDCTL32           0x380
+#define PSC_PDCTL33           0x384
+#define PSC_PDCTL34           0x388
+#define PSC_RSV10_START       0x38C
+#define PSC_RSV10_END         0x3FF
+
+
+#define PSC_PDCFG00           0x400
+#define PSC_PDCFG01           0x404
+#define PSC_PDCFG02           0x408
+#define PSC_PDCFG03           0x40C
+#define PSC_PDCFG04           0x410
+#define PSC_PDCFG05           0x414
+#define PSC_PDCFG06           0x418
+#define PSC_PDCFG07           0x41C
+#define PSC_PDCFG08           0x420
+#define PSC_PDCFG09           0x424
+#define PSC_PDCFG10           0x428
+#define PSC_PDCFG11           0x42C
+#define PSC_PDCFG12           0x430
+#define PSC_PDCFG13           0x434
+#define PSC_PDCFG14           0x438
+#define PSC_PDCFG15           0x43C
+#define PSC_PDCFG16           0x440
+#define PSC_PDCFG17           0x444
+#define PSC_PDCFG18           0x448
+#define PSC_PDCFG19           0x44C
+#define PSC_PDCFG20           0x450
+#define PSC_PDCFG21           0x454
+#define PSC_PDCFG22           0x458
+#define PSC_PDCFG23           0x45C
+#define PSC_PDCFG24           0x460
+#define PSC_PDCFG25           0x464
+#define PSC_PDCFG26           0x468
+#define PSC_PDCFG27           0x46C
+#define PSC_PDCFG28           0x470
+#define PSC_PDCFG29           0x474
+#define PSC_PDCFG30           0x478
+#define PSC_PDCFG31           0x47C
+#define PSC_PDCFG32           0x480
+#define PSC_PDCFG33           0x484
+#define PSC_PDCFG34           0x488
+#define PSC_RSV11_START       0x48C
+#define PSC_RSV11_END         0x5FF
+
+#define PSC_MDCFG00           0x600
+#define PSC_MDCFG01           0x604
+#define PSC_MDCFG02           0x608
+#define PSC_MDCFG03           0x60C
+#define PSC_MDCFG04           0x610
+#define PSC_MDCFG05           0x614
+#define PSC_MDCFG06           0x618
+#define PSC_MDCFG07           0x61C
+#define PSC_MDCFG08           0x620
+#define PSC_MDCFG09           0x624
+#define PSC_MDCFG10           0x628
+#define PSC_MDCFG11           0x62C
+#define PSC_MDCFG12           0x630
+#define PSC_MDCFG13           0x634
+#define PSC_MDCFG14           0x638
+#define PSC_MDCFG15           0x63C
+#define PSC_MDCFG16           0x640
+#define PSC_MDCFG17           0x644
+#define PSC_MDCFG18           0x648
+#define PSC_MDCFG19           0x64C
+#define PSC_MDCFG20           0x650
+#define PSC_MDCFG21           0x654
+#define PSC_MDCFG22           0x658
+#define PSC_MDCFG23           0x65C
+#define PSC_MDCFG24           0x660
+#define PSC_MDCFG25           0x664
+#define PSC_MDCFG26           0x668
+#define PSC_MDCFG27           0x66C
+#define PSC_MDCFG28           0x670
+#define PSC_MDCFG29           0x674
+#define PSC_MDCFG30           0x678
+#define PSC_MDCFG31           0x67c
+#define PSC_MDCFG32           0x680
+#define PSC_MDCFG33           0x684
+#define PSC_MDCFG34           0x688
+#define PSC_MDCFG35           0x68C
+#define PSC_MDCFG36           0x690
+#define PSC_MDCFG37           0x694
+#define PSC_MDCFG38           0x698
+#define PSC_MDCFG39           0x69C
+#define PSC_MDCFG40           0x6A0
+#define PSC_MDCFG41           0x6A4
+#define PSC_MDCFG42           0x6A8
+#define PSC_MDCFG43           0x6AC
+#define PSC_MDCFG44           0x6B0
+#define PSC_MDCFG45           0x6B4
+#define PSC_MDCFG46           0x6B8
+#define PSC_MDCFG47           0x6BC
+#define PSC_MDCFG48           0x6C0
+#define PSC_MDCFG49           0x6C4
+#define PSC_MDCFG50           0x6C8
+#define PSC_MDCFG51           0x6CC
+#define PSC_MDCFG52           0x6D0
+#define PSC_MDCFG53           0x6D4
+#define PSC_MDCFG54           0x6D8
+#define PSC_MDCFG55           0x6DC
+#define PSC_MDCFG56           0x6E0
+#define PSC_MDCFG57           0x6E4
+#define PSC_MDCFG58           0x6E8
+#define PSC_RSV12_START       0x6EC
+#define PSC_RSV12_END         0x7FF
+
+
+#define PSC_MDSTAT00          0x800
+#define PSC_MDSTAT01          0x804
+#define PSC_MDSTAT02          0x808
+#define PSC_MDSTAT03          0x80C
+#define PSC_MDSTAT04          0x810
+#define PSC_MDSTAT05          0x814
+#define PSC_MDSTAT06          0x818
+#define PSC_MDSTAT07          0x81C
+#define PSC_MDSTAT08          0x820
+#define PSC_MDSTAT09          0x824
+#define PSC_MDSTAT10          0x828
+#define PSC_MDSTAT11          0x82C
+#define PSC_MDSTAT12          0x830
+#define PSC_MDSTAT13          0x834
+#define PSC_MDSTAT14          0x838
+#define PSC_MDSTAT15          0x83C
+#define PSC_MDSTAT16          0x840
+#define PSC_MDSTAT17          0x844
+#define PSC_MDSTAT18          0x848
+#define PSC_MDSTAT19          0x84C
+#define PSC_MDSTAT20          0x850
+#define PSC_MDSTAT21          0x854
+#define PSC_MDSTAT22          0x858
+#define PSC_MDSTAT23          0x85C
+#define PSC_MDSTAT24          0x860
+#define PSC_MDSTAT25          0x864
+#define PSC_MDSTAT26          0x868
+#define PSC_MDSTAT27          0x86C
+#define PSC_MDSTAT28          0x870
+#define PSC_MDSTAT29          0x874
+#define PSC_MDSTAT30          0x878
+#define PSC_MDSTAT31          0x87C
+#define PSC_MDSTAT32          0x880
+#define PSC_MDSTAT33          0x884
+#define PSC_MDSTAT34          0x888
+#define PSC_MDSTAT35          0x88C
+#define PSC_MDSTAT36          0x890
+#define PSC_MDSTAT37          0x894
+#define PSC_MDSTAT38          0x898
+#define PSC_MDSTAT39          0x89C
+#define PSC_MDSTAT40          0x8A0
+#define PSC_MDSTAT41          0x8A4
+#define PSC_MDSTAT42          0x8A8
+#define PSC_MDSTAT43          0x8AC
+#define PSC_MDSTAT44          0x8B0
+#define PSC_MDSTAT45          0x8B4
+#define PSC_MDSTAT46          0x8B8
+#define PSC_MDSTAT47          0x8BC
+#define PSC_MDSTAT48          0x8C0
+#define PSC_MDSTAT49          0x8C4
+#define PSC_MDSTAT50          0x8C8
+#define PSC_MDSTAT51          0x8CC
+#define PSC_MDSTAT52          0x8D0
+#define PSC_MDSTAT53          0x8D4
+#define PSC_MDSTAT54          0x8D8
+#define PSC_MDSTAT55          0x8DC
+#define PSC_MDSTAT56          0x8E0
+#define PSC_MDSTAT57          0x8E4
+#define PSC_MDSTAT58          0x8E8
+#define PSC_RSV13_START       0x8EC
+#define PSC_RSV13_END         0x9FF
+
+
+#define PSC_MDCTL00           0xA00
+#define PSC_MDCTL01           0xA04
+#define PSC_MDCTL02           0xA08
+#define PSC_MDCTL03           0xA0C
+#define PSC_MDCTL04           0xA10
+#define PSC_MDCTL05           0xA14
+#define PSC_MDCTL06           0xA18
+#define PSC_MDCTL07           0xA1C
+#define PSC_MDCTL08           0xA20
+#define PSC_MDCTL09           0xA24
+#define PSC_MDCTL10           0xA28
+#define PSC_MDCTL11           0xA2C
+#define PSC_MDCTL12           0xA30
+#define PSC_MDCTL13           0xA34
+#define PSC_MDCTL14           0xA38
+#define PSC_MDCTL15           0xA3C
+#define PSC_MDCTL16           0xA40
+#define PSC_MDCTL17           0xA44
+#define PSC_MDCTL18           0xA48
+#define PSC_MDCTL19           0xA4C
+#define PSC_MDCTL20           0xA50
+#define PSC_MDCTL21           0xA54
+#define PSC_MDCTL22           0xA58
+#define PSC_MDCTL23           0xA5C
+#define PSC_MDCTL24           0xA60
+#define PSC_MDCTL25           0xA64
+#define PSC_MDCTL26           0xA68
+#define PSC_MDCTL27           0xA6C
+#define PSC_MDCTL28           0xA70
+#define PSC_MDCTL29           0xA74
+#define PSC_MDCTL30           0xA78
+#define PSC_MDCTL31           0xA7C
+#define PSC_MDCTL32           0xA80
+#define PSC_MDCTL33           0xA84
+#define PSC_MDCTL34           0xA88
+#define PSC_MDCTL35           0xA8C
+#define PSC_MDCTL36           0xA90
+#define PSC_MDCTL37           0xA94
+#define PSC_MDCTL38           0xA98
+#define PSC_MDCTL39           0xA9C
+#define PSC_MDCTL40           0xAA0
+#define PSC_MDCTL41           0xAA4
+#define PSC_MDCTL42           0xAA8
+#define PSC_MDCTL43           0xAAC
+#define PSC_MDCTL44           0xAB0
+#define PSC_MDCTL45           0xAB4
+#define PSC_MDCTL46           0xAB8
+#define PSC_MDCTL47           0xABC
+#define PSC_MDCTL48           0xAC0
+#define PSC_MDCTL49           0xAC4
+#define PSC_MDCTL50           0xAC8
+#define PSC_MDCTL51           0xACC
+#define PSC_MDCTL52           0xAD0
+#define PSC_MDCTL53           0xAD4
+#define PSC_MDCTL54           0xAD8
+#define PSC_MDCTL55           0xADC
+#define PSC_MDCTL56           0xAE0
+#define PSC_MDCTL57           0xAE4
+#define PSC_MDCTL58           0xAE8
+#define PSC_RSV14_START       0xAEC
+#define PSC_RSV14_END         0xFFF
+
+#define RDONLY_WEM            0x00000000
+#define GBLCTL_WEM            0x0000FF01
+#define IPWKCT_WEM            0x3FFFFFFF
+#define PDCTL_WEM             0xB0FFF301
+#define PDCTL_WEM1            0xB0FF0301  //used for default disabled pd.
+#define MDCTL_WEM             0x80001F07
+
+
+
+#define PSC_PDCFG_BASE        PSC_PDCFG00
+#define PSC_PDSTAT_BASE       PSC_PDSTAT00
+#define PSC_PDCTL_BASE        PSC_PDCTL00
+#define PSC_MDCFG_BASE        PSC_MDCFG00
+#define PSC_MDSTAT_BASE       PSC_MDSTAT00
+#define PSC_MDCTL_BASE        PSC_MDCTL00
+
+#define MDLIMIT_PER_PD        8
+#define NUMREG_PER_MD         8
+
+// bit 0 - mdstate, bit 1 - pdstate
+#define PSC_PWRDWN            0x0
+#define PSC_PWRUP             0x2
+#define PSC_ENABLED           0x1
+#define PSC_DISABLED          0x0
+
+#define PSC_RESET_ISO_SET           (0x1 << 12)
+#define PSC_MEMPDMODE_ZEROMASK      (~(0x0F << 12))
+#define PSC_MEMPDMODE_DEFAULT       0
+#define PSC_MEMPDMODE_RETENTION     (0x1 << 12)
+
+#define PSC_ALLINT_NO         362
+
+#ifndef CONFIG_SRC
+struct psc_info {
+    unsigned int psc_pd_num;
+    unsigned int psc_md_num;
+    unsigned int psc_state;
+    struct greg_info md_regs[NUMREG_PER_MD];
+};
+#endif
+
+#endif
+

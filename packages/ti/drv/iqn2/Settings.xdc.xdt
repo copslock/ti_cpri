@@ -1,0 +1,25 @@
+
+%%{
+/*!
+ *  This template implements the Settings.xdc
+ */  
+  /* Versioning */
+  var ver = this;
+  for each(i=0;i<ver.length;i++)
+  {
+      if(String(ver[i]).length < 2)
+      {
+        ver[i]="0"+ver[i];
+      }
+  }
+  
+  var packageVersion = "\""+ver[0]+"."+ver[1]+"."+ver[2]+"."+ver[3]+"\"";
+
+%%}
+
+module Settings
+{
+    config string iqn2lldVersionString = `packageVersion`;
+
+}
+

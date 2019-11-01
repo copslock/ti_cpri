@@ -1,0 +1,19 @@
+ -ccs.configurations K2L_LBACK K2L_LBACK_UL
+ -ccs.setCompilerOptions " -DDEVICE_K2L -DOBSAI -DUSESYSBIOS " @configurations K2L_LBACK
+ -ccs.setCompilerOptions " -DDEVICE_K2L -DWCDMA_UL -DOBSAI -DUSESYSBIOS " @configurations K2L_LBACK_UL
+ -ccs.setCompilerOptions "-I${CG_TOOL_ROOT}/include " 
+ -ccs.setCompilerOptions "-I${IQN2_INSTALL_PATH}/ti/drv/iqn2/test/utils " 
+ -ccs.setCompilerOptions "-I${IQN2_INSTALL_PATH}/ti/drv/iqn2/test/iqn2fl/include "
+ -ccs.setCompilerOptions "-I${IQN2_INSTALL_PATH}/ti/drv/iqn2/test/wcdma/config "
+ -ccs.setCompilerOptions "-mv6600 -g --mem_model:data=far " 
+ -ccs.setLinkerOptions "-i${IQN2_INSTALL_PATH}/ti/drv/iqn2/test/utils"
+ -ccs.setLinkerOptions "-i${IQN2_INSTALL_PATH}/ti/drv/iqn2/test/iqn2fl"
+ -ccs.setLinkerOptions "--stack_size=0x20000 --heap_size=0x20000" 
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/cslUtils.c 
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/wcdmaUtils.c
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/iqn2_osal.c 
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/iqn2ail/src/ailSysBios.c  
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/iqn2_bios.cfg
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/iqn2_bios.cmd 
+ -rtsc.enableRtsc 
+ 

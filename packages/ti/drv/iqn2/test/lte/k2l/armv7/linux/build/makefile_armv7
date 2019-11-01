@@ -1,0 +1,137 @@
+# Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com/
+#
+#
+#  Redistribution and use in source and binary forms, with or without
+#  modification, are permitted provided that the following conditions
+#  are met:
+#
+#    Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+#    Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the
+#    distribution.
+#
+#    Neither the name of Texas Instruments Incorporated nor the names of
+#    its contributors may be used to endorse or promote products derived
+#    from this software without specific prior written permission.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+#  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+#  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+#  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+#  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+#  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+#
+# Macro definitions referenced below
+#
+
+empty =
+space =$(empty) $(empty)
+
+CFLAGS += -Wall -O2 -marm -march=armv7-a -mtune=cortex-a15 -mfpu=neon -ffast-math -mfloat-abi=hard 
+
+ARMV7OBJDIR ?= ./obj
+ARMV7BINDIR ?= ./bin
+ARMV7LIBDIR ?= ./lib
+
+ARMV7OBJDIR := $(ARMV7OBJDIR)/iqn2/test
+ARMV7BINDIR := $(ARMV7BINDIR)/iqn2/test
+
+#Cross tools
+ifdef CROSS_TOOL_INSTALL_PATH
+# Support backwards compatibility with KeyStone1 approach
+ CC = $(CROSS_TOOL_INSTALL_PATH)/$(CROSS_TOOL_PRFX)gcc
+ AC = $(CROSS_TOOL_INSTALL_PATH)/$(CROSS_TOOL_PRFX)as
+ AR = $(CROSS_TOOL_INSTALL_PATH)/$(CROSS_TOOL_PRFX)ar
+ LD = $(CROSS_TOOL_INSTALL_PATH)/$(CROSS_TOOL_PRFX)gcc
+endif
+
+# INCLUDE Directories
+IQN2_SRC_DIR ?= $(PDK_INSTALL_PATH)
+CSL_DIR = $(PDK_INSTALL_PATH)/ti/csl/
+PDK_INSTALL_DIR = $(PDK_INSTALL_PATH)
+IQN2_TEST_DIR = $(IQN2_SRC_DIR)/ti/drv/iqn2/test/lte
+IQN2_ARM_LIN_TEST_DIR = $(IQN2_TEST_DIR)/$(DEVICE)/armv7/linux
+DFE_LIB_DIR = $(PDK_INSTALL_PATH)/ti/drv/dfe/lib
+
+INCDIR := $(IQN2_SRC_DIR);$(CSL_DIR);$(PDK_INSTALL_DIR);$(IQN2_TEST_DIR)/src;$(IQN2_TEST_DIR)/../utils;$(IQN2_TEST_DIR)/../iqn2fl/include;$(IQN2_ARM_LIN_TEST_DIR);$(IQN2_TEST_DIR)/config
+
+# Libraries
+IQN2_LIB = -liqn2
+DFE_LIB = -ldfe
+
+ifeq ($(USEDYNAMIC_LIB), yes)
+#presuming ARM executable would depend on dynamic library dependency
+EXE_EXTN = _so
+LIBS     = $(IQN2_LIB) $(DFE_LIB)
+else
+#forcing ARM executable to depend on static LLD libraries
+EXE_EXTN =
+#LIBS     = -static $(IQN2_LIB) $(DFE_LIB) -Wl,-Bdynamic
+LIBS     = -static $(IQN2_LIB) $(DFE_LIB)
+endif
+
+#LIBS    += -lm
+
+# Compiler options
+INTERNALDEFS = $(DEBUG_FLAG) -D__ARMv7 -DDEVICE_K2L -DLTE_RATE=20 -DDFE_RATE=20 -DCFG -DDFE_BB_LOOPBACK=1 -D_VIRTUAL_ADDR_SUPPORT -D__LINUX_USER_SPACE -D_LITTLE_ENDIAN=1 -DMAKEFILE_BUILD -DINTERNAL_LINKING_RAM
+
+# Linker options
+#INTERNALLINKDEFS = -Wl,--start-group -L $(ARMV7LIBDIR) $(LIBS) -lrt -Wl,--end-group -pthread $(LDFLAGS)
+INTERNALLINKDEFS = -Wl,--start-group -L $(ARMV7LIBDIR) -L $(DFE_LIB_DIR) $(LIBS) -Wl,--end-group $(LDFLAGS)
+
+EXE=iqn2Test$(EXE_EXTN).out
+OBJEXT = o 
+SRCDIR = $(IQN2_TEST_DIR)/../utils:$(IQN2_TEST_DIR)/src:$(IQN2_TEST_DIR)/../iqn2fl:$(IQN2_ARM_LIN_TEST_DIR)
+
+INCS = -I. -I$(strip $(subst ;, -I,$(INCDIR)))
+
+VPATH=$(SRCDIR)
+
+#List the Source Files
+TEST_SRC = \
+	cslUtils.c \
+	dfe_init_lte.c \
+	iqn2_osal.c \
+	ltedfe_cfg.c \
+	iqn2CSLIFace.c \
+	dfe_syncgen.c \
+	load_dfe.c \
+	start_dfe.c \
+	open_dfe.c
+
+# FLAGS for the SourceFiles
+SRC_CFLAGS = -I. $(CFLAGS)
+
+# Make Rule for the SRC Files
+TEST_SRC_OBJS = $(patsubst %.c, $(ARMV7OBJDIR)/%.$(OBJEXT), $(TEST_SRC))
+
+all:$(ARMV7BINDIR)/$(EXE)
+
+$(ARMV7BINDIR)/$(EXE): $(TEST_SRC_OBJS) $(ARMV7BINDIR)/.created $(ARMV7OBJDIR)/.created
+	@echo linking $(TEST_SRC_OBJS) into $@ ... $(INTERNALLINKDEFS)
+	@$(CC) $(TEST_SRC_OBJS) $(INTERNALLINKDEFS) -o $@
+
+$(ARMV7OBJDIR)/%.$(OBJEXT): %.c $(ARMV7OBJDIR)/.created
+	@echo compiling $< ...
+	@$(CC) -c $(SRC_CFLAGS) $(INTERNALDEFS) $(INCS)  $< -o $@
+
+$(ARMV7OBJDIR)/.created:
+	@mkdir -p $(ARMV7OBJDIR)
+	@touch $(ARMV7OBJDIR)/.created
+
+$(ARMV7BINDIR)/.created:
+	@mkdir -p $(ARMV7BINDIR)
+	@touch $(ARMV7BINDIR)/.created
+
+clean:
+	@rm -fr $(ARMV7OBJDIR)
+	@rm -fr $(ARMV7BINDIR)

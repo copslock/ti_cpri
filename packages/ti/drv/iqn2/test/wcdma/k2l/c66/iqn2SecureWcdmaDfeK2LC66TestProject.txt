@@ -1,0 +1,24 @@
+ -ccs.configurations K2L_LBACK K2L_LBACK_UL
+ -ccs.setCompilerOptions " -DDEVICE_K2L -DWCDMA_ONLY -DUSESYSBIOS -DDFE_BB_LOOPBACK=1 -DSECDEV=1 " @configurations K2L_LBACK 
+ -ccs.setCompilerOptions " -DDEVICE_K2L -DWCDMA_UL -DWCDMA_ONLY -DUSESYSBIOS -DDFE_BB_LOOPBACK=1 -DSECDEV=1 " @configurations K2L_LBACK_UL
+ -ccs.setCompilerOptions "-I${CG_TOOL_ROOT}/include " 
+ -ccs.setCompilerOptions "-I${IQN2_INSTALL_PATH}/ti/drv/iqn2/test/utils " 
+ -ccs.setCompilerOptions "-I${IQN2_INSTALL_PATH}/ti/drv/iqn2/test/iqn2fl/include "
+ -ccs.setCompilerOptions "-I${IQN2_INSTALL_PATH}/ti/drv/iqn2/test/wcdma/config "
+ -ccs.setCompilerOptions "-mv6600 -g --mem_model:data=far " 
+ -ccs.setLinkerOptions "-i${IQN2_INSTALL_PATH}/ti/drv/iqn2/test/utils"
+ -ccs.setLinkerOptions "-i${IQN2_INSTALL_PATH}/ti/drv/iqn2/test/iqn2fl"
+ -ccs.setLinkerOptions "--stack_size=0x20000 --heap_size=0x20000" 
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/load_dfe.c 
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/start_dfe.c 
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/open_dfe.c 
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/dfe_syncgen.c 
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/cslUtils.c 
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/wcdmaUtils.c
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/iqn2_osal.c 
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/iqn2aid/src/aidSysBios.c  
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/iqn2_bios_secure.cfg
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/utils/iqn2_bios.cmd 
+ -ccs.linkFile IQN2_INSTALL_PATH/ti/drv/iqn2/test/iqn2fl/dfe_init_wcdma.c 
+ -rtsc.enableRtsc 
+ 

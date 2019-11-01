@@ -1,0 +1,97 @@
+#*******************************************************************************
+#* FILE PURPOSE: Top level makefile for Creating Component Libraries for ARM
+#* architectures
+#*******************************************************************************
+#* FILE NAME: makefile
+#*
+#* DESCRIPTION: Defines Compiler tools paths, libraries , Build Options 
+#*
+#*
+#*******************************************************************************
+#*
+# (Mandatory) Specify where various tools are installed.
+
+# Output for prebuilt generated libraries
+export ARMV7LIBDIR ?= ./lib
+export DEVICE ?=k2l
+export ARMV7OBJDIR ?= ./obj/$(DEVICE)
+export ARMV7BINDIR ?= ./bin/$(DEVICE)
+
+# ROOT Directory
+export ROOTDIR := ../../..
+
+
+# INCLUDE Directory
+export INCDIR := ../../..;$(PDK_INSTALL_PATH);$(ROOTDIR)
+
+# Common Macros used in make
+
+ifndef RM
+export RM = rm -f
+endif
+
+ifndef CP
+export CP = cp -p
+endif
+
+export MKDIR = mkdir -p
+
+ifndef RMDIR
+export RMDIR = rm -rf
+endif
+
+ifndef SED
+export SED = sed
+endif
+
+ifndef MAKE
+export MAKE = make
+endif
+
+# PHONY Targets
+.PHONY: all clean lib tests install installbin .libraries .executables
+
+# all rule
+all: .executables
+.executables: lib tests
+
+# Libraries
+lib: .libraries
+
+tests: 
+	@$(MAKE) -f ./test/lte/$(DEVICE)/armv7/linux/build/makefile_armv7 all	
+
+# Make rule to create $(ARMV7LIBDIR)/libiqn2.a library
+.libraries: $(ARMV7LIBDIR)/libiqn2.a libiqn2.so
+
+$(ARMV7LIBDIR)/libiqn2.a::
+	@$(MAKE) -f ./build/armv7/libiqn2_aearmv7.mk $@
+
+libiqn2.so:
+	@$(MAKE) -f ./build/armv7/libiqn2_aearmv7.mk $@
+	
+# Rule to clean $(ARMV7LIBDIR)/libiqn2.a library
+clean:
+	@$(MAKE) -f ./build/armv7/libiqn2_aearmv7.mk $@
+	@$(MAKE) -f ./test/lte/$(DEVICE)/armv7/linux/build/makefile_armv7 $@	
+	@$(RMDIR) $(ARMV7OBJDIR)/iqn2
+	@$(RMDIR) $(ARMV7BINDIR)/iqn2
+	@$(RM) $(ARMV7LIBDIR)/libiqn2.a
+	@$(RM) $(ARMV7LIBDIR)/libiqn2.so
+	@$(RM) $(ARMV7LIBDIR)/libiqn2.so.*
+
+installbin:
+	install -d $(INSTALL_BIN_BASE_DIR)
+	install -c -m 755 $(ARMV7BINDIR)/iqn2/test/iqn2Test.out $(INSTALL_BIN_BASE_DIR)/iqn2LteCfgTest_$(DEVICE).out
+
+install:
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/iqn2/device/k2l/src
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/iqn2/include
+	install -d $(INSTALL_LIB_BASE_DIR)	
+	$(CP) ./include/*.h        $(INSTALL_INC_BASE_DIR)/ti/drv/iqn2/include	
+	$(CP) ./*.h                $(INSTALL_INC_BASE_DIR)/ti/drv/iqn2
+	$(CP) ./device/k2l/src/*.c $(INSTALL_INC_BASE_DIR)/ti/drv/iqn2/device/k2l/src
+	$(CP) ./device/*.h $(INSTALL_INC_BASE_DIR)/ti/drv/iqn2/device
+	@$(CP) -r $(ARMV7LIBDIR)/*.a         $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/*.so        $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/*.so.*      $(INSTALL_LIB_BASE_DIR)
