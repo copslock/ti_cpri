@@ -1,0 +1,166 @@
+/dts-v1/;
+
+/ {
+    /* Device Resource Definitions */
+	
+    qmss {
+        ns-assignment = "Arm_Descriptors", <0 4096>;
+    
+        pdsps {
+        	resource-range = <0 2>;
+        };
+        memory-regions {
+			resource-range = <0 20>;
+			linux-dtb-alias = "hwqueue@2a00000 regions region-12 id", <1 0>;
+        };
+        link-ram {
+            resource-range = <0x00000000 0xFFFFFFFF>;
+        };
+        accumulator-ch {
+            resource-range = <0 48>;
+        	/* Each new line specifies a different path.  The last string in the line
+        	 * must result in a property tied to a value */
+        	linux-dtb-alias = "hwqueue@2a00000 queues accumulator-low-0 accumulator", <1 1>,
+        					  "hwqueue@2a00000 queues accumulator-low-1 accumulator", <1 1>,
+        					  "hwqueue@2a00000 queues accumulator-low-2 accumulator", <1 1>,
+        					  "hwqueue@2a00000 queues accumulator-low-3 accumulator", <1 1>,
+        					  "hwqueue@2a00000 queues accumulator-high accumulator", <1 1>;            
+        };
+        qos-cluster {
+			resource-range = <0 8>;
+        };
+        qos-queue {
+			resource-range = <0 64>;
+        };        
+
+        /* Queue definitions based on csl_qm_queue.h */
+        low-prio-queue {
+        	resource-range = <0 512>;
+        	/* Each new line specifies a different path. */
+        	linux-dtb-alias = "hwqueue@2a00000 queues accumulator-low-0 values", <2 0 1>,
+        					  "hwqueue@2a00000 queues accumulator-low-1 values", <2 0 1>,
+        					  "hwqueue@2a00000 queues accumulator-low-2 values", <2 0 1>,
+        					  "hwqueue@2a00000 queues accumulator-low-3 values", <2 0 1>;
+        };
+        aif-queue {
+        	resource-range = <512 128>;
+        };
+        pass-queue {
+        	resource-range = <640 9>;
+        	ns-assignment = "NETFP_Fail_Route_Queue_Num", <650 1>;
+        };     
+        intc-queue {
+        	resource-range = <662 10>;
+        };
+        srio-queue {
+        	resource-range = <672 16>;
+        	linux-dtb-alias = "hwqueue@2a00000 queues riotx values", <2 0 1>;
+        }; 
+        fftc-a-queue {
+        	resource-range = <688 4>;
+        };
+        fftc-b-queue {
+        	resource-range = <692 4>;
+        };
+        bcp-queue {
+        	resource-range = <864 8>;
+        };
+        high-prio-queue {
+        	resource-range = <704 32>;
+        	linux-dtb-alias = "hwqueue@2a00000 queues accumulator-high values", <2 0 1>;
+        };
+        starvation-queue {
+        	resource-range = <736 64>;
+        };
+        infra-queue {
+        	resource-range = <800 32>;
+        	linux-dtb-alias = "hwqueue@2a00000 queues infradma values", <2 0 1>;
+        };
+        traffic-shaping-queue {
+        	resource-range = <832 32>;
+        };
+        gp-queue {
+        	resource-range = <896 7296>;
+        	linux-dtb-alias = "hwqueue@2a00000 queues general values", <2 0 1>;
+        	ns-assignment = "QOS_Ingress_Queue_Base", <8000 1>;
+        };          
+    }; /* qmss */
+
+    /* CPPI channel and flow ID ranges based on tci6614 cppi_device.c */
+    cppi {
+        srio-rx-ch {
+        	resource-range = <0 16>;
+        };
+        srio-tx-ch {
+        	resource-range = <0 16>;
+        };
+        srio-rx-flow-id {
+        	resource-range = <0 20>;
+        };   
+
+        aif-rx-ch {
+        	resource-range = <0 129>;
+        };
+        aif-tx-ch {
+        	resource-range = <0 129>;
+        };
+        aif-rx-flow-id {
+        	resource-range = <0 129>;
+        };      
+
+        fftc-a-rx-ch {
+        	resource-range = <0 4>;
+        };
+        fftc-a-tx-ch {
+        	resource-range = <0 4>;
+        };
+        fftc-a-rx-flow-id {
+        	resource-range = <0 8>;
+        };   
+
+        fftc-b-rx-ch {
+        	resource-range = <0 4>;
+        };
+        fftc-b-tx-ch {
+        	resource-range = <0 4>;
+        };
+        fftc-b-rx-flow-id {
+        	resource-range = <0 8>;
+        };   
+
+        pass-rx-ch {
+        	resource-range = <0 23>;
+        };
+        pass-tx-ch {
+        	resource-range = <0 9>;
+        };
+        pass-rx-flow-id {
+        	resource-range = <0 32>;
+        	ns-assignment = "NETFP_Fail_Route_Flow_ID", <23 1>;
+        };   
+
+        qmss-rx-ch {
+        	resource-range = <0 32>;
+        };
+        qmss-tx-ch {
+        	resource-range = <0 32>;
+        };
+        qmss-rx-flow-id {
+        	resource-range = <0 64>;
+        };   
+
+        bcp-rx-ch {
+        	resource-range = <0 8>;
+        };
+        bcp-tx-ch {
+        	resource-range = <0 8>;
+        };
+        bcp-rx-flow-id {
+        	resource-range = <0 64>;
+        };           
+    }; /* cppi */
+
+    pa-lut { 
+        resource-range = <0 5>;
+    };    
+};

@@ -1,0 +1,13 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/src/rm_mem_test.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/device/k2h/global-resource-list.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/device/k2h/policy_dsp_arm.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/dts_files/global-resources.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/dts_files/server-policy.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/dts_files/static-policy.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/dts_files/linux-evm.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/rm_transport_setup.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/k2l/c66/bios/rm_osal.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/k2l/c66/bios/rm_mem_test.cfg"
+-ccs.setCompilerOptions "-mv6600 -g -DSOC_K2L --diag_warning=225 -I${PDK_INSTALL_PATH}/ti/drv/rm" 
+-rtsc.enableRtsc
+

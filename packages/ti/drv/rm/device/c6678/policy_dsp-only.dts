@@ -1,0 +1,155 @@
+/dts-v1/;
+
+/* Policy assigning all resources to RM instances running on DSP. */
+
+/ {
+    /* Valid instance list contains instance names used within TI example projects
+     * utilizing RM.  The list can be modified as needed by applications integrating
+     * RM.  For an RM instance to be given permissions the name used to initialize it
+     * must be present in this list */
+    valid-instances = "RM_Server",
+                      "RM_Client0",
+                      "RM_Client1",
+                      "RM_Client2",
+                      "RM_Client3",
+                      "RM_Client4",
+                      "RM_Client5",
+                      "RM_Client6",
+                      "RM_Client7";
+	
+    qmss {
+        control-qm1 {
+            assignments = <0 1>, "iu = (*)";
+        };
+        
+        linkram-control-qm1 {
+            assignments = <0 1>, "iu = (*)";
+        };
+        linkram-int-qm1 {
+            /* hw allows max of 16K "internal" descriptors */
+            assignments = <0x00000000 0x00004000>, "iu = (*)";
+        };
+        linkram-ext-qm1 {
+            /* hw allows max of 512K "external" descriptors */
+            assignments = <0x00004000 0x0007C000>, "iu = (*)";
+        };
+        
+        memory-regions-qm1 {
+            assignments = <0 20>, "iu = (*)";
+        };
+        /* Queues match device specification and/or csl_qm_queue.h regardless of split or joint mode */
+        LOW_PRIORITY_QUEUE-qm1 {
+            assignments = <0 512>, "iu = (*)";
+        };
+        PASS_QUEUE-qm1 {
+            assignments = <640 9>, "iu = (*)";
+        };
+        INTC_QUEUE-qm1 {
+            assignments = <652 20>, "iu = (*)";
+        }; 
+        SRIO_QUEUE-qm1 {
+            assignments = <672 16>, "iu = (*)";
+        }; 
+        HIGH_PRIORITY_QUEUE-qm1 {
+            assignments = <704 32>, "iu = (*)";
+        };       
+        STARVATION_COUNTER_QUEUE-qm1 {
+            assignments = <736 64>, "iu = (*)";
+        };  
+        INFRASTRUCTURE_QUEUE-qm1 {
+            assignments = <800 32>, "iu = (*)";
+        }; 
+        TRAFFIC_SHAPING_QUEUE-qm1 {
+            assignments = <832 32>, "iu = (*)";
+        };         
+        GENERAL_PURPOSE_QUEUE-qm1 {
+            assignments = <896 3199>, "iu = (*)",
+                          <4095 1>, "iue = (*)", /* Queues ending in 0xfff can't be used as return queue (hw reserved) */
+                          <4096 4095>, "iu = (*)",
+                          <8191 1>, "iue = (*)"; /* Queues ending in 0xfff can't be used as return queue (hw reserved) */
+        };    
+        
+        firmware-pdsp {
+            assignments = <0 8>, "iu = (*)";
+        };
+        accumulator0-ch { /* accumulator using first INTD */
+            assignments = <0 48>, "iu = (*)";          
+        };             
+    }; /* qmss */
+
+    cppi {
+        srio-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        srio-rx-ch {
+            assignments = <0 16>, "iu = (*)";
+        };
+        srio-tx-ch {
+            assignments = <0 16>, "iu = (*)";
+        };
+        srio-rx-flow-id {
+            assignments = <0 20>, "iu = (*)";
+        };   
+
+        
+        pass-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        pass-rx-ch {
+            assignments = <0 24>, "iu = (*)";
+        };
+        pass-tx-ch {
+            assignments = <0 9>, "iu = (*)";
+        };
+        pass-rx-flow-id {
+            assignments = <0 32>, "iu = (*)";
+        };   
+
+        qmss-qm1-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        qmss-qm1-rx-ch {
+            assignments = <0 32>, "iu = (*)";
+        };
+        qmss-qm1-tx-ch {
+            assignments = <0 32>, "iu = (*)";
+        };
+        qmss-qm1-rx-flow-id {
+            assignments = <0 64>, "iu = (*)";
+        };   
+
+    }; /* cppi */
+
+    pa {
+        pa-lut { 
+            assignments = <0 5>, "iu = (*)";
+        };
+        pa-firmware {
+            assignments = <0 1>, "iu = (*)";           
+        };
+        pa-32bUsrStats {
+            assignments = <0 512>, "iu = (*)";
+        };
+        pa-64bUsrStats {
+            assignments = <0 256>, "iu = (*)";
+        };
+    }; /* pa */
+
+    srio {
+        srio-dio-sockets {
+            assignments = <0 8>, "iu = (*)";
+        };
+        srio-type9-type11-sockets {
+            assignments = <0 64>, "iu = (*)";
+        };
+        srio-type9-type11-mappings {
+            assignments = <0 64>, "iu = (*)";
+        };
+        srio-lsus {
+            assignments = <0 8>, "iu = (*)";
+        };
+        srio-init-hw {
+            assignments = <0 1>, "iu = (*)";
+        };
+    };
+};

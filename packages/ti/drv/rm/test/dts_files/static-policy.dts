@@ -1,0 +1,26 @@
+/dts-v1/;
+
+/* Client static policy */
+
+/ {
+    /* All RM instances expected to request static resources prior to RM's complete configuration */
+    valid-instances = "RM_Client_Delegate",
+                      "RM_Client";
+
+    /* Assign static resources */
+    qmss {
+        memory_regions {
+            /* Test validating a resource not allowed in global policy */
+            assignments = <12 1>, "iux = (RM_Client_Delegate)";
+        };
+        qos-cluster {
+            assignments = <0 1>, "iux = (RM_Client_Delegate RM_Client)",
+                          <1 1>, "iu  =  (RM_Client_Delegate)",
+                          <2 1>, "iu  =  (RM_Client)";
+        };
+        aif-queue {
+            assignments = <525 1>, "iu = (RM_Client_Delegate RM_Client)";
+        };
+    };
+};
+

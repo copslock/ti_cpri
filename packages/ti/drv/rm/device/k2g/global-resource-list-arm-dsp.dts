@@ -1,0 +1,76 @@
+/dts-v1/;
+
+/ {
+    /* Device resource definitions based on current supported QMSS, CPPI, and 
+     * PA LLD resources */
+	
+    qmss {
+        /* Number of descriptors inserted by ARM */
+        ns-assignment = "ARM_Descriptors", <0 512>;
+    
+        /* QMSS in joint mode affects only -qm1 resource */
+        control-qm1 {
+            resource-range = <0 1>;
+        };
+        
+        /* QMSS in joint mode affects only -qm1 resource */
+        linkram-control-qm1 {
+            resource-range = <0 1>;
+        };
+
+        /* QMSS in joint mode affects only -qm1 resource */
+        linkram-int-qm1 {
+            /* hw allows max of 2K "internal" descriptors */
+            resource-range = <0x00000000 0x00000800>;
+        };
+        linkram-ext-qm1 {
+            /* hw allows max of 0 "external" descriptors */
+            resource-range = <0x00000800 0x00000000>;
+        };
+
+        /* QMSS in joint mode affects only -qm1 resource */
+        memory-regions-qm1 {
+            resource-range = <0 64>;
+        };
+
+        /* Queues match device specification and/or csl_qm_queue.h regardless of split or joint mode */
+        INFRASTRUCTURE_QUEUE-qm1 {
+            resource-range = <0 4>;
+        }; 
+        PASS_QUEUE-qm1 {
+            resource-range = <4 17>;
+        };
+        RECEIVE_QUEUE-qm1 {
+            resource-range = <21 32>;
+        };
+        EDMA_0_QUEUE-qm1 {
+            resource-range = <69 4>;
+        };
+        SOC_SET0_QUEUE-qm1 {
+            resource-range = <77 4>;
+        };
+        INTC_EDMA_SET0_QUEUE-qm1 {
+            resource-range = <85 4>;
+        }; 
+        GENERAL_PURPOSE_QUEUE-qm1 {
+            resource-range = <89 39>;
+        }; 
+           
+    }; /* qmss */
+
+    cppi {
+        netcp-hw-open {
+            resource-range = <0 1>;
+        };
+        netcp-rx-ch {
+            resource-range = <0 32>;
+        };
+        netcp-tx-ch {
+            resource-range = <0 21>;
+        };
+        netcp-rx-flow-id {
+            resource-range = <0 32>;
+        };   
+
+    }; /* cppi */
+};

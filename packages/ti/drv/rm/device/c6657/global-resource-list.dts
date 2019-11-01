@@ -1,0 +1,113 @@
+/dts-v1/;
+
+/ {
+    /* Device resource definitions based on current supported QMSS, CPPI, and 
+     * PA LLD resources */
+	
+    qmss {
+        /* QMSS in joint mode affects only -qm1 resource */
+        control-qm1 {
+            resource-range = <0 1>;
+        };
+        
+        /* QMSS in joint mode affects only -qm1 resource */
+        linkram-control-qm1 {
+            resource-range = <0 1>;
+        };
+
+        /* QMSS in joint mode affects only -qm1 resource */
+        linkram-int-qm1 {
+            /* hw allows max of 16K "internal" descriptors */
+            resource-range = <0x00000000 0x00004000>;
+        };
+        linkram-ext-qm1 {
+            /* hw allows max of 512K "external" descriptors */
+            resource-range = <0x00004000 0x0007C000>;
+        };
+
+        /* QMSS in joint mode affects only -qm1 resource */
+        memory-regions-qm1 {
+            resource-range = <0 20>;
+        };
+
+        /* Queues match device specification and/or csl_qm_queue.h regardless of split or joint mode */
+        LOW_PRIORITY_QUEUE-qm1 {
+            resource-range = <0 512>;
+        };
+        INTC_QUEUE-qm1 {
+            resource-range = <662 10>;
+        }; 
+        SRIO_QUEUE-qm1 {
+            resource-range = <672 16>;
+        }; 
+        HIGH_PRIORITY_QUEUE-qm1 {
+            resource-range = <704 32>;
+        };       
+        STARVATION_COUNTER_QUEUE-qm1 {
+            resource-range = <736 64>;
+        };  
+        INFRASTRUCTURE_QUEUE-qm1 {
+            resource-range = <800 32>;
+        }; 
+        TRAFFIC_SHAPING_QUEUE-qm1 {
+            resource-range = <832 32>;
+        };         
+        GENERAL_PURPOSE_QUEUE-qm1 {
+            resource-range = <896 7296>;
+        };    
+
+        firmware-pdsp {
+            resource-range = <0 8>;
+        };        
+        accumulator0-ch { /* accumulator using first INTD */
+            resource-range = <0 48>;          
+        };              
+    }; /* qmss */
+
+    cppi {
+        srio-hw-open {
+            resource-range = <0 1>;
+        };
+        srio-rx-ch {
+            resource-range = <0 16>;
+        };
+        srio-tx-ch {
+            resource-range = <0 16>;
+        };
+        srio-rx-flow-id {
+            resource-range = <0 20>;
+        };   
+
+        qmss-qm1-hw-open {
+            resource-range = <0 1>;
+        };
+        qmss-qm1-rx-ch {
+            resource-range = <0 32>;
+        };
+        qmss-qm1-tx-ch {
+            resource-range = <0 32>;
+        };
+        qmss-qm1-rx-flow-id {
+            resource-range = <0 64>;
+        };   
+
+    }; /* cppi */
+
+    srio {
+        srio-dio-sockets {
+            resource-range = <0 8>;
+        };
+        srio-type9-type11-sockets {
+            resource-range = <0 64>;
+        };
+        srio-type9-type11-mappings {
+            resource-range = <0 64>;
+        };
+        srio-lsus {
+            resource-range = <0 8>;
+        };
+        srio-init-hw {
+            resource-range = <0 1>;
+        };
+    };
+};

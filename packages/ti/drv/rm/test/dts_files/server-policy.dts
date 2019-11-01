@@ -1,0 +1,174 @@
+/dts-v1/;
+
+/* RM Server global policy */
+
+/ {
+    /* All RM instances expected to be resource assignees within the policy.  RM will fail at init if
+     * it finds a resource assignee that is not in the user-instances list */
+    valid-instances = "RM_Server", 
+                      "RM_Client_Delegate", 
+                      "RM_Client";
+
+    /* RM will deny any resource requests for resources not defined in the policy. */
+
+    /* Format for assigning resources to specific RM instances */
+    qmss {
+        pdsps {
+            assignments = <0 2>, "iux = (*)";
+        };
+        memory-regions {
+            /* Mem-region 12 reserved by Linux kernel */
+            assignments = <0  12>, "(RM_Server RM_Client_Delegate RM_Client) = iux",
+                          <12 7>,  "(*)  =  iux ";
+        };
+        link-ram {
+            assignments = <0x00000000 0xFFFFFFFF>, "iux = (*)";
+        };
+        accumulator-ch {
+            assignments = <0 48>, "iux = (*)";
+            allocation-alignment = <20>;
+        };
+        qos-cluster {
+            assignments = <0 8>, "iux = (*)";
+        };
+        qos-queue {
+            assignments = <0 64>, "iux = (*)";
+        };
+
+        /* Queue definitions based on csl_qm_queue.h */
+        low-prio-queue {
+            assignments = <0 512>, "iu = (*)";
+            cd-allocation-size = <32>;
+        };
+        aif-queue {
+            /* Give 525 shared permissions to match static policy permissions given to Client and CD.
+             * Otherwise Client will get locked out */
+            assignments = <512 13>,  "iux = (*)",
+                          <525 1>,   "iu  = (*)",
+                          <526 114>, "iux = (*)";
+        };
+        pass-queue {
+            assignments = <640 1>, "(*)",
+                          <641 1>, "iux = (*)",
+                          <642 1>, "(*)",
+                          <643 6>, "iux = (*)";
+        };     
+        intc-queue {
+            assignments = <662 10>, "iux = (*)";
+        };
+        srio-queue {
+            assignments = <672 16>, "iux = (*)";
+        }; 
+        fftc-a-queue {
+            assignments = <688 4>, "iux = (*)";
+        };
+        fftc-b-queue {
+            assignments = <692 4>, "iux = (*)";
+        };
+        bcp-queue {
+            /* First four BCP queues are excluded from being allocated to an
+             * UNSPECIFIED base value request */
+            assignments = <864 4>, "iue = (*)",
+                          <868 4>, "iu  = (*)";
+        };
+        high-prio-queue {
+            assignments = <704 32>, "iux = (*)";
+        };
+        starvation-queue {
+            assignments = <736 64>, "iux = (*)";
+        };
+        infra-queue {
+            assignments = <800 12>, "ius = (RM_Client) & iu = (RM_Server)", /* First 12 queues shared between Linux and RM_Client */
+                          <812 20>, "iux = (*)";
+        };
+        traffic-shaping-queue {
+            assignments = <832 32>, "iux = (*)";
+        };
+        gp-queue {
+            assignments = <896  1104>, "xiu = (*)",
+                          <2000 1000>, "iu=(RM_Server RM_Client_Delegate RM_Client)",
+                          <3000 5192>, "iux=(RM_Server) & iu=(RM_Client_Delegate RM_Client)";
+            cd-allocation-size = <16>;
+        };
+    }; /* qmss */
+
+    /* CPPI channel and flow ID ranges based on tci6614 cppi_device.c */
+    cppi {
+        srio-rx-ch {
+            assignments = <0 16>, "iux = (*)";
+        };
+        srio-tx-ch {
+            assignments = <0 16>, "iux = (*)";
+        };
+        srio-rx-flow-id {
+            assignments = <0 20>, "iux = (*)";
+        };   
+
+        aif-rx-ch {
+            assignments = <0  50>, "iux = (*)",
+                          <50 79>, "iu  = (*)";
+            allocation-alignment = <20>;
+        };
+        aif-tx-ch {
+            assignments = <0 129>, "iux = (*)";
+        };
+        aif-rx-flow-id {
+            assignments = <0 129>, "iux = (*)";
+        };      
+
+        fftc-a-rx-ch {
+            assignments = <0 4>, "iux = (*)";
+        };
+        fftc-a-tx-ch {
+            assignments = <0 4>, "iux = (*)";
+        };
+        fftc-a-rx-flow-id {
+            assignments = <0 8>, "iux = (*)";
+        };   
+
+        fftc-b-rx-ch {
+            assignments = <0 4>, "iux = (*)";
+        };
+        fftc-b-tx-ch {
+            assignments = <0 4>, "iux = (*)";
+        };
+        fftc-b-rx-flow-id {
+            assignments = <0 8>, "iux = (*)";
+        };   
+
+        pass-rx-ch {
+            assignments = <0 23>, "iux = (*)";
+        };
+        pass-tx-ch {
+            assignments = <0 9>, "iux = (*)";
+        };
+        pass-rx-flow-id {
+            assignments = <0 32>, "iux = (*)";
+        };   
+        
+        qmss-rx-ch {
+            assignments = <0 32>, "iux = (*)";
+        };
+        qmss-tx-ch {
+            assignments = <0 32>, "iux = (*)";
+        };
+        qmss-rx-flow-id {
+            assignments = <0 64>, "iux = (*)";
+        };   
+
+        bcp-rx-ch {
+            assignments = <0 8>, "iux = (*)";
+        };
+        bcp-tx-ch {
+            assignments = <0 8>, "iux = (*)";
+        };
+        bcp-rx-flow-id {
+            assignments = <0 64>, "iux = (*)";
+        };           
+    }; /* cppi */
+
+    pa-lut { 
+        assignments = <0 5>, "iux = (*)";
+    };
+};
+

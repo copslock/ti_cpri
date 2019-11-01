@@ -1,0 +1,130 @@
+#*******************************************************************************
+#* FILE PURPOSE: Top level makefile for Creating Component Libraries for ARM
+#* architectures
+#*******************************************************************************
+#* FILE NAME: makefile
+#*
+#* DESCRIPTION: Defines Compiler tools paths, libraries , Build Options 
+#*
+#*
+#*******************************************************************************
+#*
+# (Mandatory) Specify where various tools are installed.
+
+# Output for prebuilt generated libraries
+export ARMV7LIBDIR ?= ./lib
+export DEVICE ?=k2h
+export ARMV7OBJDIR ?= ./obj
+export ARMV7BINDIR ?= ./bin
+export USEDYNAMIC_LIB ?= "no"
+
+# ROOT Directory
+export ROOTDIR := ../../..
+
+# INCLUDE Directory
+export INCDIR := ../../..;$(PDK_INSTALL_PATH);$(ROOTDIR)
+
+# Common Macros used in make
+
+ifndef RM
+export RM = rm -f
+endif
+
+ifndef CP
+export CP = cp -p
+endif
+
+export MKDIR = mkdir -p
+
+ifndef RMDIR
+export RMDIR = rm -rf
+endif
+
+ifndef SED
+export SED = sed
+endif
+
+ifndef MAKE
+export MAKE = make
+endif
+
+# PHONY Targets
+.PHONY: all examples clean lib tests install installbin rmserver
+
+# all rule
+all: .executables 
+.executables: lib tests
+
+# Libraries
+lib: .libraries
+
+# tests Stub to add tests
+tests: 
+	@$(MAKE) -f ./test/armv7/linux/build/makefile all
+
+rmserver:
+	$(MAKE) -f ./test/armv7/linux/build/makefile $@
+
+# examples Stub to add Examples
+#examples: 
+#	@$(MAKE) -f ./example/InfraDmaSC/$(DEVICE)/armv7/linux/build/makefile all
+
+# Make rule to create $(ARMV7LIBDIR)/librm.a library
+.libraries: $(ARMV7LIBDIR)/librm.a librm.so
+
+$(ARMV7LIBDIR)/librm.a::
+	@$(MAKE) -f ./build/armv7/librm_aearmv7.mk $@
+
+librm.so:
+	@$(MAKE) -f ./build/armv7/librm_aearmv7.mk $@
+	
+# Rule to clean $(ARMV7LIBDIR)/librm.a library
+clean:
+	@$(MAKE) -f ./build/armv7/librm_aearmv7.mk $@
+	@$(MAKE) -f ./test/armv7/linux/build/makefile $@
+	@$(RMDIR) $(ARMV7OBJDIR)/rm
+	@$(RMDIR) $(ARMV7BINDIR)/rm
+	@$(RM) $(ARMV7LIBDIR)/librm.a
+	@$(RM) $(ARMV7LIBDIR)/librm.so
+	@$(RM) $(ARMV7LIBDIR)/librm.so.*
+	
+installbin:
+	install -d $(INSTALL_BIN_BASE_DIR)
+	install -d $(INSTALL_BIN_BASE_DIR)/device/k2k/
+	install -d $(INSTALL_BIN_BASE_DIR)/device/k2h/
+	install -d $(INSTALL_BIN_BASE_DIR)/device/k2e/
+	install -d $(INSTALL_BIN_BASE_DIR)/device/k2l/
+	$(CP) ./device/k2h/*.dtb $(INSTALL_BIN_BASE_DIR)/device/k2h
+	$(CP) ./device/k2k/*.dtb $(INSTALL_BIN_BASE_DIR)/device/k2k
+	$(CP) ./device/k2e/*.dtb $(INSTALL_BIN_BASE_DIR)/device/k2e
+	$(CP) ./device/k2l/*.dtb $(INSTALL_BIN_BASE_DIR)/device/k2l
+	install -c -m 755 $(ARMV7BINDIR)/rm/test/rmServer.out    $(INSTALL_BIN_BASE_DIR)/rmServer.out	
+	install -c -m 755 $(ARMV7BINDIR)/rm/test/rmServer_so.out $(INSTALL_BIN_BASE_DIR)/rmServer_so.out	
+	
+installbin_test:
+	install -d $(INSTALL_BIN_BASE_DIR)/ti/drv/rm/test
+	install -d $(INSTALL_BIN_BASE_DIR)/ti/drv/rm/test/dts_files		
+	$(CP) ./test/dts_files/*.dtb $(INSTALL_BIN_BASE_DIR)/ti/drv/rm/test/dts_files
+	install -c -m 755 $(ARMV7BINDIR)/rm/test/rmLinuxClientTest.out      $(INSTALL_BIN_BASE_DIR)/rmLinuxClientTest.out
+	install -c -m 755 $(ARMV7BINDIR)/rm/test/rmLinuxClientTest_so.out   $(INSTALL_BIN_BASE_DIR)/rmLinuxClientTest_so.out
+	install -c -m 755 $(ARMV7BINDIR)/rm/test/rmLinuxMtClientTest.out    $(INSTALL_BIN_BASE_DIR)/rmLinuxMtClientTest.out
+	install -c -m 755 $(ARMV7BINDIR)/rm/test/rmLinuxMtClientTest_so.out $(INSTALL_BIN_BASE_DIR)/rmLinuxMtClientTest_so.out	
+	install -c -m 755 $(ARMV7BINDIR)/rm/test/rmDspClientTest.out        $(INSTALL_BIN_BASE_DIR)/rmDspClientTest.out
+	install -c -m 755 $(ARMV7BINDIR)/rm/test/rmDspClientTest_so.out     $(INSTALL_BIN_BASE_DIR)/rmDspClientTest_so.out
+
+install:
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/rm/util
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/rm/util/libfdt
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/rm/device/
+	install -d $(INSTALL_LIB_BASE_DIR)
+	$(CP) ./*.h              $(INSTALL_INC_BASE_DIR)/ti/drv/rm
+	$(CP) ./util/*.h         $(INSTALL_INC_BASE_DIR)/ti/drv/rm/util
+	$(CP) ./util/*.sh        $(INSTALL_INC_BASE_DIR)/ti/drv/rm/util	
+	$(CP) ./util/libfdt/*.h  $(INSTALL_INC_BASE_DIR)/ti/drv/rm/util/libfdt	
+	$(CP) -r ./device/       $(INSTALL_INC_BASE_DIR)/ti/drv/rm/
+	$(RM) -r $(INSTALL_INC_BASE_DIR)/ti/drv/rm/device/Module.xs			
+	@$(CP) -r $(ARMV7LIBDIR)/*.a         $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/*.so        $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/*.so.*      $(INSTALL_LIB_BASE_DIR)	
+# Make rule to create examples Stub
+examples:

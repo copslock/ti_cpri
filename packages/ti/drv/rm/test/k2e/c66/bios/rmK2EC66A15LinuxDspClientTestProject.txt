@@ -1,0 +1,7 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/src/dsp_client.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/dts_files/static-policy.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/k2e/c66/bios/rm_osal.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/k2e/c66/bios/dsp_client.cfg"
+-ccs.setCompilerOptions "-mv6600 -g -DSOC_K2E --diag_warning=225 -I${PDK_INSTALL_PATH}/ti/drv/rm" 
+-rtsc.enableRtsc
+

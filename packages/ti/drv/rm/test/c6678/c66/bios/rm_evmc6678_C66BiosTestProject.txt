@@ -1,0 +1,10 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/src/rm_test.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/dts_files/global-resources.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/dts_files/linux-evm.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/dts_files/server-policy.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/dts_files/static-policy.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/c6678/c66/bios/rm_osal.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/c6678/c66/bios/rm_test.cfg"
+-ccs.setCompilerOptions "-mv6600 -g -DSOC_C6678 --diag_warning=225 -I${PDK_INSTALL_PATH}/ti/drv/rm" 
+-rtsc.enableRtsc
+

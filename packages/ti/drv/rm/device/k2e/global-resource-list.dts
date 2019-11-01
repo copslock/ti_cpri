@@ -1,0 +1,198 @@
+/dts-v1/;
+
+/ {
+    /* Device resource definitions based on current supported QMSS, CPPI, and 
+     * PA LLD resources */
+	
+    qmss {
+        /* QMSS in joint mode affects only -qm1 resource */
+        control-qm1 {
+            resource-range = <0 1>;
+        };
+        
+        /* QMSS in joint mode affects only -qm1 resource */
+        linkram-control-qm1 {
+            resource-range = <0 1>;
+        };
+
+        /* QMSS in joint mode affects only -qm1 resource */
+        linkram-int-qm1 {
+            /* hw allows max of 16K "internal" descriptors */
+            resource-range = <0x00000000 0x00004000>;
+        };
+        linkram-ext-qm1 {
+            /* hw allows max of 496K "external" descriptors */
+            resource-range = <0x00004000 0x0007C000>;
+        };
+
+        /* QMSS in joint mode affects only -qm1 resource */
+        memory-regions-qm1 {
+            resource-range = <0 64>;
+        };
+
+        /* Queues match device specification and/or csl_qm_queue.h regardless of split or joint mode */
+        LOW_PRIORITY_QUEUE-qm1 {
+            resource-range = <0 512>;
+        };
+        GIC400_QUEUE-qm1 {
+            resource-range = <528 32>;
+        };
+        EDMA_0_QUEUE-qm1 {
+            resource-range = <560 10>;
+        };
+        EDMA_1_QUEUE-qm1 {
+            resource-range = <570 11>;
+        };
+        EDMA_2_QUEUE-qm1 {
+            resource-range = <581 8>;
+        };
+        EDMA_3_QUEUE-qm1 {
+            resource-range = <589 16>;
+        };
+        EDMA_4_QUEUE-qm1 {
+            resource-range = <605 8>;
+        };
+        INTC_QUEUE-qm1 {
+            resource-range = <652 6>;
+        }; 
+        SOC_SET0_QUEUE-qm1 {
+            resource-range = <658 8>;
+        };
+        INTC_SET2_QUEUE-qm1 {
+            resource-range = <666 26>;
+        }; 
+        XGE_QUEUE-qm1 {
+            resource-range = <692 8>;
+        };
+        HIGH_PRIORITY_QUEUE-qm1 {
+            resource-range = <704 32>;
+        };       
+        STARVATION_COUNTER_QUEUE-qm1 {
+            resource-range = <736 64>;
+        };  
+        INFRASTRUCTURE_QUEUE-qm1 {
+            resource-range = <800 32>;
+        }; 
+        PASS_QUEUE-qm1 {
+            resource-range = <896 21>;
+        };
+        GENERAL_PURPOSE_QUEUE-qm1 {
+            resource-range = <1024 7168>;
+        };    
+
+        firmware-pdsp {
+            resource-range = <0 8>;
+        };        
+        accumulator0-ch { /* accumulator using first INTD */
+            resource-range = <0 48>;          
+        };              
+        accumulator1-ch { /* accumulator using second INTD */
+            resource-range = <0 48>;          
+        };              
+
+        netss-control-qm1 {
+            resource-range = <0 1>;
+        };
+        netss-linkram-control-qm1 {
+            resource-range = <0 1>;
+        };
+        netss-linkram-qm1 {
+            resource-range = <0x00000000 0x00004000>;
+        };
+        netss-memory-regions-qm1 {
+            resource-range = <0 16>;
+        };
+
+        netss-control-qm2 {
+            resource-range = <0 1>;
+        };
+        netss-linkram-control-qm2 {
+            resource-range = <0 1>;
+        };
+        netss-linkram-qm2 {
+            resource-range = <0x00000000 0x00004000>;
+        };
+        netss-memory-regions-qm2 {
+            resource-range = <0 16>;
+        };
+
+        NETSS_PASS_QUEUE-qm1 {
+            resource-range = <0 21>;
+        };
+        NETSS_GENERAL_PURPOSE_QUEUE-qm1 {
+            resource-range = <21 43>;
+        };
+        NETSS_GENERAL_PURPOSE_QUEUE-qm2 {
+            resource-range = <0 64>;
+        };
+    }; /* qmss */
+
+    cppi {
+        netcp-hw-open {
+            resource-range = <0 1>;
+        };
+        netcp-rx-ch {
+            resource-range = <0 91>;
+        };
+        netcp-tx-ch {
+            resource-range = <0 21>;
+        };
+        netcp-rx-flow-id {
+            resource-range = <0 32>;
+        };   
+
+        qmss-qm1-hw-open {
+            resource-range = <0 1>;
+        };
+        qmss-qm1-rx-ch {
+            resource-range = <0 32>;
+        };
+        qmss-qm1-tx-ch {
+            resource-range = <0 32>;
+        };
+        qmss-qm1-rx-flow-id {
+            resource-range = <0 64>;
+        };   
+
+        netcp-local-hw-open {
+            resource-range = <0 1>;
+        };
+        netcp-local-rx-ch {
+            resource-range = <0 91>;
+        };
+        netcp-local-tx-ch {
+            resource-range = <0 21>;
+        };
+        netcp-local-rx-flow-id {
+            resource-range = <0 32>;
+        };           
+
+        xge-hw-open {
+            resource-range = <0 1>;
+        };
+        xge-rx-ch {
+            resource-range = <0 16>;
+        };
+        xge-tx-ch {
+            resource-range = <0 8>;
+        };
+        xge-rx-flow-id {
+            resource-range = <0 32>;
+        };           
+    }; /* cppi */
+
+    pa {
+        pa-lut { 
+            resource-range = <0 8>;
+        };
+        pa-firmware {
+            resource-range = <0 1>;
+        };
+        pa-32bUsrStats {
+            resource-range = <0 512>;
+        };
+        pa-64bUsrStats {
+            resource-range = <0 256>;
+        };
+    }; /* pa */
+};

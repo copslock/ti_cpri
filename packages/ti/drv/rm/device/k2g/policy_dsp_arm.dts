@@ -1,0 +1,91 @@
+/dts-v1/;
+
+/* Keystone II policy containing reserving resources used by Linux Kernel */
+
+/ {
+    /* Valid instance list contains instance names used within TI example projects
+     * utilizing RM.  The list can be modified as needed by applications integrating
+     * RM.  For an RM instance to be given permissions the name used to initialize it
+     * must be present in this list */
+    valid-instances = "RM_Server",
+                      "RM_Client0",
+                      "RM_Client1",
+                      "RM_Client2",
+                      "RM_Client3",
+                      "RM_Client4",
+                      "RM_Client5",
+                      "RM_Client6",
+                      "RM_Client7",
+                      "RM_Client_NETAPI";
+	
+    qmss {
+        control-qm1 {
+            assignments = <0 1>, "iu = (*)";
+        };
+        
+        linkram-control-qm1 {
+            assignments = <0 1>, "(*)";             /* Used by Kernel */
+        };
+        
+        linkram-int-qm1 {
+            assignments = <0x00000000 0x00000600>, "iu = (*)",
+                          <0x00000600 0x00000200>, "(*)"; /* used by Kernel */
+            
+        };
+        linkram-ext-qm1 {
+            /* linux provided 0x14000 descriptors of linking RAM but uses 0x4000 to 0x9000 */
+            assignments = <0x00004000 0x00005000>, "(*)", /* used by Kernel */
+                          <0x00009000 0x0000B000>, "iu = (*)";
+        };
+        
+        memory-regions-qm1 {
+            assignments = <0  12>, "iu = (*)",
+                          <12 3>,  "(*)",             /* Used by Kernel */
+                          <15 49>, "iu = (*)";
+        };
+
+        INFRASTRUCTURE_QUEUE-qm1 {
+            assignments = <0 3>, "(*)",    /* Used by Kernel - 2 (data channel usage irrespective of device) +  1 (channel per DSP core) */
+                          <3 1>, "iu = (*)";
+        }; 
+        PASS_QUEUE-qm1 {
+            assignments = <4 17>, "iu = (*)";   /* used by both kernel and DSP */
+        };
+        RECEIVE_QUEUE-qm1 {
+            assignments = <21 32>, "iu = (*)";  /* used by both kernel and DSP */
+        }; 
+        EDMA_0_QUEUE-qm1 {
+            assignments = <69 4>, "iu = (*)";
+        };
+        SOC_SET0_QUEUE-qm1 {
+            assignments = <77 2>, "(*)", /* potentially used by kernel */
+                          <79 2>, "iu = (*)";
+        };
+        INTC_EDMA_SET0_QUEUE-qm1 {
+            assignments = <85 4>,  "iu = (*)";
+        }; 
+        GENERAL_PURPOSE_QUEUE-qm1 {
+            assignments = <89 39>, "iu = (*)";
+        };
+            
+    }; /* qmss */
+
+    cppi {
+        netcp-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        netcp-rx-ch {
+            assignments = <0 32>, "     (*)"; /* initialized by kernel */
+        };
+        netcp-tx-ch {
+            assignments = <0  4>, "     (*)", /* Infrastructure channels: initialized by kernel, can directly open queuse */
+                          <4  1>, "iu = (*)", /* SA channel.  Linux initializes, but some applications need to enable/disable on fly */
+                          <5  16>, "    (*)"; /* initialized by kernel, can directly open queuse */
+        };
+        netcp-rx-flow-id {
+            assignments = <0  1>, "(*)",  /* Used by kernel - netrx0 */
+                          <1  31>, "iu = (*)";
+        };   
+    }; /* cppi */
+
+};

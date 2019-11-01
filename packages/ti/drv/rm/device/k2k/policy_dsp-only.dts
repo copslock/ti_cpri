@@ -1,0 +1,377 @@
+/dts-v1/;
+
+/* Policy assigning all resources to RM instances running on DSP. */
+
+/ {
+    /* Valid instance list contains instance names used within TI example projects
+     * utilizing RM.  The list can be modified as needed by applications integrating
+     * RM.  For an RM instance to be given permissions the name used to initialize it
+     * must be present in this list */
+    valid-instances = "RM_Server",
+                      "RM_Client0",
+                      "RM_Client1",
+                      "RM_Client2",
+                      "RM_Client3",
+                      "RM_Client4",
+                      "RM_Client5",
+                      "RM_Client6",
+                      "RM_Client7";
+	
+    qmss {
+        control-qm1 {
+            assignments = <0 1>, "iu = (*)";
+        };
+        control-qm2 {
+            assignments = <0 1>, "iu = (*)";
+        };
+        
+        linkram-control-qm1 {
+            assignments = <0 1>, "iu = (*)";
+        };
+        linkram-control-qm2 {
+            assignments = <0 1>, "iu = (*)";
+        };
+        
+        linkram-int-qm1 {
+            /* hw allows max of 32K "internal" descriptors */
+            assignments = <0x00000000 0x00008000>, "iu = (*)";
+        };
+        linkram-int-qm2 {
+            /* hw allows max of 32K "internal" descriptors */
+            assignments = <0x00000000 0x00008000>, "iu = (*)";
+        };  
+        linkram-ext-qm1 {
+            /* hw allows max of 480K "external" descriptors */
+            assignments = <0x00008000 0x00078000>, "iu = (*)";
+        };
+        linkram-ext-qm2 {
+            /* hw allows max of 480K "external" descriptors */
+            assignments = <0x00008000 0x00078000>, "iu = (*)";
+        };  
+        
+        memory-regions-qm1 {
+            assignments = <0 64>, "iu = (*)";
+        };
+        memory-regions-qm2 {
+            assignments = <0 64>, "iu = (*)";
+        };
+        
+        /* Queues match device specification and/or csl_qm_queue.h regardless of split or joint mode */
+        LOW_PRIORITY_QUEUE-qm1 {
+            assignments = <0 512>, "iu = (*)";
+        };
+        AIF_QUEUE-qm1 {
+            assignments = <512 128>, "iu = (*)";
+        };
+        PASS_QUEUE-qm1 {
+            assignments = <640 9>, "iu = (*)";
+        };
+        INTC_QUEUE-qm1 {
+            assignments = <652 6>, "iu = (*)";
+        }; 
+        INTC_SET2_QUEUE-qm1 {
+            assignments = <658 8>, "iu = (*)";
+        }; 
+        INTC_SET3_QUEUE-qm1 {
+            assignments = <666 6>, "iu = (*)";
+        }; 
+        SRIO_QUEUE-qm1 {
+            assignments = <672 16>, "iu = (*)";
+        }; 
+        FFTC_A_QUEUE-qm1 {
+            assignments = <688 4>, "iu = (*)";
+        }; 
+        FFTC_B_QUEUE-qm1 {
+            assignments = <692 4>, "iu = (*)";
+        }; 
+        HIGH_PRIORITY_QUEUE-qm1 {
+            assignments = <704 32>, "iu = (*)";
+        };       
+        STARVATION_COUNTER_QUEUE-qm1 {
+            assignments = <736 64>, "iu = (*)";
+        };  
+        INFRASTRUCTURE_QUEUE-qm1 {
+            assignments = <800 32>, "iu = (*)";
+        }; 
+        TRAFFIC_SHAPING_QUEUE-qm1 {
+            assignments = <832 32>, "iu = (*)";
+        };         
+        BCP_QUEUE-qm1 {
+            assignments = <864 8>, "iu = (*)";
+        };         
+        FFTC_C_QUEUE-qm1 {
+            assignments = <872 4>, "iu = (*)";
+        }; 
+        FFTC_D_QUEUE-qm1 {
+            assignments = <876 4>, "iu = (*)";
+        }; 
+        FFTC_E_QUEUE-qm1 {
+            assignments = <880 4>, "iu = (*)";
+        }; 
+        FFTC_F_QUEUE-qm1 {
+            assignments = <884 4>, "iu = (*)";
+        }; 
+        GENERAL_PURPOSE_QUEUE-qm1 {
+            assignments = <896 3199>, "iu = (*)",
+                          <4095 1>, "iue = (*)", /* Queues ending in 0xfff can't be used as return queue (hw reserved) */
+                          <4096 4095>, "iu = (*)",
+                          <8191 1>, "iue = (*)"; /* Queues ending in 0xfff can't be used as return queue (hw reserved) */
+        };    
+        LOW_PRIORITY_QUEUE-qm2 {
+            assignments = <8192 512>, "iu = (*)";
+        };
+        INTC_SET4_QUEUE-qm2 {
+            assignments = <8844 20>, "iu = (*)";
+        }; 
+        GIC400_QUEUE-qm2 {
+            assignments = <8704 32>, "iu = (*)";
+        };    
+        EDMA_4_QUEUE-qm2 {
+            assignments = <8736 8>, "iu = (*)";
+        };     
+        HLINK_BROADCAST_QUEUE-qm2 {
+            assignments = <8744 8>, "iu = (*)";
+        }; 
+        XGE_QUEUE-qm2 {
+            assignments = <8752 8>, "iu = (*)";
+        };         
+        HLINK_0_QUEUE-qm2 {
+            assignments = <8796 16>, "iu = (*)";
+        };       
+        DXB_QUEUE-qm2 {
+            assignments = <8836 8>, "iu = (*)";
+        };         
+        HLINK_1_QUEUE-qm2 {
+            assignments = <8864 16>, "iu = (*)";
+        };
+        HIGH_PRIORITY_QUEUE-qm2 {
+            assignments = <8896 32>, "iu = (*)";
+        };       
+        STARVATION_COUNTER_QUEUE-qm2 {
+            assignments = <8928 64>, "iu = (*)";
+        };  
+        QM2_INFRASTRUCTURE_QUEUE-qm2 {
+            assignments = <8992 32>, "iu = (*)";
+        }; 
+        GENERAL_PURPOSE_QUEUE-qm2 {
+            assignments = <9024 3263>, "iu = (*)",
+                          <12287 1>, "iue = (*)", /* Queues ending in 0xfff can't be used as return queue (hw reserved) */
+                          <12288 4095>, "iu = (*)",
+                          <16383 1>, "iue = (*)"; /* Queues ending in 0xfff can't be used as return queue (hw reserved) */
+        }; 
+        
+        firmware-pdsp {
+            assignments = <0 8>, "iu = (*)";
+        };
+        accumulator0-ch { /* accumulator using first INTD */
+            assignments = <0 48>, "iu = (*)";          
+        };             
+        accumulator1-ch { /* accumulator using second INTD */
+            assignments = <0 48>, "iu = (*)";          
+        };             
+    }; /* qmss */
+
+    cppi {
+        srio-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        srio-rx-ch {
+            assignments = <0 16>, "iu = (*)";
+        };
+        srio-tx-ch {
+            assignments = <0 16>, "iu = (*)";
+        };
+        srio-rx-flow-id {
+            assignments = <0 20>, "iu = (*)";
+        };   
+
+        aif-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        aif-rx-ch {
+            assignments = <0 129>, "iu = (*)";
+        };
+        aif-tx-ch {
+            assignments = <0 129>, "iu = (*)";
+        };
+        aif-rx-flow-id {
+            assignments = <0 129>, "iu = (*)";
+        };      
+
+        fftc-a-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-a-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-a-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-a-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };   
+
+        fftc-b-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-b-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-b-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-b-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };   
+
+        fftc-c-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-c-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-c-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-c-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };
+
+        fftc-d-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-d-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-d-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-d-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };   
+
+        fftc-e-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-e-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-e-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-e-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };
+
+        fftc-f-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-f-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-f-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-f-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };         
+        
+        pass-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        pass-rx-ch {
+            assignments = <0 24>, "iu = (*)";
+        };
+        pass-tx-ch {
+            assignments = <0 9>, "iu = (*)";
+        };
+        pass-rx-flow-id {
+            assignments = <0 32>, "iu = (*)";
+        };   
+
+        qmss-qm1-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        qmss-qm1-rx-ch {
+            assignments = <0 32>, "iu = (*)";
+        };
+        qmss-qm1-tx-ch {
+            assignments = <0 32>, "iu = (*)";
+        };
+        qmss-qm1-rx-flow-id {
+            assignments = <0 64>, "iu = (*)";
+        };   
+
+        qmss-qm2-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        qmss-qm2-rx-ch {
+            assignments = <0 32>, "iu = (*)";
+        };
+        qmss-qm2-tx-ch {
+            assignments = <0 32>, "iu = (*)";
+        };
+        qmss-qm2-rx-flow-id {
+            assignments = <0 64>, "iu = (*)";
+        };        
+
+        bcp-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        bcp-rx-ch {
+            assignments = <0 8>, "iu = (*)";
+        };
+        bcp-tx-ch {
+            assignments = <0 8>, "iu = (*)";
+        };
+        bcp-rx-flow-id {
+            assignments = <0 64>, "iu = (*)";
+        };           
+
+        xge-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        xge-rx-ch {
+            assignments = <0 16>, "iu = (*)";
+        };
+        xge-tx-ch {
+            assignments = <0 8>, "iu = (*)";
+        };
+        xge-rx-flow-id {
+            assignments = <0 32>, "iu = (*)";
+        };           
+    }; /* cppi */
+
+    pa {
+        pa-lut { 
+            assignments = <0 5>, "iu = (*)";
+        };
+        pa-firmware {
+            assignments = <0 1>, "iu = (*)";           
+        };
+        pa-32bUsrStats {
+            assignments = <0 512>, "iu = (*)";
+        };
+        pa-64bUsrStats {
+            assignments = <0 256>, "iu = (*)";
+        };
+    }; /* pa */
+
+    srio {
+        srio-dio-sockets {
+            assignments = <0 8>, "iu = (*)";
+        };
+        srio-type9-type11-sockets {
+            assignments = <0 64>, "iu = (*)";
+        };
+        srio-type9-type11-mappings {
+            assignments = <0 64>, "iu = (*)";
+        };
+        srio-lsus {
+            assignments = <0 8>, "iu = (*)";
+        };
+        srio-init-hw {
+            assignments = <0 1>, "iu = (*)";
+        };
+    };
+};

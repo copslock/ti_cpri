@@ -1,0 +1,431 @@
+/dts-v1/;
+
+/* Keystone II policy containing reserving resources used by Linux Kernel */
+
+/ {
+    /* Valid instance list contains instance names used within TI example projects
+     * utilizing RM.  The list can be modified as needed by applications integrating
+     * RM.  For an RM instance to be given permissions the name used to initialize it
+     * must be present in this list */
+    valid-instances = "RM_Server",
+                      "RM_Client0",
+                      "RM_Client1",
+                      "RM_Client2",
+                      "RM_Client3",
+                      "RM_Client4",
+                      "RM_Client5",
+                      "RM_Client6",
+                      "RM_Client7",
+                      "RM_Client_NETAPI";
+	
+    qmss {
+        /* QMSS in joint mode affects only -qm1 resource */
+        control-qm1 {
+            assignments = <0 1>, "iu = (*)";
+        };
+        control-qm2 {
+            assignments = <0 1>, "iu = (*)";
+        };
+        
+        linkram-control-qm1 {
+            assignments = <0 1>, "(*)";             /* Used by Kernel */
+        };
+        linkram-control-qm2 {
+            assignments = <0 1>, "(*)";             /* Used by Kernel */
+        };
+
+        linkram-int-qm1 {
+            /* linux provided 0x18000 descriptors of linking RAM but uses 0x4000 to 0x8000 */
+            assignments = <0x00000000 0x00004000>, "iu = (*)",
+                          <0x00004000 0x00004000>, "(*)"; /* Used by Kernel */
+        };
+        linkram-int-qm2 {
+            /* linux provided 0x18000 descriptors of linking RAM but uses 0x4000 to 0x8000 */
+            assignments = <0x00000000 0x00004000>, "iu = (*)",
+                          <0x00004000 0x00004000>, "(*)"; /* Used by Kernel */
+        };      
+        linkram-ext-qm1 {
+            assignments = <0x00008000 0x00010000>, "iu = (*)";
+        };
+        linkram-ext-qm2 {
+            assignments = <0x00008000 0x00010000>, "iu = (*)";
+        };      
+        
+        memory-regions-qm1 {
+            assignments = <0  12>, "iu = (*)",
+                          <12 3>,  "(*)",             /* Used by Kernel */
+                          <15 49>, "iu = (*)";
+        };
+        memory-regions-qm2 {
+            assignments = <0  12>, "iu = (*)",
+                          <12 3>,  "(*)",             /* Used by Kernel */
+                          <15 49>, "iu = (*)";
+        };        
+
+        LOW_PRIORITY_QUEUE-qm1 {
+            /* this is loosely coupled with accumulator-ch channels 32-47.  These queues are
+             * just suggested to be paired with these channels, the accumulator can be sw
+             * configured to use any queue */
+            assignments = <0 128>,   "iu = (*)", /* suggested for channels 32-35 */
+                          <128 128>, "     (*)", /* used by linux (accumulator-low-#); linux pairs these to channels 36-39 */
+                          <256 256>, "iu = (*)"; /* suggested for channels 40-47 */
+        };
+        AIF_QUEUE-qm1 {
+            assignments = <512 128>, "iu = (*)";
+        };
+        PASS_QUEUE-qm1 {
+            assignments = <640  9>,  "iu = (*)";     /* used by both kernel and DSP */        
+        };
+        INTC_QUEUE-qm1 {
+            assignments = <652 6>, "iu = (*)";
+        }; 
+        INTC_SET2_QUEUE-qm1 {
+            assignments = <658 4>, "     (*)", /* potentially used by kernel */
+                          <662 4>, "iu = (*)"; /* available for user mode lld and dsp */
+        }; 
+        INTC_SET3_QUEUE-qm1 {
+            assignments = <666 6>, "iu = (*)";
+        }; 
+        SRIO_QUEUE-qm1 {
+            assignments = <672 16>, "iu = (*)";
+        }; 
+        FFTC_A_QUEUE-qm1 {
+            assignments = <688 4>, "iu = (*)";
+        }; 
+        FFTC_B_QUEUE-qm1 {
+            assignments = <692 4>, "iu = (*)";
+        }; 
+        HIGH_PRIORITY_QUEUE-qm1 {
+            /* this is loosely coupled with accumulator-ch channels 0-15.  These queues are
+             * just suggested to be paired with these channels, the accumulator can be sw
+             * configured to use any queue */
+            assignments = <704 16>, "iu = (*)", /* suggested for channels 0-15 */
+                          <720 8>,  "iu = (*)", /* Declared, but not used, by linux (accumulator-high.values). */ 
+                          <728 8>,  "iu = (*)"; /* suggested for channels 24-31 */
+        };       
+        STARVATION_COUNTER_QUEUE-qm1 {
+            assignments = <736 64>, "iu = (*)";
+        };  
+        INFRASTRUCTURE_QUEUE-qm1 {
+            assignments = <800  16>,   "(*)",       /* Used by Kernel - 8 (data channel usage irrespective of device) +  1 (channel per DSP core) */
+                          <816  16>,   "iu = (*)";
+        }; 
+        TRAFFIC_SHAPING_QUEUE-qm1 {
+            assignments = <832 32>, "iu = (*)";
+        };         
+        BCP_QUEUE-qm1 {
+            assignments = <864 8>, "iu = (*)";
+        };         
+        FFTC_C_QUEUE-qm1 {
+            assignments = <872 4>, "iu = (*)";
+        }; 
+        FFTC_D_QUEUE-qm1 {
+            assignments = <876 4>, "iu = (*)";
+        }; 
+        FFTC_E_QUEUE-qm1 {
+            assignments = <880 4>, "iu = (*)";
+        }; 
+        FFTC_F_QUEUE-qm1 {
+            assignments = <884 4>, "iu = (*)";
+        }; 
+        GENERAL_PURPOSE_QUEUE-qm1 {
+            assignments = <896  3104>,  "iu = (*)",
+                          <4000 64>,    "(*)",       /* Used by Kernel */
+                          <4064 31>,    "iu = (*)",
+                          <4095 1>,     "iue = (*)",   /* Queues ending in 0xfff can't be used as return queue (hw reserved) */
+                          <4096 2304>,  "iu = (*)",
+
+                          /* 6400-6477 is taken by linux for qostree2, but DSP can transmit via "fastpath" queues */
+                          <6400 72>,    "u = (*)",   /* qos queues for DSP (fastpath-best-effort, fastpath-hp, 4g-cos#, 3g-cos#, wifi-cos#) use (open by number) not init */
+                          <6472 6>,     "(*)",       /* qos queues for linux (linux-best-effort, linux-cos#, linux-hp) - DSP can't use */
+                          <6478 114>,   "(*)",       /* unconfigured QoS/Linux queues (qos-inputs-2) */
+
+                          <6592 1408>,  "iu = (*)",
+
+                          /* 8000-8191 is taken by linux for qostree but DSP can transmit via "fastpath" queues */
+                          <8000 72>,    "u = (*)",   /* qos queues for DSP (fastpath-best-effort, fastpath-hp, 4g-cos#, 3g-cos#, wifi-cos#) use (open by number) not init */
+                          <8072 6>,     "(*)",       /* qos queues for linux (linux-best-effort, linux-cos#, linux-hp) - DSP can't use */
+                          <8078 114>,   "(*)";       /* unconfigured QoS/Linux queues (qos-inputs-1) */
+                                                     /* note for q 8191: Queues ending in 0xfff can't be used as return queue (hw reserved) */
+        };    
+        LOW_PRIORITY_QUEUE-qm2 {
+            assignments = <8192 512>, "iu = (*)";
+        };
+        INTC_SET4_QUEUE-qm2 {
+            assignments = <8844 20>, "iu = (*)";
+        }; 
+        GIC400_QUEUE-qm2 {
+            assignments = <8704 32>,   "iu = (RM_Client_NETAPI)";             /* Used by Kernel */
+        };    
+        EDMA_4_QUEUE-qm2 {
+            assignments = <8736 8>, "iu = (*)";
+        };     
+        HLINK_BROADCAST_QUEUE-qm2 {
+            assignments = <8744 8>, "iu = (*)";
+        }; 
+        XGE_QUEUE-qm2 {
+            assignments = <8752 8>, "iu = (*)";   /* can be used by both dsp and kernel */
+        };         
+        HLINK_0_QUEUE-qm2 {
+            assignments = <8796 16>, "iu = (*)";
+        };       
+        DXB_QUEUE-qm2 {
+            assignments = <8836 8>, "iu = (*)";
+        };         
+        HLINK_1_QUEUE-qm2 {
+            assignments = <8864 16>, "iu = (*)";
+        };
+        HIGH_PRIORITY_QUEUE-qm2 {
+            assignments = <8896 32>, "iu = (*)";
+        };       
+        STARVATION_COUNTER_QUEUE-qm2 {
+            assignments = <8928 64>, "iu = (*)";
+        };  
+        QM2_INFRASTRUCTURE_QUEUE-qm2 {
+            assignments = <8992 32>, "iu = (*)";
+        }; 
+        GENERAL_PURPOSE_QUEUE-qm2 {
+            assignments = <9024 3263>, "iu = (*)",
+                          <12287 1>, "iue = (*)", /* Queues ending in 0xfff can't be used as return queue (hw reserved) */
+                          <12288 4095>, "iu = (*)",
+                          <16383 1>, "iue = (*)"; /* Queues ending in 0xfff can't be used as return queue (hw reserved) */
+        }; 
+        
+        firmware-pdsp {
+            assignments = <0 1>, "     (*)", /* pdsp0: accumulator 0 downloaded by linux */
+                          <1 1>, "iu = (*)", /* pdsp1: for em scheduler if event machine is used (not downloaded by linux) */
+                          <2 1>, "iu = (*)", /* pdsp2: for accumulator 1 on second intd (not downloaded by linux) */
+                          <3 1>, "     (*)", /* pdsp3: qostree downloaded by linux */
+                          <4 1>, "iu = (*)", /* pdsp4: for em scheduler if event machine is used (not downloaded by linux) */
+                          <5 1>, "iu = (*)", /* pdsp5: for em scheduler if event machine is used (not downloaded by linux) */
+                          <6 1>, "iu = (*)", /* pdsp6: for em router if event machine is used (not downloaded by linux) */
+                          <7 1>, "     (*)"; /* pdsp7: qostree2 downloaded by linux */
+        };        
+        accumulator0-ch { /* accumulator using first INTD */
+            assignments = <0 16>, "iu = (*)",    /* high priority 0-15 available for everyone */      
+                          <16 8>, "iu = (*)",    /* declared but not used by linux, subject to change */
+                          <24 8>, "iu = (*)",    /* last 8 high priority are used by event machine, available in non EM use case */
+                          <32 4>, "iu = (*)",    /* first 4 low priority are used by event machine, available in non EM use case */
+                          <36 4>, "     (*)",    /* next 4 low priority are used by linux (accumulator-low-#) */
+                          <40 8>, "iu = (*)";    /* available for all */
+        };             
+        accumulator1-ch { /* accumulator using second INTD */
+            assignments = <0 48>, "iu = (*)";    /* linux doesn't use it */
+        };             
+    }; /* qmss */
+
+    cppi {
+        srio-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        srio-rx-ch {
+            assignments = <0 16>, "iu = (*)";
+        };
+        srio-tx-ch {
+            assignments = <0 16>, "iu = (*)";
+        };
+        srio-rx-flow-id {
+            assignments = <0 20>, "iu = (*)";
+        };   
+
+        aif-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        aif-rx-ch {
+            assignments = <0 129>, "iu = (*)";
+        };
+        aif-tx-ch {
+            assignments = <0 129>, "iu = (*)";
+        };
+        aif-rx-flow-id {
+            assignments = <0 129>, "iu = (*)";
+        };      
+
+        fftc-a-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-a-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-a-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-a-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };   
+
+        fftc-b-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-b-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-b-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-b-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };   
+
+        fftc-c-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-c-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-c-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-c-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };
+
+        fftc-d-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-d-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-d-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-d-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };   
+
+        fftc-e-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-e-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-e-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-e-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };
+
+        fftc-f-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        fftc-f-rx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-f-tx-ch {
+            assignments = <0 4>, "iu = (*)";
+        };
+        fftc-f-rx-flow-id {
+            assignments = <0 8>, "iu = (*)";
+        };         
+        
+        pass-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        pass-rx-ch {
+            assignments = <0 24>, "     (*)"; /* initialized by kernel */
+        };
+        pass-tx-ch {
+            assignments = <0 7>, "     (*)", /* initialized by kernel, can directly open queuse */
+                          <7 1>, "iu = (*)", /* SA channel.  Linux initializes, but some applications need to enable/disable on fly */
+                          <8 1>, "     (*)"; /* initialized by kernel, can directly open queuse */
+        };
+        pass-rx-flow-id {
+            assignments = <0 22>, "iu = (*)", /* available */
+                          <22 5>, "     (*)", /* used by kernel (netrx0, netrx1, netrx2, netrx3, crypto-rx0) */
+                          <27 4>, "iu = (*)", /* available */
+                          <31 1>, "     (*)"; /* used by kernel (parx) */
+        };   
+
+        qmss-qm1-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        qmss-qm1-rx-ch {
+            assignments = <0  16>, "(*)",    /* Used by kernel - 8 (data channel usage irrespective of device) +  1 (channel per DSP core) */
+                          <16 16>, "iu = (*)";
+        };
+        qmss-qm1-tx-ch {
+            assignments = <0  16>, "(*)",    /* Used by kernel - 8 (data channel usage irrespective of device) +  1 (channel per DSP core) */
+                          <16 16>, "iu = (*)";
+        };
+        qmss-qm1-rx-flow-id {
+            assignments = <0  16>, "(*)",    /* Used by kernel - 8 (data channel usage irrespective of device) +  1 (channel per DSP core) */
+                          <16 48>, "iu = (*)";
+        };   
+
+        qmss-qm2-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        qmss-qm2-rx-ch {
+            assignments = <0 32>, "iu = (*)";
+        };
+        qmss-qm2-tx-ch {
+            assignments = <0 32>, "iu = (*)";
+        };
+        qmss-qm2-rx-flow-id {
+            assignments = <0 64>, "iu = (*)";
+        };        
+
+        bcp-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        bcp-rx-ch {
+            assignments = <0 8>, "iu = (*)";
+        };
+        bcp-tx-ch {
+            assignments = <0 8>, "iu = (*)";
+        };
+        bcp-rx-flow-id {
+            assignments = <0 64>, "iu = (*)";
+        };           
+
+        xge-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        xge-rx-ch {
+            assignments = <0 16>, "    (*)"; /* initialized by kernel */
+        };
+        xge-tx-ch {
+            assignments = <0 8>, "     (*)"; /* initialized by kernel, directly open the queues */
+        };
+        xge-rx-flow-id {
+            assignments = <0 1>,  "     (*)", /* used by kernel (xgerx0) */
+                          <1 7>,  "iu = (*)", /* available */
+                          <8 1>,  "     (*)", /* used by kernel (xgerx1) */
+                          <9 23>, "iu = (*)"; /* available */
+        };           
+    }; /* cppi */
+
+    pa {
+        pa-lut { 
+            assignments = <0 5>, "iu = (*)";
+        };
+        pa-firmware {
+            assignments = <0 1>, "(*)"; /* linux downloads PA firmware */
+        };
+        pa-32bUsrStats {
+            assignments = <0 512>, "iu = (*)";
+        };
+        pa-64bUsrStats {
+            assignments = <0 256>, "iu = (*)";
+        };
+    }; /* pa */
+
+    srio {
+        srio-dio-sockets {
+            assignments = <0 8>, "iu = (*)";
+        };
+        srio-type9-type11-sockets {
+            assignments = <0 64>, "iu = (*)";
+        };
+        srio-type9-type11-mappings {
+            assignments = <0 64>, "iu = (*)";
+        };
+        srio-lsus {
+            assignments = <0 8>, "iu = (*)";
+        };
+        srio-init-hw {
+            assignments = <0 1>, "iu = (*)";
+        };
+    };
+};

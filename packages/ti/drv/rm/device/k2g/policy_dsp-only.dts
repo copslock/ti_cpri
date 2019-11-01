@@ -1,0 +1,82 @@
+/dts-v1/;
+
+/* Policy assigning all resources to RM instances running on DSP. */
+
+/ {
+    /* Valid instance list contains instance names used within TI example projects
+     * utilizing RM.  The list can be modified as needed by applications integrating
+     * RM.  For an RM instance to be given permissions the name used to initialize it
+     * must be present in this list */
+    valid-instances = "RM_Server",
+                      "RM_Client0",
+                      "RM_Client1",
+                      "RM_Client2",
+                      "RM_Client3",
+                      "RM_Client4",
+                      "RM_Client5",
+                      "RM_Client6",
+                      "RM_Client7";
+	
+    qmss {
+        control-qm1 {
+            assignments = <0 1>, "iu = (*)";
+        };
+        
+        linkram-control-qm1 {
+            assignments = <0 1>, "iu = (*)";
+        };
+        
+        linkram-int-qm1 {
+            /* hw allows max of 2K "internal" descriptors */
+            assignments = <0x00000000 0x00000800>, "iu = (*)";
+        };
+        linkram-ext-qm1 {
+            /* hw allows max of 0 "external" descriptors */
+            assignments = <0x00000800 0x00000000>, "iu = (*)";
+        };
+        
+        memory-regions-qm1 {
+            assignments = <0 64>, "iu = (*)";
+        };
+
+        INFRASTRUCTURE_QUEUE-qm1 {
+            assignments = <0 4>, "iu = (*)";
+        }; 
+        PASS_QUEUE-qm1 {
+            assignments = <4 17>, "iu = (*)";
+        };
+        RECEIVE_QUEUE-qm1 {
+            assignments = <21 32>, "iu = (*)";
+        }; 
+        EDMA_0_QUEUE-qm1 {
+            assignments = <69 4>, "iu = (*)";
+        };
+        SOC_SET0_QUEUE-qm1 {
+            assignments = <77 4>, "iu = (*)";
+        };
+        INTC_EDMA_SET0_QUEUE-qm1 {
+            assignments = <85 4>,  "iu = (*)";
+        }; 
+        GENERAL_PURPOSE_QUEUE-qm1 {
+            assignments = <89 39>, "iu = (*)";
+        };    
+
+    }; /* qmss */
+
+    cppi {
+        netcp-hw-open {
+            assignments = <0 1>, "iu = (*)";
+        };
+        netcp-rx-ch {
+            assignments = <0 32>, "iu = (*)";
+        };
+        netcp-tx-ch {
+            assignments = <0 21>, "iu = (*)";
+        };
+        netcp-rx-flow-id {
+            assignments = <0 32>, "iu = (*)";
+        }; 
+          
+    }; /* cppi */
+    
+};
