@@ -1,0 +1,45 @@
+#
+# This file is the makefile for building UDMA chaining test app for TI RTOS
+#
+ifeq ($(RULES_MAKE), )
+include $(PDK_INSTALL_PATH)/ti/build/Rules.make
+else
+include $(RULES_MAKE)
+endif
+
+APP_NAME = udma_chaining_testapp
+
+SRCDIR = .
+INCDIR =
+
+# List all the external components/interfaces, whose interface header files
+#  need to be included for this component
+INCLUDE_EXTERNAL_INTERFACES = pdk
+
+# List all the components required by the application
+COMP_LIST_COMMON = csl udma board uart i2c sciclient udma_apputils osal_tirtos
+INCLUDE_EXTERNAL_INTERFACES += xdc bios
+XDC_CFG_FILE_$(CORE) = $(PDK_INSTALL_PATH)/ti/build/$(SOC)/sysbios_$(ISA).cfg
+
+# Common source files and CFLAGS across all platforms and cores
+PACKAGE_SRCS_COMMON = .
+SRCS_COMMON = main_tirtos.c udma_chaining_test.c
+CFLAGS_LOCAL_COMMON = $(PDK_CFLAGS)
+
+# Core/SoC/platform specific source files and CFLAGS
+# Example:
+#   SRCS_<core/SoC/platform-name> =
+#   CFLAGS_LOCAL_<core/SoC/platform-name> =
+
+# Include common make files
+ifeq ($(MAKERULEDIR), )
+#Makerule path not defined, define this and assume relative path from ROOTDIR
+  MAKERULEDIR := $(ROOTDIR)/ti/build/makerules
+  export MAKERULEDIR
+endif
+include $(MAKERULEDIR)/common.mk
+
+# OBJs and libraries are built by using rule defined in rules_<target>.mk
+#     and need not be explicitly specified here
+
+# Nothing beyond this point
