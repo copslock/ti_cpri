@@ -1,0 +1,109 @@
+/******************************************************************************
+ * FILE PURPOSE: Build description for the TCP3D Driver
+ ******************************************************************************
+ * FILE NAME: package.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build specification and description for the TCP3D driver
+ *  
+ *  The file takes the following parameters from the command line through the
+ *  XDCARGS variable.
+ *      XDCARGS[0] = TCP3D Driver Install Type 
+ *      Valid Values are "TAR" or "SETUP"
+ *      DEFAULT is "TAR"
+ *
+ *  Example for a valid command:
+ *      xdc XDCARGS=SETUP release   
+ *
+ * Copyright (C) 2011, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* List of all subdirectories that combine to make the TCP3D Driver Package. */
+var subDirectories = [ "src", "docs", "example", "test" ];
+
+/* Determine if we need to create the InstallJammer Application or not? 
+ * TCP3D Driver deliverables be either of the following formats:
+ *  - TAR Ball Package
+ *  - Setup Executable 
+ * DEFAULT is a TAR package. */
+if ((arguments[0] != "TAR") && (arguments[0] != "SETUP"))
+    tcp3dDriverInstallType = Pkg.attrs.archiver;
+else
+    tcp3dDriverInstallType = arguments[0];
+
+/* Irrespective of the InstallType we always create a TAR Ball Package as a part
+ * of the RTSC Build. Here we determine the name of the TAR Ball Package
+ *  Format is as follows:
+ *      tcp3d_<version> */
+var tcp3dRTSCFileName = "tcp3d" + "_" +
+                        tcp3dPartNumber + "_" + 
+                        tcp3dDriverReleaseVersion[0] + "_" +
+                        tcp3dDriverReleaseVersion[1] + "_" + 
+                        tcp3dDriverReleaseVersion[2] + "_" +
+                        tcp3dDriverReleaseVersion[3];
+
+/******************************************************************
+ ************************ Release Banner **************************
+ ******************************************************************/
+
+print ("************* TCP3D Driver Build Information *************");
+print ("TCP3D Driver Install            : " + tcp3dDriverInstallType);
+print ("TCP3D Driver Version            : " + tcp3dDriverReleaseVersion);
+print ("Tools Directory                 : " + toolsBaseDir);
+print ("RTSC File Name	                : " + tcp3dRTSCFileName);
+print ("TCP3D Driver Path               : " + tcp3dDriverPath);
+print ("CC LE opts                      : " + C66LE.ccOpts.prefix);
+print ("**********************************************************");
+
+/* Create the release package for the TCP3D Driver */
+Pkg.defaultRelease = Pkg.addRelease (tcp3dRTSCFileName, {prefix: "./packages/"});
+
+/* Cycle through all the sub-directories and build all the files */
+for (var i = 0; i < subDirectories.length; i++) 
+{
+    /* Load the capsule in the sub directory. */
+    var caps = xdc.loadCapsule (subDirectories[i]+"/Module.xs");
+
+    print ("Building directory " + subDirectories[i]);
+
+    /* Build the capsule. */
+    caps.modBuild();
+
+    /* Package the module.xs files for building via package */
+    Pkg.otherFiles[Pkg.otherFiles.length++] = subDirectories[i]+"/Module.xs";
+}
+
+/* Package the remaining files */
+Pkg.otherFiles[Pkg.otherFiles.length++] = "config.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "tcp3d_drv.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "tcp3d_osal.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "tcp3d_drv_types.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "tcp3dver.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "tcp3dver.h.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/TCP3D_DRV_doxconfig";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/TCP3D_DRV_doxconfig.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/buildlib.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "makefile";
+
+/* Generate Users Manual Doxyfile */
+var tplt = xdc.loadTemplate("./docs/TCP3D_DRV_doxconfig.xdt");
+tplt.genFile("./docs/TCP3D_DRV_doxconfig",tcp3dDriverReleaseVersion); 
+
+/* Generate Settings.xdc */
+var tplt = xdc.loadTemplate("./Settings.xdc.xdt");
+tplt.genFile("./Settings.xdc",tcp3dDriverReleaseVersion); 
+
+/* Generate paver.h */
+var tplt = xdc.loadTemplate("./tcp3dver.h.xdt");
+tplt.genFile("./tcp3dver.h",tcp3dDriverReleaseVersion);      
+
+/* Generate eclipse sample file */
+var tplt = xdc.loadTemplate("./docs/eclipse/sample.xml.xdt");
+tplt.genFile("./docs/eclipse/sample.xml",tcp3dDriverReleaseVersion); 
+
+    

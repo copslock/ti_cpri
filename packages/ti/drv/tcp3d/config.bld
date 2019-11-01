@@ -1,0 +1,107 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the TCP3D Driver
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for the TCP3D driver
+ *  and is responsible for configuration of the paths for the various 
+ *  tools required to build the driver.
+ *
+ * Copyright (C) 2009, 2014 Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Set package attribute as ZIP or TAR */
+Pkg.attrs.archiver = "tar";
+
+/* Get the Tools Base directory from the Environment Variable. */
+var toolsBaseDir = java.lang.System.getenv("C6X_GEN_INSTALL_PATH");
+
+/* Get the base directory for the TCP3D Driver Package */
+var tcp3dDriverPath = new java.io.File(".//").getPath();
+
+/* Get the extended debug flags */
+var extDbgFlags = java.lang.System.getenv("EXTDBGFLAGS");
+
+var tcp3dDriverInstallType;
+
+/* Read the part number from the environment variable. */
+var tcp3dPartNumber = java.lang.System.getenv("PARTNO");
+
+if(tcp3dPartNumber == null)
+{
+    tcp3dPartNumber = "keystone2";
+}
+
+/* Include Path */
+var tcp3dIncludePath = " -i" + tcp3dDriverPath + "/src" + " -i" + tcp3dDriverPath  + " -i" + tcp3dDriverPath + "/test";
+
+/* Configure the TCP3D Release Version Information */
+/* We use the information from compatibility key. It require 3 steps:       */ 
+/* remove SPACE and TAB, convert to string and split to make array          */
+var tcp3dDriverReleaseVersion = (""+Pkg.version.replace(/\s/g, "")).split(',');
+
+/* TCP3D Driver Coverity Analysis: Check the environment variable to determine if Static
+ * Analysis has to be done on the TCP3D Driver Code base or not? */
+var tcp3dDriverCoverityAnalysis = java.lang.System.getenv("LLDCOV");
+
+/* C66 ELF compiler configuration for Little Endian Mode. */
+var C66LE           = xdc.useModule('ti.targets.elf.C66');
+C66LE.rootDir       = toolsBaseDir;
+C66LE.ccOpts.prefix = "-mo -o3 -q -k -eo.o";
+if(extDbgFlags)
+    C66LE.ccOpts.prefix = C66LE.ccOpts.prefix + " " + extDbgFlags; 
+
+
+/* List all the build targets here. */
+Build.targets = [ C66LE ];
+
+/* Grab input from XDCARGS */
+var buildArguments  = [];
+
+/* Construct the build arguments */
+for (var tmp=0; arguments[tmp] != undefined; tmp++)
+{
+
+    /* If no arguments are provided, override for building all */
+    if ( ( arguments.length == 1) && (arguments[tmp].equals("./config.bld")) )
+        buildArguments[buildArguments.length++] = "all";
+    else
+        buildArguments[buildArguments.length++] = arguments[tmp];
+}
+
+var devices = [];
+var devicesCCOpt = [];
+
+if ( ( buildArguments.indexOf("k2k") != -1 ) ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    print ("adding k2k to build");
+    devices.push("k2k/c66");
+    devicesCCOpt.push(" -DDEVICE_K2K");
+}
+
+if ( ( buildArguments.indexOf("k2h") != -1 ) ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    print ("adding k2h to build");
+    devices.push("k2h/c66");
+    devicesCCOpt.push(" -DDEVICE_K2H");
+}
+
+if ( ( buildArguments.indexOf("k2l") != -1 )  ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    print ("adding k2l to build");
+    devices.push("k2l/c66");
+    devicesCCOpt.push(" -DDEVICE_K2L");
+}
+
+if  ( ( buildArguments.indexOf("c6657") != -1 ) ||
+      ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    print ("adding c6657 to build");
+    devices.push("c6657/c66");
+    devicesCCOpt.push(" -DSOC_C6657");
+}
+ 
