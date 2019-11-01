@@ -1,0 +1,19 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the DSS
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for the DSS
+ *  and is responsible for configuration of the paths for the various 
+ *  tools required to build the driver.
+ *
+ * Copyright (C) 2018, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Configure the DSS Release Version Information */
+var dssDriverReleaseVersion = (""+Pkg.version.replace(/\s/g, "")).split(',');
+
+var Build = xdc.useModule('xdc.bld.BuildEnvironment');
+Build.useTargets=null;
+

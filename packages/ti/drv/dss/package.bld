@@ -1,0 +1,19 @@
+/******************************************************************************
+ * FILE PURPOSE: Build description for the DSS Package
+ ******************************************************************************
+ * FILE NAME: package.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build specification and description for the DSS
+ *
+ *
+ * Copyright (C) 2018, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Generate Settings.xdc */
+var tplt = xdc.loadTemplate("./Settings.xdc.xdt");
+tplt.genFile("./Settings.xdc",dssDriverReleaseVersion);
+
+/* Generate paver.h */
+var tplt = xdc.loadTemplate("./dssver.h.xdt");
+tplt.genFile("./dssver.h",dssDriverReleaseVersion);

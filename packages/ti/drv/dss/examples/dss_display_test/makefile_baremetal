@@ -1,0 +1,14 @@
+#
+# This file is the makefile for building DSS display test app for baremetal
+#
+ifeq ($(RULES_MAKE), )
+include $(PDK_INSTALL_PATH)/ti/build/Rules.make
+else
+include $(RULES_MAKE)
+endif
+
+APP_NAME = dss_baremetal_display_testapp
+BUILD_OS_TYPE=baremetal
+CFLAGS_LOCAL_COMMON = -DDSS_APP_BAREMETAL
+
+include makefile.mk
