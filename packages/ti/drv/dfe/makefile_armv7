@@ -1,0 +1,99 @@
+#*******************************************************************************
+#* FILE PURPOSE: Top level makefile for Creating Component Libraries for ARM
+#* architectures
+#*******************************************************************************
+#* FILE NAME: makefile
+#*
+#* DESCRIPTION: Defines Compiler tools paths, libraries , Build Options 
+#*
+#*
+#*******************************************************************************
+#*
+# (Mandatory) Specify where various tools are installed.
+
+# Output for prebuilt generated libraries
+export ARMV7LIBDIR ?= ./lib
+export DEVICE ?= k2l
+export ARMV7OBJDIR ?= ./obj/$(DEVICE)
+export ARMV7BINDIR ?= ./bin/$(DEVICE)
+
+# ROOT Directory
+export ROOTDIR := ../../..
+
+
+# INCLUDE Directory
+export INCDIR := ../../..;$(PDK_INSTALL_PATH);$(ROOTDIR)
+
+# Common Macros used in make
+
+ifndef RM
+export RM = rm -f
+endif
+
+ifndef CP
+export CP = cp -p
+endif
+
+export MKDIR = mkdir -p
+
+ifndef RMDIR
+export RMDIR = rm -rf
+endif
+
+ifndef SED
+export SED = sed
+endif
+
+ifndef MAKE
+export MAKE = make
+endif
+
+# PHONY Targets
+.PHONY: all clean lib tests install installbin .libraries .executables
+
+# all rule
+all: .executables
+.executables: lib tests
+
+# Libraries
+lib: .libraries
+
+# tests Stub to add tests
+tests: 
+	@$(MAKE) -f ./test/$(DEVICE)/armv7/linux/build/makefile all
+
+# examples Stub to add Examples
+examples: 
+#       @$(MAKE) -f ./example/InfraDmaSC/$(DEVICE)/armv7/linux/build/makefile all
+#	@$(MAKE) -f ./example/InfraDmaMC/$(DEVICE)/armv7/linux/build/makefile all
+
+# Make rule to create $(ARMV7LIBDIR)/libdfe.a library
+.libraries: $(ARMV7LIBDIR)/libdfe.a libdfe.so
+
+$(ARMV7LIBDIR)/libdfe.a::
+	@$(MAKE) -f ./build/armv7/libdfe_aearmv7.mk $@
+
+libdfe.so:
+	@$(MAKE) -f ./build/armv7/libdfe_aearmv7.mk $@
+	
+# Rule to clean $(ARMV7LIBDIR)/libdfe.a library
+clean:
+	@$(MAKE) -f ./build/armv7/libdfe_aearmv7.mk $@
+	@$(MAKE) -f ./test/$(DEVICE)/armv7/linux/build/makefile $@
+	@$(RMDIR) $(ARMV7OBJDIR)/dfe
+	@$(RMDIR) $(ARMV7BINDIR)/dfe
+	@$(RM) $(ARMV7LIBDIR)/libdfe.a
+	@$(RM) $(ARMV7LIBDIR)/libdfe.so
+	@$(RM) $(ARMV7LIBDIR)/libdfe.so.*
+	
+installbin:
+	install -d $(INSTALL_BIN_BASE_DIR)
+	install -c -m 755 $(ARMV7BINDIR)/dfe/test/dfeTest.out    $(INSTALL_BIN_BASE_DIR)/dfeTest.out
+	
+install:
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/dfe
+	install -d $(INSTALL_LIB_BASE_DIR)
+	$(CP) ./*.h                $(INSTALL_INC_BASE_DIR)/ti/drv/dfe
+	@$(CP) -r $(ARMV7LIBDIR)/*.a         $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/*.so        $(INSTALL_LIB_BASE_DIR)	
+	@$(CP) -r $(ARMV7LIBDIR)/*.so.*      $(INSTALL_LIB_BASE_DIR)	

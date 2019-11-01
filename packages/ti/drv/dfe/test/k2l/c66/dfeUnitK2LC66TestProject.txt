@@ -1,0 +1,20 @@
+ -ccs.configurations K2L_DYNAMIC K2L_DYNAMIC_BE
+ -ccs.setCompilerOptions "-DDEVICE_K2L -DUSESYSBIOS" @configurations K2L_DYNAMIC 
+ -ccs.setCompilerOptions "-DDEVICE_K2L -DUSESYSBIOS" @configurations K2L_DYNAMIC_BE 
+ -ccs.setCompilerOptions "-I${CG_TOOL_ROOT}/include " 
+ -ccs.setCompilerOptions "-I${DFE_INSTALL_PATH}/ti/drv/dfe/test/utils " 
+ -ccs.setCompilerOptions "-mv6600 -g --mem_model:data=far --diag_warning=225 --abi=eabi --strip_coff_underscore" 
+ -ccs.setLinkerOptions "-i${DFE_INSTALL_PATH}/ti/drv/dfe/test/utils"
+ -ccs.setLinkerOptions "--stack_size=0x20000 --heap_size=0x80000" 
+ -ccs.linkFile DFE_INSTALL_PATH/ti/drv/dfe/test/src/dynamic_testMain.c
+ -ccs.linkFile DFE_INSTALL_PATH/ti/drv/dfe/test/src/testCase.c
+ -ccs.linkFile DFE_INSTALL_PATH/ti/drv/dfe/test/src/testCmd.c
+ -ccs.linkFile DFE_INSTALL_PATH/ti/drv/dfe/test/src/start_dfe.c
+ -ccs.linkFile DFE_INSTALL_PATH/ti/drv/dfe/test/src/tgtData.c
+ -ccs.linkFile DFE_INSTALL_PATH/ti/drv/dfe/test/utils/serdes_cfg.c
+ -ccs.linkFile DFE_INSTALL_PATH/ti/drv/dfe/test/utils/dfe_osal.c
+ -ccs.linkFile DFE_INSTALL_PATH/ti/drv/dfe/test/utils/dfess.c
+ -ccs.linkFile DFE_INSTALL_PATH/ti/drv/dfe/test/utils/cslUtils.c
+ -ccs.linkFile DFE_INSTALL_PATH/ti/drv/dfe/test/utils/dfe_test.cfg
+ -ccs.linkFile DFE_INSTALL_PATH/ti/drv/dfe/test/utils/dfe_bios.cmd 
+ -rtsc.enableRtsc 
