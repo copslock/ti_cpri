@@ -81,7 +81,7 @@ PACKAGE_SRCS_COMMON = ../../board ../../build ../../include ../../src ../../soc/
 PACKAGE_SRCS_COMMON += ../../../host
 PACKAGE_SRCS_COMMON += ../../../../board_utils_component.mk
 ifeq ($(BOARD), $(filter $(BOARD), j721e_evm))
-PACKAGE_SRCS_COMMON = ../../soc/k3
+PACKAGE_SRCS_COMMON += ../../soc/k3
 endif
 
 
