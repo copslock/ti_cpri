@@ -1,0 +1,20 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the IPC Driver
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for the IPC driver
+ *  and is responsible for configuration of the paths for the various 
+ *  tools required to build the driver.
+ *
+ * Copyright (C) 2018, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Configure the IPC Release Version Information */
+var ipcReleaseVersion = (""+Pkg.version.replace(/\s/g, "")).split(',');
+
+var Build = xdc.useModule('xdc.bld.BuildEnvironment');
+Build.useTargets=null;
+
+

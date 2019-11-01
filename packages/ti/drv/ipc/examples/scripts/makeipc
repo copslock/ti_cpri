@@ -1,0 +1,53 @@
+#!/bin/bash
+
+MY_PDK=${PWD}/../..
+MY_SDK=${PWD}/../../../..
+MY_BOARD=j721e_evm
+MY_APP=ipc_echo_test
+MY_CORE=all
+MY_PROFILE=release
+
+declare -a cores_j721e=("mpu1_0" "mcu1_0" "mcu1_1" "mcu2_0" "mcu2_1" "mcu3_0" "mcu3_1" "c66xdsp_1" "c66xdsp_2" "c7x_1")
+declare -a cores_am65xx=("mpu1_0" "mcu1_0" "mcu1_1")
+
+USAGE="$0 [-a <app name : ipc_echo_test> -b <board : j721e_evm, am65xx_evm> -c <core> -p <build profile>]"
+
+while getopts 'a:b:c:p:s:d:' opt
+do
+    case $opt in
+        a) MY_APP=$OPTARG;;
+        b) MY_BOARD=$OPTARG;;
+        c) MY_CORE=$OPTARG;;
+        d) MY_PDK=$OPTARG;;
+        p) MY_PROFILE=$OPTARG;;
+        s) MY_SDK=$OPTARG;;
+    esac
+done
+
+MY_BLD="-s -j BUILD_PROFILE=${MY_PROFILE} BOARD=${MY_BOARD} SDK_INSTALL_PATH=${MY_SDK} TOOLS_INSTALL_PATH=${MY_SDK} PDK_INSTALL_PATH=${MY_PDK} ${MY_APP}"
+
+if [ "${MY_CORE}" = "all" ]
+then
+    # iterate all cores of J721e
+    if [ "${MY_BOARD}" = "j721e_evm" ]
+    then
+        for i in "${cores_j721e[@]}"
+        do
+            echo make ${MY_APP} - ${MY_BOARD} "$i"
+            make ${MY_BLD} CORE="$i"
+        done
+    fi
+
+    # Iterate all cores of am65xx
+    if [ "${MY_BOARD}" = "am65xx_evm" ]
+    then
+        for i in "${cores_am65xx[@]}"
+        do
+            echo make ${MY_BLD} CORE="$i"
+            make ${MY_BLD} CORE="$i"
+        done
+    fi
+
+else
+    make ${MY_BLD} CORE=${MY_CORE}
+fi
