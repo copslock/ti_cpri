@@ -1,0 +1,115 @@
+/******************************************************************************
+ * FILE PURPOSE: Build description for the SRIO Driver
+ ******************************************************************************
+ * FILE NAME: package.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build specification and description for the SRIO driver
+ *  
+ *  The file takes the following parameters from the command line through the
+ *  XDCARGS variable.
+ *      XDCARGS[0] = SRIO Driver Install Type 
+ *      Valid Values are "TAR" or "SETUP"
+ *      DEFAULT is "SETUP"
+ *
+ *  Example for a valid command:
+ *      xdc XDCARGS="SETUP" release   
+ *
+ * Copyright (C) 2009-2012, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* List of all subdirectories that combine to make the SRIO Socket Driver Package. */
+var subDirectories = [ "src", "docs", "include", "test", "example", "device" ];
+
+var srioDriverInstallType;
+
+/* Determine if we need to create the InstallJammer Application or not? 
+ * SRIO LLD Deliverables be either of the following formats:
+ *  - TAR Ball Package
+ *  - Setup Executable 
+ * DEFAULT is a SETUP Executable. */
+
+if ((arguments[0] != "TAR") && (arguments[0] != "SETUP"))
+    srioDriverInstallType = "TAR";
+else
+    srioDriverInstallType = arguments[0];
+
+/* Irrespective of the InstallType we always create a TAR Ball Package as a part
+ * of the RTSC Build. Here we determine the name of the TAR Ball Package
+ *  Format is as follows:
+ *      srio_<version> */
+var srioRTSCFileName = "srio" + "_" + srioLLDPartNumber + "_" + 
+                      srioDriverReleaseVersion[0] + "_" +  srioDriverReleaseVersion[1] + "_" + 
+                      srioDriverReleaseVersion[2]  + "_" + srioDriverReleaseVersion[3];
+
+/******************************************************************
+ ************************ Release Banner **************************
+ ******************************************************************/
+
+print ("************* SRIO Socket Driver Build Information *************");
+print ("SRIO Socket Driver Install      : " + srioDriverInstallType);
+print ("SRIO Socket Driver LLD Version  : " + srioDriverReleaseVersion);
+print ("Tools Directory                 : " + toolsBaseDir);
+print ("RTSC File Name	                : " + srioRTSCFileName);
+print ("SRIO Socket Driver LLD Path     : " + srioDriverPath);
+print ("CC LE opts                      : " + C66LE.ccOpts.prefix);
+print ("****************************************************************");
+
+/* Create the release package for the SRIO LLD */
+Pkg.defaultRelease = Pkg.addRelease (srioRTSCFileName, {prefix: "./packages/"});
+
+/* Moving forward we need to set the Archiver of the package to be ZIP. This is currently
+ * not supported in the XDC tools being used. Currenly builds need to be done with the 
+ * following options:-
+ *   xdc MK_FIXLISTOPTS=-t release 
+ * ZIP is a better option as it works natively with INSTALL Jammer and we can remove the
+ * uncompression into a temporary directory. XDC Tools with xdc-rXX support the ZIP archiver. */
+//Pkg.attrs = {archiver : "zip"};
+
+/* Cycle through all the sub-directories and build all the files */
+for (var i = 0; i < subDirectories.length; i++) 
+{
+    /* Load the capsule in the sub directory. */
+    var caps = xdc.loadCapsule (subDirectories[i]+"/Module.xs");
+
+    print ("Building directory " + subDirectories[i]);
+
+    /* Build the capsule. */
+    caps.modBuild();
+
+    /* Package the module.xs files for building via package */
+    Pkg.otherFiles[Pkg.otherFiles.length++] = subDirectories[i]+"/Module.xs";
+}
+
+/* Package the remaining files */
+Pkg.otherFiles[Pkg.otherFiles.length++] = "config.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "srio_drv.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "srio_osal.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "srio_types.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "sriover.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "sriover.h.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/Doxyfile";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/doxyfile.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/buildlib.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "makefile";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "makefile_armv7";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/armv7/libsrio_aearmv7.mk";
+
+/* Generate Users Manual Doxyfile */
+var tplt = xdc.loadTemplate("./docs/doxyfile.xdt");
+tplt.genFile("./docs/Doxyfile",srioDriverReleaseVersion); 
+
+/* Generate Settings.xdc */
+var tplt = xdc.loadTemplate("./Settings.xdc.xdt");
+tplt.genFile("./Settings.xdc",srioDriverReleaseVersion); 
+
+/* Generate paver.h */
+var tplt = xdc.loadTemplate("./sriover.h.xdt");
+tplt.genFile("./sriover.h",srioDriverReleaseVersion);      
+
+    

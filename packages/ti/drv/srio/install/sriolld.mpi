@@ -1,0 +1,1842 @@
+array set info {
+AllowLanguageSelection
+Yes
+
+AppName
+sriolld
+
+ShortAppName
+sriolld
+
+Uninstaller
+srio_uninstall.exe
+
+ApplicationID
+08292447-1685-4FD9-BBE3-CCBBF48436A0
+
+ApplicationURL
+{}
+
+AutoRefreshFiles
+Yes
+
+BuildFailureAction
+{Fail (recommended)}
+
+CancelledInstallAction
+{Rollback and Stop}
+
+CleanupCancelledInstall
+Yes
+
+CommandLineFailureAction
+{Fail (recommended)}
+
+Company
+{Texas Instruments}
+
+CompressionLevel
+6
+
+CompressionMethod
+zlib
+
+Copyright
+{}
+
+DefaultLanguage
+English
+
+Ext
+.exe
+
+ExtractSolidArchivesOnStartup
+No
+
+Icon
+Modern/Small/SetupModernSmall01.gif
+
+Image
+Modern/SetupModern01.gif
+
+IncludeDebugging
+Yes
+
+InstallPassword
+{}
+
+InstallVersion
+1.00.00
+
+Language,de
+Yes
+
+Language,en
+Yes
+
+Language,es
+Yes
+
+Language,fr
+Yes
+
+Language,hu
+Yes
+
+Language,it
+Yes
+
+Language,nl
+Yes
+
+Language,pl
+Yes
+
+Language,pt_br
+Yes
+
+PackageDescription
+{}
+
+PackageLicense
+{}
+
+PackageMaintainer
+{}
+
+PackageName
+<%ShortAppName%>
+
+PackagePackager
+{}
+
+PackageRelease
+<%PatchVersion%>
+
+PackageSummary
+{}
+
+PackageVersion
+<%MajorVersion%>.<%MinorVersion%>
+
+PreserveFilePermissions
+Yes
+
+ProjectID
+7411AF15-11B6-4788-A724-5593C23D1A85
+
+ProjectVersion
+1.2.5.1
+
+SaveOnlyToplevelDirs
+No
+
+ScriptExt
+.bat
+
+SkipUnusedFileGroups
+Yes
+
+Theme
+Modern_Wizard
+
+ThemeDir
+Modern_Wizard
+
+ThemeVersion
+1
+
+UpgradeApplicationID
+{}
+
+Version
+1.00.00
+
+}
+
+array set ::InstallJammer::InstallCommandLineOptions {
+debug
+{Debugging Switch Yes No {} {run installer in debug mode}}
+
+debugconsole
+{ShowConsole Switch Yes No {} {run installer with a debug console open}}
+
+mode
+{InstallMode Choice No No {Console Default Silent Standard} {set the mode to run the installer in}}
+
+prefix
+{InstallDir String No No {} {set the installation directory}}
+
+test
+{Testing Switch Yes No {} {run installer without installing any files}}
+
+}
+array set ::InstallJammer::UninstallCommandLineOptions {
+debugconsole
+{ShowConsole Switch Yes No {} {run uninstaller with a debug console open}}
+
+mode
+{UninstallMode Choice No No {Console Silent Standard} {set the mode to run the uninstaller in}}
+
+test
+{Testing Switch Yes No {} {run uninstaller without uninstalling any files}}
+
+}
+FileGroup ::9C2BD124-0063-45FA-B2A1-C07E95BD54A1 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-x86 HPUX-hppa Linux-x86 MacOS-X Solaris-sparc Windows TarArchive ZipArchive} -name {Program Files} -parent FileGroups
+File ::FE37B907-83B3-438F-9B8B-A82F07506482 -type dir -directory <%InstallDir%> -name <%PackageBaseDir%> -parent 9C2BD124-0063-45FA-B2A1-C07E95BD54A1
+Component ::4A7B5960-702D-4678-8533-D085CF653F0E -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-x86 HPUX-hppa Linux-x86 MacOS-X Solaris-sparc Windows} -name {Default Component} -parent Components
+SetupType ::88F9D095-410E-4CF2-80DB-1423246F8E42 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-x86 HPUX-hppa Linux-x86 MacOS-X Solaris-sparc Windows} -name Typical -parent SetupTypes
+SetupType ::B1323B62-5067-4380-9E19-A2F6DFE8F186 -setup Install -active Yes -platforms {AIX-ppc FreeBSD-4-x86 FreeBSD-x86 HPUX-hppa Linux-x86 MacOS-X Solaris-sparc Windows} -name Custom -parent SetupTypes
+
+InstallComponent 4833AC49-ACAD-4F73-9DCA-5117D5C142A5 -setup Install -type pane -title {Welcome Screen} -component Welcome -active Yes -parent StandardInstall
+InstallComponent ED5A5BCE-2833-4247-A114-51E972369F26 -setup Install -type pane -conditions {42CE5801-5679-4E0A-B2D6-BF04187F6D6D 7B57D332-CFA8-4B68-AC63-2AA9DE785606} -title {Select Destination} -component SelectDestination -command insert -active Yes -parent StandardInstall
+Condition 42CE5801-5679-4E0A-B2D6-BF04187F6D6D -active Yes -parent ED5A5BCE-2833-4247-A114-51E972369F26 -title {Script Condition} -component ScriptCondition
+Condition 7B57D332-CFA8-4B68-AC63-2AA9DE785606 -active Yes -parent ED5A5BCE-2833-4247-A114-51E972369F26 -title {File Permission Condition} -component FilePermissionCondition
+InstallComponent 498D9EBC-6F70-4CCC-8A88-B3F019A2B880 -setup Install -type pane -title {Start Copying Files} -component StartCopyingFiles -active Yes -parent StandardInstall
+InstallComponent 0A802EE9-DF59-4623-91FC-CB9765D8F9B3 -setup Install -type pane -title {License Agreement} -component License -active Yes -parent StandardInstall
+InstallComponent 2E8052B5-4C1E-45E5-8C6E-5021E7D9835A -setup Install -type action -conditions {318C333C-A42B-4001-954A-DCC1EB64CE38 C6028DBC-6E23-4643-9B0F-4F7524BA11E5} -title {Modify Widget} -component ModifyWidget -command insert -active Yes -parent 0A802EE9-DF59-4623-91FC-CB9765D8F9B3
+Condition 318C333C-A42B-4001-954A-DCC1EB64CE38 -active Yes -parent 2E8052B5-4C1E-45E5-8C6E-5021E7D9835A -title {String Is Condition} -component StringIsCondition
+Condition C6028DBC-6E23-4643-9B0F-4F7524BA11E5 -active Yes -parent 2E8052B5-4C1E-45E5-8C6E-5021E7D9835A -title {String Is Condition} -component StringIsCondition
+InstallComponent 13317AAD-0D0A-4D0A-9BEA-922810029FE5 -setup Install -type pane -title {Copying Files} -component CopyFiles -active Yes -parent StandardInstall
+InstallComponent 8758570E-CC44-456D-918E-2E5249DAC439 -setup Install -type action -title {Disable Buttons} -component ModifyWidget -active Yes -parent 13317AAD-0D0A-4D0A-9BEA-922810029FE5
+InstallComponent AAF9B489-84A3-4C35-A9CB-BBA9130F22F7 -setup Install -type action -title {Execute Action} -component ExecuteAction -active Yes -parent 13317AAD-0D0A-4D0A-9BEA-922810029FE5
+InstallComponent 648469D4-E8C8-4AFC-9AE3-F3BC6252F8CE -setup Install -type action -title {Move Forward} -component MoveForward -active Yes -parent 13317AAD-0D0A-4D0A-9BEA-922810029FE5
+InstallComponent CEC0D285-9438-4659-94E5-AC4B5F753CDB -setup Install -type pane -title {Setup Complete} -component SetupComplete -active Yes -parent StandardInstall
+InstallComponent E0654B3D-6ABE-4640-9503-3DCE15658FEE -setup Install -type pane -title {Copying Files} -component CopyFiles -active Yes -parent DefaultInstall
+InstallComponent 0FF988B2-BC2F-4F17-BE70-28D7FE7846C9 -setup Install -type action -title {Disable Buttons} -component ModifyWidget -active Yes -parent E0654B3D-6ABE-4640-9503-3DCE15658FEE
+InstallComponent 836D6530-DC39-4773-BE74-19D0B2B54492 -setup Install -type action -title {Execute Action} -component ExecuteAction -active Yes -parent E0654B3D-6ABE-4640-9503-3DCE15658FEE
+InstallComponent 01720202-EE2E-4FE8-897F-E7F5D4445E2B -setup Install -type action -title {Move Forward} -component MoveForward -active Yes -parent E0654B3D-6ABE-4640-9503-3DCE15658FEE
+InstallComponent 6428BA12-614A-4569-8D06-E7F83657F0F1 -setup Install -type pane -title {Setup Complete} -component SetupComplete -active Yes -parent DefaultInstall
+InstallComponent FF7E9736-C092-4E83-8CA7-634DAEBB819A -setup Install -type action -title {Console Ask Yes Or No} -component ConsoleAskYesOrNo -active Yes -parent ConsoleInstall
+InstallComponent A7800E5F-F3E8-41B2-BE9F-8C7B3BC59209 -setup Install -type action -conditions 5F91FDFD-757E-48E1-A71E-A886EACEFEA2 -title Exit -component Exit -command insert -active Yes -parent ConsoleInstall
+Condition 5F91FDFD-757E-48E1-A71E-A886EACEFEA2 -active Yes -parent A7800E5F-F3E8-41B2-BE9F-8C7B3BC59209 -title {String Is Condition} -component StringIsCondition
+InstallComponent 16772531-4012-4BDA-946C-64DA3926C388 -setup Install -type action -conditions 2358DAA5-293A-4A4D-91F8-5F48B2F85AD6 -title {Console Get User Input} -component ConsoleGetUserInput -command insert -active Yes -parent ConsoleInstall
+Condition 2358DAA5-293A-4A4D-91F8-5F48B2F85AD6 -active Yes -parent 16772531-4012-4BDA-946C-64DA3926C388 -title {File Permission Condition} -component FilePermissionCondition
+InstallComponent EFC3A89B-C0AB-441F-9AF0-420E66AE1431 -setup Install -type action -title {Console Message} -component ConsoleMessage -active Yes -parent ConsoleInstall
+InstallComponent 10512CB0-772F-47B7-A58B-61B920D94C1F -setup Install -type action -title {Execute Action} -component ExecuteAction -active Yes -parent ConsoleInstall
+InstallComponent A116668A-21D1-4E54-A590-9E523E6CF807 -setup Install -type action -title {Console Message} -component ConsoleMessage -active Yes -parent ConsoleInstall
+InstallComponent 4A6B20C7-EEA3-4C05-A9FA-7234E3DBE91E -setup Install -type action -title Exit -component Exit -active Yes -parent ConsoleInstall
+InstallComponent 5442E77A-E443-4D83-8FE8-0D4FED32E57A -setup Install -type action -title {Execute Action} -component ExecuteAction -active Yes -parent SilentInstall
+InstallComponent 76F4FED5-0F82-4FE4-A14C-0DD5392B9BBF -setup Install -type action -title Exit -component Exit -active Yes -parent SilentInstall
+InstallComponent 52CA7D36-64EE-4764-94D3-B6A39AC459FE -setup Install -type actiongroup -title {Setup Actions} -alias {Setup Actions} -active Yes -parent ActionGroupsInstall
+InstallComponent 20725B89-270C-423C-A0E6-A7632A296664 -setup Install -type actiongroup -title {Startup Actions} -alias {Startup Actions} -active Yes -parent ActionGroupsInstall
+InstallComponent 2C2E1A2C-CB1E-49A3-A557-82185D2F1B9A -setup Install -type action -conditions {60B1FD97-331A-4F0D-8CA9-4EA1F08E7FC8 1F9C9836-090E-4017-95FD-C4F288FD3A99} -title Exit -component Exit -command insert -active Yes -parent 20725B89-270C-423C-A0E6-A7632A296664
+Condition 60B1FD97-331A-4F0D-8CA9-4EA1F08E7FC8 -active Yes -parent 2C2E1A2C-CB1E-49A3-A557-82185D2F1B9A -title {String Is Condition} -component StringIsCondition
+Condition 1F9C9836-090E-4017-95FD-C4F288FD3A99 -active Yes -parent 2C2E1A2C-CB1E-49A3-A557-82185D2F1B9A -title {Ask Yes or No} -component AskYesOrNo
+InstallComponent FF789AC3-26B4-42DD-824B-E49A00C4777B -setup Install -type action -title {Create Install Panes} -component CreateInstallPanes -active Yes -parent 20725B89-270C-423C-A0E6-A7632A296664
+InstallComponent 9D397587-6063-49F6-9BA4-E43087E1FB87 -setup Install -type actiongroup -title {Install Actions} -alias {Install Actions} -active Yes -parent ActionGroupsInstall
+InstallComponent 62C46726-ACBB-4E99-8A2F-DD5BFB8E6DCD -setup Install -type action -title {Install Selected Files} -component InstallSelectedFiles -active Yes -parent 9D397587-6063-49F6-9BA4-E43087E1FB87
+InstallComponent CF6BE1B7-08AA-4981-814E-20DDC4DD857C -setup Install -type action -conditions BD8849A8-F751-4F23-960A-81E257F72CAB -title {Install Uninstaller} -component InstallUninstaller -command insert -active Yes -parent 9D397587-6063-49F6-9BA4-E43087E1FB87
+Condition BD8849A8-F751-4F23-960A-81E257F72CAB -active Yes -parent CF6BE1B7-08AA-4981-814E-20DDC4DD857C -title {String Is Condition} -component StringIsCondition
+InstallComponent F700A731-92D7-4A9A-91AB-71A5AFCB2E5E -setup Install -type action -conditions 969091FA-E868-4D96-8A8E-5F1E210773ED -title {Windows Uninstall Registry} -component AddWindowsUninstallEntry -command insert -active Yes -parent 9D397587-6063-49F6-9BA4-E43087E1FB87
+Condition 969091FA-E868-4D96-8A8E-5F1E210773ED -active Yes -parent F700A731-92D7-4A9A-91AB-71A5AFCB2E5E -title {String Is Condition} -component StringIsCondition
+InstallComponent 0402CF48-EBA5-47C5-A284-9D3E54108FD3 -setup Install -type action -conditions 1174CE7D-A448-4E31-8816-3A25BD3B73D9 -title {Uninstall Shortcut} -component InstallProgramFolderShortcut -command insert -active Yes -parent 9D397587-6063-49F6-9BA4-E43087E1FB87
+Condition 1174CE7D-A448-4E31-8816-3A25BD3B73D9 -active Yes -parent 0402CF48-EBA5-47C5-A284-9D3E54108FD3 -title {String Is Condition} -component StringIsCondition
+InstallComponent A026EF93-0A9B-4999-A486-955C04DCFB09 -setup Install -type actiongroup -title {Finish Actions} -alias {Finish Actions} -active Yes -parent ActionGroupsInstall
+InstallComponent 0370AA35-7C4C-4E74-8F5E-C66476F94086 -setup Install -type actiongroup -title {Cancel Actions} -alias {Cancel Actions} -active Yes -parent ActionGroupsInstall
+InstallComponent 5FEBB1BD-3149-4C74-A78B-371B77E1FB9F -setup Uninstall -type pane -title Uninstall -component Uninstall -active Yes -parent StandardUninstall
+InstallComponent E6CA0D36-9668-4BA2-9E9C-602C3494E55A -setup Uninstall -type action -title {Modify Widget} -component ModifyWidget -active Yes -parent 5FEBB1BD-3149-4C74-A78B-371B77E1FB9F
+InstallComponent 88E02976-6EA5-4751-B9D9-103F6F8227BD -setup Uninstall -type action -title {Execute Action} -component ExecuteAction -active Yes -parent 5FEBB1BD-3149-4C74-A78B-371B77E1FB9F
+InstallComponent 228A3DE6-B4F9-4C11-A5F3-3DF0662DD301 -setup Uninstall -type action -title {Move Forward} -component MoveForward -active Yes -parent 5FEBB1BD-3149-4C74-A78B-371B77E1FB9F
+InstallComponent 076D9CCF-B23A-4447-8710-F537D58862A1 -setup Uninstall -type pane -conditions A86627D3-E9C1-4C26-911F-88A6FEC509F8 -title {Uninstall Details} -component UninstallDetails -command insert -active Yes -parent StandardUninstall
+Condition A86627D3-E9C1-4C26-911F-88A6FEC509F8 -active Yes -parent 076D9CCF-B23A-4447-8710-F537D58862A1 -title {String Is Condition} -component StringIsCondition
+InstallComponent C499EBD2-D0B6-4873-AA19-CDF54C0ACED4 -setup Uninstall -type pane -title {Uninstall Complete} -component UninstallComplete -active Yes -parent StandardUninstall
+InstallComponent 24B5E09F-F106-4E29-9D0F-B9ED9AECB943 -setup Uninstall -type action -title {Console Ask Yes Or No} -component ConsoleAskYesOrNo -active Yes -parent ConsoleUninstall
+InstallComponent B6214AD1-C7FA-4D8A-B51E-F65A7BC21E97 -setup Uninstall -type action -conditions 64C4C595-A95A-451B-A6F1-A1E59E4C0B8F -title Exit -component Exit -command insert -active Yes -parent ConsoleUninstall
+Condition 64C4C595-A95A-451B-A6F1-A1E59E4C0B8F -active Yes -parent B6214AD1-C7FA-4D8A-B51E-F65A7BC21E97 -title {String Is Condition} -component StringIsCondition
+InstallComponent F864D537-DF36-457D-BE7D-A5E6F2EB0CC3 -setup Uninstall -type action -title {Console Message} -component ConsoleMessage -active Yes -parent ConsoleUninstall
+InstallComponent 92D22608-7C5F-4CAD-AAE5-87326173AE33 -setup Uninstall -type action -title {Execute Action} -component ExecuteAction -active Yes -parent ConsoleUninstall
+InstallComponent 114852AB-A479-460A-B139-F9C6E555725A -setup Uninstall -type action -title {Console Message} -component ConsoleMessage -active Yes -parent ConsoleUninstall
+InstallComponent C9837310-0797-4CBF-A9BA-858915E68834 -setup Uninstall -type action -title Exit -component Exit -active Yes -parent ConsoleUninstall
+InstallComponent 15A00390-3975-4EEB-8BC1-6EDFCE8BC568 -setup Uninstall -type action -title {Execute Action} -component ExecuteAction -active Yes -parent SilentUninstall
+InstallComponent 8E57417F-BDEC-404E-BEB3-D4150CCFDAEA -setup Uninstall -type action -title Exit -component Exit -active Yes -parent SilentUninstall
+InstallComponent 6A5748B3-5EF0-4D83-A630-0CADE4297BDC -setup Uninstall -type actiongroup -title {Setup Actions} -alias {Setup Actions} -active Yes -parent ActionGroupsUninstall
+InstallComponent B9E7DFF9-FA48-4550-96B8-9B34A099DB31 -setup Uninstall -type actiongroup -title {Startup Actions} -alias {Startup Actions} -active Yes -parent ActionGroupsUninstall
+InstallComponent 70931750-18F3-4193-BD62-25072CAB7BBC -setup Uninstall -type action -conditions {165FC255-9AD5-4B2B-9568-802DB97E2B08 4141B0E2-5A8A-423C-9823-6B01CF4DAA01} -title Exit -component Exit -command insert -active Yes -parent B9E7DFF9-FA48-4550-96B8-9B34A099DB31
+Condition 165FC255-9AD5-4B2B-9568-802DB97E2B08 -active Yes -parent 70931750-18F3-4193-BD62-25072CAB7BBC -title {String Is Condition} -component StringIsCondition
+Condition 4141B0E2-5A8A-423C-9823-6B01CF4DAA01 -active Yes -parent 70931750-18F3-4193-BD62-25072CAB7BBC -title {Ask Yes or No} -component AskYesOrNo
+InstallComponent 385606CF-EDE2-4760-9F57-F7680187B9AD -setup Uninstall -type actiongroup -title {Uninstall Actions} -alias {Uninstall Actions} -active Yes -parent ActionGroupsUninstall
+InstallComponent 459C9EA6-D9EA-4D3D-915F-AD575C7F3C73 -setup Uninstall -type action -title {Uninstall Selected Files} -component UninstallSelectedFiles -active Yes -parent 385606CF-EDE2-4760-9F57-F7680187B9AD
+InstallComponent 040C8D36-0AB4-4436-99BA-EBDFC9B77FF6 -setup Uninstall -type actiongroup -title {Finish Actions} -alias {Finish Actions} -active Yes -parent ActionGroupsUninstall
+InstallComponent 8DBDA5C6-A4D9-464C-9AB1-9BC6FF981A3A -setup Uninstall -type actiongroup -title {Cancel Actions} -alias {Cancel Actions} -active Yes -parent ActionGroupsUninstall
+
+array set Properties {
+01720202-EE2E-4FE8-897F-E7F5D4445E2B,Conditions
+{0 conditions}
+
+0370AA35-7C4C-4E74-8F5E-C66476F94086,Alias
+{Cancel Actions}
+
+0370AA35-7C4C-4E74-8F5E-C66476F94086,Conditions
+{0 conditions}
+
+0402CF48-EBA5-47C5-A284-9D3E54108FD3,Conditions
+{1 condition}
+
+0402CF48-EBA5-47C5-A284-9D3E54108FD3,FileName
+<%ShortAppName%>-uninstall
+
+0402CF48-EBA5-47C5-A284-9D3E54108FD3,ShortcutName
+{Uninstall <%AppName%>}
+
+0402CF48-EBA5-47C5-A284-9D3E54108FD3,TargetFileName
+<%Uninstaller%>
+
+0402CF48-EBA5-47C5-A284-9D3E54108FD3,WorkingDirectory
+<%InstallDir%>
+
+040C8D36-0AB4-4436-99BA-EBDFC9B77FF6,Alias
+{Finish Actions}
+
+040C8D36-0AB4-4436-99BA-EBDFC9B77FF6,Conditions
+{0 conditions}
+
+076D9CCF-B23A-4447-8710-F537D58862A1,BackButton,subst
+1
+
+076D9CCF-B23A-4447-8710-F537D58862A1,CancelButton,subst
+1
+
+076D9CCF-B23A-4447-8710-F537D58862A1,Caption,subst
+1
+
+076D9CCF-B23A-4447-8710-F537D58862A1,Conditions
+{1 condition}
+
+076D9CCF-B23A-4447-8710-F537D58862A1,Message,subst
+1
+
+076D9CCF-B23A-4447-8710-F537D58862A1,NextButton,subst
+1
+
+076D9CCF-B23A-4447-8710-F537D58862A1,Subtitle,subst
+1
+
+076D9CCF-B23A-4447-8710-F537D58862A1,Text,subst
+1
+
+076D9CCF-B23A-4447-8710-F537D58862A1,Title,subst
+1
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,AcceptRadiobutton,subst
+0
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,Active
+Yes
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,BackButton,subst
+1
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,CancelButton,subst
+1
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,Caption,subst
+1
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,Conditions
+{0 conditions}
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,DeclineRadiobutton,subst
+0
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,Message,subst
+1
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,NextButton,subst
+1
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,Subtitle,subst
+1
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,Text,subst
+1
+
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,Title,subst
+1
+
+0FF988B2-BC2F-4F17-BE70-28D7FE7846C9,Conditions
+{0 conditions}
+
+0FF988B2-BC2F-4F17-BE70-28D7FE7846C9,State
+disabled
+
+0FF988B2-BC2F-4F17-BE70-28D7FE7846C9,Widget
+{Back Button;Next Button}
+
+10512CB0-772F-47B7-A58B-61B920D94C1F,Action
+{Install Actions}
+
+114852AB-A479-460A-B139-F9C6E555725A,Conditions
+{0 conditions}
+
+114852AB-A479-460A-B139-F9C6E555725A,Message,subst
+1
+
+1174CE7D-A448-4E31-8816-3A25BD3B73D9,CheckCondition
+{Before Action is Executed}
+
+1174CE7D-A448-4E31-8816-3A25BD3B73D9,Operator
+false
+
+1174CE7D-A448-4E31-8816-3A25BD3B73D9,String
+<%UpgradeInstall%>
+
+13317AAD-0D0A-4D0A-9BEA-922810029FE5,BackButton,subst
+1
+
+13317AAD-0D0A-4D0A-9BEA-922810029FE5,CancelButton,subst
+1
+
+13317AAD-0D0A-4D0A-9BEA-922810029FE5,Caption,subst
+1
+
+13317AAD-0D0A-4D0A-9BEA-922810029FE5,Conditions
+{0 conditions}
+
+13317AAD-0D0A-4D0A-9BEA-922810029FE5,FileLabel,subst
+1
+
+13317AAD-0D0A-4D0A-9BEA-922810029FE5,Message,subst
+1
+
+13317AAD-0D0A-4D0A-9BEA-922810029FE5,NextButton,subst
+1
+
+13317AAD-0D0A-4D0A-9BEA-922810029FE5,ProgressValue,subst
+1
+
+13317AAD-0D0A-4D0A-9BEA-922810029FE5,Subtitle,subst
+1
+
+13317AAD-0D0A-4D0A-9BEA-922810029FE5,Title,subst
+1
+
+15A00390-3975-4EEB-8BC1-6EDFCE8BC568,Action
+{Uninstall Actions}
+
+15A00390-3975-4EEB-8BC1-6EDFCE8BC568,Conditions
+{0 conditions}
+
+165FC255-9AD5-4B2B-9568-802DB97E2B08,CheckCondition
+{Before Action is Executed}
+
+165FC255-9AD5-4B2B-9568-802DB97E2B08,String
+<%GuiMode%>
+
+16772531-4012-4BDA-946C-64DA3926C388,Conditions
+{1 condition}
+
+16772531-4012-4BDA-946C-64DA3926C388,Prompt
+<%ConsoleSelectDestinationText%>
+
+16772531-4012-4BDA-946C-64DA3926C388,VirtualText
+InstallDir
+
+1F9C9836-090E-4017-95FD-C4F288FD3A99,CheckCondition
+{Before Action is Executed}
+
+1F9C9836-090E-4017-95FD-C4F288FD3A99,Message,subst
+1
+
+1F9C9836-090E-4017-95FD-C4F288FD3A99,Title,subst
+1
+
+1F9C9836-090E-4017-95FD-C4F288FD3A99,TrueValue
+No
+
+20725B89-270C-423C-A0E6-A7632A296664,Alias
+{Startup Actions}
+
+20725B89-270C-423C-A0E6-A7632A296664,Conditions
+{0 conditions}
+
+228A3DE6-B4F9-4C11-A5F3-3DF0662DD301,Conditions
+{0 conditions}
+
+2358DAA5-293A-4A4D-91F8-5F48B2F85AD6,CheckCondition
+{Before Next Action is Executed}
+
+2358DAA5-293A-4A4D-91F8-5F48B2F85AD6,FailureMessage
+<%DirectoryPermissionText%>
+
+2358DAA5-293A-4A4D-91F8-5F48B2F85AD6,Filename
+<%InstallDir%>
+
+2358DAA5-293A-4A4D-91F8-5F48B2F85AD6,Permission
+{can create}
+
+24B5E09F-F106-4E29-9D0F-B9ED9AECB943,Conditions
+{0 conditions}
+
+24B5E09F-F106-4E29-9D0F-B9ED9AECB943,Default
+Yes
+
+24B5E09F-F106-4E29-9D0F-B9ED9AECB943,Prompt
+<%UninstallStartupText%>
+
+2C2E1A2C-CB1E-49A3-A557-82185D2F1B9A,Comment
+{Ask the user if they want to proceed with the install.}
+
+2E8052B5-4C1E-45E5-8C6E-5021E7D9835A,Conditions
+{2 conditions}
+
+2E8052B5-4C1E-45E5-8C6E-5021E7D9835A,State
+disabled
+
+2E8052B5-4C1E-45E5-8C6E-5021E7D9835A,Widget
+NextButton
+
+318C333C-A42B-4001-954A-DCC1EB64CE38,CheckCondition
+{Before Action is Executed}
+
+318C333C-A42B-4001-954A-DCC1EB64CE38,String
+{<%Property <%CurrentPane%> UserMustAcceptLicense%>}
+
+385606CF-EDE2-4760-9F57-F7680187B9AD,Alias
+{Uninstall Actions}
+
+4141B0E2-5A8A-423C-9823-6B01CF4DAA01,CheckCondition
+{Before Action is Executed}
+
+4141B0E2-5A8A-423C-9823-6B01CF4DAA01,Message,subst
+1
+
+4141B0E2-5A8A-423C-9823-6B01CF4DAA01,Title,subst
+1
+
+4141B0E2-5A8A-423C-9823-6B01CF4DAA01,TrueValue
+No
+
+42CE5801-5679-4E0A-B2D6-BF04187F6D6D,Comment
+{Do not display this pane if this is an upgrade install unless there is more than one installation present}
+
+42CE5801-5679-4E0A-B2D6-BF04187F6D6D,Script
+{!<%UpgradeInstall%> || <%PreviousInstallCount%> != 1}
+
+459C9EA6-D9EA-4D3D-915F-AD575C7F3C73,Conditions
+{0 conditions}
+
+4833AC49-ACAD-4F73-9DCA-5117D5C142A5,BackButton,subst
+1
+
+4833AC49-ACAD-4F73-9DCA-5117D5C142A5,CancelButton,subst
+1
+
+4833AC49-ACAD-4F73-9DCA-5117D5C142A5,Caption,subst
+1
+
+4833AC49-ACAD-4F73-9DCA-5117D5C142A5,Conditions
+{0 conditions}
+
+4833AC49-ACAD-4F73-9DCA-5117D5C142A5,Message,subst
+1
+
+4833AC49-ACAD-4F73-9DCA-5117D5C142A5,NextButton,subst
+1
+
+498D9EBC-6F70-4CCC-8A88-B3F019A2B880,BackButton,subst
+1
+
+498D9EBC-6F70-4CCC-8A88-B3F019A2B880,CancelButton,subst
+1
+
+498D9EBC-6F70-4CCC-8A88-B3F019A2B880,Caption,subst
+1
+
+498D9EBC-6F70-4CCC-8A88-B3F019A2B880,Conditions
+{0 conditions}
+
+498D9EBC-6F70-4CCC-8A88-B3F019A2B880,Message,subst
+1
+
+498D9EBC-6F70-4CCC-8A88-B3F019A2B880,NextButton,subst
+1
+
+498D9EBC-6F70-4CCC-8A88-B3F019A2B880,Subtitle,subst
+1
+
+498D9EBC-6F70-4CCC-8A88-B3F019A2B880,Text,subst
+1
+
+498D9EBC-6F70-4CCC-8A88-B3F019A2B880,Title,subst
+1
+
+4A6B20C7-EEA3-4C05-A9FA-7234E3DBE91E,ExitType
+Finish
+
+4A7B5960-702D-4678-8533-D085CF653F0E,Description,subst
+1
+
+4A7B5960-702D-4678-8533-D085CF653F0E,DisplayName,subst
+1
+
+4A7B5960-702D-4678-8533-D085CF653F0E,FileGroups
+9C2BD124-0063-45FA-B2A1-C07E95BD54A1
+
+4A7B5960-702D-4678-8533-D085CF653F0E,Name
+{Default Component}
+
+4A7B5960-702D-4678-8533-D085CF653F0E,RequiredComponent
+Yes
+
+52CA7D36-64EE-4764-94D3-B6A39AC459FE,Alias
+{Setup Actions}
+
+52CA7D36-64EE-4764-94D3-B6A39AC459FE,Conditions
+{0 conditions}
+
+5442E77A-E443-4D83-8FE8-0D4FED32E57A,Action
+{Install Actions}
+
+5442E77A-E443-4D83-8FE8-0D4FED32E57A,Conditions
+{0 conditions}
+
+5F91FDFD-757E-48E1-A71E-A886EACEFEA2,CheckCondition
+{Before Action is Executed}
+
+5F91FDFD-757E-48E1-A71E-A886EACEFEA2,Operator
+false
+
+5F91FDFD-757E-48E1-A71E-A886EACEFEA2,String
+<%Answer%>
+
+5FEBB1BD-3149-4C74-A78B-371B77E1FB9F,BackButton,subst
+1
+
+5FEBB1BD-3149-4C74-A78B-371B77E1FB9F,CancelButton,subst
+1
+
+5FEBB1BD-3149-4C74-A78B-371B77E1FB9F,Caption,subst
+1
+
+5FEBB1BD-3149-4C74-A78B-371B77E1FB9F,Conditions
+{0 conditions}
+
+5FEBB1BD-3149-4C74-A78B-371B77E1FB9F,FileValue,subst
+1
+
+5FEBB1BD-3149-4C74-A78B-371B77E1FB9F,Message,subst
+1
+
+5FEBB1BD-3149-4C74-A78B-371B77E1FB9F,NextButton,subst
+1
+
+5FEBB1BD-3149-4C74-A78B-371B77E1FB9F,ProgressValue,subst
+1
+
+5FEBB1BD-3149-4C74-A78B-371B77E1FB9F,Subtitle,subst
+1
+
+5FEBB1BD-3149-4C74-A78B-371B77E1FB9F,Title,subst
+1
+
+60B1FD97-331A-4F0D-8CA9-4EA1F08E7FC8,CheckCondition
+{Before Action is Executed}
+
+60B1FD97-331A-4F0D-8CA9-4EA1F08E7FC8,String
+<%GuiMode%>
+
+62C46726-ACBB-4E99-8A2F-DD5BFB8E6DCD,Conditions
+{0 conditions}
+
+6428BA12-614A-4569-8D06-E7F83657F0F1,BackButton,subst
+1
+
+6428BA12-614A-4569-8D06-E7F83657F0F1,CancelButton,subst
+1
+
+6428BA12-614A-4569-8D06-E7F83657F0F1,Caption,subst
+1
+
+6428BA12-614A-4569-8D06-E7F83657F0F1,Conditions
+{0 conditions}
+
+6428BA12-614A-4569-8D06-E7F83657F0F1,Message,subst
+1
+
+6428BA12-614A-4569-8D06-E7F83657F0F1,NextButton,subst
+1
+
+648469D4-E8C8-4AFC-9AE3-F3BC6252F8CE,Conditions
+{0 conditions}
+
+64C4C595-A95A-451B-A6F1-A1E59E4C0B8F,CheckCondition
+{Before Action is Executed}
+
+64C4C595-A95A-451B-A6F1-A1E59E4C0B8F,Operator
+false
+
+64C4C595-A95A-451B-A6F1-A1E59E4C0B8F,String
+<%Answer%>
+
+6A5748B3-5EF0-4D83-A630-0CADE4297BDC,Alias
+{Setup Actions}
+
+6A5748B3-5EF0-4D83-A630-0CADE4297BDC,Conditions
+{0 conditions}
+
+70931750-18F3-4193-BD62-25072CAB7BBC,Comment
+{Ask the user if they want to proceed with the uninstall.}
+
+70931750-18F3-4193-BD62-25072CAB7BBC,Conditions
+{2 conditions}
+
+76F4FED5-0F82-4FE4-A14C-0DD5392B9BBF,ExitType
+Finish
+
+7B57D332-CFA8-4B68-AC63-2AA9DE785606,CheckCondition
+{Before Next Pane is Displayed}
+
+7B57D332-CFA8-4B68-AC63-2AA9DE785606,FailureMessage
+<%DirectoryPermissionText%>
+
+7B57D332-CFA8-4B68-AC63-2AA9DE785606,Filename
+<%InstallDir%>
+
+7B57D332-CFA8-4B68-AC63-2AA9DE785606,Permission
+{can create}
+
+836D6530-DC39-4773-BE74-19D0B2B54492,Action
+{Install Actions}
+
+836D6530-DC39-4773-BE74-19D0B2B54492,Conditions
+{0 conditions}
+
+8758570E-CC44-456D-918E-2E5249DAC439,Conditions
+{0 conditions}
+
+8758570E-CC44-456D-918E-2E5249DAC439,State
+disabled
+
+8758570E-CC44-456D-918E-2E5249DAC439,Widget
+{Back Button;Next Button}
+
+88E02976-6EA5-4751-B9D9-103F6F8227BD,Action
+{Uninstall Actions}
+
+88E02976-6EA5-4751-B9D9-103F6F8227BD,Conditions
+{0 conditions}
+
+88F9D095-410E-4CF2-80DB-1423246F8E42,Components
+4A7B5960-702D-4678-8533-D085CF653F0E
+
+88F9D095-410E-4CF2-80DB-1423246F8E42,Description,subst
+1
+
+88F9D095-410E-4CF2-80DB-1423246F8E42,DisplayName,subst
+1
+
+88F9D095-410E-4CF2-80DB-1423246F8E42,Name
+Typical
+
+8DBDA5C6-A4D9-464C-9AB1-9BC6FF981A3A,Alias
+{Cancel Actions}
+
+8DBDA5C6-A4D9-464C-9AB1-9BC6FF981A3A,Conditions
+{0 conditions}
+
+8E57417F-BDEC-404E-BEB3-D4150CCFDAEA,Conditions
+{0 conditions}
+
+8E57417F-BDEC-404E-BEB3-D4150CCFDAEA,ExitType
+Finish
+
+92D22608-7C5F-4CAD-AAE5-87326173AE33,Action
+{Uninstall Actions}
+
+969091FA-E868-4D96-8A8E-5F1E210773ED,CheckCondition
+{Before Action is Executed}
+
+969091FA-E868-4D96-8A8E-5F1E210773ED,Operator
+false
+
+969091FA-E868-4D96-8A8E-5F1E210773ED,String
+<%UpgradeInstall%>
+
+9C2BD124-0063-45FA-B2A1-C07E95BD54A1,Destination
+<%InstallDir%>
+
+9C2BD124-0063-45FA-B2A1-C07E95BD54A1,FileSize
+75612381
+
+9C2BD124-0063-45FA-B2A1-C07E95BD54A1,Name
+{Program Files}
+
+9D397587-6063-49F6-9BA4-E43087E1FB87,Alias
+{Install Actions}
+
+9D397587-6063-49F6-9BA4-E43087E1FB87,Conditions
+{0 conditions}
+
+A026EF93-0A9B-4999-A486-955C04DCFB09,Alias
+{Finish Actions}
+
+A026EF93-0A9B-4999-A486-955C04DCFB09,Conditions
+{0 conditions}
+
+A116668A-21D1-4E54-A590-9E523E6CF807,Conditions
+{0 conditions}
+
+A116668A-21D1-4E54-A590-9E523E6CF807,Message,subst
+1
+
+A7800E5F-F3E8-41B2-BE9F-8C7B3BC59209,Conditions
+{1 condition}
+
+A86627D3-E9C1-4C26-911F-88A6FEC509F8,String
+<%ErrorsOccurred%>
+
+AAF9B489-84A3-4C35-A9CB-BBA9130F22F7,Action
+{Install Actions}
+
+AAF9B489-84A3-4C35-A9CB-BBA9130F22F7,Conditions
+{0 conditions}
+
+AIX-ppc,Active
+No
+
+AIX-ppc,DefaultDirectoryPermission
+0755
+
+AIX-ppc,DefaultFilePermission
+0755
+
+AIX-ppc,Executable
+<%AppName%>-<%Version%>-<%Platform%>-Install<%Ext%>
+
+AIX-ppc,FallBackToConsole
+Yes
+
+AIX-ppc,InstallDir
+<%Home%>/<%ShortAppName%>
+
+AIX-ppc,InstallMode
+Standard
+
+AIX-ppc,InstallType
+Typical
+
+AIX-ppc,ProgramExecutable
+{}
+
+AIX-ppc,ProgramFolderAllUsers
+No
+
+AIX-ppc,ProgramFolderName
+<%AppName%>
+
+AIX-ppc,ProgramLicense
+<%InstallDir%>/LICENSE.txt
+
+AIX-ppc,ProgramName
+{}
+
+AIX-ppc,ProgramReadme
+<%InstallDir%>/README.txt
+
+AIX-ppc,PromptForRoot
+Yes
+
+AIX-ppc,RequireRoot
+No
+
+AIX-ppc,RootInstallDir
+/usr/local/<%ShortAppName%>
+
+B1323B62-5067-4380-9E19-A2F6DFE8F186,Components
+4A7B5960-702D-4678-8533-D085CF653F0E
+
+B1323B62-5067-4380-9E19-A2F6DFE8F186,Description,subst
+1
+
+B1323B62-5067-4380-9E19-A2F6DFE8F186,DisplayName,subst
+1
+
+B1323B62-5067-4380-9E19-A2F6DFE8F186,Name
+Custom
+
+B6214AD1-C7FA-4D8A-B51E-F65A7BC21E97,Conditions
+{1 condition}
+
+B9E7DFF9-FA48-4550-96B8-9B34A099DB31,Alias
+{Startup Actions}
+
+B9E7DFF9-FA48-4550-96B8-9B34A099DB31,Conditions
+{0 conditions}
+
+BD8849A8-F751-4F23-960A-81E257F72CAB,CheckCondition
+{Before Action is Executed}
+
+BD8849A8-F751-4F23-960A-81E257F72CAB,Operator
+false
+
+BD8849A8-F751-4F23-960A-81E257F72CAB,String
+<%UpgradeInstall%>
+
+C499EBD2-D0B6-4873-AA19-CDF54C0ACED4,BackButton,subst
+1
+
+C499EBD2-D0B6-4873-AA19-CDF54C0ACED4,CancelButton,subst
+1
+
+C499EBD2-D0B6-4873-AA19-CDF54C0ACED4,Caption,subst
+1
+
+C499EBD2-D0B6-4873-AA19-CDF54C0ACED4,Conditions
+{0 conditions}
+
+C499EBD2-D0B6-4873-AA19-CDF54C0ACED4,Message,subst
+1
+
+C499EBD2-D0B6-4873-AA19-CDF54C0ACED4,NextButton,subst
+1
+
+C6028DBC-6E23-4643-9B0F-4F7524BA11E5,CheckCondition
+{Before Action is Executed}
+
+C6028DBC-6E23-4643-9B0F-4F7524BA11E5,Operator
+false
+
+C6028DBC-6E23-4643-9B0F-4F7524BA11E5,String
+<%LicenseAccepted%>
+
+C9837310-0797-4CBF-A9BA-858915E68834,Conditions
+{0 conditions}
+
+C9837310-0797-4CBF-A9BA-858915E68834,ExitType
+Finish
+
+CEC0D285-9438-4659-94E5-AC4B5F753CDB,BackButton,subst
+1
+
+CEC0D285-9438-4659-94E5-AC4B5F753CDB,CancelButton,subst
+1
+
+CEC0D285-9438-4659-94E5-AC4B5F753CDB,Caption,subst
+1
+
+CEC0D285-9438-4659-94E5-AC4B5F753CDB,Conditions
+{0 conditions}
+
+CEC0D285-9438-4659-94E5-AC4B5F753CDB,Message,subst
+1
+
+CEC0D285-9438-4659-94E5-AC4B5F753CDB,NextButton,subst
+1
+
+CF6BE1B7-08AA-4981-814E-20DDC4DD857C,Conditions
+{1 condition}
+
+E0654B3D-6ABE-4640-9503-3DCE15658FEE,BackButton,subst
+1
+
+E0654B3D-6ABE-4640-9503-3DCE15658FEE,CancelButton,subst
+1
+
+E0654B3D-6ABE-4640-9503-3DCE15658FEE,Caption,subst
+1
+
+E0654B3D-6ABE-4640-9503-3DCE15658FEE,Conditions
+{0 conditions}
+
+E0654B3D-6ABE-4640-9503-3DCE15658FEE,FileLabel,subst
+1
+
+E0654B3D-6ABE-4640-9503-3DCE15658FEE,Message,subst
+1
+
+E0654B3D-6ABE-4640-9503-3DCE15658FEE,NextButton,subst
+1
+
+E0654B3D-6ABE-4640-9503-3DCE15658FEE,ProgressValue,subst
+1
+
+E0654B3D-6ABE-4640-9503-3DCE15658FEE,Subtitle,subst
+1
+
+E0654B3D-6ABE-4640-9503-3DCE15658FEE,Title,subst
+1
+
+E6CA0D36-9668-4BA2-9E9C-602C3494E55A,Conditions
+{0 conditions}
+
+E6CA0D36-9668-4BA2-9E9C-602C3494E55A,State
+disabled
+
+E6CA0D36-9668-4BA2-9E9C-602C3494E55A,Widget
+{NextButton; CancelButton}
+
+ED5A5BCE-2833-4247-A114-51E972369F26,BackButton,subst
+1
+
+ED5A5BCE-2833-4247-A114-51E972369F26,BrowseButton,subst
+1
+
+ED5A5BCE-2833-4247-A114-51E972369F26,BrowseText,subst
+1
+
+ED5A5BCE-2833-4247-A114-51E972369F26,CancelButton,subst
+1
+
+ED5A5BCE-2833-4247-A114-51E972369F26,Caption,subst
+1
+
+ED5A5BCE-2833-4247-A114-51E972369F26,Conditions
+{2 conditions}
+
+ED5A5BCE-2833-4247-A114-51E972369F26,DestinationLabel,subst
+0
+
+ED5A5BCE-2833-4247-A114-51E972369F26,Message,subst
+1
+
+ED5A5BCE-2833-4247-A114-51E972369F26,NextButton,subst
+1
+
+ED5A5BCE-2833-4247-A114-51E972369F26,Subtitle,subst
+1
+
+ED5A5BCE-2833-4247-A114-51E972369F26,Title,subst
+1
+
+EFC3A89B-C0AB-441F-9AF0-420E66AE1431,Conditions
+{0 conditions}
+
+EFC3A89B-C0AB-441F-9AF0-420E66AE1431,Message,subst
+1
+
+F700A731-92D7-4A9A-91AB-71A5AFCB2E5E,Conditions
+{1 condition}
+
+F864D537-DF36-457D-BE7D-A5E6F2EB0CC3,Conditions
+{0 conditions}
+
+F864D537-DF36-457D-BE7D-A5E6F2EB0CC3,Message,subst
+1
+
+FF789AC3-26B4-42DD-824B-E49A00C4777B,Conditions
+{0 conditions}
+
+FF7E9736-C092-4E83-8CA7-634DAEBB819A,Conditions
+{0 conditions}
+
+FF7E9736-C092-4E83-8CA7-634DAEBB819A,Default
+Yes
+
+FF7E9736-C092-4E83-8CA7-634DAEBB819A,Prompt
+<%InstallStartupText%>
+
+FreeBSD-4-x86,Active
+No
+
+FreeBSD-4-x86,DefaultDirectoryPermission
+0755
+
+FreeBSD-4-x86,DefaultFilePermission
+0755
+
+FreeBSD-4-x86,Executable
+<%AppName%>-<%Version%>-<%Platform%>-Install<%Ext%>
+
+FreeBSD-4-x86,FallBackToConsole
+Yes
+
+FreeBSD-4-x86,InstallDir
+<%Home%>/<%ShortAppName%>
+
+FreeBSD-4-x86,InstallMode
+Standard
+
+FreeBSD-4-x86,InstallType
+Typical
+
+FreeBSD-4-x86,ProgramExecutable
+{}
+
+FreeBSD-4-x86,ProgramFolderAllUsers
+No
+
+FreeBSD-4-x86,ProgramFolderName
+<%AppName%>
+
+FreeBSD-4-x86,ProgramLicense
+<%InstallDir%>/LICENSE.txt
+
+FreeBSD-4-x86,ProgramName
+{}
+
+FreeBSD-4-x86,ProgramReadme
+<%InstallDir%>/README.txt
+
+FreeBSD-4-x86,PromptForRoot
+Yes
+
+FreeBSD-4-x86,RequireRoot
+No
+
+FreeBSD-4-x86,RootInstallDir
+/usr/local/<%ShortAppName%>
+
+FreeBSD-x86,Active
+No
+
+FreeBSD-x86,DefaultDirectoryPermission
+0755
+
+FreeBSD-x86,DefaultFilePermission
+0755
+
+FreeBSD-x86,Executable
+<%AppName%>-<%Version%>-<%Platform%>-Install<%Ext%>
+
+FreeBSD-x86,FallBackToConsole
+Yes
+
+FreeBSD-x86,InstallDir
+<%Home%>/<%ShortAppName%>
+
+FreeBSD-x86,InstallMode
+Standard
+
+FreeBSD-x86,InstallType
+Typical
+
+FreeBSD-x86,ProgramExecutable
+{}
+
+FreeBSD-x86,ProgramFolderAllUsers
+No
+
+FreeBSD-x86,ProgramFolderName
+<%AppName%>
+
+FreeBSD-x86,ProgramLicense
+<%InstallDir%>/LICENSE.txt
+
+FreeBSD-x86,ProgramName
+{}
+
+FreeBSD-x86,ProgramReadme
+<%InstallDir%>/README.txt
+
+FreeBSD-x86,PromptForRoot
+Yes
+
+FreeBSD-x86,RequireRoot
+No
+
+FreeBSD-x86,RootInstallDir
+/usr/local/<%ShortAppName%>
+
+HPUX-hppa,Active
+No
+
+HPUX-hppa,DefaultDirectoryPermission
+0755
+
+HPUX-hppa,DefaultFilePermission
+0755
+
+HPUX-hppa,Executable
+<%AppName%>-<%Version%>-<%Platform%>-Install<%Ext%>
+
+HPUX-hppa,FallBackToConsole
+Yes
+
+HPUX-hppa,InstallDir
+<%Home%>/<%ShortAppName%>
+
+HPUX-hppa,InstallMode
+Standard
+
+HPUX-hppa,InstallType
+Typical
+
+HPUX-hppa,ProgramExecutable
+{}
+
+HPUX-hppa,ProgramFolderAllUsers
+No
+
+HPUX-hppa,ProgramFolderName
+<%AppName%>
+
+HPUX-hppa,ProgramLicense
+<%InstallDir%>/LICENSE.txt
+
+HPUX-hppa,ProgramName
+{}
+
+HPUX-hppa,ProgramReadme
+<%InstallDir%>/README.txt
+
+HPUX-hppa,PromptForRoot
+Yes
+
+HPUX-hppa,RequireRoot
+No
+
+HPUX-hppa,RootInstallDir
+/usr/local/<%ShortAppName%>
+
+Linux-x86,Active
+Yes
+
+Linux-x86,DefaultDirectoryPermission
+0755
+
+Linux-x86,DefaultFilePermission
+0755
+
+Linux-x86,Executable
+setupLinux_<%AppName%>_<%Version%>.bin
+
+Linux-x86,FallBackToConsole
+Yes
+
+Linux-x86,InstallDir
+<%Home%>/<%ShortAppName%>
+
+Linux-x86,InstallMode
+Standard
+
+Linux-x86,InstallType
+Typical
+
+Linux-x86,ProgramExecutable
+{}
+
+Linux-x86,ProgramFolderAllUsers
+No
+
+Linux-x86,ProgramFolderName
+<%AppName%>
+
+Linux-x86,ProgramLicense
+<%InstallDir%>/LICENSE.txt
+
+Linux-x86,ProgramName
+{}
+
+Linux-x86,ProgramReadme
+{}
+
+Linux-x86,PromptForRoot
+Yes
+
+Linux-x86,RequireRoot
+No
+
+Linux-x86,RootInstallDir
+/usr/local/<%ShortAppName%>
+
+MacOS-X,Active
+No
+
+MacOS-X,DefaultDirectoryPermission
+0755
+
+MacOS-X,DefaultFilePermission
+0755
+
+MacOS-X,Executable
+<%AppName%>-<%Version%>-<%Platform%>-Install<%Ext%>
+
+MacOS-X,FallBackToConsole
+Yes
+
+MacOS-X,InstallDir
+<%Home%>/<%ShortAppName%>
+
+MacOS-X,InstallMode
+Standard
+
+MacOS-X,InstallType
+Typical
+
+MacOS-X,ProgramExecutable
+{}
+
+MacOS-X,ProgramFolderAllUsers
+No
+
+MacOS-X,ProgramFolderName
+<%AppName%>
+
+MacOS-X,ProgramLicense
+<%InstallDir%>/LICENSE.txt
+
+MacOS-X,ProgramName
+{}
+
+MacOS-X,ProgramReadme
+<%InstallDir%>/README.txt
+
+MacOS-X,PromptForRoot
+Yes
+
+MacOS-X,RequireRoot
+No
+
+MacOS-X,RootInstallDir
+/usr/local/<%ShortAppName%>
+
+Solaris-sparc,Active
+No
+
+Solaris-sparc,DefaultDirectoryPermission
+0755
+
+Solaris-sparc,DefaultFilePermission
+0755
+
+Solaris-sparc,Executable
+<%AppName%>-<%Version%>-<%Platform%>-Install<%Ext%>
+
+Solaris-sparc,FallBackToConsole
+Yes
+
+Solaris-sparc,InstallDir
+<%Home%>/<%ShortAppName%>
+
+Solaris-sparc,InstallMode
+Standard
+
+Solaris-sparc,InstallType
+Typical
+
+Solaris-sparc,ProgramExecutable
+{}
+
+Solaris-sparc,ProgramFolderAllUsers
+No
+
+Solaris-sparc,ProgramFolderName
+<%AppName%>
+
+Solaris-sparc,ProgramLicense
+<%InstallDir%>/LICENSE.txt
+
+Solaris-sparc,ProgramName
+{}
+
+Solaris-sparc,ProgramReadme
+<%InstallDir%>/README.txt
+
+Solaris-sparc,PromptForRoot
+Yes
+
+Solaris-sparc,RequireRoot
+No
+
+Solaris-sparc,RootInstallDir
+/usr/local/<%ShortAppName%>
+
+TarArchive,Active
+No
+
+TarArchive,CompressionLevel
+6
+
+TarArchive,DefaultDirectoryPermission
+0755
+
+TarArchive,DefaultFilePermission
+0755
+
+TarArchive,Executable
+<%AppName%>-<%Version%>-<%Platform%>-Install<%Ext%>
+
+TarArchive,FallBackToConsole
+Yes
+
+TarArchive,InstallDir
+<%Home%>/<%ShortAppName%>
+
+TarArchive,InstallMode
+Standard
+
+TarArchive,InstallType
+Typical
+
+TarArchive,OutputFileName
+<%ShortAppName%>-<%Version%>.tar.gz
+
+TarArchive,ProgramExecutable
+{}
+
+TarArchive,ProgramFolderAllUsers
+No
+
+TarArchive,ProgramFolderName
+<%AppName%>
+
+TarArchive,ProgramLicense
+<%InstallDir%>/LICENSE.txt
+
+TarArchive,ProgramName
+{}
+
+TarArchive,ProgramReadme
+<%InstallDir%>/README.txt
+
+TarArchive,PromptForRoot
+Yes
+
+TarArchive,RequireRoot
+No
+
+TarArchive,RootInstallDir
+/usr/local/<%ShortAppName%>
+
+TarArchive,VirtualTextMap
+{<%InstallDir%> <%ShortAppName%>}
+
+Windows,Active
+Yes
+
+Windows,Executable
+setupwin32_<%AppName%>_<%Version%><%Ext%>
+
+Windows,IncludeTWAPI
+No
+
+Windows,InstallDir
+<%WinInstallDir%>
+
+Windows,InstallMode
+Standard
+
+Windows,InstallType
+Typical
+
+Windows,ProgramExecutable
+{}
+
+Windows,ProgramFolderAllUsers
+No
+
+Windows,ProgramFolderName
+<%AppName%>
+
+Windows,ProgramLicense
+<%InstallDir%>/LICENSE.txt
+
+Windows,ProgramName
+{}
+
+Windows,ProgramReadme
+{}
+
+Windows,WindowsIcon
+{Setup Blue Screen.ico}
+
+ZipArchive,Active
+No
+
+ZipArchive,CompressionLevel
+6
+
+ZipArchive,DefaultDirectoryPermission
+0755
+
+ZipArchive,DefaultFilePermission
+0755
+
+ZipArchive,Executable
+<%AppName%>-<%Version%>-<%Platform%>-Install<%Ext%>
+
+ZipArchive,FallBackToConsole
+Yes
+
+ZipArchive,InstallDir
+<%Home%>/<%ShortAppName%>
+
+ZipArchive,InstallMode
+Standard
+
+ZipArchive,InstallType
+Typical
+
+ZipArchive,OutputFileName
+<%ShortAppName%>-<%Version%>.zip
+
+ZipArchive,ProgramExecutable
+{}
+
+ZipArchive,ProgramFolderAllUsers
+No
+
+ZipArchive,ProgramFolderName
+<%AppName%>
+
+ZipArchive,ProgramLicense
+<%InstallDir%>/LICENSE.txt
+
+ZipArchive,ProgramName
+{}
+
+ZipArchive,ProgramReadme
+<%InstallDir%>/README.txt
+
+ZipArchive,PromptForRoot
+Yes
+
+ZipArchive,RequireRoot
+No
+
+ZipArchive,RootInstallDir
+/usr/local/<%ShortAppName%>
+
+ZipArchive,VirtualTextMap
+{<%InstallDir%> <%ShortAppName%>}
+
+}
+
+::msgcat::mcmset de {
+114852AB-A479-460A-B139-F9C6E555725A,Message
+<%UninstallCompleteText%>
+
+A116668A-21D1-4E54-A590-9E523E6CF807,Message
+<%InstallationCompleteText%>
+
+EFC3A89B-C0AB-441F-9AF0-420E66AE1431,Message
+<%InstallingApplicationText%>
+
+F864D537-DF36-457D-BE7D-A5E6F2EB0CC3,Message
+<%UninstallingApplicationText%>
+
+}
+::msgcat::mcmset en {
+0A802EE9-DF59-4623-91FC-CB9765D8F9B3,Text
+{Software Evaluation Agreement
+
+IMPORTANT - THIS IS A LEGALLY BINDING AGREEMENT.  PLEASE READ IT CAREFULLY.
+IF YOU DO NOT AGREE WITH THE FOLLOWING PROVISIONS, YOU MAY NOT USE THE
+ENCLOSED MATERIALS.  AFTER YOU READ THIS LICENSE AGREEMENT, YOU WILL BE ASKED
+WHETHER YOU ACCEPT AND AGREE TO THE TERMS OF THIS LICENSE AGREEMENT. DO NOT
+CLICK "I HAVE READ AND AGREE" UNLESS: (1) YOU ARE AUTHORIZED TO ACCEPT AND AGREE TO THE TERMS OF THIS LICENSE AGREEMENT ON BEHALF OF YOURSELF AND YOUR COMPANY; AND (2) YOU INTEND TO ENTER INTO AND TO BE BOUND BY THE TERMS OF THIS LEGALLY BINDING AGREEMENT ON BEHALF OF YOURSELF AND YOUR COMPANY.
+
+This Software Evaluation Agreement (or "Agreement") is a legal agreement
+between you ("You," either an individual or entity) and Texas Instruments
+Incorporated ("TI").  The "Evaluation Materials" subject to this Agreement
+include the enclosed or downloaded software programs and documentation that
+accompany this Agreement and any "on-line" or electronic documentation
+associated with the software programs. The "Evaluation Materials" include
+certain TI proprietary software programs that are specifically designed and
+licensed for execution solely and exclusively on or with TI Devices. For the
+purposes of this Agreement the term "TI Devices" means a TI EVM or DSK manufactured by or for TI. By installing, copying or otherwise using the Evaluation Materials, you agree to abide by the following provisions.   
+
+This Agreement is displayed for You to read prior to using the Evaluation Materials.  If You do not accept or agree with these provisions then:
+
+(1) do not unzip, download, copy, install or otherwise use the Evaluation Materials; and 
+
+(2) return the Evaluation Materials to TI's designated representative.
+
+Intellectual Property, Title and Limited License Grants - The Evaluation Materials contain copyrighted material, trade secrets and other proprietary information of TI and its licensors and are protected by copyright laws, international copyright treaties, and trade secret laws, as well as other intellectual property laws and treaties.  The Evaluation Materials are licensed, not sold to You, and can only be used in accordance with the terms of this Agreement. You agree that You will not mortgage, pledge or encumber the Evaluation Materials in any way. TI and its licensors retain all title and ownership of the Evaluation Materials, including all intellectual property rights in the Evaluation Materials and all copies of the Evaluation Materials.
+
+a. Limited Evaluation License.  Subject to the terms of this Agreement, TI
+grants to You a fully paid-up, royalty free, non-transferable,
+non-sub-licensable, non-exclusive, non-assignable, site-specific, temporary,
+limited license to use the Evaluation Materials solely and exclusively with or
+on TI Devices and solely for testing and evaluation purposes in accordance
+with the terms of this Agreement. You agree that upon termination of this
+Agreement, this license expires and that You will destroy any and all copies
+of the Evaluation Materials, including any portions or derivatives thereof, in
+your possession, custody or control and will provide to TI's designated representative a written statement signed by You or Your companyÆs authorized representative certifying such destruction. 
+
+b. Limited Demonstration License.  Subject to the terms of this Agreement, TI
+grants to You a free, non-transferable, non-exclusive, non-assignable,
+worldwide, non-sub-licensable, temporary, limited license to demonstrate the
+Evaluation Materials as they are used in a product that includes a TI Device
+and consists of both hardware and software components, including executable
+versions of the software programs included with the Evaluation Materials that
+execute solely and exclusively on a TI Device and not on a device manufactured
+by or for an entity other than TI, provided that such software programs are
+demonstrated solely in object or executable versions only and such hardware
+and software programs are not left with or retained by any third party and
+remain in your possession and under your control at all times. You agree that
+upon termination of this Agreement, this license expires and that You will
+destroy any and all copies of the Evaluation Materials, including any portions
+or derivatives thereof, in your possession, custody or control and will
+provide to TI's designated representative a written statement signed by You or your companyÆs authorized representative certifying such destruction.  
+
+c.	No Development, Production or Distribution License.  You acknowledge and agree that this license is limited to testing, evaluation and limited demonstration purposes only and You specifically agree not to use or distribute the Evaluation Materials, or any portion or derivative thereof, to any third party for any commercial purpose.  NOTWITHSTANDING ANYTHING TO THE CONTRARY, THIS AGREEMENT DOES NOT CONVEY ANY LICENSE TO USE THE EVALUATION MATERIALS, OR ANY PORTION OR DERIVATIVE THEREOF, IN PRODUCTION, OR TO DISTRIBUTE THE EVALUATION MATERIALS, OR ANY PORTION OR DERIVATIVE THEREOF, TO ANY THIRD PARTY.  YOU ARE REQUIRED TO EXECUTE A SEPARATE LICENSE AGREEMENT WITH TI BEFORE MANUFACTURING OR DISTRIBUTING THE EVALUATION MATERIALS, OR ANY PORTION OR DERIVATIVE THEREOF, OR ANY PRODUCTS THAT CONTAIN THE EVALUATION MATERIALS, OR ANY PORTION OR DERIVATIVE THEREOF. 
+
+d.	No Other License.  Notwithstanding anything to the contrary, nothing in this Agreement shall be construed as a license to any intellectual property rights of TI or its licensors other than those rights embodied in the software programs provided to You by TI as part of the Evaluation Materials.  EXCEPT AS PROVIDED HEREIN, NO OTHER LICENSE, WHETHER EXPRESS, IMPLIED, OR STATUTORY, BY ESTOPPEL OR OTHERWISE, TO ANY OTHER TI INTELLECTUAL PROPERTY RIGHTS IS GRANTED HEREIN.
+
+e.	Use Restrictions.  You will not disclose the Evaluation Materials, or
+any portion or derivative thereof, to any person other than those employees,
+consultants and contractors whose job performance directly requires access to
+the Evaluation Materials. You will use the Evaluation Materials solely for
+testing, evaluation and limited demonstration purposes and will not use or
+distribute the Evaluation Materials, or any portion thereof, to any third
+party for any commercial purpose. You will not copy, publish, disclose,
+provide, transfer or make available the Evaluation Materials, or any portion
+thereof, to any third party. You will not sub-license, transfer or assign the
+Evaluation Materials or Your rights under this Agreement to any third party.
+You will not (a) incorporate, combine, or distribute the Evaluation Materials,
+or any portions or derivatives thereof, with any Public Software, or (b) use
+Public Software in the development of any derivatives of the Evaluation
+Materials, in such a way that would cause the Evaluation Materials, or any
+portions or derivatives thereof, to be subject to all or part of the license
+obligations or other intellectual property related terms with respect to such
+Public Software, including but not limited to, the obligations that the
+Evaluation Materials, or any portions or derivatives thereof, incorporated
+into, combined, or distributed with such Public Software (i) be disclosed or
+distributed in source code form, be licensed for the purpose of making
+derivatives of such software, or be redistributed free of charge, contrary to
+the terms and conditions of this Agreement, (ii) be used with devices other
+than TI Devices, or (iii) be otherwise used or distributed in a manner
+contrary to the terms and conditions of this Agreement.  As used herein,
+"Public Software" means any software that contains, or is derived in whole or
+in part from, any software distributed as open source software, including but
+not limited to software licensed under the following or similar models:  (a)
+GNU's General Public License (GPL) or Lesser/Library GPL (LGPL), (b) the Artistic License (e.g., PERL), (c) the Mozilla Public License, (d) the Netscape Public License, (e) the Sun Community Source License (SCSL), (f) the Sun Industry Standards Source License (SISL), (g) the Apache Server license, (h) QT Free Edition License, (i) IBM Public License, and (j) BitKeeper.
+
+f.	Intellectual Property Rights.  You acknowledge and agree that the
+Evaluation Materials contain copyrighted material, trade secrets and other
+proprietary information of TI or its licensors.  To protect TI and its
+licensors' rights in the Evaluation Materials, You agree that You will not decompile, reverse engineer, disassemble or otherwise translate any of the software programs included with the Evaluation Materials to a human-perceivable form nor permit any person or entity under Your employ or control to do so. In no event will You alter, remove or destroy any copyright or proprietary notice of TI or its licensors included in the Evaluation Materials.  TI and its licensors reserve all rights not specifically granted under this Agreement. You further acknowledge and agree that all fixes, modifications and improvements to the Evaluation Materials conceived of or made by TI that are based, either in whole or in part, on Your feedback, suggestions or recommendations are the exclusive property of TI and all right, title and interest in and to all such fixes, modifications and improvements to the Evaluation Materials will vest solely in TI.    
+
+Warranties and Disclaimers.
+
+a.	No Warranty of Production or Support.  Nothing contained in this
+Agreement will be construed as a warranty or representation by TI to maintain
+production of any TI semiconductor device or other hardware or software with
+which the Evaluation Materials may be used or to otherwise support the
+Evaluation Materials in any manner. You acknowledge and agree that the
+Evaluation Materials are provided to You "AS-IS" and that TI is under no obligation to maintain or support the Evaluation Materials or to assist You in Your use of the Evaluation Materials.
+
+b.	Disclaimers.  TI does not warrant that operation of the Evaluation
+Materials will be error-free, or that the Evaluation Materials will meet Your
+individual requirements.  THE EVALUATION MATERIALS ARE PROVIDED "AS IS" AND WITH ALL FAULTS.  TI MAKES NO WARRANTIES OR REPRESENTATIONS, EXPRESS, IMPLIED, OR STATUTORY, REGARDING THE EVALUATION MATERIALS, INCLUDING, BUT NOT LIMITED TO, ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADE SECRETS OR OTHER INTELLECTUAL PROPERTY RIGHTS.  TI DISCLAIMS ANY WARRANTY OF TITLE, QUIET ENJOYMENT, QUIET POSSESSION, AND NON-INFRINGEMENT OF ANY THIRD PARTY INTELLECTUAL PROPERTY RIGHTS WITH REGARD TO THE EVALUATION MATERIALS OR YOUR USE OF THOSE MATERIALS.  YOU AGREE TO USE YOUR INDEPENDENT ANALYSIS, EVALUATION, AND JUDGMENT IN THE EVALUATION OF THE EVALUATION MATERIALS. FURTHER, THE EVALUATION MATERIALS ARE NOT FAULT TOLERANT AND ARE NOT DESIGNED, MANUFACTURED, OR INTENDED FOR USE IN OR WITH ONLINE CONTROL EQUIPMENT IN HAZARDOUS ENVIRONMENTS REQUIRING FAIL-SAFE PERFORMANCE, SUCH AS IN THE OPERATION OF NUCLEAR FACILITIES, AIRCRAFT FLIGHT CONTROL, AIRCRAFT NAVIGATION OR COMMUNICATIONS SYSTEMS, AIR TRAFFIC CONTROL, DIRECT LIFE SUPPORT MACHINES, OR WEAPONS SYSTEMS, IN WHICH THE MALFUNCTION OR FAILURE OF THE EVALUATION MATERIALS COULD LEAD DIRECTLY TO DEATH, PERSONAL INJURY, OR SEVERE PHYSICAL OR ENVIRONMENTAL DAMAGE.  
+
+Evaluation Reports and Access.  At TI's request, You will provide to TI,
+evaluation reports concerning performance of the Evaluation Materials that
+include Your evaluation of the strengths and weaknesses of the Evaluation
+Materials, any benchmarking results relating to a comparison of the Evaluation
+Materials with competitive products, and any recommended improvements. In
+performing this evaluation, You agree that You will use the Evaluation
+Materials under normal conditions. TI's designated representative for such discussions regarding any evaluations, benchmarking, malfunctions or needed improvements to the Evaluation Materials is:
+
+			Texas Instruments Incorporated
+			Catalog Software Operations
+			12203 Southwest Freeway
+			Mail Station 722
+			Stafford, Texas 77477 
+			281-274-5888
+
+Confidential Information.
+      
+The term "Confidential Information" shall mean the Evaluation Materials,
+whether so marked or not, and any benchmarking results for the Evaluation
+Materials. You agree that You will (i) use the Evaluation Materials only in
+connection with fulfilling Your rights and obligations under this Agreement,
+and (ii) implement reasonable procedures to prohibit the disclosure,
+unauthorized duplication, misuse or removal of TI's Confidential Information
+and will not disclose such Confidential Information to any third party, except
+as may be necessary and required in connection with the rights and obligations
+under this Agreement.  Without limiting the foregoing, You agree to hold TI's
+Confidential Information in confidence and to use at least the same procedures
+and degree of care that You use to prevent disclosure of Your own confidential
+information of like importance, but in no instance less than reasonable degree
+of care. You agree to obtain executed confidentiality agreements with Your
+employees, consultants and contractors having access to TI's Confidential Information and to diligently take steps to enforce such agreements or be responsible for the actions of such employees, consultants and contractors in this respect.  Employment agreements used in the normal course of business that include confidentiality provisions shall satisfy the requirements of this section. The obligations set forth in this Section (Confidential Information) will survive any termination of this Agreement for three (3) years after such termination.
+
+Intellectual Property Indemnification Disclaimer.  
+
+You acknowledge and agree that the Evaluation Materials are based on industry recognized standards, including, but not limited to, the ITU and ITU-T standards, the TCP/IP standard, the ISO MPEG and JPEG standards, and the SMPTE standard, and software programs published by industry recognized standards bodies and that certain third parties claim to own patents, copyrights or other intellectual property rights that cover implementation of those standards. You acknowledge and agree that this Agreement does not convey any license to any such third party patents, copyrights, and other intellectual property rights and that You are solely responsible for any intellectual property infringement claims made by such third parties that relate to Your use of the Evaluation Materials.
+
+YOU AGREE THAT TI SHALL NOT BE LIABLE FOR AND SHALL NOT DEFEND OR INDEMNIFY
+YOU AGAINST ANY THIRD PARTY INFRINGEMENT CLAIM THAT RELATES TO OR IS BASED ON
+YOUR USE OF THE EVALUATION MATERIALS IN ANY MANNER.  THE FOREGOING STATES TI'S ENTIRE LIABILITY WITH RESPECT TO INFRINGEMENT OF ANY PATENT OR OTHER INTELLECTUAL PROPERTY RIGHT UNDER THIS AGREEMENT AND IS IN LIEU OF ALL WARRANTIES, EXPRESS, IMPLIED OR STATUTORY, IN REGARD THERETO.
+
+Termination.
+
+The Agreement is effective until terminated and begins on the date you accept
+this Agreement's terms and conditions. You may terminate this Agreement at any time by written notice to TI. Without prejudice to any other rights, if You fail to comply with any of the terms or conditions of this Agreement, TI may terminate this Agreement. Upon any termination, all licenses granted under this Agreement expire.
+
+Further, TI may terminate this Agreement on thirty (30) days written notice to
+You, at any time, for TI's convenience. Upon termination of this Agreement,
+all licenses granted under this Agreement expire, and You will destroy any and
+all copies of the Evaluation Materials or any portions or derivatives thereof,
+in Your possession, custody or control, and provide to TI a written statement
+signed by You, or Your company's authorized representative, certifying such destruction.  
+
+Liability Limitations. 
+
+IN NO EVENT SHALL TI, OR ANY APPLICABLE LICENSOR, BE LIABLE FOR ANY SPECIAL, INDIRECT, COLLATERAL, INCIDENTAL, PUNATIVE, OR CONSEQUENTIAL DAMAGES HOWEVER CAUSED, ON ANY THEORY OF LIABILITY, IN CONNECTION WITH OR ARISING OUT OF THE LICENSES GRANTED HEREIN, THIS AGREEMENT OR USE OF THE EVALUATION MATERIALS, REGARDLESS OF WHETHER OR NOT TI HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.  THESE EXCLUDED DAMAGES INCLUDE, BUT ARE NOT LIMITED TO, COST OF REMOVAL OR REINSTALLATION, OUTSIDE COMPUTER TIME, LABOR COSTS, LOSS OF GOODWILL, LOSS OF PROFITS, LOSS OF SAVINGS, LOSS OF DATA, OR LOSS OF USE OR INTERRUPTION OF BUSINESS. 
+
+IN NO EVENT SHALL TI'S AGGREGATE LIABILITY UNDER THIS AGREEMENT EXCEED FIVE HUNDRED DOLLARS ($500).  The existence of more than one claim will not enlarge or extend these limits. 
+
+Governing Law, Jurisdiction and Severability.  This Agreement will be governed by and interpreted in accordance with the laws of the State of Texas, U.S.A., without reference to that stateÆs conflict-of-laws principles.  This Agreement shall not be governed by the United Nations Convention on Contracts for the International Sale of Goods, nor shall it be governed by the Uniform Computer Information Transactions Act.  Any dispute arising out of or related to this Agreement will be brought in, and each party consents to non-exclusive jurisdiction and venue in, the state and federal courts sitting in Dallas County, Texas, U.S.A.  Each party waives all defenses of lack of personal jurisdiction and forum non-conveniens and agrees that process may be served on either party in a manner authorized by applicable law or court rule.  If for any reason a court of competent jurisdiction finds any provision of the Agreement to be unenforceable, that provision will be enforced to the maximum extent possible to effectuate the intent of the parties and the remainder of the Agreement shall continue in full force and effect.
+
+Export Control. You hereby acknowledge and agree that unless prior
+authorization is obtained from the United States Department of Commerce,
+neither You nor your agents will export, re-export, or release, directly or
+indirectly, any technology, software, or software source code (as defined in
+Part 772 of the Export Administration Regulations of the U.S. Department of
+Commerce ("EAR")), received from TI, or export, directly or indirectly, any
+direct product of such technology, software, or software source code (as
+defined in Part 734 of the EAR), to any destination or country to which the
+export, re-export or release of the technology, software, software source
+code, or direct product is prohibited by the EAR. You agree that none of the
+Licensed Materials may be downloaded or otherwise exported or re-exported (i)
+into (or to a national or resident of) Cuba, Iran, Iraq, Libya, North Korea,
+Sudan and Syria or any other country for which the U.S. has embargoed goods;
+or (ii) to anyone on the U.S. Treasury Department's List of Specially Designated Nationals or the U.S. Commerce DepartmentÆs Denied Person List or Entity List. You represent and warrant that you are not located in, under the control of, or a national or resident of any such country or on any such list and you will not use or transfer the Licensed Materials for use in any sensitive nuclear, chemical or biological weapons, or missile technology end-uses unless authorized by the U.S. Government by regulation or specific license. The assurances provided for herein are furnished to TI by You in compliance with Part 740 (Technology and Software Under Restriction) of the EAR. You also understand and acknowledge that products, technology (regardless of the form in which it is provided), software or software source code, received from TI under this Agreement may be under export control of the United States or other countries.  You shall comply with the United States and other applicable non-U.S. laws and regulations governing the export, re-export and release of any products, technology, software, or software source code received under this Agreement from TI.  You shall not undertake any action that is prohibited by the EAR.  Without limiting the generality of the foregoing, You specifically agrees that You shall not transfer or release products, technology, software, or software source code of TI to, or for use by, military end users or for use in military, missile, nuclear, biological, or chemical weapons end uses.
+You shall secure at Your own expense, such licenses and export and import documents as are necessary for You to fulfill its obligations under this Agreement.  If such licenses or government approvals cannot be obtained, TI may terminate this Agreement, or shall otherwise be excused from the performance of any obligations it may have under this Agreement for which the licenses or government approvals are required.
+
+Governing Language.  This Agreement is written and executed in the English language.  If a translation of this Agreement is required for any purpose, including but not limited to registration of the Agreement pursuant to any governmental laws, regulations or rules, You warrant and represent that You will be solely responsible for creating such translation.  It is understood and agreed that any translation of this Agreement into a language other than English is intended solely in order to comply with such laws or for reference purposes, and the English language version shall be authoritative and controlling.
+
+Registration Requirements.  If required, You agree that You will be solely responsible for performing all acts and obtaining all approvals that may beárequired in connection with this Agreement by the government of the People's Republic of China, including but not limited to registering pursuant to, and otherwise complying with, the PRC Measures on the Administration of Software Products, Management Regulations on Technology Import-Export, and Technology Import and Export Contract Registration Management Rules. Upon receipt of such approvals from the government authorities, You will forward evidence of all such approvals to TI for its records.  In the event that You fail to obtain any such approval or registration, You shall be solely responsible for any and all losses, damages or costs resulting therefrom, and shall indemnify TI for all such losses, damages or costs.
+
+Entire Agreement.  This is the entire Agreement between You and TI and supersedes any prior and contemporaneous agreements, understandings, negotiations and discussions between the parties related to the subject matter of this Agreement. Neither party shall be bound by any conditions, definitions, warranties, understandings, nor representations with respect to the subject matter hereof other than as expressly provided herein. These terms and conditions will prevail notwithstanding any different, conflicting or additional terms and conditions that may appear in any purchase order, acknowledgement or other writing not expressly incorporated into this Agreement. No amendment or modification of this Agreement will be effective unless in writing and signed by a duly authorized representative of TI.  You hereby warrant and represent that You have obtained all authorizations and other applicable consents required empowering you to enter into this Agreement and use the Evaluation Materials. 
+   
+   
+		
+}
+
+114852AB-A479-460A-B139-F9C6E555725A,Message
+<%UninstallCompleteText%>
+
+1F9C9836-090E-4017-95FD-C4F288FD3A99,Message
+<%InstallStartupText%>
+
+1F9C9836-090E-4017-95FD-C4F288FD3A99,Title
+<%InstallApplicationText%>
+
+2555563F-1BC1-4F42-8413-82FBC0DBEB72,Caption
+{Installing CSL Libraries}
+
+2555563F-1BC1-4F42-8413-82FBC0DBEB72,Message
+{Installation of the CSL Libraries in progress}
+
+4141B0E2-5A8A-423C-9823-6B01CF4DAA01,Message
+<%UninstallStartupText%>
+
+4141B0E2-5A8A-423C-9823-6B01CF4DAA01,Title
+<%UninstallApplicationText%>
+
+4A7B5960-702D-4678-8533-D085CF653F0E,Description
+<%ProgramFilesDescription%>
+
+88F9D095-410E-4CF2-80DB-1423246F8E42,Description
+<%TypicalInstallDescription%>
+
+A116668A-21D1-4E54-A590-9E523E6CF807,Message
+<%InstallationCompleteText%>
+
+B1323B62-5067-4380-9E19-A2F6DFE8F186,Description
+<%CustomInstallDescription%>
+
+CFC03BF9-B5A7-4504-85AF-FE5AEA67EC4A,Message
+Testing
+
+EFC3A89B-C0AB-441F-9AF0-420E66AE1431,Message
+<%InstallingApplicationText%>
+
+F864D537-DF36-457D-BE7D-A5E6F2EB0CC3,Message
+<%UninstallingApplicationText%>
+
+}
+::msgcat::mcmset es {
+114852AB-A479-460A-B139-F9C6E555725A,Message
+<%UninstallCompleteText%>
+
+A116668A-21D1-4E54-A590-9E523E6CF807,Message
+<%InstallationCompleteText%>
+
+EFC3A89B-C0AB-441F-9AF0-420E66AE1431,Message
+<%InstallingApplicationText%>
+
+F864D537-DF36-457D-BE7D-A5E6F2EB0CC3,Message
+<%UninstallingApplicationText%>
+
+}
+::msgcat::mcmset fr {
+114852AB-A479-460A-B139-F9C6E555725A,Message
+<%UninstallCompleteText%>
+
+A116668A-21D1-4E54-A590-9E523E6CF807,Message
+<%InstallationCompleteText%>
+
+EFC3A89B-C0AB-441F-9AF0-420E66AE1431,Message
+<%InstallingApplicationText%>
+
+F864D537-DF36-457D-BE7D-A5E6F2EB0CC3,Message
+<%UninstallingApplicationText%>
+
+}
+::msgcat::mcmset hu {
+114852AB-A479-460A-B139-F9C6E555725A,Message
+<%UninstallCompleteText%>
+
+A116668A-21D1-4E54-A590-9E523E6CF807,Message
+<%InstallationCompleteText%>
+
+EFC3A89B-C0AB-441F-9AF0-420E66AE1431,Message
+<%InstallingApplicationText%>
+
+F864D537-DF36-457D-BE7D-A5E6F2EB0CC3,Message
+<%UninstallingApplicationText%>
+
+}
+::msgcat::mcmset it {
+114852AB-A479-460A-B139-F9C6E555725A,Message
+<%UninstallCompleteText%>
+
+A116668A-21D1-4E54-A590-9E523E6CF807,Message
+<%InstallationCompleteText%>
+
+EFC3A89B-C0AB-441F-9AF0-420E66AE1431,Message
+<%InstallingApplicationText%>
+
+F864D537-DF36-457D-BE7D-A5E6F2EB0CC3,Message
+<%UninstallingApplicationText%>
+
+}
+::msgcat::mcmset nl {
+114852AB-A479-460A-B139-F9C6E555725A,Message
+<%UninstallCompleteText%>
+
+A116668A-21D1-4E54-A590-9E523E6CF807,Message
+<%InstallationCompleteText%>
+
+EFC3A89B-C0AB-441F-9AF0-420E66AE1431,Message
+<%InstallingApplicationText%>
+
+F864D537-DF36-457D-BE7D-A5E6F2EB0CC3,Message
+<%UninstallingApplicationText%>
+
+}
+::msgcat::mcmset pl {
+114852AB-A479-460A-B139-F9C6E555725A,Message
+<%UninstallCompleteText%>
+
+A116668A-21D1-4E54-A590-9E523E6CF807,Message
+<%InstallationCompleteText%>
+
+EFC3A89B-C0AB-441F-9AF0-420E66AE1431,Message
+<%InstallingApplicationText%>
+
+F864D537-DF36-457D-BE7D-A5E6F2EB0CC3,Message
+<%UninstallingApplicationText%>
+
+}
+::msgcat::mcmset pt_br {
+114852AB-A479-460A-B139-F9C6E555725A,Message
+<%UninstallCompleteText%>
+
+A116668A-21D1-4E54-A590-9E523E6CF807,Message
+<%InstallationCompleteText%>
+
+EFC3A89B-C0AB-441F-9AF0-420E66AE1431,Message
+<%InstallingApplicationText%>
+
+F864D537-DF36-457D-BE7D-A5E6F2EB0CC3,Message
+<%UninstallingApplicationText%>
+
+}
+
