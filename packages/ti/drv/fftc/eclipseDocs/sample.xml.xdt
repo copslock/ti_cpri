@@ -1,0 +1,30 @@
+%%{
+/*!
+ *  This template implements the Doxyfile
+ */  
+  /* Versioning */
+  var ver = this;
+  var packageVersion = ver[0]+"."+ver[1]+"."+ver[2]+"."+ver[3];
+
+%%}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+    <name>FFTC Driver</name>
+    <id>ti.drv.fftc</id>
+    <version>`packageVersion`</version>
+    <companyName>Texas Instruments Inc.</companyName>
+    <companyUrl>http://ti.com</companyUrl>
+    <copyRightNotice>Copyright Texas Instruments 2012</copyRightNotice>
+
+    <licenseNotice>
+      Released under the Eclipse Public License 1.0 (http://www.eclipse.org/legal/epl-v10.html)
+    </licenseNotice>
+
+    <installLocation>../../..</installLocation>
+    <repository>../../../packages</repository>
+
+    <docsLoc>../../../packages/ti/drv/fftc/docs</docsLoc>
+
+    <folderPrefix>FFTC Driver</folderPrefix>
+</product>

@@ -1,0 +1,134 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the FFTC Driver
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for the FFTC
+ *  and is responsible for configuration of the paths for the various 
+ *  tools required to build the driver.
+ *
+ * Copyright (C) 2009, 2014 Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Set package attribute as ZIP or TAR */
+Pkg.attrs.archiver = "tar";
+
+/* Get the Tools Base directory from the Environment Variable. */
+var toolsBaseDir = java.lang.System.getenv("C6X_GEN_INSTALL_PATH");
+
+/* Get the base directory for the FFTC Driver Package */
+var lldPath = new java.io.File(".//").getPath();
+
+/* Get the extended debug flags */
+var extDbgFlags = java.lang.System.getenv("EXTDBGFLAGS");
+
+var lldInstallType;
+
+/* Read the part number from the environment variable. */
+var lldPartNumber = java.lang.System.getenv("PARTNO");
+
+/* Include Path */
+var lldIncludePath = " -i" + lldPath + "/src" + " -i" + lldPath  + " -i" + lldPath + "/test";
+
+/* Configure the FFTC Driver Release Version Information */
+/* 3 steps: remove SPACE and TAB, convert to string and split to make array */
+var lldReleaseVersion = (""+Pkg.version.replace(/\s/g, "")).split(',');
+
+/* FFTC LLD Coverity Analysis: Check the environment variable to determine if Static
+ * Analysis has to be done on the FFTC LLD Code base or not? */
+var lldCoverityAnalysis = java.lang.System.getenv("LLDCOV");
+
+/* C66 compiler configuration for Little Endian Mode + ELF build. */
+var C66LE               =   xdc.useModule('ti.targets.elf.C66');
+C66LE.rootDir           =   toolsBaseDir;
+C66LE.ccOpts.prefix     =   "-mo -o3 -q -k -eo.o";
+if(extDbgFlags)
+    C66LE.ccOpts.prefix = C66LE.ccOpts.prefix + " " + extDbgFlags; 
+
+/* Check if we need to run the STATIC Analysis or not? */
+var coverityAnalysis = java.lang.System.getenv("STATIC_ANALYZE");
+
+/* Setup the Coverity Filters to perform Static Analysis. */
+if (coverityAnalysis == "ON") {
+    var coverityInstallPath = java.lang.System.getenv("STATIC_ANALYZE_PATH");
+    var cfgBase = xdc.getPackageBase("tisb.coverity.filters") + "cfg";
+
+    var coverityFilter = [
+    {
+        moduleName: "tisb.coverity.filters.Coverity",
+        params: {
+            cfgDir:  cfgBase,  // The Coverity configuration file directory
+            rootDir: coverityInstallPath,
+            outDir: xdc.csd() + "cov_out",
+            analyzeLibs: true
+        }
+    },
+    ];
+
+    /* Run the coverity filters on the C66 LE ELF Build only. */
+    C66LE.profiles["release"].filters = coverityFilter;
+}
+
+/* Check if we need to create the Makefiles? */
+var miniBuild = java.lang.System.getenv("MINI_PACKAGE");
+if (miniBuild == "ON")
+{
+    /* Add the filter for simple Makefile generation. Generate mini filters for C66 ELF only. */
+    var makeC66LEFilter = {
+        moduleName: "build.filter.Make",
+        params: {
+          makefileName: "simpleC66LE.mak",
+        }
+    };
+
+    C66LE.profiles["release"].filters[C66LE.profiles["release"].filters.length++] = makeC66LEFilter;
+
+}
+
+/* List all the build targets here. */
+Build.targets = [ C66LE ];
+
+/* device name (k2?) is inserted between first an second element of this
+   list to construct device file name for each device */
+var deviceConstruct = [ "device/", "/src/fftc_device_cfg.c" ];
+
+/* Grab input from XDCARGS */
+var buildArguments  = [];
+
+/* Construct the build arguments */
+for (var tmp=0; arguments[tmp] != undefined; tmp++)
+{
+
+    /* If no arguments are provided, override for building all */
+    if ( ( arguments.length == 1) && (arguments[tmp].equals("./config.bld")) )
+        buildArguments[buildArguments.length++] = "all";
+    else
+        buildArguments[buildArguments.length++] = arguments[tmp];
+}
+
+/* Derive of all devices that combine to make the fftc library.
+ */
+var devices = [];
+var devicesCCOpt = [];
+
+if ( ( buildArguments.indexOf("k2l") != -1 ) ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    devices.push("k2l/c66");
+    devicesCCOpt.push("-DDEVICE_K2L");
+}
+
+if ( ( buildArguments.indexOf("k2h") != -1 ) ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    devices.push("k2h/c66");
+    devicesCCOpt.push("-DDEVICE_K2H");
+}
+
+if ( ( buildArguments.indexOf("k2k") != -1 ) ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    devices.push("k2k/c66");
+    devicesCCOpt.push("-DDEVICE_K2K");
+}

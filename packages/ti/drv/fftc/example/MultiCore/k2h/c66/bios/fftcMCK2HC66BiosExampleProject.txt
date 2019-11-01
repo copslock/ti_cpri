@@ -1,0 +1,8 @@
+-ccs.linkFile "FFTC_INSTALL_PATH/ti/drv/fftc/example/MultiCore/src/multicore.c"
+-ccs.linkFile "FFTC_INSTALL_PATH/ti/drv/fftc/example/MultiCore/k2h/c66/bios/multicore_osal.c"
+-ccs.linkFile "FFTC_INSTALL_PATH/ti/drv/fftc/example/MultiCore/k2h/c66/bios/fftc_linker.cmd"
+-ccs.linkFile "FFTC_INSTALL_PATH/ti/drv/fftc/example/MultiCore/k2h/c66/bios/fftc.cfg"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/cppi/device/k2h/src/cppi_device.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/device/k2h/src/qmss_device.c"
+-ccs.setCompilerOptions "-mv6600 -g -DDEVICE_K2H --diag_warning=225 -I${PDK_INSTALL_PATH}  -I${FFTC_INSTALL_PATH} -I${FFTC_INSTALL_PATH}/ti/drv/fftc/example/MultiCore/src"
+-rtsc.enableRtsc
