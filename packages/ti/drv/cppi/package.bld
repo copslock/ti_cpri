@@ -1,0 +1,197 @@
+/******************************************************************************
+ * FILE PURPOSE: Build description for the CPPI LLD Package
+ ******************************************************************************
+ * FILE NAME: package.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build specification and description for the CPPI LLD
+ *  
+ *  The file takes the following parameters from the command line through the
+ *  XDCARGS variable.
+ *      XDCARGS[0] = CPPI LLD Install Type 
+ *      Valid Values are "TAR" or "SETUP"
+ *      DEFAULT is "SETUP"
+ *
+ *  Example for a valid command:
+ *      xdc XDCARGS="SETUP" release   
+ *
+ * Copyright (C) 2011-2013, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* List of all subdirectories that combine to make the CPPI LLD Package. */
+var subDirectories = [ "src", "docs", "include", "test", "device", "example" ];
+
+/* Determine if we need to create the InstallJammer Application or not? 
+ * CPPI LLD Deliverables be either of the following formats:
+ *  - TAR Ball Package
+ *  - Setup Executable 
+ * DEFAULT is a TAR Executable. */
+
+if ((arguments[0] != "TAR") && (arguments[0] != "SETUP"))
+    lldInstallType = "TAR";
+else
+    lldInstallType = arguments[0];
+
+/* Irrespective of the InstallType we always create a TAR Ball Package as a part
+ * of the RTSC Build. Here we determine the name of the TAR Ball Package
+ *  Format is as follows:
+ *      lld_<version> */
+var lldRTSCFileName = "cppi" + "_" + 
+                      lldReleaseVersion[0] + "_" +  lldReleaseVersion[1] + "_" + 
+                      lldReleaseVersion[2]  + "_" + lldReleaseVersion[3];
+
+/******************************************************************
+ ************************ Release Banner **************************
+ ******************************************************************/
+
+print ("*************** CPPI LLD Build Information ****************");
+print ("CPPI LLD Install           : " + lldInstallType);
+print ("CPPI LLD Version           : " + lldReleaseVersion);
+print ("C66 Tools Directory        : " + c66ToolsBaseDir);
+print ("M4 Tools Directory         : " + m4ToolsBaseDir);
+print ("A15 Tools Directory        : " + a15ToolsBaseDir);
+print ("RTSC File Name	           : " + lldRTSCFileName);
+print ("CPPI LLD Path              : " + lldPath);
+print ("CC LE opts                 : " + C66LE.ccOpts.prefix);
+print ("M4 LE opts                 : " + M4LE.ccOpts.prefix);
+print ("A15 basic opts             : " + A15LE.ccOpts.prefix);
+print ("***********************************************************");
+
+/* Create the release package for the CPPI LLD */
+Pkg.defaultRelease = Pkg.addRelease (lldRTSCFileName, {prefix: "./packages/"});
+
+/* Moving forward we need to set the Archiver of the package to be ZIP. This is currently
+ * not supported in the XDC tools being used. Currenly builds need to be done with the 
+ * following options:-
+ *   xdc MK_FIXLISTOPTS=-t release 
+ * ZIP is a better option as it works natively with INSTALL Jammer and we can remove the
+ * uncompression into a temporary directory. XDC Tools with xdc-rXX support the ZIP archiver. */
+//Pkg.attrs = {archiver : "zip"};
+
+/* Cycle through all the sub-directories and build all the files */
+for (var i = 0; i < subDirectories.length; i++) 
+{
+    /* Load the capsule in the sub directory. */
+    var caps = xdc.loadCapsule (subDirectories[i]+"/Module.xs");
+
+    print ("Building directory " + subDirectories[i]);
+
+    /* Build the capsule. */
+    caps.modBuild();
+
+    /* Package the module.xs files for building via package */
+    Pkg.otherFiles[Pkg.otherFiles.length++] = subDirectories[i]+"/Module.xs";
+}
+
+/* Package the remaining files */
+Pkg.otherFiles[Pkg.otherFiles.length++] = "config.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "cppi_drv.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "cppi_desc.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "cppi_osal.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "cppiver.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "cppiver.h.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/Doxyfile";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/doxyfile.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/buildlib.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "makefile";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "makefile_armv7";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/armv7/libcppi_aearmv7.mk";
+
+/* Generate Users Manual Doxyfile */
+var tplt = xdc.loadTemplate("./docs/doxyfile.xdt");
+tplt.genFile("./docs/Doxyfile",lldReleaseVersion); 
+
+/* Generate Settings.xdc */
+var tplt = xdc.loadTemplate("./Settings.xdc.xdt");
+tplt.genFile("./Settings.xdc",lldReleaseVersion); 
+
+/* Generate cppiver.h */
+var tplt = xdc.loadTemplate("./cppiver.h.xdt");
+tplt.genFile("./cppiver.h",lldReleaseVersion);      
+
+/* Check if we need to create the mini package? */
+var miniBuild = java.lang.System.getenv("MINI_PACKAGE");
+
+if (miniBuild == "ON")
+{
+    /***************************************************************************
+     ********************************* MINI Package ****************************
+     ***************************************************************************/
+    /* Create the MINI RTSC Package */
+    var libUtility = xdc.loadCapsule ("build/buildlib.xs");
+    libUtility.createMiniPkg(lldRTSCFileName);
+}
+
+/* Generate paver.h */
+var tplt = xdc.loadTemplate("./cppiver.h.xdt");
+tplt.genFile("./cppiver.h",lldReleaseVersion);      
+
+/********************************************************************* 
+ *********************** INSTALL-JAMMER Support **********************
+ * In order to create the InstallJammer Application; we need to UNTAR
+ * the package into a temporary directory. This is required because 
+ * currently the InstallJammer does not support the TAR Files and thus
+ * creating an UNTAR of the file. So to work-around the problem we will
+ * do the following in the EPILOGUE Section:-
+ *  (a) Create a temporary directory called 'tmp'
+ *  (b) UNTAR the package into 'tmp'
+ *  (c) Run the INSTALL Jammer on 'tmp'
+ *  (d) Remove the 'tmp' directory.
+ *
+ * This can be done only after the 'release' package has been created.
+ * Thus all of this work is being done in the EPILOGUE.
+ *********************************************************************/
+if (lldInstallType == "SETUP")
+{
+    /* Create the Install Jammer Version Variable. This is used inside the 
+     * MPI File to create the Final executable. 
+     *  The format supported is as follows:-
+     *   - setupwin32_cppilld_<part_number>_<version>.exe 
+     *      This is for CPPI LLD Libraries and Header files
+     */
+    var InstallJammerVersion = "-DVersion " + lldPartNumber + "_" + lldReleaseVersion[0] + "_" +
+                               lldReleaseVersion[1] + "_" +  lldReleaseVersion[2]  + "_" + lldReleaseVersion[3];
+
+    /* This is the location where the tmp directory is located; this is used as 
+     * the input directory for the Install Jammer. */ 
+    var PackageBaseDir = " -DPackageBaseDir " + lldPath + "./tmp";
+
+    /* This is the location where the CPPI LLD will be installed by default. */
+    var WinInstallDir = " -DWinInstallDir C:/Program Files/Texas Instruments/cppilld" + "_" + 
+                            lldPartNumber + "_" + 
+                            lldReleaseVersion[0] + "_" +  lldReleaseVersion[1] + "_" +  
+                            lldReleaseVersion[2]  + "_" + lldReleaseVersion[3];
+
+    /* Create the actual EPILOGUE Section for the INSTALLER */
+    Pkg.makeEpilogue += "release: install_application\n";
+    Pkg.makeEpilogue += "install_application:\n";
+    Pkg.makeEpilogue += "\t @echo -------------------------------------------------------\n";
+    Pkg.makeEpilogue += "\t @echo Creating the Install\n";
+    Pkg.makeEpilogue += "\t @echo -------------------------------------------------------\n";
+    Pkg.makeEpilogue += "\t -$(MKDIR) tmp\n";
+    Pkg.makeEpilogue += "\t -$(MKDIR) tmp/packages\n";
+    Pkg.makeEpilogue += "\t -$(MKDIR) tmp/eclipse\n";
+    Pkg.makeEpilogue += "\t -$(CP) -R eclipse tmp\n";
+    Pkg.makeEpilogue += "\t tar -xf ./packages/" + lldRTSCFileName + ".tar" + " -Ctmp/packages \n";
+    Pkg.makeEpilogue += "\t installjammer " + InstallJammerVersion + PackageBaseDir + WinInstallDir + 
+                        " --output-dir packages/ --build install/cppilld.mpi\n";
+    Pkg.makeEpilogue += "\t -$(RMDIR) /S /Q tmp\n\n";
+
+    /* We need to clean after ourselves; extend the 'clean' target to take care of this. */
+    Pkg.makeEpilogue += "clean::\n";
+    Pkg.makeEpilogue += "\t -$(RM) docs/Doxyfile Settings.xdc cppiver.h\n";
+    Pkg.makeEpilogue += "\t -$(RM) makefile\n";
+    Pkg.makeEpilogue += "\t -$(RMDIR) docs/doxygen\n";
+    Pkg.makeEpilogue += "\t -$(RM) packages/*.exe\n";
+    Pkg.makeEpilogue += "\t -$(RM) packages/*.bin\n";
+    Pkg.makeEpilogue += "\t -$(RMDIR) eclipse\n\n";
+}
+if (miniBuild == "ON")
+{
+    Pkg.makeEpilogue += "\t -$(RM) simpleC66LE.mak\n";
+}

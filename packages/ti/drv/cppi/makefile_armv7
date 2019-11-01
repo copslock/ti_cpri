@@ -1,0 +1,105 @@
+#*******************************************************************************
+#* FILE PURPOSE: Top level makefile for Creating Component Libraries for ARM
+#* architectures
+#*******************************************************************************
+#* FILE NAME: makefile
+#*
+#* DESCRIPTION: Defines Compiler tools paths, libraries , Build Options 
+#*
+#*
+#*******************************************************************************
+#*
+# (Mandatory) Specify where various tools are installed.
+
+# Output for prebuilt generated libraries
+export ARMV7LIBDIR ?= ./lib
+export DEVICE ?=k2h
+export ARMV7OBJDIR ?= ./obj/$(DEVICE)
+export ARMV7BINDIR ?= ./bin/$(DEVICE)
+export USEDYNAMIC_LIB ?= "no"
+
+# ROOT Directory
+export ROOTDIR := ../../..
+
+
+# INCLUDE Directory
+export INCDIR := ../../..;$(PDK_INSTALL_PATH);$(ROOTDIR)
+
+# Common Macros used in make
+
+ifndef RM
+export RM = rm -f
+endif
+
+ifndef CP
+export CP = cp -p
+endif
+
+export MKDIR = mkdir -p
+
+ifndef RMDIR
+export RMDIR = rm -rf
+endif
+
+ifndef SED
+export SED = sed
+endif
+
+ifndef MAKE
+export MAKE = make
+endif
+
+# PHONY Targets
+.PHONY: all clean lib tests examples install installbin .libraries .executables
+
+# all rule
+all: .executables
+.executables: lib tests examples
+
+# Libraries
+lib: .libraries
+
+# tests Stub to add tests
+tests: 
+	@$(MAKE) -f ./test/$(DEVICE)/armv7/linux/build/makefile all
+
+# examples Stub to add Examples
+examples: 
+	@$(MAKE) -f ./example/sample/$(DEVICE)/armv7/linux/build/makefile all
+
+# Make rule to create $(ARMV7LIBDIR)/libcppi.a library
+.libraries: $(ARMV7LIBDIR)/libcppi.a  $(ARMV7LIBDIR)/libcppi_$(DEVICE).a libcppi.so libcppi_$(DEVICE).so
+
+$(ARMV7LIBDIR)/libcppi.a $(ARMV7LIBDIR)/libcppi_$(DEVICE).a:
+	@$(MAKE) -f ./build/armv7/libcppi_aearmv7.mk $@
+
+libcppi.so  libcppi_$(DEVICE).so:
+	@$(MAKE) -f ./build/armv7/libcppi_aearmv7.mk $@
+
+# Rule to clean $(ARMV7LIBDIR)/libcppi.a library
+clean:
+	@$(MAKE) -f ./build/armv7/libcppi_aearmv7.mk $@
+	@$(MAKE) -f ./example/sample/$(DEVICE)/armv7/linux/build/makefile $@
+	@$(MAKE) -f ./test/$(DEVICE)/armv7/linux/build/makefile $@
+	@$(RMDIR) $(ARMV7OBJDIR)/cppi
+	@$(RMDIR) $(ARMV7BINDIR)/cppi
+	@$(RM) $(ARMV7LIBDIR)/libcppi.a
+	@$(RM) $(ARMV7LIBDIR)/libcppi.so
+	@$(RM) $(ARMV7LIBDIR)/libcppi.so.*
+	@$(RMDIR) $(ARMV7OBJDIR_SO)/cppi
+
+installbin:
+	install -d $(INSTALL_BIN_BASE_DIR)
+	install -c -m 755 $(ARMV7BINDIR)/cppi/example/cppiExample.out $(INSTALL_BIN_BASE_DIR)/cppiExample_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/cppi/test/cppiTest.out    $(INSTALL_BIN_BASE_DIR)/cppiTest_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/cppi/example/cppiExample_so.out $(INSTALL_BIN_BASE_DIR)/cppiExample_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/cppi/test/cppiTest_so.out    $(INSTALL_BIN_BASE_DIR)/cppiTest_so_$(DEVICE).out
+	
+install:
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/cppi
+	install -d $(INSTALL_LIB_BASE_DIR)		
+	@$(CP) ./*.h                      $(INSTALL_INC_BASE_DIR)/ti/drv/cppi
+	$(CP) -r ./device $(INSTALL_INC_BASE_DIR)/ti/drv/cppi/
+	@$(CP) -r $(ARMV7LIBDIR)/*.so     $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/*.so.*   $(INSTALL_LIB_BASE_DIR)	
+	@$(CP) -r $(ARMV7LIBDIR)/*.a      $(INSTALL_LIB_BASE_DIR)

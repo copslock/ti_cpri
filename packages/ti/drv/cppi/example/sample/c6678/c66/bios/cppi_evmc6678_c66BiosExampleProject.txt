@@ -1,0 +1,11 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/cppi/example/sample/src/sample.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/cppi/device/c6678/src/cppi_device.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/device/c6678/src/qmss_device.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/device/c6678/global-resource-list.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/device/c6678/policy_dsp-only.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/rm_transport_setup.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/cppi/example/sample/c6678/c66/bios/sample_osal.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/cppi/example/sample/c6678/c66/bios/sample.cmd" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/cppi/example/sample/c6678/c66/bios/sample.cfg" 
+-ccs.setCompilerOptions "-mv64+ -g -DSOC_C6678 -DINTERNAL_LINKING_RAM -UL2_CACHE --diag_warning=225 -I${PDK_INSTALL_PATH}/ti/drv/cppi/example/sample/src"  -rtsc.enableRtsc
+
