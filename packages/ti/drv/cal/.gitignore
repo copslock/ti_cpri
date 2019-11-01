@@ -1,0 +1,11 @@
+lib/*
+docs/doxygen/html/
+.dlls
+.executables
+.xdcenv.mak
+*.mak
+.interfaces
+.libraries
+package/*
+Settings.h
+Settings.xdc

@@ -1,0 +1,9 @@
+#
+# This file is the makefile for building CAL capture test app for TI RTOS
+#
+include $(PDK_INSTALL_PATH)/ti/build/Rules.make
+
+APP_NAME = cal_baremetal_capture_testapp
+BUILD_OS_TYPE=baremetal
+
+include makefile.mk
