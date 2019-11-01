@@ -1,0 +1,89 @@
+/******************************************************************************
+ * FILE PURPOSE: Build description for the Trace Utility 
+ ******************************************************************************
+ * FILE NAME: package.bld
+ *
+ * DESCRIPTION:
+ *  This file contains the build specification and description for the Trace Utility 
+ *
+ *  The file takes the following parameters from the command line through the
+ *  XDCARGS variable.
+ *      XDCARGS[0] = Trace Utility Install Type
+ *      Valid Values are "TAR" or "SETUP"
+ *      DEFAULT is "TAR"
+ *
+ *  Example for a valid command:
+ *      xdc XDCARGS="SETUP" release
+ *
+ * Copyright (C) 2019, Texas Instruments, Inc.
+ *****************************************************************************/
+
+var driverInstallType;
+
+/* Determine if we need to create the InstallJammer Application or not?
+ * Utilities Deliverables be either of the following formats:
+ *  - TAR Ball Package
+ *  - Setup Executable
+ * DEFAULT is a SETUP Executable. */
+
+if ((arguments[0] != "TAR") && (arguments[0] != "SETUP"))
+    driverInstallType = "TAR";
+else
+    driverInstallType = arguments[0];
+
+/* Irrespective of the InstallType we always create a TAR Ball Package as a part
+ * of the RTSC Build. Here we determine the name of the TAR Ball Package
+ *  Format is as follows:
+ *      trace_<version> */
+var traceRTSCFileName = "trace"+"_"+
+                      driverReleaseVersion[0] + "_" +  driverReleaseVersion[1] + "_" + 
+                      driverReleaseVersion[2]  + "_" + driverReleaseVersion[3];
+
+/******************************************************************
+ ************************ Release Banner **************************
+ ******************************************************************/
+
+print ("************* Trace Utility Build Information *************");
+print ("Utilities Tool Install          : " + driverInstallType);
+print ("Utilities Tool Version          : " + driverReleaseVersion);
+print ("RTSC File Name	                : " + traceRTSCFileName);
+print ("Utilities Tool Path             : " + driverPath);
+print ("C66 Tools Directory             : " + c66ToolsBaseDir);
+print ("M4 Tools Directory              : " + m4ToolsBaseDir);
+print ("A15 Tools Directory             : " + a15ToolsBaseDir);
+if (pOpts == 1) 
+{	
+    print ("CC LE opts                      : " + C66LE.ccOpts.prefix);
+    print ("CC BE opts                      : " + C66BE.ccOpts.prefix);
+    print ("M4 LE opts                      : " + M4LE.ccOpts.prefix);
+    print ("A15 basic opts                  : " + A15LE.ccOpts.prefix);
+}
+print ("************************************************************");
+
+/* Create the release package for the Utilities Tool */
+Pkg.defaultRelease = Pkg.addRelease (traceRTSCFileName, {prefix: "./packages/"});
+
+Pkg.otherFiles[Pkg.otherFiles.length++] = "config.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "config_mk.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/buildlib.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "makefile";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "trace.h.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "trace.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/makefile_trace.mk";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "trace_component.mk";
+
+/* Generate Users Manual Doxyfile */
+/* var tplt = xdc.loadTemplate("./docs/doxyfile.xdt"); */
+/* tplt.genFile("./docs/Doxyfile",driverReleaseVersion); */
+
+/* Generate Settings.xdc */
+var tplt = xdc.loadTemplate("./Settings.xdc.xdt");
+tplt.genFile("./Settings.xdc",driverReleaseVersion);
+
+/* Generate paver.h */
+var tplt = xdc.loadTemplate("./tracever.h.xdt");
+tplt.genFile("./tracever.h",driverReleaseVersion);
+
