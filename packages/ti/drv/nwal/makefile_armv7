@@ -1,0 +1,131 @@
+#*******************************************************************************
+#* FILE PURPOSE: Top level makefile for Creating Component Libraries for ARM
+#* architectures
+#*******************************************************************************
+#* FILE NAME: makefile
+#*
+#* DESCRIPTION: Defines Compiler tools paths, libraries , Build Options 
+#*
+#*
+#*******************************************************************************
+#*
+# (Mandatory) Specify where various tools are installed.
+
+# Output for prebuilt generated libraries
+export ARMV7LIBDIR ?= ./lib
+export ARMV7OBJDIR ?= ./obj/$(DEVICE)
+export ARMV7BINDIR ?= ./bin/$(DEVICE)
+export LLD_NAME=nwal
+# ROOT Directory
+export ROOTDIR := ../../..
+
+# Default PDK version
+export PDK_VER ?= v3
+export DEVICE ?=k2l
+
+ifeq ($(DEVICE), k2h)
+export CSL_DEVICE = -DDEVICE_K2H
+endif
+ifeq  ($(DEVICE), k2k)
+export CSL_DEVICE = -DDEVICE_K2K
+endif
+ifeq ($(DEVICE), k2l)
+export CSL_DEVICE = -DDEVICE_K2L -DNSS_GEN2
+endif
+ifeq ($(DEVICE), k2e)
+export CSL_DEVICE = -DDEVICE_K2E -DNSS_GEN2
+endif
+
+export ENABLE_SA ?=1
+
+# INCLUDE Directory
+#export INCDIR := ../;$(NWAL_INSTALL_PATH);$(PDK_INSTALL_PATH);$(PKTLIB_INSTALL_PATH);$(ROOTDIR)
+export INCDIR := ../../..;$(PDK_INSTALL_PATH);$(ROOTDIR)
+# Common Macros used in make
+
+ifndef RM
+export RM = rm -f
+endif
+
+ifndef CP
+export CP = cp -p
+endif
+
+export MKDIR = mkdir -p
+
+ifndef RMDIR
+export RMDIR = rm -rf
+endif
+
+ifndef SED
+export SED = sed
+endif
+
+ifndef MAKE
+export MAKE = make
+endif
+
+# PHONY Targets
+.PHONY: lib tests  examples all clean install installbin
+
+# all rule
+all: .executables install installbin
+.executables: lib tests examples
+lib:
+
+# Make rule to create $(ARMV7LIBDIR)/libnwal.a library
+lib: $(ARMV7LIBDIR)/libnwal_$(DEVICE).a $(ARMV7LIBDIR)/libnwalsa_$(DEVICE).a libnwal_$(DEVICE).so libnwalsa_$(DEVICE).so
+$(ARMV7LIBDIR)/libnwal_$(DEVICE).a:
+	$(MAKE) -f ./build/armv7/libnwal_aearmv7.mk $@
+
+$(ARMV7LIBDIR)/libnwalsa_$(DEVICE).a:
+ifeq ($(ENABLE_SA),1)
+	$(MAKE) -f ./build/armv7/libnwalsa_aearmv7.mk $@
+endif
+
+#shared libraries
+libnwal_$(DEVICE).so:
+	$(MAKE) -f ./build/armv7/libnwal_aearmv7.mk $@
+
+libnwalsa_$(DEVICE).so:
+ifeq ($(ENABLE_SA),1)
+	$(MAKE) -f ./build/armv7/libnwalsa_aearmv7.mk $@
+endif
+
+# Rule to clean $(ARMV7LIBDIR)/libnwal.a library
+clean:
+	$(MAKE) -f ./build/armv7/libnwal_aearmv7.mk $@
+	$(MAKE) -f ./build/armv7/libnwalsa_aearmv7.mk $@
+	$(RM) $(ARMV7LIBDIR)/libnwal_$(DEVICE).a
+	$(RM) $(ARMV7LIBDIR)/libnwal_$(DEVICE).so*
+ifeq ($(ENABLE_SA),1)
+	$(RM) $(ARMV7LIBDIR)/libnwalsa_$(DEVICE).a
+	$(RM) $(ARMV7LIBDIR)/libnwalsa_$(DEVICE).so*
+endif
+	$(MAKE) -C ./test/unitTest/armv7/linux clean
+
+install:
+	echo inc base dir $(INSTALL_INC_BASE_DIR)
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/nwal
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/nwal/src
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/nwal/test
+	install -d $(INSTALL_LIB_BASE_DIR)
+	$(CP) ./*.h                $(INSTALL_INC_BASE_DIR)/ti/drv/nwal
+	$(CP) ./src/nwal_loc.h                $(INSTALL_INC_BASE_DIR)/ti/drv/nwal/src/nwal_loc.h
+	$(CP) ./test/*.h           $(INSTALL_INC_BASE_DIR)/ti/drv/nwal/test
+	@$(CP) -r $(ARMV7LIBDIR)/libnwal_$(DEVICE).a      $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/libnwalsa_$(DEVICE).a    $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -rp $(ARMV7LIBDIR)/libnwal_$(DEVICE).so*   $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -rp $(ARMV7LIBDIR)/libnwalsa_$(DEVICE).so* $(INSTALL_LIB_BASE_DIR)
+
+installbin:
+	install -d $(INSTALL_BIN_BASE_DIR)
+	install -c -m 755 $(ARMV7BINDIR)/nwal/test/nwalTest_$(DEVICE).out $(INSTALL_BIN_BASE_DIR)/nwalTest_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/nwal/test/nwalTest_$(DEVICE)_so.out $(INSTALL_BIN_BASE_DIR)/nwalTest_$(DEVICE)_so.out
+
+# Make rule to create tests executable
+tests:
+	$(MAKE) -f ./test/unitTest/armv7/linux/makefile $@
+
+# Make rule to create examples Stub
+examples:

@@ -1,0 +1,9 @@
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/unitTest/c66/bios/fw_init.c" 
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/unitTest/fw_test.c" 
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/common/c66/bios/fw_main.c" 
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/common/c66/bios/fw_osal.c" 
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/common/c66/bios/pdkv3/fw_pdk.c" 
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/unitTest/c66/bios/link.cmd" 
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/unitTest/c66/bios/nwalUnitTestk2k.cfg" 
+-ccs.setCompilerOptions "-DDEVICE_K2H -mv6600 -o3 --diag_warning=225 --define -I${NWAL_INSTALL_PATH} -I${NWAL_INSTALL_PATH}/ti/drv/nwal/test -I${NWAL_INSTALL_PATH}/ti/drv/nwal/test/unitTest/c66/bios  -I${PKTLIB_INSTALL_PATH} -I${PDK_INSTALL_PATH}/ti/drv/cppi -I${PDK_INSTALL_PATH}/ti/drv/qmss"  -rtsc.enableRtsc
+

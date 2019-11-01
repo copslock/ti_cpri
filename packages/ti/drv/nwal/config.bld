@@ -1,0 +1,169 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the NWAL Driver
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for NWAL Driver 
+ *  and is responsible for configuration of the paths for the various tools
+ *  required to build NWAL Driver.
+ *
+ * Copyright (C) 2010-2011, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Get the Tools Base directory from the Environment Variable. */
+var xdcTargetType = java.lang.System.getenv("XDCTARGET");
+var toolsBaseDir = java.lang.System.getenv("C6X_GEN_INSTALL_PATH");
+
+/* Get the base directory for the NWAL Driver Package */
+var lldPath = new java.io.File(".//").getPath();
+
+/* Get the extended debug flags */
+var extDbgFlags = java.lang.System.getenv("EXTDBGFLAGS");
+var lldInstallType;
+var lldPartNumber = "c66x";
+
+/* Include Path */
+var lldIncludePath = " -i" + lldPath + "/src" + " -i" + lldPath  + " -i" + lldPath + "/test";
+
+/* Configure the NWAL Driver Release Version Information */
+/* 3 steps: remove SPACE and TAB, convert to string and split to make array */
+var lldReleaseVersion = (""+Pkg.version.replace(/\s/g, "")).split(',');
+
+/* NWAL Driver Coverity Analysis: Check the environment variable to determine if Static
+ * Analysis has to be done on the NWAL Driver Code base or not? */
+var lldCoverityAnalysis = java.lang.System.getenv("LLDCOV");
+
+/* C66 ELF compiler configuration for Little Endian Mode. */
+var C66LE          = xdc.useModule('ti.targets.elf.C66');
+C66LE.rootDir       = toolsBaseDir;
+C66LE.ccOpts.prefix  = "-mo -g -q -k -eo.o"; 
+if(extDbgFlags)
+    C66LE.ccOpts.prefix = C66LE.ccOpts.prefix + " " + extDbgFlags;
+
+/* Check if we need to run the STATIC Analysis or not? */
+var coverityAnalysis = java.lang.System.getenv("STATIC_ANALYZE");
+
+/* Setup the Coverity Filters to perform Static Analysis. */
+if (coverityAnalysis == "ON") {
+    var coverityInstallPath = java.lang.System.getenv("STATIC_ANALYZE_PATH");
+    var cfgBase = xdc.getPackageBase("tisb.coverity.filters") + "cfg";
+
+    var coverityFilter = [
+    {
+        moduleName: "tisb.coverity.filters.Coverity",
+        params: {
+            cfgDir:  cfgBase,  // The Coverity configuration file directory
+            rootDir: coverityInstallPath,
+            outDir: xdc.csd() + "cov_out",
+            analyzeLibs: true
+        }
+    },
+    ];
+
+    /* Run the coverity filters on the LE Build only. */
+    C66LE.profiles["release"].filters = coverityFilter;
+}
+
+/* List all the build targets here. */
+Build.targets = [ C66LE ];
+    
+/* List of all devices for device dependent library which is 
+ * device independent. Refer src/Module.xs to see the order.
+ */
+var devicesK1 = ["c66"];
+var devicesK1CCOpt = [ "-DSOC_C6678"];
+
+/* Grab input from XDCARGS */
+var buildArguments  = [];
+
+/* Local variable for KeyStone1 or KeyStone2 devices */
+var socFamily = "KeyStone1";
+
+/* Construct the build arguments */
+for (var tmp=0; arguments[tmp] != undefined; tmp++)
+{
+
+    /* If no arguments are provided, override for building all */
+    if ( ( arguments.length == 1) && (arguments[tmp].equals("./config.bld")) )
+        buildArguments[buildArguments.length++] = "all";
+    else
+        buildArguments[buildArguments.length++] = arguments[tmp];
+}
+
+
+var devicesK2 = [];
+var devicesK2CCOpt = [];
+var devicesK2SaName = [];
+var devicesK2Name   = [];
+
+if ( ( buildArguments.indexOf("k2l") != -1 ) ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    devicesK2.push("k2l/c66");
+    devicesK2CCOpt.push("-DDEVICE_K2L -DNSS_GEN2");
+    devicesK2SaName.push("ti.drv.nwal_k2l.sa");
+    devicesK2Name.push("ti.drv.nwal_k2l");
+    socFamily = "KeyStone2";
+}
+
+if ( ( buildArguments.indexOf("k2e") != -1 ) ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    devicesK2.push("k2e/c66");
+    devicesK2CCOpt.push("-DDEVICE_K2E -DNSS_GEN2");
+    devicesK2SaName.push("ti.drv.nwal_k2e.sa");
+    devicesK2Name.push("ti.drv.nwal_k2e");
+    socFamily = "KeyStone2";
+}
+
+if ( ( buildArguments.indexOf("k2h") != -1 ) ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    devicesK2.push("k2h/c66");
+    devicesK2CCOpt.push("-DDEVICE_K2H");
+    devicesK2SaName.push("ti.drv.nwal_k2h.sa");
+    devicesK2Name.push("ti.drv.nwal_k2h");
+    socFamily = "KeyStone2";
+}
+
+if ( ( buildArguments.indexOf("k2k") != -1 ) ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+    devicesK2.push("k2k/c66");
+    devicesK2CCOpt.push("-DDEVICE_K2K");
+    devicesK2SaName.push("ti.drv.nwal_k2k.sa");
+    devicesK2Name.push("ti.drv.nwal_k2k");
+    socFamily = "KeyStone2";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/pktRouterTest/c66/bios/fw_init.c"
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/pktRouterTest/fw_test.c"
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/common/c66/bios/fw_main.c"
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/common/c66/bios/fw_osal.c"
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/common/c66/bios/pdkv3/fw_pdk.c"
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/pktRouterTest/c66/bios/link.cmd"
+-ccs.linkFile "NWAL_INSTALL_PATH/ti/drv/nwal/test/pktRouterTest/c66/bios/nwalPktRouterk2h.cfg"
+-ccs.setCompilerOptions " -mv6600 -DDEVICE_K2H -o3 -diag_warning=225 -I${NWAL_INSTALL_PATH} -I${NWAL_INSTALL_PATH}/ti/drv/nwal/test -I${NWAL_INSTALL_PATH}/ti/drv/nwal/test/pktRouterTest -I${PKTLIB_INSTALL_PATH} -I${PDK_INSTALL_PATH}/ti/drv/cppi -I${PDK_INSTALL_PATH}/ti/drv/qmss"  -rtsc.enableRtsc
+

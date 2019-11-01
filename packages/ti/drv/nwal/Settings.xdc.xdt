@@ -1,0 +1,44 @@
+
+%%{
+/*!
+ *  This template implements the Settings.xdc
+ */  
+  /* Versioning */
+  var ver = this;
+  for each(i=0;i<ver.length;i++)
+  {
+      if(String(ver[i]).length < 2)
+      {
+        ver[i]="0"+ver[i];
+      }
+  }
+  
+  var packageVersion = "\""+ver[0]+"."+ver[1]+"."+ver[2]+"."+ver[3]+"\"";
+
+%%}
+
+module Settings
+{
+    config string nwalVersionString = `packageVersion`;
+    /*! The flag is used to return NWAL library with SA LLD support. 
+     * To ensure that the NWAL library with SA LLD support is  returned by getLibs; add following lines to the
+     * configuration file
+     * 
+     *      var nwalSettings = xdc.useModule ('ti.drv.nwal.Settings');
+     *      nwalSettings.useNwalSaLib = true;
+     * 
+     */
+    config Bool useNwalSaLib = false;
+
+    /*! This variable is to control the device type selection.
+     * By default this variable is set to NULL.
+     * 
+     * To use NWAL for the selected device, add the following lines to config
+     * file and set the deviceType correctly:
+     * 
+     *      var nwalSettings = xdc.useModule ('ti.drv.nwal.Settings');
+     *      nwalSetting.deviceType = "k2l";
+     */
+     metaonly config string deviceType = "";
+}
+
