@@ -1,0 +1,15 @@
+packages
+lib
+*.mak
+*.dlls
+package
+pacages
+.executables
+.libraries
+.interfaces
+Settings.h
+Settings.xdc
+ndk/nimu_icss/example/*/*/bios
+ndk/*/docs/doxygen/html
+timeSync/docs/doxygen/html
+timeSync/example/src/bios/ccsProjects/*/src/

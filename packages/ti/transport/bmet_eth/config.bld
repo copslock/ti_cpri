@@ -1,0 +1,112 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the BMET Eth
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for BMET Eth 
+ *  and is responsible for configuration of the paths for the various tools
+ *  required to build BMET Eth.
+ *
+ * Copyright (C) 2012, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Get the Tools Base directory from the Environment Variable. */
+var xdcTargetType = java.lang.System.getenv("XDCTARGET");
+var toolsBaseDir = java.lang.System.getenv("C6X_GEN_INSTALL_PATH");
+
+/* Check if we need to create the Makefiles? */
+var miniBuild = java.lang.System.getenv("MINI_PACKAGE");
+
+/* Get the base directory for the BMET Eth Package */
+var bmetethPath = new java.io.File(".//").getPath();
+
+/* This is the part Number for which the BMET ETH is being created */
+var bmetethPartNumber = java.lang.System.getenv("PARTNO");
+
+if(bmetethPartNumber == null)
+{
+    bmetethPartNumber = "c6614";
+}
+
+
+/* Include Path */
+var bmetethIncPath = " -i" + bmetethPath;
+
+/* Configure the BMET Eth Release Version Information */
+var bmetethReleaseVersion = [01,00,00,03];
+
+/* BMET Eth Coverity Analysis: Check the environment variable to determine if Static
+ * Analysis has to be done on the BMET Eth Code base or not? */
+var bmetethCoverityAnalysis = java.lang.System.getenv("STATIC_ANALYZE");
+
+if(xdcTargetType ==  "ARM11") 
+{ 
+    /* Set path to the ARM11 tools directory */
+    var TIArmv6le            = xdc.useModule('ti.targets.arm.Arm11');
+    TIArmv6le.rootDir        = toolsBaseDir; 
+    TIArmv6le.ccOpts.prefix  = "-O2 "  
+
+    /* Set path to the ARM11 tools directory */
+    var TIArmv6be            = xdc.useModule('ti.targets.arm.Arm11_big_endian');
+    TIArmv6be.rootDir        = toolsBaseDir; 
+    TIArmv6be.ccOpts.prefix  = "-O2 -DBIGENDIAN"  
+}
+else
+{
+    
+    /* C66 ELF compiler configuration for Little Endian Mode. */
+    var C66LE          = xdc.useModule('ti.targets.elf.C66');
+    C66LE.rootDir       = toolsBaseDir;
+    C66LE.ccOpts.prefix  = "-mo -o3 -q -k -eo.o";
+
+}
+
+/* Check if we need to run the STATIC Analysis or not? */
+var coverityAnalysis = java.lang.System.getenv("STATIC_ANALYZE");
+
+/* Setup the Coverity Filters to perform Static Analysis. */
+if (coverityAnalysis == "ON") {
+    var file = xdc.module('xdc.services.io.File');
+	var coverityInstallPath = java.lang.System.getenv("STATIC_ANALYZE_PATH");
+	
+    var cfgBase = file.getDOSPath(xdc.getPackageBase("tisb.coverity.filters")) + "cfg";
+
+    var coverityFilter = [
+    {
+        moduleName: "tisb.coverity.filters.Coverity",
+        params: {
+            cfgDir:  cfgBase,  // The Coverity configuration file directory
+            rootDir: coverityInstallPath,
+            outDir: xdc.csd() + "cov_out",
+            analyzeLibs: true
+        }
+    },
+    ];
+
+    /* Run the coverity filters on the LE Build only. */
+    C66LE.profiles["release"].filters = coverityFilter;
+}
+
+if (miniBuild == "ON") {
+
+    var makeC66LEFilter = {
+        moduleName: "build.filter.Make",
+        params: {
+          makefileName: "simpleC66LE.mak",
+        }
+    };
+
+    C66LE.profiles["release"].filters[C66LE.profiles["release"].filters.length++] = makeC66LEFilter;
+
+}
+/* List all the build targets here. */
+if(xdcTargetType == "ARM11")
+{
+    Build.targets = [ TIArmv6le, TIArmv6be ];
+}
+else
+{
+    Build.targets = [ C66LE ];
+}    
+

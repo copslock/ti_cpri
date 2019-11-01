@@ -1,0 +1,29 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the QMSS Transport
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for QMSS Transport 
+ *  and is responsible for configuration of the paths for the various tools
+ *  required to build QMSS Transport.
+ *
+ * Copyright (C) 2011, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Get the Tools Base directory from the Environment Variable. */
+var toolsBaseDir = java.lang.System.getenv("XDCCGROOT");
+
+/* C66 ELF compiler configuration for Little Endian Mode. */
+var C66LE          = xdc.useModule('ti.targets.elf.C66');
+C66LE.rootDir       = toolsBaseDir;
+C66LE.ccOpts.prefix  = "-mo -o3 -q -k -eo.o";
+
+/* C66 ELF compiler configuration for Big Endian Mode. */
+var C66BE          = xdc.useModule('ti.targets.elf.C66_big_endian');
+C66BE.rootDir       = toolsBaseDir;
+C66BE.ccOpts.prefix  = "-mo -o3 -q -k -eo.o -DBIGENDIAN";
+
+/* List all the build targets here. */
+Build.targets = [ C66LE, C66BE ];
+

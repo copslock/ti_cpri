@@ -1,0 +1,203 @@
+/******************************************************************************
+ * FILE PURPOSE: Build description for the BMET Eth Package
+ ******************************************************************************
+ * FILE NAME: package.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build specification and description for the BMET Eth
+ *  
+ *  The file takes the following parameters from the command line through the
+ *  XDCARGS variable.
+ *      XDCARGS[0] = BMET Eth Install Type 
+ *      Valid Values are "TAR" or "SETUP"
+ *      DEFAULT is "SETUP"
+ *
+ *  Example for a valid command:
+ *      xdc XDCARGS="SETUP" release   
+ *
+ * Copyright (C) 2012, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* List of all subdirectories that combine to make the BMET Eth Package. */
+var subDirectories = [ "src", "docs" ];
+
+var bmetethInstallType;
+
+/* Check if we need to create the Makefiles? */
+var miniBuild = java.lang.System.getenv("MINI_PACKAGE");
+
+/* Determine if we need to create the InstallJammer Application or not? 
+ * BMET Eth Deliverables be either of the following formats:
+ *  - TAR Ball Package
+ *  - Setup Executable 
+ * DEFAULT is a SETUP Executable. */
+
+if ((arguments[0] != "TAR") && (arguments[0] != "SETUP"))
+    bmetethInstallType = "TAR";
+else
+    bmetethInstallType = arguments[0];
+
+/* Irrespective of the InstallType we always create a TAR Ball Package as a part
+ * of the RTSC Build. Here we determine the name of the TAR Ball Package
+ *  Format is as follows:
+ *      bmeteth_<version> */
+var bmetethRTSCFileName = "bmeteth" + "_" + bmetethPartNumber + "_" +
+                      bmetethReleaseVersion[0] + "_" +  bmetethReleaseVersion[1] + "_" + 
+                      bmetethReleaseVersion[2]  + "_" + bmetethReleaseVersion[3];
+
+/*****************************************************************
+ ************************ Release Banner *************************
+ *****************************************************************/
+
+print ("************* BMET Eth Build Information *************");
+print ("BMET Eth Install        : " + bmetethInstallType);
+print ("BMET Eth SoC            : " + bmetethPartNumber);
+print ("Tools Directory    : " + toolsBaseDir);
+print ("RTSC File Name	   : " + bmetethRTSCFileName);
+print ("BMET Eth Path           : " + bmetethPath);
+print ("Coverity Analysis          : " + (coverityAnalysis == "ON" ? "ON" : "OFF"));
+if(xdcTargetType ==  "ARM11") 
+{
+    print ("ARM LE opts                : " + TIArmv6le.ccOpts.prefix);
+    print ("ARM BE opts                : " + TIArmv6be.ccOpts.prefix);
+}
+else
+{
+    print ("C66  LE opts               : " + C66LE.ccOpts.prefix);
+}
+print ("***********************************************************");
+
+/* Create the release package for the BMET Eth */
+Pkg.defaultRelease = Pkg.addRelease (bmetethRTSCFileName, {prefix: "./packages/"});
+
+/* Moving forward we need to set the Archiver of the package to be ZIP. This is currently
+ * not supported in the XDC tools being used. Currenly builds need to be done with the 
+ * following options:-
+ *   xdc MK_FIXLISTOPTS=-t release 
+ * ZIP is a better option as it works natively with INSTALL Jammer and we can remove the
+ * uncompression into a temporary directory. XDC Tools with xdc-rXX support the ZIP archiver. */
+//Pkg.attrs = {archiver : "zip"};
+
+/* Cycle through all the sub-directories and build all the files */
+for (var i = 0; i < subDirectories.length; i++) 
+{
+    /* Load the capsule in the sub directory. */
+    var caps = xdc.loadCapsule (subDirectories[i]+"/Module.xs");
+
+    print ("Building directory " + subDirectories[i]);
+
+    /* Build the capsule. */
+    caps.modBuild();
+
+    /* Package the module.xs files for building via package */
+    Pkg.otherFiles[Pkg.otherFiles.length++] = subDirectories[i]+"/Module.xs";
+}
+
+print (bmetethReleaseVersion);
+
+/* Generate Users Manual Doxyfile */
+var tplt = xdc.loadTemplate("./docs/doxyfile.xdt");
+tplt.genFile("./docs/Doxyfile",bmetethReleaseVersion); 
+
+/* Generate Settings.xdc */
+var tplt = xdc.loadTemplate("./Settings.xdc.xdt");
+tplt.genFile("./Settings.xdc",bmetethReleaseVersion); 
+
+/* Generate bmetethver.h */
+var tplt = xdc.loadTemplate("./bmetethver.h.xdt");
+tplt.genFile("./bmetethver.h",bmetethReleaseVersion);      
+
+/* Package the remaining files */
+Pkg.otherFiles[Pkg.otherFiles.length++] = "config.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "bmet_transport.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "bmet_eth_osal.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "bmetethver.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "bmetethver.h.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/Doxyfile";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/doxyfile.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/buildlib.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/ReleaseNotes_bmet_eth.pdf";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "makefile";
+
+/********************************************************************* 
+ *********************** INSTALL-JAMMER Support **********************
+ * In order to create the InstallJammer Application; we need to UNTAR
+ * the package into a temporary directory. This is required because 
+ * currently the InstallJammer does not support the TAR Files and thus
+ * creating an UNTAR of the file. So to work-around the problem we will
+ * do the following in the EPILOGUE Section:-
+ *  (a) Create a temporary directory called 'tmp'
+ *  (b) UNTAR the package into 'tmp'
+ *  (c) Run the INSTALL Jammer on 'tmp'
+ *  (d) Remove the 'tmp' directory.
+ *
+ * This can be done only after the 'release' package has been created.
+ * Thus all of this work is being done in the EPILOGUE.
+ *********************************************************************/
+if (bmetethInstallType == "SETUP")
+{
+    /* Create the Install Jammer Version Variable. This is used inside the 
+     * MPI File to create the Final executable. 
+     *  The format supported is as follows:-
+     *   - setupwin32_bmeteth-<part_number>-<version>.exe 
+     *      This is for BMET Eth Libraries and Header files
+     */
+    var InstallJammerVersion = "-DVersion " + bmetethPartNumber + "_" +
+                               bmetethReleaseVersion[0] + "_" +  bmetethReleaseVersion[1]  + "_" + 
+                               bmetethReleaseVersion[2]  + "_" + bmetethReleaseVersion[3];
+
+    /* This is the location where the tmp directory is located; this is used as 
+     * the input directory for the Install Jammer. */ 
+    var PackageBaseDir = " -DPackageBaseDir " + bmetethPath + "./tmp";
+
+    /* This is the location where the BMET Eth will be installed by default. */
+    var WinInstallDir = " -DWinInstallDir C:/Program Files/Texas Instruments/bmeteth" + "_" + 
+                            bmetethPartNumber + "_" + 
+                            bmetethReleaseVersion[0] + "_" + bmetethReleaseVersion[1] + "_" +  
+                            bmetethReleaseVersion[2]  + "_" + bmetethReleaseVersion[3];
+
+    /* Create the actual EPILOGUE Section for the INSTALLER */
+    Pkg.makeEpilogue += "release: install_application\n";
+    Pkg.makeEpilogue += "install_application:\n";
+    Pkg.makeEpilogue += "\t @echo -----------------------\n";
+    Pkg.makeEpilogue += "\t @echo Creating the Install\n";
+    Pkg.makeEpilogue += "\t @echo -----------------------\n";
+    Pkg.makeEpilogue += "\t -$(MKDIR) tmp\n";
+    Pkg.makeEpilogue += "\t -$(MKDIR) tmp/packages\n";
+    Pkg.makeEpilogue += "\t -$(MKDIR) tmp/eclipse\n";
+    Pkg.makeEpilogue += "\t -$(CP) -R eclipse tmp\n";
+    Pkg.makeEpilogue += "\t tar -xf ./packages/" + bmetethRTSCFileName + ".tar" + " -Ctmp/packages \n";
+    Pkg.makeEpilogue += "\t installjammer " + InstallJammerVersion + PackageBaseDir + WinInstallDir + 
+                        " --output-dir packages/ --build install/bmeteth.mpi\n";
+    Pkg.makeEpilogue += "\t -$(RMDIR) tmp\n\n";
+}
+
+if (miniBuild == "ON")
+{
+    /***************************************************************************
+    ********************************* MINI Package ****************************
+    ***************************************************************************/
+    /* Create the MINI RTSC Package */
+    var additionalFiles = [];
+    var libUtility = xdc.loadCapsule ("build/buildlib.xs");
+    libUtility.createMiniPkg(bmetethRTSCFileName, additionalFiles);
+}
+ 
+
+/* We need to clean after ourselves; extend the 'clean' target to take care of this. */
+Pkg.makeEpilogue += "clean::\n";
+Pkg.makeEpilogue += "\t -$(RM) Settings.xdc bmetethver.h\n";
+Pkg.makeEpilogue += "\t -$(RM) docs/Doxyfile\n";
+Pkg.makeEpilogue += "\t -$(RM) docs/*.chm\n";
+Pkg.makeEpilogue += "\t -$(RMDIR) docs/html\n";
+
+if (bmetethInstallType == "SETUP")
+{
+    Pkg.makeEpilogue += "\t -$(RM) packages/*.exe\n";
+    Pkg.makeEpilogue += "\t -$(RM) packages/*.bin\n";
+}

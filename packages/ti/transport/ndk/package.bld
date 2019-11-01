@@ -1,0 +1,13 @@
+/******************************************************************************
+ * FILE PURPOSE: Build description for the nimu Package
+ ******************************************************************************
+ * FILE NAME: package.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build specification and description for the nimu
+ * library
+ *  
+ *
+ * --COPYRIGHT--,BSD
+ * Copyright (c) 2010-2011, Texas Instruments Incorporated
+ *****************************************************************************/
