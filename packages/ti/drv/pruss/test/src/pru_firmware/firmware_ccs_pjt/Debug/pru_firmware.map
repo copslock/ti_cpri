@@ -1,0 +1,25 @@
+********************************************************************************
+PRU Hex Converter                                                         v2.1.0
+********************************************************************************
+
+INPUT FILE NAME: <pru_firmware.out>
+OUTPUT FORMAT:   Binary
+
+PHYSICAL MEMORY PARAMETERS
+   Default data width   :   8
+   Default memory width :   8
+   Default output width :   8
+
+
+OUTPUT TRANSLATION MAP
+--------------------------------------------------------------------------------
+00000000..ffffffff  Page=0  Memory Width=8  ROM Width=8
+--------------------------------------------------------------------------------
+   OUTPUT FILES: pru_firmware.b00 [b0..b7]
+
+   CONTENTS: 00000020..00000047   pru_firmware.out(.text)
+
+--------------------------------------------------------------------------------
+00000000..ffffffff  Page=1  Memory Width=8  ROM Width=8  "*DEFAULT PAGE 1*"
+--------------------------------------------------------------------------------
+   NO CONTENTS

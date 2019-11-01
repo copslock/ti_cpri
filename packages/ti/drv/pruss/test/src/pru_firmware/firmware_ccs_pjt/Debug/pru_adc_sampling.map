@@ -1,0 +1,49 @@
+******************************************************************************
+                     PRU Linker PC v2.1.0                      
+******************************************************************************
+>> Linked Tue Apr 07 13:31:16 2015
+
+OUTPUT FILE NAME:   <pru_adc_sampling.out>
+ENTRY POINT SYMBOL: 0
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+PAGE 0:
+  PRUIMEM               00000000   00008000  00000028  00007fd8  RWIX
+
+PAGE 1:
+  PRUDMEM               00000000   00008000  00000000  00008000  RWIX
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.text      0    00000000    00000028     
+                  00000000    00000028     pruss_test_pru0.obj (.text)
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+page  address   name      
+----  -------   ----      
+0     00000000  MAIN      
+abs   ffffffff  __binit__ 
+abs   ffffffff  __c_args__
+abs   ffffffff  binit     
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+page  address   name      
+----  -------   ----      
+0     00000000  MAIN      
+abs   ffffffff  __binit__ 
+abs   ffffffff  __c_args__
+abs   ffffffff  binit     
+
+[4 symbols]

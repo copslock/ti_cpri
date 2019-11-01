@@ -1,0 +1,106 @@
+#*******************************************************************************
+#* FILE PURPOSE: Top level makefile for Creating Component Libraries for ARM
+#* architectures
+#*******************************************************************************
+#* FILE NAME: makefile
+#*
+#* DESCRIPTION: Defines Compiler tools paths, libraries , Build Options
+#*
+#*
+#*******************************************************************************
+#*
+# (Mandatory) Specify where various tools are installed.
+
+# Output for prebuilt generated libraries
+export ARMV7LIBDIR ?= ./lib
+export DEVICE ?= am572x
+export TARGET ?= SOC_AM572x
+export ARMV7BINDIR ?= ./bin/$(DEVICE)
+
+# ROOT Directory
+export ROOTDIR := ../../..
+
+
+# INCLUDE Directory
+export INCDIR := ../../..;$(PDK_INSTALL_PATH);$(ROOTDIR)
+
+# Common Macros used in make
+
+ifndef RM
+export RM = rm -f
+endif
+
+ifndef CP
+export CP = cp -p
+endif
+
+export MKDIR = mkdir -p
+
+ifndef RMDIR
+export RMDIR = rm -rf
+endif
+
+ifndef SED
+export SED = sed
+endif
+
+ifndef MAKE
+export MAKE = make
+endif
+
+# PHONY Targets
+.PHONY: all clean lib tests apps install installbin installapp.libraries .executables
+
+# all rule
+all: .executables
+.executables: lib tests
+
+# Libraries
+lib: .libraries
+
+# tests
+tests:
+	@$(MAKE) -f ./test/$(DEVICE)/armv7/linux/makefile all
+
+#apps:
+apps:
+	@$(MAKE) -f ./example/apps/sorte/master/makefile_armv7 all
+	@$(MAKE) -f ./example/apps/sorte/slave/makefile_armv7 all
+
+# Make rule to create $(ARMV7LIBDIR)/libpruss.a library
+.libraries: $(ARMV7LIBDIR)/libpruss.a libpruss.so
+
+$(ARMV7LIBDIR)/libpruss.a:
+	@$(MAKE) -f ./build/armv7/libpruss_aearmv7.mk $@
+
+libpruss.so:
+	@$(MAKE) -f ./build/armv7/libpruss_aearmv7.mk $@
+
+# Rule to clean $(ARMV7LIBDIR)/libpruss.a library
+clean:
+	@$(MAKE) -f ./build/armv7/libpruss_aearmv7.mk $@
+	@$(MAKE) -f ./test/$(DEVICE)/armv7/linux/makefile $@
+	@$(RMDIR) $(ARMV7OBJDIR)/pruss
+	@$(RMDIR) $(ARMV7BINDIR)/pruss
+	@$(RM) $(ARMV7LIBDIR)/libpruss.a
+	@$(RM) $(ARMV7LIBDIR)/libpruss.so
+	@$(RM) $(ARMV7LIBDIR)/libpruss.so.*
+
+installbin:
+	install -d $(INSTALL_BIN_BASE_DIR)
+	install -c -m 755 $(ARMV7BINDIR)/pruss/test/prussMainTest.out  $(INSTALL_BIN_BASE_DIR)/prussMainTest_$(DEVICE).out
+
+installapp:
+	install -d $(INSTALL_BIN_BASE_DIR)
+	install -c -m 755 $(ARMV7BINDIR)/pruss/example/apps/sorte/master/pruss_app_sorte_master.out  $(INSTALL_BIN_BASE_DIR)/pruss_app_sorte_master_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/pruss/example/apps/sorte/slave/pruss_app_sorte_slave.out  $(INSTALL_BIN_BASE_DIR)/pruss_app_sorte_slave_$(DEVICE).out
+
+install:
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/pruss/include
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/pruss/soc
+	install -d $(INSTALL_LIB_BASE_DIR)
+	$(CP) ./*.h                $(INSTALL_INC_BASE_DIR)/ti/drv/pruss
+	$(CP) ./soc/*.h            $(INSTALL_INC_BASE_DIR)/ti/drv/pruss/soc
+	@$(CP) -r $(ARMV7LIBDIR)/*.a         $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/*.so        $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/*.so.*      $(INSTALL_LIB_BASE_DIR)

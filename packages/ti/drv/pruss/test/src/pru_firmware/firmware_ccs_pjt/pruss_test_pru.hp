@@ -1,0 +1,9 @@
+ARM_PRU0_EVENT    .set   16
+PRU0_ARM_EVENT    .set   17
+ARM_PRU1_EVENT    .set  18
+PRU1_ARM_EVENT    .set   19
+
+
+
+      
+

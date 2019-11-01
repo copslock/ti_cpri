@@ -1,0 +1,21 @@
+#define AM33XX
+#ifdef AM33XX
+#define ARM_PRU0_EVENT       16
+#define PRU0_ARM_EVENT       17
+#define ARM_PRU1_EVENT       18
+#define PRU1_ARM_EVENT       19
+#else
+#define ARM_PRU0_EVENT       32
+#define PRU0_ARM_EVENT       33
+#define ARM_PRU1_EVENT       34
+#define PRU1_ARM_EVENT       35
+#endif
+
+.macro  MOV32               
+.mparam dst, src
+    MOV     dst.w0, src & 0xFFFF
+    MOV     dst.w2, src >> 16
+.endm
+
+      
+

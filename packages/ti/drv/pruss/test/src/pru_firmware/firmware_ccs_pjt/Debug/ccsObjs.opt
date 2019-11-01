@@ -1,0 +1,1 @@
+"./pruss_test_pru0.obj" -l"libc.a" 
