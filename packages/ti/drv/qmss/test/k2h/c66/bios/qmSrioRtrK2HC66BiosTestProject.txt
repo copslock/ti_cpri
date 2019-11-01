@@ -1,0 +1,10 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/src/qmss_test.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/src/test_srioRtr.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/src/qmss_drv.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/src/qmss_srioRtr.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/device/k2h/src/qmss_device.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/k2h/c66/bios/test_osal_with_cppi.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/k2h/c66/bios/qmss_test_with_cppi.cfg"
+-ccs.setCompilerOptions "-mv64+ -g -DSOC_K2H --diag_warning=225 -I${PDK_INSTALL_PATH}/ti/drv/qmss/test/src"
+-rtsc.enableRtsc
+

@@ -1,0 +1,7 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/c6678/c66/bios/test_osal.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/c6678/c66/bios/qmss_test_devlib.cfg"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/src/qoscmodel/c66/qos_model.cmd"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/src/qoscmodel/src/QoS_C_Model.c"
+-ccs.setCompilerOptions "-mv64+ -g -DSOC_C6678  --diag_warning=225 -I${PDK_INSTALL_PATH}/ti/drv/qmss/test/src/qoscmodel/inc"
+-rtsc.enableRtsc
+

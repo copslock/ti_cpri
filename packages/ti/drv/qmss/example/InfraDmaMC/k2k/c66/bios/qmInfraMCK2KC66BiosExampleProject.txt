@@ -1,0 +1,12 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/example/InfraDmaMC/src/infrastructure_multicoremode.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/cppi/device/k2k/src/cppi_device.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/device/k2k/src/qmss_device.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/device/k2k/global-resource-list.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/device/k2k/policy_dsp-only.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/test/rm_transport_setup.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/example/InfraDmaMC/k2k/c66/bios/infrastructure_multicoreosal.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/example/InfraDmaMC/k2k/c66/bios/infrastructure_multicoremode.cmd"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/example/InfraDmaMC/k2k/c66/bios/infrastructure_multicoremode.cfg"
+-ccs.setCompilerOptions "-mv64+ -g -DDEVICE_K2K -DINTERNAL_LINKING_RAM -UL2_cache --diag_warning=225 -I${PDK_INSTALL_PATH}/ti/drv/qmss/example/InfraDmaMC/src -I${PDK_INSTALL_PATH}/ti/csl/src/intc -I${PDK_INSTALL_PATH}/ti/drv/qmss/example/InfraDmaMC/k2k/c66/bios"
+-rtsc.enableRtsc
+

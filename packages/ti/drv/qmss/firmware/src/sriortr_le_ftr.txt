@@ -1,0 +1,6 @@
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* QMSS_SRIORTR_LE_H_ */
+

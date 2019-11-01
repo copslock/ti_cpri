@@ -1,0 +1,126 @@
+#*******************************************************************************
+#* FILE PURPOSE: Top level makefile for Creating Component Libraries for ARM
+#* architectures
+#*******************************************************************************
+#* FILE NAME: makefile
+#*
+#* DESCRIPTION: Defines Compiler tools paths, libraries , Build Options 
+#*
+#*
+#*******************************************************************************
+#*
+# (Mandatory) Specify where various tools are installed.
+
+# Output for prebuilt generated libraries
+export ARMV7LIBDIR ?= ./lib
+export DEVICE ?=k2h
+export ARMV7OBJDIR ?= ./obj/$(DEVICE)
+export ARMV7BINDIR ?= ./bin/$(DEVICE)
+
+# ROOT Directory
+export ROOTDIR := ../../..
+
+
+# INCLUDE Directory
+export INCDIR := ../../..;$(PDK_INSTALL_PATH);$(ROOTDIR)
+
+# Common Macros used in make
+
+ifndef RM
+export RM = rm -f
+endif
+
+ifndef CP
+export CP = cp -p
+endif
+
+export MKDIR = mkdir -p
+
+ifndef RMDIR
+export RMDIR = rm -rf
+endif
+
+ifndef SED
+export SED = sed
+endif
+
+ifndef MAKE
+export MAKE = make
+endif
+
+# PHONY Targets
+.PHONY: all clean lib tests examples install installbin .libraries .executables
+
+# all rule
+all: .executables
+.executables: lib tests examples
+
+# Libraries
+lib: .libraries
+
+# tests Stub to add tests
+tests: 
+	@$(MAKE) -f ./test/$(DEVICE)/armv7/linux/build/makefile all
+
+# examples Stub to add Examples
+examples:
+	@$(MAKE) -f ./example/InfraDmaSC/$(DEVICE)/armv7/linux/build/makefile all
+	@$(MAKE) -f ./example/InfraDmaMC/$(DEVICE)/armv7/linux/build/makefile all
+	@$(MAKE) -f ./example/InterruptTestMC/$(DEVICE)/armv7/linux/build/makefile all
+# Make rule to create $(ARMV7LIBDIR)/libqmss.a library
+.libraries: $(ARMV7LIBDIR)/libqmss.a  $(ARMV7LIBDIR)/libqmss_$(DEVICE).a libqmss.so libqmss_$(DEVICE).so
+
+$(ARMV7LIBDIR)/libqmss.a $(ARMV7LIBDIR)/libqmss_$(DEVICE).a:
+	@$(MAKE) -f ./build/armv7/libqmss_aearmv7.mk $@
+
+libqmss.so libqmss_$(DEVICE).so:
+	@$(MAKE) -f ./build/armv7/libqmss_aearmv7.mk $@
+
+# Rule to clean $(ARMV7LIBDIR)/libqmss.a library
+clean:
+	@$(MAKE) -f ./build/armv7/libqmss_aearmv7.mk $@
+	@$(MAKE) -f ./example/InfraDmaSC/$(DEVICE)/armv7/linux/build/makefile $@
+	@$(MAKE) -f ./example/InfraDmaMC/$(DEVICE)/armv7/linux/build/makefile $@
+	@$(MAKE) -f ./example/InterruptTestMC/$(DEVICE)/armv7/linux/build/makefile $@
+	@$(MAKE) -f ./test/$(DEVICE)/armv7/linux/build/makefile $@
+	@$(RMDIR) $(ARMV7OBJDIR)/qmss
+	@$(RMDIR) $(ARMV7BINDIR)/qmss
+	@$(RM) $(ARMV7LIBDIR)/libqmss.a
+	@$(RM) $(ARMV7LIBDIR)/libqmss.so
+	@$(RM) $(ARMV7LIBDIR)/libqmss.so.*
+
+installbin:
+	install -d $(INSTALL_BIN_BASE_DIR)
+	install -c -m 755 $(ARMV7BINDIR)/qmss/example/qmInfraDmaMC.out $(INSTALL_BIN_BASE_DIR)/qmInfraDmaMC_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/example/qmInfraDmaSC.out $(INSTALL_BIN_BASE_DIR)/qmInfraDmaSC_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/example/qmInterruptTestMultiprocess.out $(INSTALL_BIN_BASE_DIR)/qmInterruptTestMultiprocess_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/example/qmInterruptTestMultiprocessInfraDMA.out $(INSTALL_BIN_BASE_DIR)/qmInterruptTestMultiprocessInfraDMA_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/test/qmDcfgTest.out    $(INSTALL_BIN_BASE_DIR)/qmDcfgTest_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/test/qmDescTest.out    $(INSTALL_BIN_BASE_DIR)/qmDescTest_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/test/qmInsRegionTest.out    $(INSTALL_BIN_BASE_DIR)/qmInsRegionTest_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/test/qmQAllocTest.out    $(INSTALL_BIN_BASE_DIR)/qmQAllocTest_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/test/qmScfgTest.out    $(INSTALL_BIN_BASE_DIR)/qmScfgTest_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/example/qmInfraDmaMC_so.out $(INSTALL_BIN_BASE_DIR)/qmInfraDmaMC_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/example/qmInfraDmaSC_so.out $(INSTALL_BIN_BASE_DIR)/qmInfraDmaSC_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/example/qmInterruptTestMultiprocess_so.out $(INSTALL_BIN_BASE_DIR)/qmInterruptTestMultiprocess_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/example/qmInterruptTestMultiprocessInfraDMA_so.out $(INSTALL_BIN_BASE_DIR)/qmInterruptTestMultiprocessInfraDMA_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/example/qmInterruptTestMultiprocessInfraDMASharedmem_so.out $(INSTALL_BIN_BASE_DIR)/qmInterruptTestMultiprocessInfraDMASharedmem_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/test/qmDcfgTest_so.out    $(INSTALL_BIN_BASE_DIR)/qmDcfgTest_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/test/qmDescTest_so.out    $(INSTALL_BIN_BASE_DIR)/qmDescTest_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/test/qmInsRegionTest_so.out    $(INSTALL_BIN_BASE_DIR)/qmInsRegionTest_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/test/qmQAllocTest_so.out    $(INSTALL_BIN_BASE_DIR)/qmQAllocTest_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/qmss/test/qmScfgTest_so.out    $(INSTALL_BIN_BASE_DIR)/qmScfgTest_so_$(DEVICE).out
+
+install:
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/qmss/include
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/qmss/firmware/v0
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/qmss/firmware/v1
+	install -d $(INSTALL_LIB_BASE_DIR)
+	$(CP) ./*.h                $(INSTALL_INC_BASE_DIR)/ti/drv/qmss
+	$(CP) ./include/*.h        $(INSTALL_INC_BASE_DIR)/ti/drv/qmss/include
+	$(CP) ./firmware/v0/*.h       $(INSTALL_INC_BASE_DIR)/ti/drv/qmss/firmware/v0
+	$(CP) ./firmware/v1/*.h       $(INSTALL_INC_BASE_DIR)/ti/drv/qmss/firmware/v1
+	$(CP) -r ./device $(INSTALL_INC_BASE_DIR)/ti/drv/qmss/
+	@$(CP) -r $(ARMV7LIBDIR)/*.a         $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/*.so        $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/*.so.*      $(INSTALL_LIB_BASE_DIR)

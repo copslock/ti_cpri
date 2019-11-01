@@ -1,0 +1,7 @@
+#ifndef QMSS_QOS_SCHED_WIDE_BE_H_
+#define QMSS_QOS_SCHED_WIDE_BE_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+

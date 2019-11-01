@@ -1,0 +1,6 @@
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* QMSS_ACC16_BE_H_ */
+

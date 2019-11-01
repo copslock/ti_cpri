@@ -1,0 +1,10 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/src/qmss_test.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/src/test_staticCfg.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/src/qmss_drv.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/src/qmss_acc.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/src/qmss_qos.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/device/k2g/src/qmss_device.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/k2g/armv7/bios/test_osal.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/k2g/armv7/bios/qmss_test.cfg"
+-ccs.setCompilerOptions "-c -mcpu=cortex-a15 -mtune=cortex-a15 -marm -mfloat-abi=hard -DSOC_K2G -DNSS_LITE -g -gstrict-dwarf -Wall -MMD -MP -I${PDK_INSTALL_PATH}/ti/drv/qmss/test/src -I${PDK_INSTALL_PATH} "  -rtsc.enableRtsc
+-ccs.setLinkerOptions " -lrdimon -lgcc -lm -lnosys -nostartfiles -static -Wl,--gc-sections -L$(XDCTOOLS)/packages/gnu/targets/arm/libs/install-native/arm-none-eabi/lib/fpu "

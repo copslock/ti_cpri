@@ -1,0 +1,6 @@
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* QMSS_QOS_LE_H_ */
+

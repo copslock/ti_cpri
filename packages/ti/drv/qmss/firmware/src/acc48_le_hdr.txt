@@ -1,0 +1,7 @@
+#ifndef QMSS_ACC48_LE_H_
+#define QMSS_ACC48_LE_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+

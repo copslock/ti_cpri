@@ -1,0 +1,8 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/example/InfraDmaSC/src/infrastructure_mode.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/cppi/device/c6678/src/cppi_device.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/device/c6678/src/qmss_device.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/example/InfraDmaSC/c6678/c66/bios/infrastructure_osal.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/example/InfraDmaSC/c6678/c66/bios/infrastructure_mode.cmd" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/example/InfraDmaSC/c6678/c66/bios/infrastructure_mode.cfg" 
+-ccs.setCompilerOptions "-mv64+ -g -DSOC_C6678 -DCONFIG_ACC -DINTERNAL_LINKING_RAM --diag_warning=225 -I${PDK_INSTALL_PATH}/ti/drv/qmss/example/InfraDmaSC/src -I${PDK_INSTALL_PATH}/ti/drv/qmss/example/InfraDmaSC/c6678/c66/bios"  -rtsc.enableRtsc
+

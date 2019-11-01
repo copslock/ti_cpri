@@ -1,0 +1,14 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/src/qmss_test.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/src/test_qosSched.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/src/test_qosSchedDropSched.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/src/test_qosSchedDropSchedScen.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/src/qmss_drv.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/src/qmss_qosSched.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/device/c6678/src/qmss_device.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/device/c6678/global-resource-list.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/device/c6678/policy_dsp-only.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/c6678/c66/bios/test_osal.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/test/c6678/c66/bios/qmss_test_with_rm.cfg"
+-ccs.setCompilerOptions "-mv64+ -g -O2 -DSOC_C6678 --diag_warning=225 -I${PDK_INSTALL_PATH}/ti/drv/qmss/test/src -DTEST_DROP_SCHED -@${PDK_INSTALL_PATH}/ti/drv/qmss/test/c6678/c66/bios/optOnlySendScenModel.txt"
+-rtsc.enableRtsc
+

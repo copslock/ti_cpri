@@ -1,0 +1,7 @@
+#ifndef QMSS_ACC16_BE_H_
+#define QMSS_ACC16_BE_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+

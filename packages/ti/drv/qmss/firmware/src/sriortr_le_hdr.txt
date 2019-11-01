@@ -1,0 +1,7 @@
+#ifndef QMSS_SRIORTR_LE_H_
+#define QMSS_SRIORTR_LE_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
