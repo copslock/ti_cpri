@@ -11,6 +11,7 @@ MEMORY
     RESET_VECTORS(X)    : ORIGIN = 0x41c40000 , LENGTH = 0x100  /* Bottom 256 KB used by SBL */
     R5F_TCMB0(RWIX)     : ORIGIN = 0x41010000 , LENGTH = 0x00008000
     DDR0 (RWIX)         : ORIGIN = 0x80000000 , LENGTH = 0x80000000
+    MSRAM (RWIX)        : ORIGIN = 0x03600000 , LENGTH = 0x80000       /* 512K OCMC, used for allocation of ICSSG port queues */
 }
 
 SECTIONS

@@ -5,7 +5,6 @@ MEMORY
 {
     OCMCRAM     : ORIGIN = 0x000041C00000, LENGTH = 0x00080000				/* MCUSS-OCMC RAM - 512KB 					*/
 
-
     DDR_MPU1   (RWX)  	: ORIGIN = 0x80000000, LENGTH = 0x08000000
     DDR_IPC     (RWX)  	: ORIGIN = 0x90000000, LENGTH = 0x02000000
 
@@ -17,6 +16,8 @@ MEMORY
     MSMC_MPU1	(RWX)	    : ORIGIN = 0x000070042000, LENGTH = 0x7AE000        /* 7864KB */
     /* j721e Reserved Memory for DMSC Firmware                                */
     MSMC3_DMSC_FW  (RWIX)   : ORIGIN = 0x0000707F0000, LENGTH = 0x10000         /* 64KB */
+    
+    MSRAM                   : ORIGIN = 0x000003600000, LENGTH = 0x80000        /* 512K OCMC, used for allocation of ICSSG port queues */
 }
 REGION_ALIAS("REGION_TEXT_EL3", DDR_MPU1);
 REGION_ALIAS("REGION_TEXT", DDR_MPU1);
