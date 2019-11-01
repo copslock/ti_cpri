@@ -1,0 +1,1048 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+    <title>mpbu mcbsp_C6657 July 2012 Report</title>
+    <style type="text/css">
+        body { font-family: Verdana, Arial, Helvetica, serif; font-size: 0.65em; }
+        table,tr,td,th { font-size: 1.0em;  }
+        table { border-collapse: collapse; margin-top: 20px; margin-bottom: 20px; mso-padding-alt:0in 0in 0in 0in ; }
+        td { padding-left: 5px; padding-right: 5px; padding-top: 2px; padding-bottom: 2px; }
+        th { padding-left: 15px; padding-right: 15px; padding-top: 5px; padding-bottom: 5px; }
+        i { background-color: #FFFEAE; }
+        #topDisclaimerTable { width: 80%; margin-left: 10%; margin-bottom: 60px; }
+        #topDisclaimerTable td { border: 0px; font-size: 1.20em; }
+        #bottomDisclaimerTable { width: 80%; margin-left: 10%; margin-top: 60px; }
+        #bottomDisclaimerTable td { border: 0px; font-size: 1.20em; }
+        #bottomNoticeTable { width: 80%; margin-left: 10%; margin-top: 30px; }
+        #bottomNoticeTable td { border: 0px; font-size: 1.20em; }
+        .reportHeader { width: 100%; text-align: center; }
+        .associatedResources { width: 100%; text-align: center; }
+        .documentLink { width: 100%; text-align: center; }
+        .redBack { background-color: #FF9596 }
+        .greenBack { background-color: #B8FBB8 }
+        .yellowBack { background-color: #FFFF99 }
+        td { word-wrap: break-word; border: 1px solid #B1BCD0; color: #000000; }
+        th { border: 1px solid #7C8EA2; color: #FFFFFF; background-color: #6C7E92; }
+    </style>
+</head>
+<body>
+    <table border='0' cellspacing='1' cellpadding='2' id='topDisclaimerTable'>
+        <tbody>
+<tr >
+    <td style='font-weight: bold;'>Confidential</td>
+    <td align='right' style='font-weight: bold;'>For Internal Use Only</td>
+</tr>
+<tr >
+    <td valign='top' style='font-weight: bold;'>DISCLAIMER:</td>
+    <td >This report was created using Black Duck(TM) Protex software compliance management products and services. The results contained in the report reflect the user's analysis and decision making. Recipient of the results bears all of the risks relating to use of, or reliance upon, such results or any other content contained in this report. Black Duck Software makes no representation or warranty to any party regarding the contents of this report, its accuracy, completeness or correctness, and Black Duck Software hereby disclaims any and all warranties (both express and implied) with respect thereto.</td>
+</tr>
+        </tbody>
+    </table>
+<div class='reportHeader'><h1>mpbu mcbsp_C6657 July 2012 Report</h1></div>
+<div class='reportHeader'><h4>July 31, 2012  03:42 PM</h4></div>
+<table border='0' cellspacing='0' cellpadding='0' width='100%' style='font-weight: bold;' >
+    <thead>
+        <tr>
+            <td valign='center' align='left' style='border: 0px; height: 20px; font-size: 1.30em; text-align: left;'><a name="TableOfContents">Table Of Contents</a></td>
+        </tr>
+        <tr>
+            <td valign='top' align='center' style='border: 0px; height: 20px; font-size: 1.20em; text-align: left;'>&#160;</td>
+        </tr>
+    </thead>
+    <tbody>
+<tr >
+    <td valign='center' align='left' style='border: 0px; height: 20px; font-size: 1.20em; text-align: left;'><a href="#Summary">Summary</a></td>
+</tr>
+<tr >
+    <td valign='center' align='left' style='border: 0px; height: 20px; font-size: 1.20em; text-align: left;'><a href="#Analysis Summary">Analysis Summary</a></td>
+</tr>
+<tr >
+    <td valign='center' align='left' style='border: 0px; height: 20px; font-size: 1.20em; text-align: left;'><a href="#Bill of Materials">Bill of Materials</a></td>
+</tr>
+<tr >
+    <td valign='center' align='left' style='border: 0px; height: 20px; font-size: 1.20em; text-align: left;'><a href="#File Name Patterns Flagged as Pending Id">File Name Patterns Flagged as Pending Id</a></td>
+</tr>
+<tr >
+    <td valign='center' align='left' style='border: 0px; height: 20px; font-size: 1.20em; text-align: left;'><a href="#Code Matches - Precision">Code Matches - Precision</a></td>
+</tr>
+    </tbody>
+</table>
+<br />
+<br /><br />
+<table border='0' cellspacing='0' cellpadding='0' style="clear: both; display: block; width: 95%;">
+<tr>
+    <td nowrap="nowrap" valign="middle" style="border: 0px; height: 30px; font-size: 1.30em; text-align: left;">
+        <a href="#TableOfContents">Top</a>
+        <a name="Summary"> </a>
+    </td>
+</tr>
+</table>
+<table border='0' cellspacing='0' cellpadding='0' class='reportTable' style="clear: both; display: block; width: 95%;">
+    <thead>
+        <tr>
+            <th nowrap="nowrap" colspan="2" valign="middle" style="border: 0px; background-color: #DBE2EA; color: #376297; height: 30px; font-size: 1.30em; text-align: left;">
+Summary
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+<tr >
+    <td valign='top' nowrap='nowrap' style='font-weight: bold; text-align: right; padding-right: 20px; border: 0px; font-size: 1.20em;'>Name:</td>
+    <td style='border: 0px; font-size: 1.20em;'>mpbu mcbsp_C6657 July 2012</td>
+</tr>
+<tr >
+    <td valign='top' nowrap='nowrap' style='font-weight: bold; text-align: right; padding-right: 20px; border: 0px; font-size: 1.20em;'>Project Creator:</td>
+    <td style='border: 0px; font-size: 1.20em;'>Jack Manbeck</td>
+</tr>
+<tr >
+    <td valign='top' nowrap='nowrap' style='font-weight: bold; text-align: right; padding-right: 20px; border: 0px; font-size: 1.20em;'>License:</td>
+    <td style='border: 0px; font-size: 1.20em;'>[template] Basic Proprietary Commercial License</td>
+</tr>
+<tr >
+    <td valign='top' nowrap='nowrap' style='font-weight: bold; text-align: right; padding-right: 20px; border: 0px; font-size: 1.20em;'>Description:</td>
+    <td style='border: 0px; font-size: 1.20em;'></td>
+</tr>
+<tr >
+    <td valign='top' nowrap='nowrap' style='font-weight: bold; text-align: right; padding-right: 20px; border: 0px; font-size: 1.20em;'>Number of Files:</td>
+    <td style='border: 0px; font-size: 1.20em;'>96</td>
+</tr>
+<tr >
+    <td valign='top' nowrap='nowrap' style='font-weight: bold; text-align: right; padding-right: 20px; border: 0px; font-size: 1.20em;'>Files Pending Identification:</td>
+    <td style='border: 0px; font-size: 1.20em;'>3 (3.12%)</td>
+</tr>
+<tr >
+    <td valign='top' nowrap='nowrap' style='font-weight: bold; text-align: right; padding-right: 20px; border: 0px; font-size: 1.20em;'>Files with Violations:</td>
+    <td style='border: 0px; font-size: 1.20em;'>6 (6.25%)</td>
+</tr>
+<tr >
+    <td valign='top' nowrap='nowrap' style='font-weight: bold; text-align: right; padding-right: 20px; border: 0px; font-size: 1.20em;'>Server:</td>
+    <td style='border: 0px; font-size: 1.20em;'>blackduck01.dal.design.ti.com</td>
+</tr>
+    </tbody>
+</table>
+<br />
+<br /><br /><br />
+<table border='0' cellspacing='0' cellpadding='0' style="clear: both; display: block; width: 95%;">
+<tr>
+    <td nowrap="nowrap" valign="middle" style="border: 0px; height: 30px; font-size: 1.30em; text-align: left;">
+        <a href="#TableOfContents">Top</a>
+        <a name="Analysis Summary"> </a>
+    </td>
+</tr>
+</table>
+<table border='0' cellspacing='0' cellpadding='0' class='reportTable' style="clear: both; display: block; width: 95%;">
+    <thead>
+        <tr>
+            <th nowrap="nowrap" colspan="3" valign="middle" style="border: 0px; background-color: #DBE2EA; color: #376297; height: 30px; font-size: 1.30em; text-align: left;">
+Analysis Summary
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Last Updated:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>July 31, 2012  03:39 PM</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Scan Started:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>July 31, 2012  03:19 PM</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Scan Finished:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>July 31, 2012  03:20 PM</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Files analyzed:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>96 Files</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Bytes analyzed:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>2.53 MiB (2,650,509  bytes)</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Files skipped:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>   0 Files</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Bytes skipped:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>   0 Bytes</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Analysis Release Description:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>Product version 6.0.4 KB update 70, custom codeprints modified June 04, 2012 10:22 AM</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Analyzed From Host:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>GTLA0850427.gt.design.ti.com</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Analyzed By:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>a0850427 (j-manbeck2@ti.com)</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Analyzed With OS:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>Windows XP</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Analyzed With Locale:</td>
+    <td colspan='2' style='border: 0px; font-size: 1.20em;'>en-US</td>
+</tr>
+<tr >
+    <td nowrap='nowrap' style='white-space: nowrap; font-weight: bold; text-align: right; padding-right: 20px; border: 0px; vertical-align: top; font-size: 1.20em;'>Analyzed With Options:</td>
+    <td style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>File Matches -</td>
+    <td style='border: 0px; font-size: 1.20em; padding-left: 0px;'>Yes</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>Snippet Matches -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>Yes</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>Java Import Statements -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>Yes</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>Java Package Statements -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>Yes</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>Binary Dependencies -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>Yes</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>String Searches -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>Yes</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>Allow wild cards (*) in string search queries -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>Yes</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>Allow regular expression search queries -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>No</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>Decompress Compressed Files -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>Yes</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>Expand Archive Files -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>Yes</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>Enable Multi-User File Comparison -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>No</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>Store non-precision matches -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>Yes</td>
+</tr>
+<tr >
+    <td colspan='2' style='white-space: nowrap; text-align: right; border: 0px; font-size: 1.20em;'>Enable Auto Identification -</td>
+    <td style='width: 100%; border: 0px; font-size: 1.20em; padding-left: 0px;'>No</td>
+</tr>
+    </tbody>
+</table>
+<br />
+<br /><br /><br />
+<table border='0' cellspacing='0' cellpadding='0' style="clear: both; display: block; width: 95%;">
+<tr>
+    <td nowrap="nowrap" valign="middle" style="border: 0px; height: 30px; font-size: 1.30em; text-align: left;">
+        <a href="#TableOfContents">Top</a>
+        <a name="Bill of Materials"> </a>
+    </td>
+</tr>
+</table>
+<table border='0' cellspacing='0' cellpadding='0' class='reportTable' style="clear: both; display: block; width: 95%;">
+    <thead>
+        <tr>
+            <th nowrap="nowrap" colspan="14" valign="middle" style="border: 0px; background-color: #DBE2EA; color: #376297; height: 30px; font-size: 1.30em; text-align: left;">
+Bill of Materials
+            </th>
+        </tr>
+        <tr style="font-size: 1.10em;">
+            <th nowrap="nowrap">Approval Status</th>
+            <th nowrap="nowrap">License Conflict</th>
+            <th nowrap="nowrap">Component</th>
+            <th nowrap="nowrap">Version</th>
+            <th nowrap="nowrap">Home Page</th>
+            <th nowrap="nowrap">Component Comment</th>
+            <th nowrap="nowrap">License</th>
+            <th nowrap="nowrap">Usage</th>
+            <th nowrap="nowrap">Ship Status</th>
+            <th nowrap="nowrap"># Manual Code Match</th>
+            <th nowrap="nowrap"># Rapid ID Code Match</th>
+            <th nowrap="nowrap"># Manual Depends</th>
+            <th nowrap="nowrap"># Manual Search</th>
+            <th nowrap="nowrap">Used By</th>
+        </tr>
+    </thead>
+    <tbody>
+<tr >
+    <td style='text-align: center;'><span class="yellowBack">Pending Approval</span></td>
+    <td style='text-align: center;'>Declared License Conflict and Component License Conflict</td>
+    <td nowrap='nowrap'><a name="BOM_doxygen137_Unspecified">Doxygen</a></td>
+    <td nowrap='nowrap'>Unspecified</td>
+    <td ><a href="http://www.stack.nl/~dimitri/doxygen">http://www.stack.nl/~dimitri/doxygen</a></td>
+    <td ></td>
+    <td >GPL 2.0</td>
+    <td >File</td>
+    <td >Ship</td>
+    <td >6</td>
+    <td >0</td>
+    <td >0</td>
+    <td >0</td>
+    <td nowrap='nowrap'><a name="BOM_"></a></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td style='text-align: center;'>N/A</td>
+    <td style='text-align: center;'>N/A</td>
+    <td nowrap='nowrap' style='font-style: italic;'><a name="BOM_c_mpbumcbsp_c6657july2012_Unspecified">mpbu mcbsp_C6657 July 2012</a></td>
+    <td nowrap='nowrap'>Unspecified</td>
+    <td ></td>
+    <td ></td>
+    <td >[template] Basic Proprietary Commercial License</td>
+    <td >Original Code</td>
+    <td >Ship</td>
+    <td >68</td>
+    <td >0</td>
+    <td >0</td>
+    <td >0</td>
+    <td nowrap='nowrap'><a name="BOM_"></a></td>
+</tr>
+<tr >
+    <td style='text-align: center;'><span class="yellowBack">Pending Approval</span></td>
+    <td style='text-align: center;'>No Conflicts</td>
+    <td nowrap='nowrap'><a name="BOM_msp430breathewithgrace1051445_Unspecified">msp430-Breathe-with-Grace</a></td>
+    <td nowrap='nowrap'>Unspecified</td>
+    <td ><a href="http://github.com/GWDeveloper/msp430-Breathe-with-Grace/">http://github.com/GWDeveloper/msp430-Breathe-with-Grace/</a></td>
+    <td ></td>
+    <td >Unspecified</td>
+    <td >Snippet</td>
+    <td >Ship</td>
+    <td >1</td>
+    <td >0</td>
+    <td >0</td>
+    <td >0</td>
+    <td nowrap='nowrap'><a name="BOM_"></a></td>
+</tr>
+    </tbody>
+</table>
+<br />
+<br /><br /><br />
+<table border='0' cellspacing='0' cellpadding='0' style="clear: both; display: block; width: 95%;">
+<tr>
+    <td nowrap="nowrap" valign="middle" style="border: 0px; height: 30px; font-size: 1.30em; text-align: left;">
+        <a href="#TableOfContents">Top</a>
+        <a name="File Name Patterns Flagged as Pending Id"> </a>
+    </td>
+</tr>
+</table>
+<table border='0' cellspacing='0' cellpadding='0' class='reportTable' style="clear: both; display: block; width: 95%;">
+    <thead>
+        <tr>
+            <th nowrap="nowrap" colspan="3" valign="middle" style="border: 0px; background-color: #DBE2EA; color: #376297; height: 30px; font-size: 1.30em; text-align: left;">
+File Name Patterns Flagged as Pending Id
+            </th>
+        </tr>
+        <tr style="font-size: 1.10em;">
+            <th nowrap="nowrap">Full Path</th>
+            <th nowrap="nowrap">Type</th>
+            <th nowrap="nowrap">File/Folder Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+<tr bgcolor="#F5F5F5">
+    <td colspan='3'>This project does not have any file name patterns flagged as pending id.</td>
+</tr>
+    </tbody>
+</table>
+<br />
+<br /><br /><br />
+<table border='0' cellspacing='0' cellpadding='0' style="clear: both; display: block; width: 95%;">
+<tr>
+    <td nowrap="nowrap" valign="middle" style="border: 0px; height: 30px; font-size: 1.30em; text-align: left;">
+        <a href="#TableOfContents">Top</a>
+        <a name="Code Matches - Precision"> </a>
+    </td>
+</tr>
+</table>
+<table border='0' cellspacing='0' cellpadding='0' class='reportTable' style="clear: both; display: block; width: 95%;">
+    <thead>
+        <tr>
+            <th nowrap="nowrap" colspan="14" valign="middle" style="border: 0px; background-color: #DBE2EA; color: #376297; height: 30px; font-size: 1.30em; text-align: left;">
+Code Matches - Precision
+            </th>
+        </tr>
+        <tr style="font-size: 1.10em;">
+            <th nowrap="nowrap">File</th>
+            <th nowrap="nowrap">Size</th>
+            <th nowrap="nowrap">File Line</th>
+            <th nowrap="nowrap">Total Lines</th>
+            <th nowrap="nowrap">Component</th>
+            <th nowrap="nowrap">Version</th>
+            <th nowrap="nowrap">License</th>
+            <th nowrap="nowrap">Usage</th>
+            <th nowrap="nowrap">Status</th>
+            <th nowrap="nowrap">%</th>
+            <th nowrap="nowrap">Matched File</th>
+            <th nowrap="nowrap">Matched File Line</th>
+            <th nowrap="nowrap">File Comment</th>
+            <th nowrap="nowrap">Component Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+<tr >
+    <td >ti/drv/mcbsp/docs/doxygen/html/doxygen.css</td>
+    <td align='right'>8077</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >Doxygen</td>
+    <td >1.5.0</td>
+    <td >GPL 2.0</td>
+    <td >File</td>
+    <td >Identified by Generic Version</td>
+    <td >100%</td>
+    <td >doxygen-1.5.0.linux.bin.tar.gz/doxygen-1.5.0/html/doxygen.css</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/doxygen/html/doxygen.png</td>
+    <td align='right'>1281</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >Doxygen</td>
+    <td >1.3.9</td>
+    <td >GPL 2.0</td>
+    <td >File</td>
+    <td >Identified by Generic Version</td>
+    <td >100%</td>
+    <td >doxygen-1.3.9.linux.bin.tar.gz/doxygen-1.3.9/examples/afterdoc/html/doxygen.png</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/doxygen/html/tab_b.gif</td>
+    <td align='right'>35</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >Doxygen</td>
+    <td >1.4.5</td>
+    <td >GPL 2.0</td>
+    <td >File</td>
+    <td >Identified by Generic Version</td>
+    <td >100%</td>
+    <td >doxygen-1.4.5.linux.bin.tar.gz/doxygen-1.4.5/html/tab_b.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/doxygen/html/tab_l.gif</td>
+    <td align='right'>706</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >Doxygen</td>
+    <td >1.4.5</td>
+    <td >GPL 2.0</td>
+    <td >File</td>
+    <td >Identified by Generic Version</td>
+    <td >100%</td>
+    <td >doxygen-1.4.5.linux.bin.tar.gz/doxygen-1.4.5/html/tab_l.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/doxygen/html/tab_r.gif</td>
+    <td align='right'>2585</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >Doxygen</td>
+    <td >1.4.5</td>
+    <td >GPL 2.0</td>
+    <td >File</td>
+    <td >Identified by Generic Version</td>
+    <td >100%</td>
+    <td >doxygen-1.4.5.linux.bin.tar.gz/doxygen-1.4.5/html/tab_r.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/doxygen/html/tabs.css</td>
+    <td align='right'>1758</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >Doxygen</td>
+    <td >1.4.5</td>
+    <td >GPL 2.0</td>
+    <td >File</td>
+    <td >Identified by Generic Version</td>
+    <td >100%</td>
+    <td >doxygen-1.4.5.linux.bin.tar.gz/doxygen-1.4.5/examples/tag/html/tabs.css</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/tifooter.htm</td>
+    <td align='right'>98</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >Eonos</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >Eonos-master-20101115.tgz/Martix-Eonos-cedf664/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tifooter.htm</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/tifooter.htm</td>
+    <td align='right'>98</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-09-07</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-09-07.tar.gz/openembedded-git-tag-testing_2010-09-07/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tifooter.htm</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/tifooter.htm</td>
+    <td align='right'>98</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-08-30</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-08-30.tar.gz/openembedded-git-tag-testing_2010-08-30/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tifooter.htm</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/tifooter.htm</td>
+    <td align='right'>98</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-09-13</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-09-13.tar.gz/openembedded-git-tag-testing_2010-09-13/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tifooter.htm</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/tifooter.htm</td>
+    <td align='right'>98</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-09-20</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-09-20.tar.gz/openembedded-git-tag-testing_2010-09-20/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tifooter.htm</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/tifooter.htm</td>
+    <td align='right'>98</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-08-23</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-08-23.tar.gz/openembedded-git-tag-testing_2010-08-23/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tifooter.htm</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/tifooter.htm</td>
+    <td align='right'>98</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >2011.3</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >release-2011.03.tar.gz/release-2011.03/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tifooter.htm</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/tifooter.htm</td>
+    <td align='right'>98</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >2010.12</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >release-2010.12.tar.gz/release-2010.12/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tifooter.htm</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/tifooter.htm</td>
+    <td align='right'>98</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >openembedded-android</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-android-android-20101206.tgz/anguslees-openembedded-android-a608b5f/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tifooter.htm</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/tifooter.htm</td>
+    <td align='right'>98</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >openembedded-rascal</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-rascal-master-20101212.tgz/rascalmicro-openembedded-rascal-effc276/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tifooter.htm</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/tifooter.htm</td>
+    <td align='right'>98</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >overo-oe</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >overo-oe-min_image-20110417.tgz/yyli-overo-oe-b470aae/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tifooter.htm</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/tilogo.gif</td>
+    <td align='right'>1137</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >Eonos</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >Eonos-master-20101115.tgz/Martix-Eonos-cedf664/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tilogo.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/tilogo.gif</td>
+    <td align='right'>1137</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-09-20</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-09-20.tar.gz/openembedded-git-tag-testing_2010-09-20/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tilogo.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/tilogo.gif</td>
+    <td align='right'>1137</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-09-13</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-09-13.tar.gz/openembedded-git-tag-testing_2010-09-13/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tilogo.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/tilogo.gif</td>
+    <td align='right'>1137</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-09-07</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-09-07.tar.gz/openembedded-git-tag-testing_2010-09-07/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tilogo.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/tilogo.gif</td>
+    <td align='right'>1137</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-08-23</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-08-23.tar.gz/openembedded-git-tag-testing_2010-08-23/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tilogo.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/tilogo.gif</td>
+    <td align='right'>1137</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-08-30</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-08-30.tar.gz/openembedded-git-tag-testing_2010-08-30/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tilogo.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/tilogo.gif</td>
+    <td align='right'>1137</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >2011.3</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >release-2011.03.tar.gz/release-2011.03/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tilogo.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/tilogo.gif</td>
+    <td align='right'>1137</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >2010.12</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >release-2010.12.tar.gz/release-2010.12/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tilogo.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/tilogo.gif</td>
+    <td align='right'>1137</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >openembedded-android</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-android-android-20101206.tgz/anguslees-openembedded-android-a608b5f/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tilogo.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/tilogo.gif</td>
+    <td align='right'>1137</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >openembedded-rascal</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-rascal-master-20101212.tgz/rascalmicro-openembedded-rascal-effc276/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tilogo.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/tilogo.gif</td>
+    <td align='right'>1137</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >overo-oe</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >overo-oe-min_image-20110417.tgz/yyli-overo-oe-b470aae/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/tilogo.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/titagline.gif</td>
+    <td align='right'>653</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >Eonos</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >Eonos-master-20101115.tgz/Martix-Eonos-cedf664/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/titagline.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/titagline.gif</td>
+    <td align='right'>653</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-08-30</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-08-30.tar.gz/openembedded-git-tag-testing_2010-08-30/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/titagline.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/titagline.gif</td>
+    <td align='right'>653</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-09-13</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-09-13.tar.gz/openembedded-git-tag-testing_2010-09-13/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/titagline.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/titagline.gif</td>
+    <td align='right'>653</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-08-23</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-08-23.tar.gz/openembedded-git-tag-testing_2010-08-23/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/titagline.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/titagline.gif</td>
+    <td align='right'>653</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-09-07</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-09-07.tar.gz/openembedded-git-tag-testing_2010-09-07/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/titagline.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/titagline.gif</td>
+    <td align='right'>653</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >testing_2010-09-20</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-git-tag-testing_2010-09-20.tar.gz/openembedded-git-tag-testing_2010-09-20/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/titagline.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/titagline.gif</td>
+    <td align='right'>653</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >2011.3</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >release-2011.03.tar.gz/release-2011.03/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/titagline.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/titagline.gif</td>
+    <td align='right'>653</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >OpenEmbedded</td>
+    <td >2010.12</td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >release-2010.12.tar.gz/release-2010.12/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/titagline.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/titagline.gif</td>
+    <td align='right'>653</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >openembedded-android</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-android-android-20101206.tgz/anguslees-openembedded-android-a608b5f/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/titagline.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/docs/titagline.gif</td>
+    <td align='right'>653</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >openembedded-rascal</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >openembedded-rascal-master-20101212.tgz/rascalmicro-openembedded-rascal-effc276/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/titagline.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr >
+    <td >ti/drv/mcbsp/docs/titagline.gif</td>
+    <td align='right'>653</td>
+    <td align='right'></td>
+    <td align='right'></td>
+    <td >overo-oe</td>
+    <td ></td>
+    <td >MIT License V2</td>
+    <td >File</td>
+    <td >Precision Match</td>
+    <td >100%</td>
+    <td >overo-oe-min_image-20110417.tgz/yyli-overo-oe-b470aae/recipes/ti/ti-dmai/doxygen_templates.tar.gz.---/doxygen_templates/titagline.gif</td>
+    <td ></td>
+    <td ></td>
+    <td ></td>
+</tr>
+<tr bgcolor="#F5F5F5">
+    <td >ti/drv/mcbsp/package/ti_drv_mcbsp.java</td>
+    <td align='right'>11018</td>
+    <td align='right'>1</td>
+    <td align='right'>61</td>
+    <td >msp430-Breathe-with-Grace</td>
+    <td ></td>
+    <td >Unspecified</td>
+    <td >Snippet</td>
+    <td >Identified</td>
+    <td >41%</td>
+    <td >msp430-Breathe-with-Grace-master-20110401.tgz/GWDeveloper-msp430-Breathe-with-Grace-1d8bd9a/Debug/configPkg/package/configPkg.java</td>
+    <td >1</td>
+    <td >TI Code matching TI code</td>
+    <td ></td>
+</tr>
+    </tbody>
+</table>
+<br />
+    <table border='0' cellspacing='1' cellpadding='2' id='bottomDisclaimerTable'><tbody>
+<tr >
+    <td style='font-weight: bold;'>Confidential</td>
+    <td align='right' style='font-weight: bold;'>For Internal Use Only</td>
+</tr>
+<tr >
+    <td valign='top' style='font-weight: bold;'>DISCLAIMER:</td>
+    <td >This report was created using Black Duck(TM) Protex software compliance management products and services. The results contained in the report reflect the user's analysis and decision making. Recipient of the results bears all of the risks relating to use of, or reliance upon, such results or any other content contained in this report. Black Duck Software makes no representation or warranty to any party regarding the contents of this report, its accuracy, completeness or correctness, and Black Duck Software hereby disclaims any and all warranties (both express and implied) with respect thereto.</td>
+</tr>
+    </tbody></table>
+</body>
+</html>

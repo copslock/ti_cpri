@@ -1,0 +1,82 @@
+/*
+ *
+ * $Source: /cvsstl/ti/pa/f/s19/config.bld,v $
+ * $Revision: 1.6 $
+ *
+ * XDC/BIOS configuration file for I12 Topo/Feature Set
+ *
+ * Copyright 2008, Texas Instruments, Inc.  All rights reserved.
+ *
+ * $Log: config.bld,v $
+ * Revision 1.6  2009/06/10 07:51:13  mkamat
+ * MID 2487 Replace references to PA17 with PA
+ *
+ * Revision 1.5  2009/03/02 04:36:58  uparikh
+ * Add segment SDRAM_LINK_SHARED for dhared LINK memory
+ *
+ * Revision 1.4  2009/02/18 14:29:12  uparikh
+ * Partition SDRAM and re-order memory segments in ascending order
+ *
+ * Revision 1.3  2009/02/14 09:05:55  uparikh
+ * Update IRAM and SDRAM base / len
+ *
+ * Revision 1.2  2009/01/28 12:37:59  mkamat
+ * Made cache 64k and moved o/p buffer to L3 - MID 2144
+ *
+ * Revision 1.1  2008/10/21 04:45:09  mkamat
+ * Code cleanup in s19 area - MID 1923
+ *
+ * Revision 1.6  2008/10/13 05:22:54  uparikh
+ * Define section for uboot
+ *
+ * Revision 1.5  2008/09/29 11:20:53  uparikh
+ * Increase size of SDRAM for pa.out to build
+ *
+ * Revision 1.4  2008/09/09 23:35:52  lester
+ * (MID 1820) Revised to use deviceName: 'TMS320DA830',
+ * instead of deviceName: 'Primus' (deprecated).
+ *
+ * Revision 1.3  2008/09/05 17:18:42  martin
+ * Renumber array elements. Element 1 was missing in last commit
+ *
+ * Revision 1.2  2008/09/05 16:00:43  martin
+ * Move DSP image to upper SDRAM to cooperate with Linux images.
+ *
+ * Revision 1.1  2008/08/20 09:54:35  lester
+ * (MID 1820) Generated via (from latest this date):
+ * [/cygdrive/t/pa/f/s17/pai1] delog -f"t:/pa/f/s19/i12" ....
+ *
+ */
+
+/* ......................................................................... */
+
+var memory = [];
+
+
+memory[0] = ["IRAM",
+             {
+             name	: "IRAM",
+             base	: 0x10800000,
+             len	: 0x00080000,
+             space	: "code/data"
+             }];
+
+memory[1] = ["L3RAM",
+             {
+             name	: "DDR3",
+             base	: 0x80000000,
+             len	: 0x10000000,
+             space	: "data"
+             }];
+
+
+Build.platformTable['ti.platforms.generic:plat'] =
+{
+clockRate: 600,
+catalogName: 'ti.catalog.c6000',
+deviceName: 'TMS320TCI6616',
+regs: {l1DMode: "32k"},
+regs: {l1PMode: "32k"},
+regs:  {l2Mode: "64k"},
+customMemoryMap: memory
+};

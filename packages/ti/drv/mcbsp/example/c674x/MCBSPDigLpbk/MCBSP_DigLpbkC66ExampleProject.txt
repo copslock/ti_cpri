@@ -1,0 +1,11 @@
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/c674x/MCBSPDigLpbk/mcbspMasterDigLpbk.c" 
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/device/c674x/device_mcbsp_loopback.c"
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/c674x/MCBSPDigLpbk/mcbspMasterDigLpbk.cmd" 
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/c674x/MCBSPDigLpbk/mcbspMasterDigLpbk.cfg" 
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/c674x/MCBSPDigLpbk/mcbspMasterDigLpbk_osal.c" 
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/c674x/MCBSPDigLpbk/sample_omapl138_cfg.c" 
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/c674x/MCBSPDigLpbk/sample_omapl138_int_reg.c" 
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/c674x/MCBSPDigLpbk/sample_cs.c" 
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/c674x/MCBSPDigLpbk/sample_init.c" 
+
+-ccs.setCompilerOptions "-Domapl138 -DMCBSP_DEBUG_TEMP -mv6740 -g --diag_warning=225 -I${PDK_INSTALL_PATH} -I${BIOS_INSTALL_PATH}/packages -I${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/MCBSPDigLpbk -I${PDK_INSTALL_PATH}/ti/drv/mcbsp/include -I${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/include -I${PDK_INSTALL_PATH}/ti/drv/mcbsp -I${PDK_INSTALL_PATH}/ti/board" -rtsc.enableRtsc

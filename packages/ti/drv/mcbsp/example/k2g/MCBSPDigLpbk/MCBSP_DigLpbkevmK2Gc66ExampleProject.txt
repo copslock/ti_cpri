@@ -1,0 +1,8 @@
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/k2g/MCBSPDigLpbk/mcbspMasterDigLpbk.c" 
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/device/k2g/src/device_mcbsp_loopback.c"
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/k2g/MCBSPDigLpbk/mcbspMasterDigLpbk.cmd" 
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/k2g/MCBSPDigLpbk/mcbspMasterDigLpbk.cfg" 
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/k2g/MCBSPDigLpbk/mcbspMasterDigLpbk_osal.c" 
+-ccs.linkFile "${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/k2g/MCBSPDigLpbk/sample_k2g_cfg.c" 
+
+-ccs.setCompilerOptions "-DDEVICE_K2G -DMCBSP_DEBUG_TEMP -g --diag_warning=225 -I${PDK_INSTALL_PATH} -I${BIOS_INSTALL_PATH}/packages -I${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/k2g/MCBSPDigLpbk -I${PDK_INSTALL_PATH}/ti/drv/mcbsp/include -I${PDK_INSTALL_PATH}/ti/drv/mcbsp/example/include -I${PDK_INSTALL_PATH}/ti/drv/mcbsp -I${PDK_INSTALL_PATH}/ti/board" -rtsc.enableRtsc

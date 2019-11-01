@@ -1,0 +1,122 @@
+/******************************************************************************
+ * FILE PURPOSE: Build description for the MCBSP Driver
+ ******************************************************************************
+ * FILE NAME: package.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build specification and description for the MCBSP driver
+ *  
+ *  The file takes the following parameters from the command line through the
+ *  XDCARGS variable.
+ *      XDCARGS[0] = MCBSP Driver Install Type 
+ *      Valid Values are "TAR" or "SETUP"
+ *      DEFAULT is "SETUP"
+ *
+ *  Example for a valid command:
+ *      xdc XDCARGS="SETUP" release   
+ *
+ * Copyright (C) 2012, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* List of all subdirectories that combine to make the MCBSP Driver Package. */
+var subDirectories = [ "src", "docs", "include","device","example" ];
+
+var mcbspDriverInstallType;
+
+/* Determine if we need to create the InstallJammer Application or not? 
+ * MCBSP LLD Deliverables be either of the following formats:
+ *  - TAR Ball Package
+ *  - Setup Executable 
+ * DEFAULT is a SETUP Executable. */
+
+if ((arguments[0] != "TAR") && (arguments[0] != "SETUP"))
+    mcbspDriverInstallType = "TAR";
+else
+    mcbspDriverInstallType = arguments[0];
+
+/* Irrespective of the InstallType we always create a TAR Ball Package as a part
+ * of the RTSC Build. Here we determine the name of the TAR Ball Package
+ *  Format is as follows:
+ *      mcbsp_<version> */
+var mcbspRTSCFileName = "mcbsp" + "_" +  
+                      mcbspDriverReleaseVersion[0] + "_" +  mcbspDriverReleaseVersion[1] + "_" + 
+                      mcbspDriverReleaseVersion[2]  + "_" + mcbspDriverReleaseVersion[3];
+
+/******************************************************************
+ ************************ Release Banner **************************
+ ******************************************************************/
+
+print ("************* MCBSP Driver Build Information *************");
+print ("MCBSP Driver Install      : " + mcbspDriverInstallType);
+print ("MCBSP Driver LLD Version  : " + mcbspDriverReleaseVersion);
+print ("Tools Directory           : " + toolsBaseDir);
+print ("RTSC File Name	          : " + mcbspRTSCFileName);
+print ("MCBSP Driver LLD Path     : " + driverPath);
+if (pOpts == 1) 
+{
+    print ("CC LE opts                : " + C66LE.ccOpts.prefix);
+    print ("CC BE opts                : " + C66BE.ccOpts.prefix);
+    print ("****************************************************************");
+}
+
+/* Create the release package for the MCBSP LLD */
+Pkg.defaultRelease = Pkg.addRelease (mcbspRTSCFileName, {prefix: "./packages/"});
+
+/* Moving forward we need to set the Archiver of the package to be ZIP. This is currently
+ * not supported in the XDC tools being used. Currenly builds need to be done with the 
+ * following options:-
+ *   xdc MK_FIXLISTOPTS=-t release 
+ * ZIP is a better option as it works natively with INSTALL Jammer and we can remove the
+ * uncompression into a temporary directory. XDC Tools with xdc-rXX support the ZIP archiver. */
+//Pkg.attrs = {archiver : "zip"};
+
+/* Cycle through all the sub-directories and build all the files */
+for (var i = 0; i < subDirectories.length; i++) 
+{
+    /* Load the capsule in the sub directory. */
+    var caps = xdc.loadCapsule (subDirectories[i]+"/Module.xs");
+
+    print ("Building directory " + subDirectories[i]);
+
+    /* Build the capsule. */
+    caps.modBuild();
+
+    /* Package the module.xs files for building via package */
+    Pkg.otherFiles[Pkg.otherFiles.length++] = subDirectories[i]+"/Module.xs";
+}
+
+/* Package the remaining files */
+Pkg.otherFiles[Pkg.otherFiles.length++] = "config.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "config_mk.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "mcbsp_drv.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "mcbsp_osal.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "mcbsp_types.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "mcbspver.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "mcbspver.h.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/Doxyfile";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/doxyfile.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/buildlib.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "makefile";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/makefile.mk";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "src/src_files_common.mk";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "mcbsp_component.mk";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "./lib";
+
+/* Generate Users Manual Doxyfile */
+var tplt = xdc.loadTemplate("./docs/doxyfile.xdt");
+tplt.genFile("./docs/Doxyfile",mcbspDriverReleaseVersion); 
+
+/* Generate Settings.xdc */
+var tplt = xdc.loadTemplate("./Settings.xdc.xdt");
+tplt.genFile("./Settings.xdc",mcbspDriverReleaseVersion); 
+
+/* Generate paver.h */
+var tplt = xdc.loadTemplate("./mcbspver.h.xdt");
+tplt.genFile("./mcbspver.h",mcbspDriverReleaseVersion);      
+
+    
