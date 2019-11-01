@@ -1,0 +1,185 @@
+/*
+* Copyright (c) 2017-2019, Texas Instruments Incorporated
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions
+* are met:
+*
+* *  Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+*
+* *  Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in the
+*    documentation and/or other materials provided with the distribution.
+*
+* *  Neither the name of Texas Instruments Incorporated nor the names of
+*    its contributors may be used to endorse or promote products derived
+*    from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+* AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+* THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+* PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+* CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+* EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+* PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+* OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+* OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+/*
+ *  ======== config_omapl138_c674x.bld ========
+ *  Build configuration script for BSP drivers
+ */
+/* load the required modules for the configuration */
+var C67x     = xdc.useModule('ti.targets.elf.C674');
+/* C67x compiler directory path                    */
+C67x.rootDir        = java.lang.System.getenv("CGTOOLS_DSP");
+
+/* Read the current board */
+var CurrentPlatform = java.lang.System.getenv("BOARD");
+
+if (CurrentPlatform == null)
+{
+    /* The env variable is probably not set while running inside CCS */
+    CurrentPlatform = java.lang.System.getProperty("BOARD");
+}
+
+/*
+Memory map
+
+DDR: 0xC2000000 (16MB - Cached)
+
+NOTE: APP_CACHED_BIOS_RSVD is the DDR memory reserved by bios to share between ARM and DSP
+core. User can use this memory area without affecting the existing functionality.
+
++------------------------------------------+
+|                                          |
+|     APP_CACHED_BIOS_RSVD                 | 16MB
+|                                          |
++------------------------------------------+
+
+DDR: 0xC3000000 (Ist 13MB - Cached)
+
+NOTE: APP_CACHED_DATA_BLK1_MEM is used to route sections which needs to be in a
+separate section preferably at the end of 13 MB memory.
+For example:
+Frame buffer memory can be less at runtime depending on boards with lesser DDR (as in TDA 12x12 POP boards).
+If the same is routed to APP_CACHED_DATA_MEM section then the linker will
+place the frame buffer before other data section and the other data will fall into
+region outside the DDR in the board. Hence separate section is used!!
+
++-----------------------------+
+| APP_CODE_MEM                | 2MB
++-----------------------------+
+| APP_CACHED_DATA_MEM         | 2MB
++-----------------------------+
+| APP_CACHED_DATA_BLK1_MEM    | 7MB
++-----------------------------+
+| APP_CACHED_DATA_BLK2_MEM    | 2MB
++-----------------------------+
+
+DDR: 0xC3D00000 (2nd 3MB - Non-Cached)
++-----------------------------+
+|                             |
+| APP_UNCACHED_DATA_BLK3_MEM  | 2MB
++-----------------------------+
+|     NOT USED                | Remaining MB
++-----------------------------+
+
+*/
+
+var KB=1024;
+var MB=KB*KB;
+
+var DDR_ADDR_0;
+var DDR_ADDR_1;
+
+var APP_CODE_ADDR;
+var APP_CODE_SIZE;
+
+var APP_CACHED_DATA_ADDR;
+var APP_CACHED_DATA_SIZE;
+
+var APP_UNCACHED_DATA_BLK3_ADDR;
+var APP_UNCACHED_DATA_BLK3_SIZE;
+
+var APP_CACHED_DATA_BLK1_ADDR;
+var APP_CACHED_DATA_BLK1_SIZE;
+
+var APP_CACHED_DATA_BLK2_ADDR;
+var APP_CACHED_DATA_BLK2_SIZE;
+
+/* First 4KB reserved for components such as SBL */
+SBL_SIZE                = 4*KB;
+DDR2_ADDR_RSVD          = 0xC2000000;
+DDR2_ADDR_0             = 0xC3000000 + SBL_SIZE;
+DDR2_ADDR_1             = 0xC3D00000;
+
+APP_CODE_SIZE                   = 2*MB - SBL_SIZE;
+APP_CACHED_DATA_SIZE            = 4*MB;
+APP_CACHED_DATA_BLK1_SIZE       = 4*MB;
+APP_CACHED_DATA_BLK2_SIZE       = 2*MB;
+APP_UNCACHED_DATA_BLK3_SIZE     = 2*MB;
+APP_CACHED_BIOS_RSVD_SIZE       = 16*MB
+
+APP_CODE_ADDR                   = DDR2_ADDR_0;
+APP_CACHED_DATA_ADDR            = APP_CODE_ADDR + APP_CODE_SIZE;
+APP_CACHED_DATA_BLK1_ADDR       = APP_CACHED_DATA_ADDR + APP_CACHED_DATA_SIZE;
+APP_CACHED_DATA_BLK2_ADDR       = APP_CACHED_DATA_BLK1_ADDR + APP_CACHED_DATA_BLK1_SIZE;
+APP_UNCACHED_DATA_BLK3_ADDR     = DDR2_ADDR_1;
+APP_CACHED_BIOS_RSVD_ADDR       = DDR2_ADDR_RSVD;
+
+
+
+myplatform = "ti.platforms.evmOMAPL138";
+
+
+Build.platformTable[myplatform] =
+{
+    externalMemoryMap:
+    [
+        ["APP_CODE_MEM", {
+            comment : "APP_CODE_MEM",
+            name    : "APP_CODE_MEM",
+            base    : APP_CODE_ADDR,
+            len     : APP_CODE_SIZE
+        }],
+        ["APP_CACHED_DATA_MEM", {
+            comment : "APP_CACHED_DATA_MEM",
+            name    : "APP_CACHED_DATA_MEM",
+            base    : APP_CACHED_DATA_ADDR,
+            len     : APP_CACHED_DATA_SIZE
+        }],
+        ["APP_UNCACHED_DATA_BLK3_MEM", {
+            comment : "APP_UNCACHED_DATA_BLK3_MEM",
+            name    : "APP_UNCACHED_DATA_BLK3_MEM",
+            base    : APP_UNCACHED_DATA_BLK3_ADDR,
+            len     : APP_UNCACHED_DATA_BLK3_SIZE
+        }],
+        ["APP_CACHED_DATA_BLK1_MEM", {
+            comment : "APP_CACHED_DATA_BLK1_MEM",
+            name    : "APP_CACHED_DATA_BLK1_MEM",
+            base    : APP_CACHED_DATA_BLK1_ADDR,
+            len     : APP_CACHED_DATA_BLK1_SIZE
+        }],
+        ["APP_CACHED_DATA_BLK2_MEM", {
+            comment : "APP_CACHED_DATA_BLK2_MEM",
+            name    : "APP_CACHED_DATA_BLK2_MEM",
+            base    : APP_CACHED_DATA_BLK2_ADDR,
+            len     : APP_CACHED_DATA_BLK2_SIZE
+        }],
+        ["APP_CACHED_BIOS_RSVD_MEM", {
+            comment : "APP_CACHED_BIOS_RSVD_MEM",
+            name    : "APP_CACHED_BIOS_RSVD_MEM",
+            base    : APP_CACHED_BIOS_RSVD_ADDR,
+            len     : APP_CACHED_BIOS_RSVD_SIZE
+        }],
+    ],
+    codeMemory: "APP_CODE_MEM",
+    dataMemory: "APP_CACHED_DATA_MEM",
+    stackMemory: "APP_CACHED_DATA_MEM"
+};

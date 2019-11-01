@@ -1,0 +1,353 @@
+******************************************************************************
+                  TI ARM Linker Unix v18.12.1                  
+******************************************************************************
+>> Linked Sat Jul  6 17:44:10 2019
+
+OUTPUT FILE NAME:   </adasuser/sivaraj/k3/ti/j7presi/workarea/pdk/packages/ti/binary/udma_baremetal_memcpy_testapp/bin/j721e_evm/udma_baremetal_memcpy_testapp_mcu2_0_release.xer5f>
+ENTRY POINT SYMBOL: "_resetvectors"  address: 41c00000
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  MCU0_R5F_TCMA_SBL_RSV 00000000   00000100  00000000  00000100     X
+  MCU0_R5F_TCMA         00000100   00007f00  00000000  00007f00     X
+  MCU0_R5F_TCMB0        41010000   00008000  00003450  00004bb0  RWIX
+  MCU0_R5F1_ATCM        41400000   00008000  00000000  00008000  RWIX
+  MCU0_R5F1_BTCM        41410000   00008000  00000000  00008000  RWIX
+  RESET_VECTORS         41c00000   00000100  00000040  000000c0     X
+  OCMRAM                41c00100   0007ef00  00000000  0007ef00  RWIX
+  VECTORS               41c7f000   00001000  00000000  00001000     X
+  MSMC3_ARM_FW          70000000   00040000  00000000  00040000  RWIX
+  MSMC3                 70040000   007b0000  00000000  007b0000  RWIX
+  MSMC3_DMSC_FW         707f0000   00010000  00000000  00010000  RWIX
+  DDR0                  80000000   80000000  00000000  80000000  RWIX
+
+
+SEGMENT ALLOCATION MAP
+
+run origin  load origin   length   init length attrs members
+----------  ----------- ---------- ----------- ----- -------
+41010000    41010000    00001e80   00001e80    rwx
+  41010000    41010000    00001e80   00001e80    rwx .data
+41011e80    41011e80    00000cd0   00000cd0    r-x
+  41011e80    41011e80    00000598   00000598    r-x .text
+  41012418    41012418    00000420   00000420    r-x .startupCode
+  41012838    41012838    00000318   00000318    r-- .startupData
+41012b50    41012b50    00000100   00000000    rw-
+  41012b50    41012b50    00000100   00000000    rw- .sysmem
+41012c50    41012c50    00000100   00000100    r-x
+  41012c50    41012c50    00000100   00000100    r-x .bootCode
+41017900    41017900    00000500   00000000    r--
+  41017900    41017900    00000100   00000000    r-- .undStack
+  41017a00    41017a00    00000100   00000000    r-- .svcStack
+  41017b00    41017b00    00000100   00000000    r-- .irqStack
+  41017c00    41017c00    00000100   00000000    r-- .fiqStack
+  41017d00    41017d00    00000100   00000000    r-- .abortStack
+41017e00    41017e00    00000200   00000000    rw-
+  41017e00    41017e00    00000200   00000000    rw- .stack
+41c00000    41c00000    00000040   00000040    r-x
+  41c00000    41c00000    00000040   00000040    r-x .rstvectors
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.text      0    41011e80    00000598     
+                  41011e80    000000fc     ti.csl.aer5f : interrupt.oer5f (.text:masterIsr)
+                  41011f7c    00000094                  : csl_vim.oer5f (.text:CSL_vimCfgIntr)
+                  41012010    00000078                  : interrupt.oer5f (.text:dataAbortExptnHandler)
+                  41012088    00000078                  : interrupt.oer5f (.text:fiqExptnHandler)
+                  41012100    00000078                  : interrupt.oer5f (.text:irqExptnHandler)
+                  41012178    00000078                  : interrupt.oer5f (.text:prefetchAbortExptnHandler)
+                  410121f0    00000074                  : interrupt.oer5f (.text:undefInstructionExptnHandler)
+                  41012264    00000068     rtsv7R4_A_le_v3D16_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit:__TI_auto_init_nobinit_nopinit)
+                  410122cc    0000004c     ti.csl.aer5f : csl_vim.oer5f (.text:CSL_vimGetActivePendingIntr)
+                  41012318    0000004c                  : interrupt.oer5f (.text:swIntrExptnHandler)
+                  41012364    00000030                  : csl_vim.oer5f (.text:CSL_vimClrIntrPending)
+                  41012394    0000002c                  : csl_vim.oer5f (.text:CSL_vimAckIntr)
+                  410123c0    00000020     main_baremetal.oer5f (.text:StartupEmulatorWaitFxn)
+                  410123e0    00000020     rtsv7R4_A_le_v3D16_eabi.lib : args_main.c.obj (.text:_args_main)
+                  41012400    00000010     main_baremetal.oer5f (.text:main)
+                  41012410    00000008     rtsv7R4_A_le_v3D16_eabi.lib : exit.c.obj (.text:abort:abort)
+
+.startupCode 
+*          0    41012418    00000420     
+                  41012418    000001b4     ti.csl.init.aer5f : r5_startup.oer5f (.startupCode)
+                  410125cc    0000010c                       : startup.oer5f (.startupCode:CSL_armR5MPUCfg)
+                  410126d8    00000094                       : startup.oer5f (.startupCode:__mpu_init)
+                  4101276c    00000058                       : startup.oer5f (.startupCode:CSL_startupVimSetIntrEnable)
+                  410127c4    0000003c                       : startup.oer5f (.startupCode:CSL_startupVimClrIntrPending)
+                  41012800    00000028                       : startup.oer5f (.startupCode:CSL_armR5StartupGetCpuID)
+                  41012828    00000008                       : startup.oer5f (.startupCode:_system_pre_init)
+                  41012830    00000004                       : startup.oer5f (.startupCode:_system_post_cinit)
+                  41012834    00000004     --HOLE-- [fill = 00000000]
+
+.startupData 
+*          0    41012838    00000318     
+                  41012838    00000314     ti.csl.init.aer5f : startup.oer5f (.startupData)
+                  41012b4c    00000004     --HOLE-- [fill = 00000000]
+
+.bootCode 
+*          0    41012c50    00000100     
+                  41012c50    000000fc     ti.csl.init.aer5f : boot.oer5f (.bootCode)
+                  41012d4c    00000004     --HOLE-- [fill = 00000000]
+
+.rstvectors 
+*          0    41c00000    00000040     
+                  41c00000    00000040     ti.csl.init.aer5f : boot.oer5f (.rstvectors)
+
+.cinit     0    41010000    00000000     UNINITIALIZED
+
+.data      0    41010000    00001e80     
+                  41010000    00000e34     ti.csl.aer5f : interrupt.oer5f (.data:$O10$$)
+                  41010e34    00000800                  : interrupt.oer5f (.data:fxnArray)
+                  41011634    00000800                  : interrupt.oer5f (.data:intrSrcType)
+                  41011e34    00000008     ti.csl.init.aer5f : boot.oer5f (.data)
+                  41011e3c    00000004     rtsv7R4_A_le_v3D16_eabi.lib : stkdepth_vars.c.obj (.data)
+                  41011e40    00000040     --HOLE-- [fill = 00000000]
+
+.sysmem    0    41012b50    00000100     UNINITIALIZED
+                  41012b50    00000010     rtsv7R4_A_le_v3D16_eabi.lib : memory.c.obj (.sysmem)
+                  41012b60    000000f0     --HOLE--
+
+.undStack 
+*          0    41017900    00000100     UNINITIALIZED
+                  41017900    00000100     --HOLE--
+
+.svcStack 
+*          0    41017a00    00000100     UNINITIALIZED
+                  41017a00    00000100     --HOLE--
+
+.irqStack 
+*          0    41017b00    00000100     UNINITIALIZED
+                  41017b00    00000100     --HOLE--
+
+.fiqStack 
+*          0    41017c00    00000100     UNINITIALIZED
+                  41017c00    00000100     --HOLE--
+
+.abortStack 
+*          0    41017d00    00000100     UNINITIALIZED
+                  41017d00    00000100     --HOLE--
+
+.stack     0    41017e00    00000200     UNINITIALIZED
+                  41017e00    00000200     --HOLE--
+
+MODULE SUMMARY
+
+       Module                 code   ro data   rw data
+       ------                 ----   -------   -------
+    /adasuser/sivaraj/k3/ti/j7presi/workarea/pdk/packages/ti/binary/udma_baremetal_memcpy_testapp/obj/j721e_evm/mcu2_0/release/
+       main_baremetal.oer5f   48     0         0      
+    +--+----------------------+------+---------+---------+
+       Total:                 48     0         0      
+                                                      
+    /adasuser/sivaraj/k3/ti/j7presi/workarea/pdk/packages/ti/csl/lib/j721e/r5f/release/ti.csl.aer5f
+       interrupt.oer5f        924    0         7732   
+       csl_vim.oer5f          316    0         0      
+    +--+----------------------+------+---------+---------+
+       Total:                 1240   0         7732   
+                                                      
+    /adasuser/sivaraj/k3/ti/j7presi/workarea/pdk/packages/ti/csl/lib/j721e/r5f/release/ti.csl.init.aer5f
+       startup.oer5f          616    788       0      
+       r5_startup.oer5f       436    0         0      
+       boot.oer5f             324    0         0      
+    +--+----------------------+------+---------+---------+
+       Total:                 1376   788       0      
+                                                      
+    /adasuser/sivaraj/k3/ti/j7presi/workarea/ti-cgt-arm_18.12.1.LTS/lib/rtsv7R4_A_le_v3D16_eabi.lib
+       autoinit.c.obj         104    0         0      
+       args_main.c.obj        32     0         0      
+       exit.c.obj             8      0         0      
+       stkdepth_vars.c.obj    0      0         4      
+    +--+----------------------+------+---------+---------+
+       Total:                 144    0         4      
+                                                      
+       Heap:                  0      0         256    
+       Stack:                 0      0         512    
+    +--+----------------------+------+---------+---------+
+       Grand Total:           2808   788       8504   
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address   name                                    
+-------   ----                                    
+41012410  C$$EXIT                                 
+410125cc  CSL_armR5MPUCfg                         
+41012418  CSL_armR5StartupCacheEnableAllCache     
+4101247c  CSL_armR5StartupCacheEnableDCache       
+4101242c  CSL_armR5StartupCacheEnableForceWrThru  
+4101244c  CSL_armR5StartupCacheEnableICache       
+410124dc  CSL_armR5StartupCacheInvalidateAllCache 
+410124c4  CSL_armR5StartupCacheInvalidateAllDcache
+410124ac  CSL_armR5StartupCacheInvalidateAllIcache
+41012540  CSL_armR5StartupFpuEnable               
+41012800  CSL_armR5StartupGetCpuID                
+4101258c  CSL_armR5StartupIntrEnableFiq           
+410125ac  CSL_armR5StartupIntrEnableIrq           
+41012568  CSL_armR5StartupIntrEnableVic           
+41012518  CSL_armR5StartupMpuCfgRegion            
+410124f0  CSL_armR5StartupMpuEnable               
+41012534  CSL_armR5StartupReadMpidrReg            
+410127c4  CSL_startupVimClrIntrPending            
+4101276c  CSL_startupVimSetIntrEnable             
+41012394  CSL_vimAckIntr                          
+41011f7c  CSL_vimCfgIntr                          
+41012364  CSL_vimClrIntrPending                   
+410122cc  CSL_vimGetActivePendingIntr             
+41012d3c  HF                                      
+410123c0  StartupEmulatorWaitFxn                  
+41017e00  __ABORT_STACK_END                       
+00000100  __ABORT_STACK_SIZE                      
+41017d00  __ABORT_STACK_START                     
+41017d00  __FIQ_STACK_END                         
+00000100  __FIQ_STACK_SIZE                        
+41017c00  __FIQ_STACK_START                       
+41017c00  __IRQ_STACK_END                         
+00000100  __IRQ_STACK_SIZE                        
+41017b00  __IRQ_STACK_START                       
+41018000  __STACK_END                             
+00000200  __STACK_SIZE                            
+41017b00  __SVC_STACK_END                         
+00000100  __SVC_STACK_SIZE                        
+41017a00  __SVC_STACK_START                       
+00000100  __SYSMEM_SIZE                           
+UNDEFED   __TI_CINIT_Base                         
+UNDEFED   __TI_CINIT_Limit                        
+UNDEFED   __TI_Handler_Table_Base                 
+UNDEFED   __TI_Handler_Table_Limit                
+41012264  __TI_auto_init_nobinit_nopinit          
+ffffffff  __TI_pprof_out_hndl                     
+ffffffff  __TI_prof_data_size                     
+ffffffff  __TI_prof_data_start                    
+41010000  __TI_static_base__                      
+41017a00  __UND_STACK_END                         
+00000100  __UND_STACK_SIZE                        
+41017900  __UND_STACK_START                       
+ffffffff  __binit__                               
+ffffffff  __c_args__                              
+410126d8  __mpu_init                              
+41017e00  __stack                                 
+410123e0  _args_main                              
+41012c64  _c_int00                                
+41011e38  _cslRsvdHandler                         
+41c00000  _resetvectors                           
+41011e34  _stkchk_called                          
+41012b50  _sys_memory                             
+41012830  _system_post_cinit                      
+41012828  _system_pre_init                        
+41012410  abort                                   
+41010634  argArray                                
+ffffffff  binit                                   
+41012010  dataAbortExptnHandler                   
+41012088  fiqExptnHandler                         
+41010e34  fxnArray                                
+4101288c  gCslR5MpuCfg                            
+41010004  gExptnHandlers                          
+41010000  gVimBaseAddr                            
+41010034  intrMap                                 
+41010234  intrPri                                 
+41011634  intrSrcType                             
+41012100  irqExptnHandler                         
+41012400  main                                    
+41011e3c  main_func_sp                            
+41011e80  masterIsr                               
+41012178  prefetchAbortExptnHandler               
+41012318  swIntrExptnHandler                      
+410121f0  undefInstructionExptnHandler            
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address   name                                    
+-------   ----                                    
+00000100  __ABORT_STACK_SIZE                      
+00000100  __FIQ_STACK_SIZE                        
+00000100  __IRQ_STACK_SIZE                        
+00000100  __SVC_STACK_SIZE                        
+00000100  __SYSMEM_SIZE                           
+00000100  __UND_STACK_SIZE                        
+00000200  __STACK_SIZE                            
+41010000  __TI_static_base__                      
+41010000  gVimBaseAddr                            
+41010004  gExptnHandlers                          
+41010034  intrMap                                 
+41010234  intrPri                                 
+41010634  argArray                                
+41010e34  fxnArray                                
+41011634  intrSrcType                             
+41011e34  _stkchk_called                          
+41011e38  _cslRsvdHandler                         
+41011e3c  main_func_sp                            
+41011e80  masterIsr                               
+41011f7c  CSL_vimCfgIntr                          
+41012010  dataAbortExptnHandler                   
+41012088  fiqExptnHandler                         
+41012100  irqExptnHandler                         
+41012178  prefetchAbortExptnHandler               
+410121f0  undefInstructionExptnHandler            
+41012264  __TI_auto_init_nobinit_nopinit          
+410122cc  CSL_vimGetActivePendingIntr             
+41012318  swIntrExptnHandler                      
+41012364  CSL_vimClrIntrPending                   
+41012394  CSL_vimAckIntr                          
+410123c0  StartupEmulatorWaitFxn                  
+410123e0  _args_main                              
+41012400  main                                    
+41012410  C$$EXIT                                 
+41012410  abort                                   
+41012418  CSL_armR5StartupCacheEnableAllCache     
+4101242c  CSL_armR5StartupCacheEnableForceWrThru  
+4101244c  CSL_armR5StartupCacheEnableICache       
+4101247c  CSL_armR5StartupCacheEnableDCache       
+410124ac  CSL_armR5StartupCacheInvalidateAllIcache
+410124c4  CSL_armR5StartupCacheInvalidateAllDcache
+410124dc  CSL_armR5StartupCacheInvalidateAllCache 
+410124f0  CSL_armR5StartupMpuEnable               
+41012518  CSL_armR5StartupMpuCfgRegion            
+41012534  CSL_armR5StartupReadMpidrReg            
+41012540  CSL_armR5StartupFpuEnable               
+41012568  CSL_armR5StartupIntrEnableVic           
+4101258c  CSL_armR5StartupIntrEnableFiq           
+410125ac  CSL_armR5StartupIntrEnableIrq           
+410125cc  CSL_armR5MPUCfg                         
+410126d8  __mpu_init                              
+4101276c  CSL_startupVimSetIntrEnable             
+410127c4  CSL_startupVimClrIntrPending            
+41012800  CSL_armR5StartupGetCpuID                
+41012828  _system_pre_init                        
+41012830  _system_post_cinit                      
+4101288c  gCslR5MpuCfg                            
+41012b50  _sys_memory                             
+41012c64  _c_int00                                
+41012d3c  HF                                      
+41017900  __UND_STACK_START                       
+41017a00  __SVC_STACK_START                       
+41017a00  __UND_STACK_END                         
+41017b00  __IRQ_STACK_START                       
+41017b00  __SVC_STACK_END                         
+41017c00  __FIQ_STACK_START                       
+41017c00  __IRQ_STACK_END                         
+41017d00  __ABORT_STACK_START                     
+41017d00  __FIQ_STACK_END                         
+41017e00  __ABORT_STACK_END                       
+41017e00  __stack                                 
+41018000  __STACK_END                             
+41c00000  _resetvectors                           
+ffffffff  __TI_pprof_out_hndl                     
+ffffffff  __TI_prof_data_size                     
+ffffffff  __TI_prof_data_start                    
+ffffffff  __binit__                               
+ffffffff  __c_args__                              
+ffffffff  binit                                   
+UNDEFED   __TI_CINIT_Base                         
+UNDEFED   __TI_CINIT_Limit                        
+UNDEFED   __TI_Handler_Table_Base                 
+UNDEFED   __TI_Handler_Table_Limit                
+
+[83 symbols]

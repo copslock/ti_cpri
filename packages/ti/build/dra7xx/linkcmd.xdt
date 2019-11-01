@@ -1,0 +1,52 @@
+%/*
+% * ======== linkcmd.xdt ========
+% * This is template file illustrates how one can filter the linker command
+% * file that is normally generated from the template supplied by the
+% * executable's platform. This allows one to update the platform without
+% * having to update this file.
+% *
+% * This template is expanded after the configuration script runs and the
+% * results placed in a file (with extension .xdl) associated with the
+% * executable.
+% *
+% * Linker templates are passed the following arguments:
+% * $out - an open file stream for the generated linker
+% * command file
+% * $args - an array of zero or more libraries that should be linked
+% * with (in the order they appear in the argument list)
+% *
+% * These arguments are available via the standard Javascript arguments
+% * array; the first argument can also be accessed via the name "$out".
+% * In addition to these arguments, there is a global variable named
+% * 'this' that is set as follows:
+% * this - the program object
+% */
+%/* generate original command file from template into orig.xdl */
+%var tfile = this.platform.getLinkTemplate(this);
+%var template = xdc.loadTemplate(tfile);
+%template.genFile("orig.xdl", this, $args);
+%
+%/* read and output generated linker command file */
+%var line;
+//%var dir;
+%var file = new java.io.BufferedReader(java.io.FileReader("orig.xdl"));
+
+%while ((line = file.readLine()) != null)
+%{
+  `String(line)`
+%}
+%/* Output the always required libraries to the linker command file */
+
+/* Provide virtual address locations for OCMC_RAM used by IPU applications
+ * using AMMU.
+ */
+MEMORY
+{
+    /* OCMC_RAM1 mapped to 0x40300000 */
+    OCMC_RAM1_VIRT:   org = 0x00300000 len = 0x00040000
+%if (Program.build.cfgArgs.SOC.toLowerCase() == "dra75x")
+%{
+    /* OCMC_RAM2 mapped to 0x40400000 */
+    OCMC_RAM2_VIRT:   org = 0x00400000 len = 0x00040000
+%}
+}

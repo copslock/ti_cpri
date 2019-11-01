@@ -1,0 +1,325 @@
+# Commands commonly used within the make files
+# Note: The make_install is supported only for linux (no windows support)
+#       as this is required only during yocto recipes under linux
+#
+# Assumption:
+#       standard make and echo paths are set and hence
+#       the UTILSPATH is not set explicitly
+#       The caller of make_install can set utils_PATH if needed
+#
+UTILSPATH ?= $(utils_PATH)
+
+RM = $(UTILSPATH)rm
+MV = $(UTILSPATH)mv
+RMDIR = $(UTILSPATH)rm -rf
+MKDIR = $(UTILSPATH)mkdir
+ECHO = @$(UTILSPATH)echo
+MAKE = make
+
+include soc_lists.mk
+
+SOC_LIST_ALL  = $(SOC_LIST_CATALOG)
+SOC_LIST_ALL += $(SOC_LIST_INFOTAINMENT)
+SOC_LIST_ALL += $(SOC_LIST_J6_TDA)
+
+# check if we need to limit the Build to limitted SOCS
+ifdef LIMIT_SOCS
+  INSTALL_SOC_LIST_ALL = $(filter $(LIMIT_SOCS), $(SOC_LIST_ALL))
+endif
+
+install_SOC_LIST_ALL = $(addsuffix _install, $(INSTALL_SOC_LIST_ALL))
+
+.PHONY : loc-install-pdk-build-common loc-install-pdk-build-arp32 loc-install-pdk-build-c6x loc-install-pdk-build-a15 \
+         loc-install-pdk-build-a8 loc-install-pdk-build-a9 loc-install-pdk-build-m4 loc-install-pdk-build-pruss-common \
+         loc-install-pdk-build-pruss-c66x loc-install-pdk-build-pruss-m4 loc-install-pdk-build-pruss-a8_a9_a15 \
+		 install-pdk-build-am571x install-pdk-build-am572x install-pdk-build-am574x install-pdk-build-am335x help\
+		 install-pdk-build-am437x install-pdk-build-omapl137 install-pdk-build-omapl138 install-pdk-build-dra7xx \
+         install-pdk-build-k2g install-pdk-build-tda2xx install-pdk-build-tda3xx install-pdk-build-tda2ex pdkbuild_install
+
+pdkbuild_install:
+ifneq ($(INSTALL_SOC_LIST_ALL),)
+ifneq ($(PDK_INSTALL_DIR),)
+	@install -d $(PDK_INSTALL_DIR)
+	$(ECHO) " Installing the pdk build infrastcuture for soc list: [$(INSTALL_SOC_LIST_ALL)] under the pdk install dir $(PDK_INSTALL_DIR) "
+	$(MAKE) -f make_install $(install_SOC_LIST_ALL)
+else
+	$(ECHO) "    PDK_INSTALL_DIR environment variable is empty, please set to a valid path "
+endif
+else
+	$(ECHO) "    LIMIT_SOCS environment variable is not in supported list, please set to supported list of SoCs from the below list:"
+	$(ECHO)	"        [$(SOC_LIST_ALL)]"
+endif
+
+help:
+	$(ECHO) ------------------------------------------------------
+	$(ECHO) \# PDK install make help
+	$(ECHO) ------------------------------------------------------
+	$(ECHO) "make -f make_install LIMIT_SOCS=<list_of_supported_soc_names> PDK_INSTALL_DIR=<desired_install_path> Note: use gmake for windows"
+	$(ECHO)
+	$(ECHO) "where <list_of_supported_soc_names>: [$(SOC_LIST_ALL)]"
+
+$(install_SOC_LIST_ALL):
+	$(ECHO) "    running the make_install for the soc $(subst _install,,$@)"
+	$(MAKE) -f make_install install-pdk-build-$(subst _install,,$@)
+
+loc-install-pdk-build-common:
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/unit-test
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/unit-test/config
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/unit-test/Unity
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/unit-test/Unity/src
+	install -m 0755 Rules.make $(PDK_INSTALL_DIR)/packages/ti/build
+	install -m 0755 comp_top.mk $(PDK_INSTALL_DIR)/packages/ti/build
+	install -m 0755 comp_paths.mk $(PDK_INSTALL_DIR)/packages/ti/build
+	install -m 0644 pdk_build_ver.h $(PDK_INSTALL_DIR)/packages/ti/build
+	install -m 0755 makerules/build_config.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/common.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/component.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/env.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/platform.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makefile $(PDK_INSTALL_DIR)/packages/ti/build/
+	install -m 0755 unit-test/README.txt $(PDK_INSTALL_DIR)/packages/ti/build/unit-test
+	install -m 0755 unit-test/config/unity_config.c $(PDK_INSTALL_DIR)/packages/ti/build/unit-test/config
+	install -m 0755 unit-test/config/unity_config.h $(PDK_INSTALL_DIR)/packages/ti/build/unit-test/config
+	install -m 0755 unit-test/Unity/LICENSE.txt $(PDK_INSTALL_DIR)/packages/ti/build/unit-test/Unity
+	install -m 0755 unit-test/Unity/src/unity.c $(PDK_INSTALL_DIR)/packages/ti/build/unit-test/Unity/src
+	install -m 0755 unit-test/Unity/src/unity.h $(PDK_INSTALL_DIR)/packages/ti/build/unit-test/Unity/src
+	install -m 0755 unit-test/Unity/src/unity_internals.h $(PDK_INSTALL_DIR)/packages/ti/build/unit-test/Unity/src
+
+loc-install-pdk-build-arp32:
+	install -m 0755 makerules/rules_arp32.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-c6x:
+	install -m 0755 makerules/rules_66.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-c7x:
+	install -m 0755 makerules/rules_71.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-c7x-hostemu:
+	install -m 0755 makerules/rules_c7x-hostemu.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-a15:
+	install -m 0755 makerules/rules_a15.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-a53:
+	install -m 0755 makerules/rules_a53.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-a72:
+	install -m 0755 makerules/rules_a72.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-r5f:
+	install -m 0755 makerules/rules_r5f.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/rules_ti_cgt_arm.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-a8:
+	install -m 0755 makerules/rules_a8.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/rules_a8_extend.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-a9:
+	install -m 0755 makerules/rules_a9.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-m4:
+	install -m 0755 makerules/rules_m4.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/rules_ti_cgt_arm.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-pruss-common:
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 makerules/rules_pru.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+loc-install-pdk-build-pruss-c66x: loc-install-pdk-build-common loc-install-pdk-build-pruss-common
+	install -m 0755 pruss/lnk_c66_m4_REV1.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/PRU0_REV1_to_C66.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/PRU1_REV1_to_C66.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/lnk_c66_m4_REV2.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/PRU0_REV2_to_C66.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/PRU1_REV2_to_C66.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+
+loc-install-pdk-build-pruss-m4: loc-install-pdk-build-common loc-install-pdk-build-pruss-common
+	install -m 0755 pruss/lnk_c66_m4_REV2.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+
+
+loc-install-pdk-build-pruss-a8_a9_a15: loc-install-pdk-build-common loc-install-pdk-build-pruss-common
+	install -m 0755 pruss/lnk_a8_a9_a15_REV1.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/lnk_a8_a9_a15_REV2.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/PRU0_REV1_to_ARM.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/PRU1_REV1_to_ARM.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/lnk_a8_a9_a15_REV1_linux.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/lnk_a8_a9_a15_REV2_linux.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/PRU0_REV2_to_ARM.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+	install -m 0755 pruss/PRU1_REV2_to_ARM.cmd $(PDK_INSTALL_DIR)/packages/ti/build/pruss
+
+install-pdk-build-am571x: loc-install-pdk-build-common loc-install-pdk-build-pruss-c66x  loc-install-pdk-build-pruss-m4 loc-install-pdk-build-pruss-a8_a9_a15 loc-install-pdk-build-c6x loc-install-pdk-build-m4 loc-install-pdk-build-a15
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/am571x
+	install -m 0755 am571x/config_am571x.bld $(PDK_INSTALL_DIR)/packages/ti/build/am571x
+	install -m 0755 am571x/config_am571x_c66.bld $(PDK_INSTALL_DIR)/packages/ti/build/am571x
+	install -m 0755 am571x/config_am571x_a15.bld $(PDK_INSTALL_DIR)/packages/ti/build/am571x
+	install -m 0755 am571x/mem_segment_definition_1024mb_bios.xs $(PDK_INSTALL_DIR)/packages/ti/build/am571x
+
+
+install-pdk-build-am572x: loc-install-pdk-build-common loc-install-pdk-build-pruss-c66x  loc-install-pdk-build-pruss-m4 loc-install-pdk-build-pruss-a8_a9_a15 loc-install-pdk-build-c6x loc-install-pdk-build-m4 loc-install-pdk-build-a15 loc-install-pdk-build-arp32
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/am572x
+	install -m 0755 am572x/config_am572x.bld $(PDK_INSTALL_DIR)/packages/ti/build/am572x
+	install -m 0755 am572x/config_am572x_c66.bld $(PDK_INSTALL_DIR)/packages/ti/build/am572x
+	install -m 0755 am572x/config_am572x_a15.bld $(PDK_INSTALL_DIR)/packages/ti/build/am572x
+	install -m 0755 am572x/mem_segment_definition_1024mb_bios.xs $(PDK_INSTALL_DIR)/packages/ti/build/am572x
+
+
+install-pdk-build-am574x: loc-install-pdk-build-common loc-install-pdk-build-pruss-c66x  loc-install-pdk-build-pruss-m4 loc-install-pdk-build-pruss-a8_a9_a15 loc-install-pdk-build-c6x loc-install-pdk-build-m4 loc-install-pdk-build-a15 loc-install-pdk-build-arp32
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/am574x
+	install -m 0755 am574x/config_am574x.bld $(PDK_INSTALL_DIR)/packages/ti/build/am574x
+	install -m 0755 am574x/config_am574x_c66.bld $(PDK_INSTALL_DIR)/packages/ti/build/am574x
+	install -m 0755 am574x/config_am574x_a15.bld $(PDK_INSTALL_DIR)/packages/ti/build/am574x
+	install -m 0755 am574x/mem_segment_definition_1024mb_bios.xs $(PDK_INSTALL_DIR)/packages/ti/build/am574x
+
+install-pdk-build-am335x: loc-install-pdk-build-common loc-install-pdk-build-pruss-a8_a9_a15 loc-install-pdk-build-a8
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/am335x
+	install -m 0755 makerules/rules_a8.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/rules_a8_extend.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 am335x/config_am335x_a8.bld $(PDK_INSTALL_DIR)/packages/ti/build/am335x
+
+install-pdk-build-am437x: loc-install-pdk-build-common loc-install-pdk-build-pruss-a8_a9_a15 loc-install-pdk-build-a9
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/am437x
+	install -m 0755 makerules/rules_a9.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 am437x/config_am437x_a9.bld $(PDK_INSTALL_DIR)/packages/ti/build/am437x
+
+
+install-pdk-build-omapl137: loc-install-pdk-build-common
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/omapl137
+	install -m 0755 makerules/rules_674.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/rules_ae9.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/rules_ti_cgt_arm.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 omapl137/config_omapl137_c674x.bld $(PDK_INSTALL_DIR)/packages/ti/build/omapl137
+	install -m 0755 omapl137/config_omapl137_arm9.bld $(PDK_INSTALL_DIR)/packages/ti/build/omapl137
+
+install-pdk-build-omapl138: loc-install-pdk-build-common
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/omapl138
+	install -m 0755 makerules/rules_674.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/rules_ae9.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/rules_ti_cgt_arm.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 omapl138/config_omapl138_c674x.bld $(PDK_INSTALL_DIR)/packages/ti/build/omapl138
+	install -m 0755 omapl138/config_omapl138_arm9.bld $(PDK_INSTALL_DIR)/packages/ti/build/omapl138
+
+install-pdk-build-dra72x: install-pdk-build-dra7xx
+install-pdk-build-dra75x: install-pdk-build-dra7xx
+install-pdk-build-dra78x: install-pdk-build-dra7xx
+
+install-pdk-build-dra7xx: loc-install-pdk-build-common install-pdk-build-tda2xx install-pdk-build-tda3xx install-pdk-build-tda2ex
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/dra7xx
+	install -m 0755 dra7xx/linkcmd.xdt $(PDK_INSTALL_DIR)/packages/ti/build/dra7xx
+
+
+install-pdk-build-tda2px: loc-install-pdk-build-common
+
+install-pdk-build-k2h: loc-install-pdk-build-common loc-install-pdk-build-c6x loc-install-pdk-build-a15
+
+install-pdk-build-k2k: loc-install-pdk-build-common loc-install-pdk-build-c6x loc-install-pdk-build-a15
+
+install-pdk-build-k2e: loc-install-pdk-build-common loc-install-pdk-build-c6x loc-install-pdk-build-a15
+
+install-pdk-build-k2l: loc-install-pdk-build-common loc-install-pdk-build-c6x loc-install-pdk-build-a15
+
+install-pdk-build-c6678: loc-install-pdk-build-common loc-install-pdk-build-c6x
+
+install-pdk-build-c6657: loc-install-pdk-build-common loc-install-pdk-build-c6x
+
+install-pdk-build-k2g: loc-install-pdk-build-common loc-install-pdk-build-pruss-a8_a9_a15 loc-install-pdk-build-pruss-c66x loc-install-pdk-build-c6x loc-install-pdk-build-a15
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/k2g
+	install -m 0755 k2g/config_k2g_a15.bld $(PDK_INSTALL_DIR)/packages/ti/build/k2g
+	install -m 0755 k2g/config_k2g_c66.bld $(PDK_INSTALL_DIR)/packages/ti/build/k2g
+
+install-pdk-build-tda2xx: loc-install-pdk-build-common loc-install-pdk-build-c6x loc-install-pdk-build-m4 loc-install-pdk-build-a15 loc-install-pdk-build-arp32
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/tda2xx
+	install -m 0755 tda2xx/config_tda2xx.bld $(PDK_INSTALL_DIR)/packages/ti/build/tda2xx
+	install -m 0755 tda2xx/config_tda2xx_a15.bld $(PDK_INSTALL_DIR)/packages/ti/build/tda2xx
+	install -m 0755 tda2xx/config_tda2xx_c66.bld $(PDK_INSTALL_DIR)/packages/ti/build/tda2xx
+	install -m 0755 tda2xx/mem_segment_definition_1024mb_bios.xs $(PDK_INSTALL_DIR)/packages/ti/build/tda2xx
+
+install-pdk-build-tda3xx: loc-install-pdk-build-common loc-install-pdk-build-c6x loc-install-pdk-build-m4 loc-install-pdk-build-a15 loc-install-pdk-build-arp32
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/tda3xx
+	install -m 0755 tda3xx/config_tda3xx.bld $(PDK_INSTALL_DIR)/packages/ti/build/tda3xx
+	install -m 0755 tda3xx/config_tda3xx_c66.bld $(PDK_INSTALL_DIR)/packages/ti/build/tda3xx
+
+install-pdk-build-tda2ex: loc-install-pdk-build-common loc-install-pdk-build-c6x loc-install-pdk-build-m4 loc-install-pdk-build-a15 loc-install-pdk-build-arp32
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/tda2ex
+	install -m 0755 tda2ex/config_tda2ex.bld $(PDK_INSTALL_DIR)/packages/ti/build/tda2ex
+	install -m 0755 tda2ex/config_tda2ex_a15.bld $(PDK_INSTALL_DIR)/packages/ti/build/tda2ex
+	install -m 0755 tda2ex/config_tda2ex_c66.bld $(PDK_INSTALL_DIR)/packages/ti/build/tda2ex
+	install -m 0755 tda2ex/mem_segment_definition_1024mb_bios.xs $(PDK_INSTALL_DIR)/packages/ti/build/tda2ex
+
+install-pdk-build-am65xx: loc-install-pdk-build-common loc-install-pdk-build-a53 loc-install-pdk-build-r5f
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/am65xx
+	install -m 0755 am65xx/config_am65xx_a53.bld $(PDK_INSTALL_DIR)/packages/ti/build/am65xx
+	install -m 0755 am65xx/config_am65xx_r5f.bld $(PDK_INSTALL_DIR)/packages/ti/build/am65xx
+	install -m 0755 am65xx/linker_a53.lds $(PDK_INSTALL_DIR)/packages/ti/build/am65xx
+	install -m 0755 am65xx/linker_r5.lds $(PDK_INSTALL_DIR)/packages/ti/build/am65xx
+	install -m 0755 am65xx/linker_r5_sysbios.lds $(PDK_INSTALL_DIR)/packages/ti/build/am65xx
+	install -m 0755 am65xx/sysbios_a53.cfg $(PDK_INSTALL_DIR)/packages/ti/build/am65xx
+	install -m 0755 am65xx/sysbios_r5f.cfg $(PDK_INSTALL_DIR)/packages/ti/build/am65xx
+	install -m 0755 am65xx/sysbios_smp_a53.cfg $(PDK_INSTALL_DIR)/packages/ti/build/am65xx
+	install -m 0755 am65xx/r5_mpu.xs $(PDK_INSTALL_DIR)/packages/ti/build/am65xx
+	install -m 0755 makerules/rom_degenerateKey.pem $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/k3_dev_mpk.pem $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/x509CertificateGen.sh $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/x509CertificateGen.ps1 $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/x509template.txt $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+install-pdk-build-j721e: loc-install-pdk-build-common loc-install-pdk-build-a72 loc-install-pdk-build-r5f loc-install-pdk-build-c6x loc-install-pdk-build-c7x loc-install-pdk-build-c7x-hostemu
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/config_j721e_a72.bld $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/config_j721e_r5f.bld $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/config_j721e_c7x.bld $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/config_j721e_c66.bld $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/linker_a72_mpu1_0.lds $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/linker_r5.lds $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/linker_c7x.lds $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/linker_c66.cmd $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/linker_r5_sysbios.lds $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/sysbios_a72.cfg $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/sysbios_r5f.cfg $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/sysbios_c7x.cfg $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/sysbios_c66.cfg $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/r5_mpu.xs $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/sbl_mcux_0_dummy_app.map $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 j721e/sbl_mcux_0_dummy_app.rprc $(PDK_INSTALL_DIR)/packages/ti/build/j721e
+	install -m 0755 makerules/rom_degenerateKey.pem $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/k3_dev_mpk.pem $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/x509CertificateGen.sh $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/x509CertificateGen.ps1 $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/x509template.txt $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+install-pdk-build-j7200: loc-install-pdk-build-common loc-install-pdk-build-a72 loc-install-pdk-build-r5f loc-install-pdk-build-c7x loc-install-pdk-build-c7x-hostemu
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/config_j7200_a72.bld $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/config_j7200_r5f.bld $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/config_j7200_c7x.bld $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/linker_a72_mpu1_0.lds $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/linker_r5.lds $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/linker_c7x.lds $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/linker_r5_sysbios.lds $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/sysbios_a72.cfg $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/sysbios_r5f.cfg $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/sysbios_c7x.cfg $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/r5_mpu.xs $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 j7200/sbl_mcux_0_dummy_app.rprc $(PDK_INSTALL_DIR)/packages/ti/build/j7200
+	install -m 0755 makerules/rom_degenerateKey.pem $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/k3_dev_mpk.pem $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/x509CertificateGen.sh $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/x509CertificateGen.ps1 $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/x509template.txt $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+
+install-pdk-build-am64x: loc-install-pdk-build-common loc-install-pdk-build-a53 loc-install-pdk-build-r5f
+	install -d $(PDK_INSTALL_DIR)/packages/ti/build/am64x
+	install -m 0755 am64x/config_am64x_a53.bld $(PDK_INSTALL_DIR)/packages/ti/build/am64x
+	install -m 0755 am64x/config_am64x_r5f.bld $(PDK_INSTALL_DIR)/packages/ti/build/am64x
+	install -m 0755 am64x/linker_a53.lds $(PDK_INSTALL_DIR)/packages/ti/build/am64x
+	install -m 0755 am64x/linker_r5.lds $(PDK_INSTALL_DIR)/packages/ti/build/am64x
+	install -m 0755 am64x/linker_r5_sysbios.lds $(PDK_INSTALL_DIR)/packages/ti/build/am64x
+	install -m 0755 am64x/sysbios_a53.cfg $(PDK_INSTALL_DIR)/packages/ti/build/am64xx
+	install -m 0755 am64x/sysbios_r5f.cfg $(PDK_INSTALL_DIR)/packages/ti/build/am64xx
+	install -m 0755 am64x/sysbios_smp_a53.cfg $(PDK_INSTALL_DIR)/packages/ti/build/am64x
+	install -m 0755 am64x/r5_mpu.xs $(PDK_INSTALL_DIR)/packages/ti/build/am64x
+	install -m 0755 am64x/sbl_mcux_0_dummy_app.rprc $(PDK_INSTALL_DIR)/packages/ti/build/am64x
+	install -m 0755 makerules/x509CertificateGen.sh $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/x509CertificateGen.ps1 $(PDK_INSTALL_DIR)/packages/ti/build/makerules
+	install -m 0755 makerules/x509template.txt $(PDK_INSTALL_DIR)/packages/ti/build/makerules
