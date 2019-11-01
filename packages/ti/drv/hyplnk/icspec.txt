@@ -1,0 +1,58 @@
+# Integration spec for modules used in the system 
+
+# #######################################################################
+# Hyperlink LLD
+# #######################################################################
+element /gtcsl_ip/hyperlink_lld/...                    DEV.HYPLNK_LLD.02.00.00.00 -nocheckout  
+element /gtcsl_platform/KeyStone2/ti/drv/hyplnk/...    DEV.HYPLNK_LLD.02.00.00.00 -nocheckout
+
+# #######################################################################
+# CSL IP Blocks
+# #######################################################################
+element /gtcsl_platform/KeyStone2/ti/csl/...            DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/aif2/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/bcp/...                               DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/bootcfg/...                           DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/bwmgmt/...                            DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/cache/...                             DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/chip/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/cpintc/...                            DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/edma/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/emac/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/emif4/...                             DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/emif16/...                            DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/fftc/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/gpio/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/i2c/...                               DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/idma/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/ipc/...                               DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/mdio/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/memprot/...                           DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/mpu/...                               DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/msmc/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/pa/...                                DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/pllc/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/psc/...                               DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/rac/...                               DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/sa/...                                DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/sem2/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/sgmii/...                             DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/spi/...                               DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/srio/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/tac2/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/timer/...                             DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/tsc/...                               DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/tsip/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/uart/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/usim/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/vcp2/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/vusr/...                              DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+element /gtcsl_ip/xmc/...                               DEV.CSL_KEYSTONE2.01.00.00.02 -nocheckout
+
+# This is the base PDK platform label which was created. If none of the rules above are 
+# matched this is the default catch-all.
+element /gtcsl_ip/...                                  DEV.X.PDK_KEYSTONE2.01.00.00.00 -nocheckout
+element /gtcsl_platform/...                            DEV.X.PDK_KEYSTONE2.01.00.00.00 -nocheckout
+
+element * DEV.HYPLNK_LLD.02.00.00.00
+

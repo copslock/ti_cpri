@@ -1,0 +1,8 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/cicInterruptExample/Readme.txt"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/cicInterruptExample/src/cicInterruptExample.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/cicInterruptExample/k2k/c66/bios/cicInterruptExample.cfg"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/common/hyplnkLLDIFace.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/common/hyplnkResource.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/device/k2k/src/hyplnk_device.c"
+-ccs.setCompilerOptions "-mv6600 -g -DDEVICE_K2K --diag_warning=225 -I${PDK_INSTALL_PATH}/ti/csl/soc/k2k/src -I${PDK_INSTALL_PATH}/ti/csl/src/intc -I${PDK_INSTALL_PATH}/ti/drv/hyplnk/example/common" -rtsc.enableRtsc
+

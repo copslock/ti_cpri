@@ -1,0 +1,20 @@
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/memoryMappedExample/Readme.txt" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/memoryMappedExample/src/hyplnkExample.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/memoryMappedExample/c6657/c66/bios/memoryMappedExampleDevLib.cfg" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/common/hyplnkIsr.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/common/hyplnkLLDIFace.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/common/hyplnkResource.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/EDMA/hyplnkEDMA.h" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/EDMA/hyplnkDMA.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/EDMA/commonEDMA.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/EDMA/hyplnkEDMAselector.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/InfraDMA/hyplnkInfraDMA.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/InfraDMA/hyplnkInfraDMA.h"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/device/c6657/src/hyplnk_device.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/cppi/device/c6657/src/cppi_device.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/device/c6657/src/qmss_device.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/example/InfraDmaSC/c6657/c66/bios/infrastructure_osal.c"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/hyplnk/example/memoryMappedExample/hyplnk.cmd"
+-ccs.setCompilerOptions "-mv6600 -g -DSOC_C6657 --diag_warning=225 -I${PDK_INSTALL_PATH}/ti/csl/soc/c6657/src -I${PDK_INSTALL_PATH}/ti/csl/src/intc -I${PDK_INSTALL_PATH}/ti/drv/hyplnk/example/common" -rtsc.enableRtsc
+
+
