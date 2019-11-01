@@ -1,0 +1,26 @@
+ -ccs.configurations EVM_LBACK EVM_LBACK_BE EVM6670_DSP1 EVM6670_DSP2 Lyrtech_EVM 
+ -ccs.setCompilerOptions "-DEVM_TYPE=0 -DDSPCORE=0 " @configurations Lyrtech_EVM 
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DDSPCORE=0 " @configurations EVM6670_DSP1 
+ -ccs.setCompilerOptions "-DEVM_TYPE=2 -DDSPCORE=0 " @configurations EVM6670_DSP2 
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DLOOPBACK -DDSPCORE=0 " @configurations EVM_LBACK 
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DLOOPBACK -DDSPCORE=0 " @configurations EVM_LBACK_BE  
+ -ccs.setCompilerOptions "-DUSESYSBIOS -I${CG_TOOL_ROOT}/include " 
+ -ccs.setCompilerOptions "-I${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils " 
+ -ccs.setCompilerOptions "-mv6600 -g --mem_model:data=far " 
+ -ccs.setLinkerOptions "-i${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils"
+ -ccs.setLinkerOptions "--stack_size=0 --heap_size=0" 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=0 --define=DSPCORE=0 " @configurations Lyrtech_EVM 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=1 --define=DSPCORE=0 " @configurations EVM6670_DSP1 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=2 --define=DSPCORE=0 " @configurations EVM6670_DSP2 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=1 --define=DSPCORE=0 " @configurations EVM_LBACK 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=1 --define=DSPCORE=0 " @configurations EVM_LBACK_BE
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/cslUtils.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/mnavUtils.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_osal.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/edmalld_cs.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/edmalld_init.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/dualmode/dualmode.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_bios.cfg
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_bios.cmd 
+ -rtsc.setConfiguroOptions "--cfgArgs \"{aif2test:0}\""
+ -rtsc.enableRtsc 

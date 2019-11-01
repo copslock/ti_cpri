@@ -1,0 +1,23 @@
+ -ccs.configurations K2H_LBACK K2H_LBACK_BE EVM6638K2K
+ -ccs.setCompilerOptions "-DEVM_TYPE=6 -DDEVICE_K2H -DCPRI_RELAY_CFG=1 -DLTE_RATE=20 -DLOOPBACK " @configurations K2H_LBACK 
+ -ccs.setCompilerOptions "-DEVM_TYPE=6 -DDEVICE_K2H -DCPRI_RELAY_CFG=1 -DLTE_RATE=20 -DLOOPBACK " @configurations K2H_LBACK_BE 
+ -ccs.setCompilerOptions "-DEVM_TYPE=7 -DDEVICE_K2H -DCPRI_RELAY_CFG=2 -DLTE_RATE=20 -DUSE_SMA " @configurations EVM6638K2K 
+ -ccs.setCompilerOptions "-I${CG_TOOL_ROOT}/include " 
+ -ccs.setCompilerOptions "-I${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils " 
+ -ccs.setCompilerOptions "-mv6600 -g --mem_model:data=far_aggregates " 
+ -ccs.setLinkerOptions "-i${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils"
+ -ccs.setLinkerOptions "--stack_size=0x20000 --heap_size=0x20000 --ram_model" 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=6 -ldsplib.ae66 " @configurations K2H_LBACK  
+ -ccs.setLinkerOptions "--define=EVM_TYPE=6 -ldsplib.ae66e " @configurations K2H_LBACK_BE  
+ -ccs.setLinkerOptions "--define=EVM_TYPE=7 -ldsplib.ae66 " @configurations EVM6638K2K 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/cslUtils.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/mnavUtils.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_osal.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/mathUtils.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/cpricheckrf/ltecheckrf.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/appletonScbpSync.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/ppsGen.c  
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/scbpfpga_spi.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_k2h_test.cfg
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_test.cmd
+ -rtsc.enableRtsc 

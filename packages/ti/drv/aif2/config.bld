@@ -1,0 +1,121 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the AIF2 Driver
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for the AIF2 driver
+ *  and is responsible for configuration of the paths for the various 
+ *  tools required to build the driver.
+ *
+ * Copyright (C) 2009, Texas Instruments, Inc.
+ *****************************************************************************/
+var Build = xdc.useModule('xdc.bld.BuildEnvironment');
+print (Build.hostOSName);
+ 
+ 
+/* Get the Tools Base directory from the Environment Variable. */
+var toolsBaseDir = java.lang.System.getenv("C6X_GEN_INSTALL_PATH");
+/* Get the extended debug flags for C66x, 
+ * did not change the name for backwards compatibilty */
+var extDbgFlags = java.lang.System.getenv("EXTDBGFLAGS");
+
+
+/* Get the base directory for the AIF2 Socket Driver Package */
+var aif2DriverPath = new java.io.File(".//").getPath();
+
+/* Read the part number from the environment variable. */
+var aif2LLDPartNumber = "KeyStone1";
+
+/* Configure the AIF2 Socket Release Version Information */
+var aif2DriverReleaseVersion = [01,02,00,00];
+
+var pkgName = Pkg.name;
+
+var tiCcopts = "-g -mn -o3 --verbose_diagnostics --display_error_number --diag_error=225 -k --diag_error=9 --diag_warning=179 --diag_remark=880 --diag_remark=188 --mem_model:data=far"; 
+/* var tiCcopts = "-g --verbose_diagnostics --display_error_number --diag_error=225 -k --diag_error=9 --diag_warning=179 --diag_remark=880 --diag_remark=188 --mem_model:data=far";*/
+var tiDefs = " ";
+var tiIncs = " " ;
+
+
+/* C66 ELF compiler configuration for Little Endian Mode. */
+var C66LE           = xdc.useModule('ti.targets.elf.C66');
+C66LE.rootDir       = toolsBaseDir;
+C66LE.ccOpts.prefix = tiCcopts;
+if(extDbgFlags)     
+    C66LE.ccOpts.prefix = C66LE.ccOpts.prefix + " " + extDbgFlags; 
+
+/* Check if we need to run the STATIC Analysis or not? */
+var coverityAnalysis = java.lang.System.getenv("STATIC_ANALYZE");
+
+/* Setup the Coverity Filters to perform Static Analysis. */
+if (coverityAnalysis == "ON") {
+    var coverityInstallPath = java.lang.System.getenv("STATIC_ANALYZE_PATH");
+    var cfgBase = xdc.getPackageBase("tisb.coverity.filters") + "cfg";
+
+    var coverityFilter = [
+    {
+        moduleName: "tisb.coverity.filters.Coverity",
+        params: {
+            cfgDir:  cfgBase,  // The Coverity configuration file directory
+            rootDir: coverityInstallPath,
+            outDir: xdc.csd() + "cov_out",
+            analyzeLibs: true
+        }
+    },
+    ];
+
+    /* Run the coverity filters on the LE Build only. */
+    C66LE.profiles["release"].filters = coverityFilter;
+}
+
+/* Check if we need to create the Makefiles? */
+var miniBuild = java.lang.System.getenv("MINI_PACKAGE");
+if (miniBuild == "ON")
+{
+    var makeC66LEFilter = {
+        moduleName: "build.filter.Make",
+        params: {
+          makefileName: "simpleC66LE.mak",
+        }
+    };
+    C66LE.profiles["release"].filters[C66LE.profiles["release"].filters.length++] = makeC66LEFilter;
+    
+}
+
+/* List all the build targets here. */
+Build.targets = [ C66LE ];
+
+/* Grab input from XDCARGS */
+var buildArguments  = [];
+
+/* Local variable for KeyStone1 or KeyStone2 devices */
+var socFamily = "KeyStone1";
+
+/* Construct the build arguments */
+for (var tmp=0; arguments[tmp] != undefined; tmp++)
+{
+
+    /* If no arguments are provided, override for building all */
+    if ( ( arguments.length == 1) && (arguments[tmp].equals("./config.bld")) )
+        buildArguments[buildArguments.length++] = "all";
+    else
+        buildArguments[buildArguments.length++] = arguments[tmp];
+}
+
+
+if ( ( buildArguments.indexOf("k2h") != -1 ) ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+	tiCcopts = tiCcopts + " -DK2 -DSOC_K2H ";
+	aif2LLDPartNumber = "K2";
+        C66LE.ccOpts.prefix = tiCcopts;
+}
+
+else if ( ( buildArguments.indexOf("k2k") != -1 ) ||
+     ( buildArguments.indexOf("all") != -1 ) ) 
+{
+	tiCcopts = tiCcopts + " -DK2 -DSOC_K2K ";
+	aif2LLDPartNumber = "K2";
+        C66LE.ccOpts.prefix = tiCcopts;
+}

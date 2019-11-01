@@ -1,0 +1,29 @@
+ -ccs.configurations EVM_LBACK EVM_LBACK_BE EVM6614 SCBP_DSP1 EVM6670_DSP1 EVM6670_DSP2 
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DCPRI_RELAY_CFG=1 -DLOOPBACK " @configurations EVM_LBACK 
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DCPRI_RELAY_CFG=1 -DLOOPBACK " @configurations EVM_LBACK_BE  
+ -ccs.setCompilerOptions "-DEVM_TYPE=3 -DCPRI_RELAY_CFG=1 " @configurations SCBP_DSP1 
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DCPRI_RELAY_CFG=1 " @configurations EVM6670_DSP1 
+ -ccs.setCompilerOptions "-DEVM_TYPE=2 -DCPRI_RELAY_CFG=1 " @configurations EVM6670_DSP2 
+ -ccs.setCompilerOptions "-DEVM_TYPE=5 -DCPRI_RELAY_CFG=2 " @configurations EVM6614 
+ -ccs.setCompilerOptions "-I${CG_TOOL_ROOT}/include " 
+ -ccs.setCompilerOptions "-I${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils " 
+ -ccs.setCompilerOptions "-mv6600 -g --mem_model:data=far " 
+ -ccs.setLinkerOptions "-i${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils"
+ -ccs.setLinkerOptions "--stack_size=0x20000 --heap_size=0x20000 --ram_model" 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=1 -ldsplib.ae66 " @configurations EVM_LBACK  
+ -ccs.setLinkerOptions "--define=EVM_TYPE=1 -ldsplib.ae66e " @configurations EVM_LBACK_BE   
+ -ccs.setLinkerOptions "--define=EVM_TYPE=3 -ldsplib.ae66 " @configurations SCBP_DSP1   
+ -ccs.setLinkerOptions "--define=EVM_TYPE=1 -ldsplib.ae66 " @configurations EVM6670_DSP1 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=2 -ldsplib.ae66 " @configurations EVM6670_DSP2 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=5 -ldsplib.ae66 " @configurations EVM6614  
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/cslUtils.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_osal.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/mathUtils.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/mnavUtils.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/cpricheckrf/wcdmacheckrf.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/appletonScbpSync.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/ppsGen.c  
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/scbpfpga_spi.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_test.cfg
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_test.cmd
+ -rtsc.enableRtsc 

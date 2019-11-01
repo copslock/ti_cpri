@@ -1,0 +1,207 @@
+/******************************************************************************
+ * FILE PURPOSE: Build description for the AIF2 Driver
+ ******************************************************************************
+ * FILE NAME: package.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build specification and description for the AIF2 driver
+ *  
+ *  The file takes the following parameters from the command line through the
+ *  XDCARGS variable.
+ *      XDCARGS[0] = AIF2 Driver Install Type 
+ *      Valid Values are "TAR" or "SETUP"
+ *      DEFAULT is "SETUP"
+ *
+ *  Example for a valid command:
+ *      xdc XDCARGS="SETUP" release   
+ *
+ * Copyright (C) 2009, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* List of all subdirectories that combine to make the AIF2 Driver Package. */
+/* var subDirectories = [ "src", "docs", "include", "test", "example" ]; */
+var subDirectories = [ "src", "docs", "test", "device"];
+
+var aif2DriverInstallType;
+
+/* Determine if we need to create the InstallJammer Application or not? 
+ * AIF2 LLD Deliverables be either of the following formats:
+ *  - TAR Ball Package
+ *  - Setup Executable 
+ * DEFAULT is a SETUP Executable. */
+
+if ((arguments[0] != "TAR") && (arguments[0] != "SETUP"))
+    aif2DriverInstallType = "TAR";
+else
+    aif2DriverInstallType = arguments[0];
+
+/* Irrespective of the InstallType we always create a TAR Ball Package as a part
+ * of the RTSC Build. Here we determine the name of the TAR Ball Package
+ *  Format is as follows:
+ *      aif2_<version> */
+var aif2RTSCFileName = "aif2" + "_" + aif2LLDPartNumber + "_" + 
+                      aif2DriverReleaseVersion[0] + "_" +  aif2DriverReleaseVersion[1] + "_" + 
+                      aif2DriverReleaseVersion[2]  + "_" + aif2DriverReleaseVersion[3];
+
+/******************************************************************
+ ************************ Release Banner **************************
+ ******************************************************************/
+
+print ("************* AIF2  Driver Build Information *************");
+print ("AIF2 Driver Install      : " + aif2DriverInstallType);
+print ("AIF2 Driver LLD Version  : " + aif2DriverReleaseVersion);
+print ("Tools Directory                 : " + toolsBaseDir);
+print ("RTSC File Name	                : " + aif2RTSCFileName);
+print ("AIF2 Driver LLD Path     : " + aif2DriverPath);
+print ("Coverity Analysis               : " + (coverityAnalysis == "ON" ? "ON" : "OFF"));
+print ("CC LE opts                      : " + C66LE.ccOpts.prefix);
+print ("****************************************************************");
+
+/* Create the release package for the AIF2 LLD */
+Pkg.defaultRelease = Pkg.addRelease (aif2RTSCFileName, {prefix: "./packages/"});
+
+/* If need to debug AIF2 LLD, set profile to debug */
+/* Pkg.attrs.profile = 'debug'; */
+
+/* Moving forward we need to set the Archiver of the package to be ZIP. This is currently
+ * not supported in the XDC tools being used. Currenly builds need to be done with the 
+ * following options:-
+ *   xdc MK_FIXLISTOPTS=-t release 
+ * ZIP is a better option as it works natively with INSTALL Jammer and we can remove the
+ * uncompression into a temporary directory. XDC Tools with xdc-rXX support the ZIP archiver. */
+//Pkg.attrs = {archiver : "zip"};
+
+/* Cycle through all the sub-directories and build all the files */
+for (var i = 0; i < subDirectories.length; i++) 
+{
+    /* Load the capsule in the sub directory. */
+    var caps = xdc.loadCapsule (subDirectories[i]+"/Module.xs");
+
+    print ("Building directory " + subDirectories[i]);
+
+    /* Build the capsule. */
+    caps.modBuild();
+
+    /* Package the module.xs files for building via package */
+    Pkg.otherFiles[Pkg.otherFiles.length++] = subDirectories[i]+"/Module.xs";
+}
+
+/* Package the remaining files */
+Pkg.otherFiles[Pkg.otherFiles.length++] = "config.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.bld";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "package.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "Settings.xdc.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "aif2.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "aif2_osal.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "aif2_types.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "aif2ver.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "aif2ver.h.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/Doxyfile";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "docs/doxyfile.xdt";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/buildlib.xs";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "build/armv7/libaif2_aearmv7.mk";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "AIF_calcParam.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "AIF_debug.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "AIF_defs.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "AIF_fsync.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "AIF_init_dat.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "AIF_init.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "AIF_shutdown.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "AIF_hibernation.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "AIF_cfg.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "makefile";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "makefile_armv7";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "aif2fl.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "aif2fl_getHwStatusAux.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "aif2fl_hwControlAux.h";
+Pkg.otherFiles[Pkg.otherFiles.length++] = "aif2fl_hwSetupAux.h";
+
+
+/* Generate Users Manual Doxyfile */
+var tplt = xdc.loadTemplate("./docs/doxyfile.xdt");
+tplt.genFile("./docs/Doxyfile",aif2DriverReleaseVersion); 
+
+/* Generate Settings.xdc */
+var tplt = xdc.loadTemplate("./Settings.xdc.xdt");
+tplt.genFile("./Settings.xdc",aif2DriverReleaseVersion); 
+
+/* Generate paver.h */
+var tplt = xdc.loadTemplate("./aif2ver.h.xdt");
+tplt.genFile("./aif2ver.h",aif2DriverReleaseVersion);      
+
+/* Check if we need to create the mini package? */
+var miniBuild = java.lang.System.getenv("MINI_PACKAGE");
+
+if (miniBuild == "ON")
+{
+    /***************************************************************************
+     ********************************* MINI Package ****************************
+     ***************************************************************************/
+    /* Create the MINI RTSC Package */
+    var libUtility = xdc.loadCapsule ("build/buildlib.xs");
+    libUtility.createMiniPkg(aif2RTSCFileName);
+}
+
+/********************************************************************* 
+ *********************** INSTALL-JAMMER Support **********************
+ * In order to create the InstallJammer Application; we need to UNTAR
+ * the package into a temporary directory. This is required because 
+ * currently the InstallJammer does not support the TAR Files and thus
+ * creating an UNTAR of the file. So to work-around the problem we will
+ * do the following in the EPILOGUE Section:-
+ *  (a) Create a temporary directory called 'tmp'
+ *  (b) UNTAR the package into 'tmp'
+ *  (c) Run the INSTALL Jammer on 'tmp'
+ *  (d) Remove the 'tmp' directory.
+ *
+ * This can be done only after the 'release' package has been created.
+ * Thus all of this work is being done in the EPILOGUE.
+ *********************************************************************/
+if (aif2DriverInstallType == "SETUP")
+{
+    /* Create the Install Jammer Version Variable. This is used inside the 
+     * MPI File to create the Final executable. 
+     *  The format supported is as follows:-
+     *   - setupwin32_aif2_<device>_<version>.exe 
+     */
+    var InstallJammerVersion = "-DVersion " + aif2LLDPartNumber + "_" + 
+                               aif2DriverReleaseVersion[0] + "_" + aif2DriverReleaseVersion[1] + "_" +  
+                               aif2DriverReleaseVersion[2] + "_" + aif2DriverReleaseVersion[3];
+
+    /* This is the location where the tmp directory is located; this is used as 
+     * the input directory for the Install Jammer. */ 
+    var PackageBaseDir = " -DPackageBaseDir " + aif2DriverPath + "./tmp";
+
+    /* This is the location where the AIF2 LLD will be installed by default. */
+    var WinInstallDir = " -DWinInstallDir C:/Program Files/Texas Instruments/aif2" + "_" + 
+                            aif2LLDPartNumber + "_" + 
+                            aif2DriverReleaseVersion[0] + "_" +  aif2DriverReleaseVersion[1] + "_" +  
+                            aif2DriverReleaseVersion[2]  + "_" + aif2DriverReleaseVersion[3];
+
+    /* Create the actual EPILOGUE Section for the INSTALLER */
+    Pkg.makeEpilogue += "release: install_application\n";
+    Pkg.makeEpilogue += "install_application:\n";
+    Pkg.makeEpilogue += "\t @echo -------------------------------------------------------\n";
+    Pkg.makeEpilogue += "\t @echo Creating the Install\n";
+    Pkg.makeEpilogue += "\t @echo -------------------------------------------------------\n";
+    Pkg.makeEpilogue += "\t -$(MKDIR) tmp\n";
+    Pkg.makeEpilogue += "\t -$(MKDIR) tmp/packages\n";
+    Pkg.makeEpilogue += "\t -$(MKDIR) tmp/eclipse\n";
+    Pkg.makeEpilogue += "\t -$(CP) -R eclipse tmp\n";
+    Pkg.makeEpilogue += "\t tar -xf ./packages/" + aif2RTSCFileName + ".tar" + " -Ctmp/packages \n";
+    Pkg.makeEpilogue += "\t installjammer " + InstallJammerVersion + PackageBaseDir + WinInstallDir + 
+                        " --output-dir packages/ --build install/aif2lld.mpi\n";
+    Pkg.makeEpilogue += "\t -$(RMDIR) /S /Q tmp\n\n";
+
+    /* We need to clean after ourselves; extend the 'clean' target to take care of this. */
+    Pkg.makeEpilogue += "clean::\n";
+    Pkg.makeEpilogue += "\t -$(RM) docs/Doxyfile Settings.xdc aif2ver.h\n";
+    Pkg.makeEpilogue += "\t -$(RM) makefile\n";
+    Pkg.makeEpilogue += "\t -$(RMDIR) docs/doxygen\n";
+    Pkg.makeEpilogue += "\t $(RM) packages/*.exe\n";
+    Pkg.makeEpilogue += "\t $(RM) packages/*.bin\n";
+    Pkg.makeEpilogue += "\t -$(RMDIR) eclipse\n\n";
+}
+    

@@ -1,0 +1,19 @@
+ -ccs.configurations K2H_LBACK K2H_LBACK_BE
+ -ccs.setCompilerOptions "-DEVM_TYPE=6 -DDEVICE_K2H -DLOOPBACK -DLTE_RATE=20 -DDSPCORE=0 " @configurations K2H_LBACK 
+ -ccs.setCompilerOptions "-DEVM_TYPE=6 -DDEVICE_K2H -DLOOPBACK -DLTE_RATE=20 -DDSPCORE=0 " @configurations K2H_LBACK_BE 
+ -ccs.setCompilerOptions "-DUSESYSBIOS -I${CG_TOOL_ROOT}/include " 
+ -ccs.setCompilerOptions "-I${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils " 
+ -ccs.setCompilerOptions "-mv6600 -g --mem_model:data=far " 
+ -ccs.setLinkerOptions "-i${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils"
+ -ccs.setLinkerOptions "--stack_size=0x20000 --heap_size=0x20000" 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=6 --define=DSPCORE=0 " @configurations K2H_LBACK 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=6 --define=DSPCORE=0 " @configurations K2H_LBACK_BE 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/cslUtils.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/mnavUtils.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_osal.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/cprifastcm/4B5BEncDec.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/cprifastcm/cprifastcm.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_k2k_bios.cfg
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_bios.cmd 
+ -rtsc.setConfiguroOptions "--cfgArgs \"{aif2test:0}\"" 
+ -rtsc.enableRtsc 

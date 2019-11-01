@@ -1,0 +1,17 @@
+ -ccs.configurations K2K_LBACK K2K_LBACK_BE
+ -ccs.setCompilerOptions "-DEVM_TYPE=6 -DLOOPBACK -DDEVICE_K2K -DTESTOBSAI -DLTE_RATE=20 " @configurations K2K_LBACK  
+ -ccs.setCompilerOptions "-DEVM_TYPE=6 -DLOOPBACK -DDEVICE_K2K -DTESTOBSAI -DLTE_RATE=20 " @configurations K2K_LBACK_BE 
+ -ccs.setCompilerOptions "-I${CG_TOOL_ROOT}/include " 
+ -ccs.setCompilerOptions "-I${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils " 
+ -ccs.setCompilerOptions "-mv6600 -g --mem_model:data=far " 
+ -ccs.setLinkerOptions "-i${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils"
+ -ccs.setLinkerOptions "--stack_size=0x20000 --heap_size=0x20000" 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=6 " @configurations K2K_LBACK 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=6 " @configurations K2K_LBACK_BE
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/cslUtils.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/mnavUtils.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_osal.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/lte/lte.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_k2k_test.cfg 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_test.cmd 
+ -rtsc.enableRtsc 

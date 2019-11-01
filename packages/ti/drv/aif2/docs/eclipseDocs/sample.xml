@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+    <name>KeyStone2 CSL LLD</name>
+    <id>ti.csl_lld</id>
+    <version>1.00.00.01</version>
+    <companyName>Texas Instruments Inc.</companyName>
+    <companyUrl>http://www.ti.com</companyUrl>
+    <copyRightNotice>Copyright Texas Instruments 2012</copyRightNotice>
+    <licenseNotice>
+      Released under the Eclipse Public License 1.0 (http://www.eclipse.org/legal/epl-v10.html)
+    </licenseNotice>
+    <installLocation>../../..</installLocation>
+    <repository>../../../packages</repository>
+    <docsLoc>../../../packages</docsLoc>
+    <folderPrefix>KeyStone2 CSL LLD</folderPrefix>
+</product>

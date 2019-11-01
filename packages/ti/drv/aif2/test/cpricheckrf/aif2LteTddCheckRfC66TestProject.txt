@@ -1,0 +1,28 @@
+ -ccs.configurations EVM_LBACK EVM_LBACK_BE EVM6614 EVM6670_DSP1 EVM6670_DSP2 EVM6614_LBACK
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DCPRI_RELAY_CFG=1 -DCPRI_RELAY_RATE=20 -DLTE_RATE=20 -DLOOPBACK " @configurations EVM_LBACK 
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DCPRI_RELAY_CFG=1 -DCPRI_RELAY_RATE=20 -DLTE_RATE=20 -DLOOPBACK " @configurations EVM_LBACK_BE 
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DCPRI_RELAY_CFG=1 -DCPRI_RELAY_RATE=20 -DLTE_RATE=20 " @configurations EVM6670_DSP1 
+ -ccs.setCompilerOptions "-DEVM_TYPE=2 -DCPRI_RELAY_CFG=1 -DCPRI_RELAY_RATE=20 -DLTE_RATE=20 " @configurations EVM6670_DSP2 
+ -ccs.setCompilerOptions "-DEVM_TYPE=5 -DCPRI_RELAY_CFG=2 -DCPRI_RELAY_RATE=20 -DLTE_RATE=20 " @configurations EVM6614 
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DCPRI_RELAY_CFG=1 -DCPRI_RELAY_RATE=10 -DLTE_RATE=10 -DLOOPBACK " @configurations EVM6614_LBACK  
+ -ccs.setCompilerOptions "-I${CG_TOOL_ROOT}/include " 
+ -ccs.setCompilerOptions "-I${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils " 
+ -ccs.setCompilerOptions "-mv6600 -g --mem_model:data=far_aggregates " 
+ -ccs.setLinkerOptions "-i${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils "
+ -ccs.setLinkerOptions "--stack_size=0x20000 --heap_size=0x20000 --ram_model" 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=1 -ldsplib.ae66 -lmathUtils.lib " @configurations EVM_LBACK  
+ -ccs.setLinkerOptions "--define=EVM_TYPE=1 -ldsplib.ae66e -lmathUtilse.lib " @configurations EVM_LBACK_BE
+ -ccs.setLinkerOptions "--define=EVM_TYPE=1 -ldsplib.ae66 -lmathUtils.lib " @configurations EVM6670_DSP1 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=2 -ldsplib.ae66 -lmathUtils.lib " @configurations EVM6670_DSP2 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=5 -ldsplib.ae66 -lmathUtils.lib " @configurations EVM6614 
+ -ccs.setLinkerOptions "--define=EVM_TYPE=1 -ldsplib.ae66 -lmathUtils.lib " @configurations EVM6614_LBACK  
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/cslUtils.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/mnavUtils.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_osal.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/cpricheckrf/ltetddcheckrf.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/appletonScbpSync.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/ppsGen.c  
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/scbpfpga_spi.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_test.cfg
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_test.cmd
+ -rtsc.enableRtsc 

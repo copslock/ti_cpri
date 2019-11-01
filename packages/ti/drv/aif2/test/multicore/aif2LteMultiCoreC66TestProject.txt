@@ -1,0 +1,18 @@
+ -ccs.configurations EVM_LBACK EVM_LBACK_BE
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DLTE_RATE=1 -DLTE_MODE -DLOOPBACK " @configurations EVM_LBACK 
+ -ccs.setCompilerOptions "-DEVM_TYPE=1 -DLTE_RATE=1 -DLTE_MODE -DLOOPBACK " @configurations EVM_LBACK_BE 
+ -ccs.setCompilerOptions "-DUSESYSBIOS -I${CG_TOOL_ROOT}/include " 
+ -ccs.setCompilerOptions "-I${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils " 
+ -ccs.setCompilerOptions "-mv6600 -g --mem_model:data=far " 
+ -ccs.setLinkerOptions "-i${AIF2_INSTALL_PATH}/ti/drv/aif2/test/utils"
+ -ccs.setLinkerOptions "--stack_size=0 --heap_size=0" 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/cslUtils.c  
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/mnavUtils.c
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_osal.c    
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/multicore/aif2_cfg.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/multicore/lteMultiCore.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/multicore/lte_process.c 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_bios.cfg 
+ -ccs.linkFile AIF2_INSTALL_PATH/ti/drv/aif2/test/utils/aif2_bios.cmd 
+ -rtsc.setConfiguroOptions "--cfgArgs \"{aif2test:0}\""
+ -rtsc.enableRtsc 
