@@ -1,0 +1,53 @@
+=============================
+ Random Number Generator API
+=============================
+
+.. _sec_api_rng_tisci_desc:
+
+This chapter provides information on the available random number generator(RNG) API.
+Currently only one RNG API is supported.
+
++------------------+--------------------------------------------+
+| TISCI Message ID |                        Message Name        |
++==================+============================================+
+| 0x9020           | :ref:`TISCI_MSG_GET_RANDOM <get-random>`   |
++------------------+--------------------------------------------+
+
+Introduction
+============
+
+Keystone 3 device Random Number Generator(RNG) module includes a
+Non-Deterministic Random Bit Generator (NRBG) coupled to a Deterministic Random
+bit Generator (DRBG). The RNG is SP 800-90A and FIPS 140-2 compliant.
+
+|sysfw| initializes the RNG module during boot and provides a TISCI interface to
+retrieve random numbers. Random numbers are available in blocks of 4 x 32 bit
+words.
+
+API Description
+===============
+
+.. _get-random:
+
+TISCI_MSG_GET_RANDOM - Get Random Number
+----------------------------------------
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_GET_RANDOM
+
+.. sysfwapistruct:: tisci_rng_get_random_req
+    :exclude-members: payload
+
+.. sysfwapistruct:: tisci_rng_get_random_resp
+
+.. note::
+
+   The user must always request 4 words or 8 words of
+   random data. Other request lengths are not allowed.
+
+The RNG internally has a 16 word random data buffer that is automatically
+refilled. If data is requested too quickly, this buffer might empty and the API
+might return with 0 length data. In such case, the user must wait before
+invoking the API once again.

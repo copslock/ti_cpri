@@ -1,0 +1,267 @@
+=================================================
+Resource Management IRQ TISCI Message Description
+=================================================
+
+Introduction
+============
+
+This chapter provides information on usage of the RM IRQ management TISCI message API parameters.
+
++------------------+------------------------------------------------------------+
+| TISCI Message ID |                        Message Name                        |
++==================+============================================================+
+| 0x1000           | :ref:`TISCI_MSG_RM_IRQ_SET <pub_rm_irq_route_set>`         |
++------------------+------------------------------------------------------------+
+| 0x1001           | :ref:`TISCI_MSG_RM_IRQ_RELEASE <pub_rm_irq_route_release>` |
++------------------+------------------------------------------------------------+
+
+.. _pub_rm_irq_route_set:
+
+TISCI_MSG_RM_IRQ_SET - IRQ Route Set
+====================================
+
+The **IRQ route set** TISCI message API is used to allocate and configure an IRQ
+route between a device peripheral and a host processor. The IRQ route source is
+specified through a combination of the peripheral device ID and the IRQ output
+line ID from the specified peripheral. The IRQ destination is mapped to the
+processor on which the host ID, or secondary host ID (if valid), is executing.
+System Firmware attempts to allocate and configure the shortest route between
+the IRQ source and destination.
+
+The **IRQ route set** process does not configure destination processor interrupt
+controllers. A successful **IRQ route set** returns the destination processor's
+interrupt controller IRQ input index to which the IRQ source has been routed.
+The HLOS must use the interrupt controller input value to complete configuration
+of the route by configuring the interrupt controller.
+
+Some IRQ routes are capable of sharing up to 64 peripheral sources. Route
+sharing only applies to IRQ routes which utilize Interrupt Aggregators (IAs).
+The IA allows up to 64 input events, such as from Navigator Subsystem peripheral
+sources, to be mapped to a single outgoing virtual interrupt (VINT).  Requests
+to map events to virtual interrupt status bits in an existing interrupt route
+results in only the event mapping taking place.  Any route configuration post
+virtual interrupt does not occur since the interrupt management subsystem
+assumes all events multiplexed in a virtual interrupt are destined for the same
+interrupt controller.
+
+Each time an event is mapped to a VINT status bit the mapping is enabled after
+it is configured. The OS can manipulate the status bit's enable/disable setting
+on-the-fly via the VINT's real-time registers.  The host is granted access to
+the virtual interrupt real-time registers via the SoC channelized firewalls
+based on the RM board configuration.  The OS can access the virtual interrupt
+real-time registers directly after interrupt route configuration is complete.
+
+**NOTE (Subject to Change):**
+
+Some System Firmware peripheral drivers have not implemented OES register
+management yet. The HLOS must program the global event value into peripheral's
+OES register. For System Firmware drivers that have implemented internal
+handling of OES registers, the allocated global event is programmed into the
+peripheral element's OES register internally.  Peripherals implementing OES
+management thus far:
+
+* Ring Accelerator
+* UDMAP
+
+Usage
+^^^^^
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_RM_IRQ_SET
+
+IRQ Route Set Message Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|   Parameter           |                  Type                  |                       Valid Values                                    |                                                                                                                                                                                                                                                                                                                                                                        Description                                 |
++=======================+========================================+=======================================================================+====================================================================================================================================================================================================================================================================================================================================================================================================================+
+| hdr                   | Generic TISCI message header (8 bytes) | :doc:`Valid Host IDs <../../5_soc_doc/am6x/hosts>`                    | Generic TISCI message header. Contains the message ID, host ID, sequence number, and any flags                                                                                                                                                                                                                                                                                                                     |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| valid_params          | u32                                    | :ref:`pub_rm_irq_route_set_valid_params`                              | Bitfield defining validity of interrupt route set parameters.  The interrupt route set fields are not valid, and will not be used for route set, if their corresponding valid bit is zero.                                                                                                                                                                                                                         |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| src_id                | u16                                    | :doc:`Valid Device IDs <../../5_soc_doc/am6x/devices>`                | Specifies the SoC-specific device ID of the interrupt route source                                                                                                                                                                                                                                                                                                                                                 |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| src_index             | u16                                    | :doc:`Device Interrupt Sources <../../5_soc_doc/am6x/irq_sources>`    | Specifies the interrupt output index sourcing the interrupt from the device peripheral identified by the device ID parameter                                                                                                                                                                                                                                                                                       |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| dst_id                | u16                                    | :doc:`Device Interrupt Destinations <../../5_soc_doc/am6x/irq_dsts>`  | SoC device ID of interrupt destination.  Based on the device architecture can be an interrupt controller or processor.  Only valid if the dst_id's corresponding valid bit is set.                                                                                                                                                                                                                                 |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| dst_host_irq          | u16                                    | :doc:`Device Interrupt Destinations <../../5_soc_doc/am6x/irq_dsts>`  | Specifies the destination host processor interrupt controller IRQ input.  Only valid if the dst_host_irq's corresponding valid bit is set.                                                                                                                                                                                                                                                                         |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ia_id                 | u16                                    | :doc:`Valid Navigator SS IAs <../../5_soc_doc/am6x/navss>`            | Device ID of interrupt aggregator in which the virtual interrupt resides.  Only valid if the ia_id's corresponding valid bit is set.                                                                                                                                                                                                                                                                               |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| vint                  | u16                                    | :doc:`Valid VINT index <../../5_soc_doc/am6x/navss>`                  | Virtual interrupt number if the interrupt route is through an interrupt aggregator.  Only valid if the vint's corresponding valid bit is set.                                                                                                                                                                                                                                                                      |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| global_event          | u16                                    | :doc:`Navigator Subsystem Global Events <../../5_soc_doc/am6x/navss>` | Global event mapped to interrupt aggregator virtual interrupt status bit.  The event is programmed into the OES register of the interrupt source.  Only valid if the global_events's corresponding valid bit is set.                                                                                                                                                                                               |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| vint_status_bit_index | u8                                     | Status bit index from 0 to 63                                         | Virtual interrupt status bit to set if the interrupt route utilizes an interrupt aggregator virtual interrupt.  Only valid if the vint_status_bit_index's corresponding valid bit is set.                                                                                                                                                                                                                          |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| secondary_host        | u8                                     | :doc:`Valid Host IDs <../../5_soc_doc/am6x/hosts>`                    | Specifies a host ID for which the TISCI header host ID is proxying the request for. This feature allows hosts incapable of making direct requests to be allocated resources by a supervisor host. For example firmware running on a PDMA will need to be allocated resources via a supervisor proxying a request. The secondary_host parameter should always be set as unused if request proxying is not intended. |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+.. _pub_rm_irq_route_set_valid_params:
+
+IRQ Route Set Valid Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following table describes the valid bit mappings for the IRQ route set
+message optional parameters:
+
++------------------+-----------------------------------------------------------+
+| valid_params Bit | Corresponding tisci_msg_rm_irq_set_req Optional Parameter |
++==================+===========================================================+
+|  0               | dst_id                                                    |
++------------------+-----------------------------------------------------------+
+|  1               | dst_host_irq                                              |
++------------------+-----------------------------------------------------------+
+|  2               | ia_id                                                     |
++------------------+-----------------------------------------------------------+
+|  3               | vint                                                      |
++------------------+-----------------------------------------------------------+
+|  4               | global_event                                              |
++------------------+-----------------------------------------------------------+
+|  5               | vint_status_bit_index                                     |
++------------------+-----------------------------------------------------------+
+| 31               | secondary_host                                            |
++------------------+-----------------------------------------------------------+
+
+The following table describes the valid bit combinations used to configure
+the subsystems within the interrupt management architecture
+
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Configuration                      | dst_id | dst_host_irq | ia_id | vint | global_event | vint_status_bit_index | Description                                                                                                                                                                                                                                                                                          |
++====================================+========+==============+=======+======+==============+=======================+======================================================================================================================================================================================================================================================================================================+
+| Non-Event Sourced Direct Interrupt | X      | X            |       |      |              |                       | Non-event source peripheral direct interrupt to destination processor.  One thing to note is an IA unmapped VINT route can be configured via this combination by passing the IA ID and VINT values as the src id and src index parameters.  An IA unmapped VINT route is considered a non-event      |
+|                                    |        |              |       |      |              |                       | sourced direct interrupt route until a global event is mapped to the IA VINT                                                                                                                                                                                                                         |
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Event Sourced Direct Interrupt     | X      | X            | X     | X    | X            | X                     | Event source peripheral direct interrupt to destination processor                                                                                                                                                                                                                                    |
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Unmapped VINT Direct Interrupt     | X      | X            | X     | X    |              |                       | Event-based peripheral interrupt direct to processor with no global event to VINT status bit mapping configured on allocation of the VINT.  Allows all event to VINT status bit mappings to take place at a later time.                                                                              |
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Event to VINT Mapping Only         |        |              | X     | X    | X            | X                     | Configure event-based peripheral interrupt polled from IA VINT real-time registers.  Can also be used to add a VINT status bit mapping to an event-based direct interrupt route.  In case of a polled interrupt the application must use IA VINT real-time register to poll/clear VINT status.       |
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| OES Register Programming Only      |        |              |       |      | X            |                       | Applicable only for source peripherals capable of generating an output event.  Only programs the OES register for the source peripheral.  No interrupt route configuration is performed.  Useful for setting UDMA trigger events or any other events that are not translated to the interrupt domain |
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+.. _pub_rm_irq_route_release:
+
+TISCI_MSG_RM_IRQ_RELEASE - IRQ Route Release
+============================================
+
+The **IRQ route release** TISCI message API is used to release an IRQ route
+between a device peripheral and a host processor. IRQ routes are released by
+specifying the interrupt source peripheral's interrupt output index. The IRQ
+destination is mapped to the processor on which the host ID, or secondary host
+ID (if valid), is executing. The IRQ management subsystem will trace the
+interrupt route between the source and destination, freeing any interrupt router
+and interrupt aggregator resources within the route.
+
+For routes utilizing an IA VINT event to status bit mapping, the status bit is
+disabled when the route is freed. The OS is not required to disable the status
+bit via the VINT's real-time registers prior to route release
+
+**NOTE (Subject to Change):**
+
+Some System Firmware peripheral drivers have not implemented OES register
+management yet.  The HLOS must also make sure to clear the peripheral OES
+register programmed with the global event. Peripherals implementing
+OES management thus far:
+
+* Ring Accelerator
+* UDMAP
+
+Usage
+^^^^^
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_RM_IRQ_RELEASE
+
+IRQ Route Release Message Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|      Parameter        |                  Type                  |                           Valid Values                                |                                                                                                                                                                                                    Description                                                                                                                                                                                                     |
++=======================+========================================+=======================================================================+====================================================================================================================================================================================================================================================================================================================================================================================================================+
+| hdr                   | Generic TISCI message header (8 bytes) | :doc:`Valid Host IDs <../../5_soc_doc/am6x/hosts>`                    | Generic TISCI message header. Contains the message ID, host ID, sequence number, and any flags                                                                                                                                                                                                                                                                                                                     |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| valid_params          | u32                                    | :ref:`pub_rm_irq_route_release_valid_params`                          | Bitfield defining validity of interrupt route release parameters.  The interrupt route release fields are not valid, and will not be used for route release, if their corresponding valid bit is zero.                                                                                                                                                                                                             |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| src_id                | u16                                    | :doc:`Valid Device IDs <../../5_soc_doc/am6x/devices>`                | Specifies the SoC-specific device ID of the interrupt route source                                                                                                                                                                                                                                                                                                                                                 |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| src_index             | u16                                    | :doc:`Device Interrupt Sources <../../5_soc_doc/am6x/irq_sources>`    | Specifies the interrupt output index sourcing the interrupt from the device peripheral identified by the device ID parameter                                                                                                                                                                                                                                                                                       |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| dst_id                | u16                                    | :doc:`Device Interrupt Destinations <../../5_soc_doc/am6x/irq_dsts>`  | SoC device ID of interrupt destination.  Based on the device architecture can be an interrupt controller or processor.  Only valid if the dst_id's corresponding valid bit is set.                                                                                                                                                                                                                                 |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| dst_host_irq          | u16                                    | :doc:`Device Interrupt Destinations <../../5_soc_doc/am6x/irq_dsts>`  | Specifies the destination host processor interrupt controller IRQ input.  Only valid if the dst_host_irq's corresponding valid bit is set.                                                                                                                                                                                                                                                                         |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ia_id                 | u16                                    | :doc:`Valid Navigator SS IAs <../../5_soc_doc/am6x/navss>`            | Device ID of interrupt aggregator in which the virtual interrupt resides.  Only valid if the ia_id's corresponding valid bit is set.                                                                                                                                                                                                                                                                               |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| vint                  | u16                                    | IA VINT index                                                         | Virtual interrupt number if the interrupt route is through an interrupt aggregator.  Only valid if the vint's corresponding valid bit is set.                                                                                                                                                                                                                                                                      |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| global_event          | u16                                    | :doc:`Navigator Subsystem Global Events <../../5_soc_doc/am6x/navss>` | Global event mapped to interrupt aggregator virtual interrupt status bit.  The event is cleared from the OES register of the interrupt source.  Only valid if the global_events's corresponding valid bit is set.                                                                                                                                                                                                  |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| vint_status_bit_index | u8                                     | Status bit index from 0 to 63                                         | Virtual interrupt status bit to set if the interrupt route utilizes an interrupt aggregator virtual interrupt.  Only valid if the vint_status_bit_index's corresponding valid bit is set.                                                                                                                                                                                                                          |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| secondary_host        | u8                                     | :doc:`Valid Host IDs <../../5_soc_doc/am6x/hosts>`                    | Specifies a host ID for which the TISCI header host ID is proxying the request for. This feature allows hosts incapable of making direct requests to be allocated resources by a supervisor host. For example firmware running on a PDMA will need to be allocated resources via a supervisor proxying a request. The secondary_host parameter should always be set as unused if request proxying is not intended. |
++-----------------------+----------------------------------------+-----------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+.. _pub_rm_irq_route_release_valid_params:
+
+IRQ Route Release Valid Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following table describes the valid bit mappings for the IRQ route release
+message optional parameters:
+
++------------------+---------------------------------------------------------------+
+| valid_params Bit | Corresponding tisci_msg_rm_irq_release_req Optional Parameter |
++==================+===============================================================+
+|  0               | dst_id                                                        |
++------------------+---------------------------------------------------------------+
+|  1               | dst_host_irq                                                  |
++------------------+---------------------------------------------------------------+
+|  2               | ia_id                                                         |
++------------------+---------------------------------------------------------------+
+|  3               | vint                                                          |
++------------------+---------------------------------------------------------------+
+|  4               | global_event                                                  |
++------------------+---------------------------------------------------------------+
+|  5               | vint_status_bit_index                                         |
++------------------+---------------------------------------------------------------+
+| 31               | secondary_host                                                |
++------------------+---------------------------------------------------------------+
+
+The following table describes the valid bit combinations used to configure
+clearing of the subsystems within the interrupt management architecture
+
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Configuration                      | dst_id | dst_host_irq | ia_id | vint | global_event | vint_status_bit_index | Description                                                                                                                                                                                                                                                                                          |
++====================================+========+==============+=======+======+==============+=======================+======================================================================================================================================================================================================================================================================================================+
+| Non-Event Sourced Direct Interrupt | X      | X            |       |      |              |                       | Non-event source peripheral direct interrupt to destination processor.  One thing to note is an IA unmapped VINT route can be released via this combination by passing the IA ID and VINT values as the src id and src index parameters.  An IA unmapped VINT route is considered a non-event        |
+|                                    |        |              |       |      |              |                       | sourced direct interrupt route until a global event is mapped to the IA VINT                                                                                                                                                                                                                         |
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Event Sourced Direct Interrupt     | X      | X            | X     | X    | X            | X                     | Event source peripheral direct interrupt to destination processor                                                                                                                                                                                                                                    |
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Unmapped VINT Direct Interrupt     | X      | X            | X     | X    |              |                       | Clear event-based interrupt direct to destination processor which does not have any existing event to VINT status bit mappings.                                                                                                                                                                      |
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Event to VINT Mapping Only         |        |              | X     | X    | X            | X                     | Clear only peripheral OES register and event to VINT status bit mapping from direct to processor and polled routes.  Event-based peripheral interrupt polled routes are polled from the IA VINT real-time registers.  For direct to processor routes the entire route is NOT released when the last  |
+|                                    |        |              |       |      |              |                       | event to VINT status bit is unmapped using this valid bit combination. This differs from using the Event Source Direct Interrupt valid bit combination where the entire route is released when the last event to VINT status bit mapping is cleared.  The Unmapped VINT Direct Interrupt valid bit   |
+|                                    |        |              |       |      |              |                       | combination is used to clear an event sourced direct interrupt with no existing event to VINT status bit mappings.                                                                                                                                                                                   |
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| OES Register Programming Only      |        |              |       |      | X            |                       | Applicable only for source peripherals capable of generating an output event.  Only clears the OES register for the source peripheral.  No interrupt route clear is performed.  Useful for clearing UDMA trigger events or any other events that are not translated to the interrupt domain          |
++------------------------------------+--------+--------------+-------+------+--------------+-----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+

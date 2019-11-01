@@ -1,0 +1,149 @@
+=================================
+TISCI PM Device API Documentation
+=================================
+
+Introduction
+============
+
+This document describes the TISCI API set for configuring and controlling the
+devices within the system.
+
+Device configuration and control APIs
+-------------------------------------
+
++------------------+--------------------------------------------+
+| TISCI Message ID |             Message Name                   |
++==================+============================================+
+| 0x0200           | :ref:`pm_devices_msg_set_device`           |
++------------------+--------------------------------------------+
+| 0x0201           | :ref:`pm_devices_msg_get_device`           |
++------------------+--------------------------------------------+
+| 0x0202           | :ref:`pm_devices_msg_set_device_resets`    |
++------------------+--------------------------------------------+
+
+.. note::
+   Reference :ref:`pub_soc_family_doc` to see device IDs for your SoC.
+
+Macros Used in this Document
+----------------------------
+
+.. sysfwapimacro:: TISCI_MSG_FLAG_DEVICE_WAKE_ENABLED
+.. sysfwapimacro:: TISCI_MSG_FLAG_DEVICE_RESET_ISO
+.. sysfwapimacro:: TISCI_MSG_FLAG_DEVICE_EXCLUSIVE
+.. sysfwapimacro:: TISCI_MSG_VALUE_DEVICE_SW_STATE_AUTO_OFF
+.. sysfwapimacro:: TISCI_MSG_VALUE_DEVICE_SW_STATE_RETENTION
+.. sysfwapimacro:: TISCI_MSG_VALUE_DEVICE_SW_STATE_ON
+.. sysfwapimacro:: TISCI_MSG_VALUE_DEVICE_HW_STATE_OFF
+.. sysfwapimacro:: TISCI_MSG_VALUE_DEVICE_HW_STATE_ON
+.. sysfwapimacro:: TISCI_MSG_VALUE_DEVICE_HW_STATE_TRANS
+
+.. _pm_devices_msg_set_device:
+
+TISCI_MSG_SET_DEVICE
+====================
+
+Objective
+----------
+
+Request for a device state to be set.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This is used to request or release a device. For example: When the device is
+requested for operation, state is set to MSG_DEVICE_SW_STATE_ON. When the usage
+of the device is complete and released, the same request with state set as
+MSG_DEVICE_SW_STATE_AUTO_OFF is invoked. Based on exclusive access request,
+multiple processing entities can share a specific hardware block, however, this
+must be carefully used keeping the full system view in mind.
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_SET_DEVICE
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_set_device_req
+
+.. sysfwapistruct:: tisci_msg_set_device_resp
+
+.. _pm_devices_msg_get_device:
+
+TISCI_MSG_GET_DEVICE
+====================
+
+Objective
+----------
+
+Retrieve the hardware block state.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This requests information regarding the state of a device including the device's
+programmed state, current state, number of resets, and the number of times a
+device lost context.
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_GET_DEVICE
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_get_device_req
+
+.. sysfwapistruct:: tisci_msg_get_device_resp
+
+.. _pm_devices_msg_set_device_resets:
+
+TISCI_MSG_SET_DEVICE_RESETS
+===========================
+
+Objective
+----------
+
+Set the state of device reset state.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This is used to set or release various resets of the hardware block. This is
+typically used for hardware blocks which require special handling prior to
+specific resets being released. Typical example is when starting up a processing
+entity like ICSS/DSP, the device must be requested with resets asserted,
+required firmware loaded and the required resets released in appropriate order
+for operation of the device.
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_SET_DEVICE_RESETS
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_set_device_resets_req
+
+.. sysfwapistruct:: tisci_msg_set_device_resets_resp

@@ -1,0 +1,100 @@
+===========================================
+AM6 Peripheral IRQ Destination Descriptions
+===========================================
+
+Introduction
+============
+
+This chapter provides information on destination host processor input IRQs
+that are permitted in the am6 SoC. The interrupt route IRQ inputs represent
+elements within the SoC host processor interrupt controllers capable of
+terminating an interrupt route signal.  The System Firmware IRQ management
+TISCI message APIs take destination host processor IRQs as inputs to set and
+release IRQ routes between source peripherals and destination host processors.
+
+The below table lists all destination host processor IRQ input IDs in the am6
+SoC.
+
+Enumeration of IRQ Destination IDs
+==================================
+
+.. warning::
+
+   Resources marked as reserved for use by DMSC **cannot** be assigned to a
+   host within the RM Board Configuration resource assignment array.  The
+   RM Board Configuration is rejected if an overlap with a reserved resouce
+   is detected.
+
++-------------+-------------------------+-----------------+--------------------------------+
+| Destination | Destination Device Name | Destination IRQ |  Destination IRQ               |
+| Device ID   |                         | Input Range     |  Description                   |
++=============+=========================+=================+================================+
+| 56          | AM6_DEV_GIC0            | 64 - 79         | GIC IRQ inputs from Main       |
+|             |                         |                 | Navigator                      |
+|             |                         |                 | (**Reserved for use by DMSC**) |
++-------------+-------------------------+-----------------+--------------------------------+
+| 56          | AM6_DEV_GIC0            | 80 - 127        | GIC IRQ inputs from Main       |
+|             |                         |                 | Navigator                      |
++-------------+-------------------------+-----------------+--------------------------------+
+| 56          | AM6_DEV_GIC0            | 392 - 423       | GIC IRQ inputs from Main GPIO  |
+|             |                         |                 | IR                             |
++-------------+-------------------------+-----------------+--------------------------------+
+| 56          | AM6_DEV_GIC0            | 448 - 503       | GIC IRQ inputs from Main       |
+|             |                         |                 | Navigator                      |
++-------------+-------------------------+-----------------+--------------------------------+
+| 56          | AM6_DEV_GIC0            | 544 - 559       | GIC IRQ inputs from Compare    |
+|             |                         |                 | event IR                       |
++-------------+-------------------------+-----------------+--------------------------------+
+| 56          | AM6_DEV_GIC0            | 712 - 727       | GIC IRQ inputs from Wakeup     |
+|             |                         |                 | GPIO IR                        |
++-------------+-------------------------+-----------------+--------------------------------+
+| 62          | AM6_DEV_PRU_ICSSG0      | 46 - 53         | ICSSG0 IRQ inputs from Main    |
+|             |                         |                 | Navigator                      |
++-------------+-------------------------+-----------------+--------------------------------+
+| 62          | AM6_DEV_PRU_ICSSG0      | 88 - 95         | ICSSG0 IRQ inputs from Main    |
+|             |                         |                 | GPIO IR                        |
++-------------+-------------------------+-----------------+--------------------------------+
+| 63          | AM6_DEV_PRU_ICSSG1      | 46 - 53         | ICSSG1 IRQ inputs from Main    |
+|             |                         |                 | Navigator                      |
++-------------+-------------------------+-----------------+--------------------------------+
+| 63          | AM6_DEV_PRU_ICSSG1      | 88 - 95         | ICSSG1 IRQ inputs from Main    |
+|             |                         |                 | GPIO IR                        |
++-------------+-------------------------+-----------------+--------------------------------+
+| 64          | AM6_DEV_PRU_ICSSG2      | 46 - 53         | ICSSG2 IRQ inputs from Main    |
+|             |                         |                 | Navigator                      |
++-------------+-------------------------+-----------------+--------------------------------+
+| 64          | AM6_DEV_PRU_ICSSG2      | 88 - 95         | ICSSG2 IRQ inputs from Main    |
+|             |                         |                 | GPIO IR                        |
++-------------+-------------------------+-----------------+--------------------------------+
+| 159         | AM6_DEV_MCU_ARMSS0_CPU0 | 64 - 67         | Pulsar core 0 VIM IRQ inputs   |
+|             |                         |                 | from MCU Navigator             |
+|             |                         |                 | (**Reserved for use by DMSC**) |
++-------------+-------------------------+-----------------+--------------------------------+
+| 159         | AM6_DEV_MCU_ARMSS0_CPU0 | 68 - 95         | Pulsar core 0 VIM IRQ inputs   |
+|             |                         |                 | from MCU Navigator             |
++-------------+-------------------------+-----------------+--------------------------------+
+| 159         | AM6_DEV_MCU_ARMSS0_CPU0 | 124 - 139       | Pulsar core 0 VIM IRQ inputs   |
+|             |                         |                 | from Wakeup GPIO IR            |
++-------------+-------------------------+-----------------+--------------------------------+
+| 159         | AM6_DEV_MCU_ARMSS0_CPU0 | 160 - 223       | Pulsar core 0 VIM IRQ inputs   |
+|             |                         |                 | from Main2MCU level IR         |
++-------------+-------------------------+-----------------+--------------------------------+
+| 159         | AM6_DEV_MCU_ARMSS0_CPU0 | 224 - 271       | Pulsar core 0 VIM IRQ inputs   |
+|             |                         |                 | from Main2MCU pulse IR         |
++-------------+-------------------------+-----------------+--------------------------------+
+| 245         | AM6_DEV_MCU_ARMSS0_CPU1 | 64 - 67         | Pulsar core 1 VIM IRQ inputs   |
+|             |                         |                 | from MCU Navigator             |
+|             |                         |                 | (**Reserved for use by DMSC**) |
++-------------+-------------------------+-----------------+--------------------------------+
+| 245         | AM6_DEV_MCU_ARMSS0_CPU1 | 68 - 95         | Pulsar core 1 VIM IRQ inputs   |
+|             |                         |                 | from MCU Navigator             |
++-------------+-------------------------+-----------------+--------------------------------+
+| 245         | AM6_DEV_MCU_ARMSS0_CPU1 | 124 - 139       | Pulsar core 1 VIM IRQ inputs   |
+|             |                         |                 | from Wakeup GPIO IR            |
++-------------+-------------------------+-----------------+--------------------------------+
+| 245         | AM6_DEV_MCU_ARMSS0_CPU1 | 160 - 223       | Pulsar core 1 VIM IRQ inputs   |
+|             |                         |                 | from Main2MCU level IR         |
++-------------+-------------------------+-----------------+--------------------------------+
+| 245         | AM6_DEV_MCU_ARMSS0_CPU1 | 224 - 271       | Pulsar core 1 VIM IRQ inputs   |
+|             |                         |                 | from Main2MCU pulse IR         |
++-------------+-------------------------+-----------------+--------------------------------+

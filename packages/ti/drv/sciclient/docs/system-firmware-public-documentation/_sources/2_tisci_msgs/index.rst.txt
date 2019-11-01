@@ -1,0 +1,49 @@
+######################################
+Chapter 2: TISCI Message Documentation
+######################################
+
+=======
+General
+=======
+
+.. toctree::
+   :maxdepth: 1
+
+   general/core
+
+=====================
+Power Management (PM)
+=====================
+.. toctree::
+   :maxdepth: 1
+
+   pm/devices
+   pm/clocks
+   pm/sysreset
+
+========================
+Resource Management (RM)
+========================
+.. toctree::
+   :maxdepth: 1
+
+   rm/rm_irq
+   rm/rm_ra
+   rm/rm_udmap
+   rm/rm_psil
+
+=================
+Secure Management
+=================
+.. toctree::
+   :maxdepth: 1
+
+   security/sec_cert_format
+   security/PROC_BOOT
+   security/firewall_api
+   security/sec_ap_data_transfer
+   security/rng_api
+   security/keystore
+   security/asymmetric_key_services
+
+

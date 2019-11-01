@@ -1,0 +1,458 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>J721E Host Descriptions &mdash; TISCI User Guide</title>
+
+
+
+
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+
+
+
+
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+
+
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+
+
+
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../../index.html"/>
+        <link rel="up" title="Chapter 5: SoC Family Specific Documentation" href="../index.html"/>
+        <link rel="next" title="J721E Devices Descriptions" href="devices.html"/>
+        <link rel="prev" title="AM6 Firewall Descriptions" href="../am6x/firewalls.html"/>
+
+
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+
+
+
+            <a href="../../index.html" class="icon icon-home"> TISCI
+
+
+
+          </a>
+
+
+
+
+              <div class="version">
+                19.07.00
+              </div>
+
+
+
+
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+
+
+
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapter 5: SoC Family Specific Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#am6-soc-family">AM6 SoC Family</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#j721e-soc-family">J721E SoC Family</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">J721E Host Descriptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enumeration-of-host-ids">Enumeration of Host IDs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">J721E Devices Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clocks.html">J721E Clock Identifiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="resasg_types.html">j721e Board Configuration Resource Assignment Type Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_sources.html">j721e Peripheral Interrupt Source Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_dsts.html">j721e Peripheral Interrupt Destination Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="navss.html">j721e Navigator Subsystem Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sec_proxy.html">J721E Secure Proxy Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="processors.html">J721E Processor Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firewalls.html">J721E Firewall Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">TISCI</a>
+      </nav>
+
+
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+
+          <li><a href="../index.html">Chapter 5: SoC Family Specific Documentation</a> &raquo;</li>
+
+    <li>J721E Host Descriptions</li>
+      <li class="wy-breadcrumbs-aside">
+
+
+
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <div class="section" id="j721e-host-descriptions">
+<h1>J721E Host Descriptions<a class="headerlink" href="#j721e-host-descriptions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="soc-doc-j721e-public-host-desc-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This chapter provides information of Host IDs that are permitted in
+the J721E SoC. These host IDs represent processing entities (or PEs)
+which is mandatory identification of a Host in a processor.</p>
+<p>Typically a host is a ‘compute entity’ which may be an actual
+processor or even a virtual machine. We just use host or processing
+entity to indicate the same thing.</p>
+</div>
+<div class="section" id="enumeration-of-host-ids">
+<span id="soc-doc-j721e-public-host-desc-host-list"></span><h2>Enumeration of Host IDs<a class="headerlink" href="#enumeration-of-host-ids" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="15%" />
+<col width="23%" />
+<col width="49%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Host ID</th>
+<th class="head">Host Name</th>
+<th class="head">Security Status</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>DMSC</td>
+<td>Secure</td>
+<td>Device Management and Security Control</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>MCU_0_R5_0</td>
+<td>Non Secure</td>
+<td>Cortex R5 context 0 on MCU island</td>
+</tr>
+<tr class="row-even"><td>4</td>
+<td>MCU_0_R5_1</td>
+<td>Secure</td>
+<td>Cortex R5 context 1 on MCU island(Boot)</td>
+</tr>
+<tr class="row-odd"><td>5</td>
+<td>MCU_0_R5_2</td>
+<td>Non Secure</td>
+<td>Cortex R5 context 2 on MCU island</td>
+</tr>
+<tr class="row-even"><td>6</td>
+<td>MCU_0_R5_3</td>
+<td>Secure</td>
+<td>Cortex R5 context 3 on MCU island</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>A72_0</td>
+<td>Secure</td>
+<td>Cortex A72 context 0 on Main island</td>
+</tr>
+<tr class="row-even"><td>11</td>
+<td>A72_1</td>
+<td>Secure</td>
+<td>Cortex A72 context 1 on Main island</td>
+</tr>
+<tr class="row-odd"><td>12</td>
+<td>A72_2</td>
+<td>Non Secure</td>
+<td>Cortex A72 context 2 on Main island</td>
+</tr>
+<tr class="row-even"><td>13</td>
+<td>A72_3</td>
+<td>Non Secure</td>
+<td>Cortex A72 context 3 on Main island</td>
+</tr>
+<tr class="row-odd"><td>14</td>
+<td>A72_4</td>
+<td>Non Secure</td>
+<td>Cortex A72 context 4 on Main island</td>
+</tr>
+<tr class="row-even"><td>20</td>
+<td>C7X_0</td>
+<td>Secure</td>
+<td>C7x Context 0 on Main island</td>
+</tr>
+<tr class="row-odd"><td>21</td>
+<td>C7X_1</td>
+<td>Non Secure</td>
+<td>C7x context 1 on Main island</td>
+</tr>
+<tr class="row-even"><td>25</td>
+<td>C6X_0_0</td>
+<td>Secure</td>
+<td>C6x_0 Context 0 on Main island</td>
+</tr>
+<tr class="row-odd"><td>26</td>
+<td>C6X_0_1</td>
+<td>Non Secure</td>
+<td>C6x_0 context 1 on Main island</td>
+</tr>
+<tr class="row-even"><td>27</td>
+<td>C6X_1_0</td>
+<td>Secure</td>
+<td>C6x_1 Context 0 on Main island</td>
+</tr>
+<tr class="row-odd"><td>28</td>
+<td>C6X_1_1</td>
+<td>Non Secure</td>
+<td>C6x_1 context 1 on Main island</td>
+</tr>
+<tr class="row-even"><td>30</td>
+<td>GPU_0</td>
+<td>Non Secure</td>
+<td>RGX context 0 on Main island</td>
+</tr>
+<tr class="row-odd"><td>35</td>
+<td>MAIN_0_R5_0</td>
+<td>Non Secure</td>
+<td>Cortex R5_0 context 0 on Main island</td>
+</tr>
+<tr class="row-even"><td>36</td>
+<td>MAIN_0_R5_1</td>
+<td>Secure</td>
+<td>Cortex R5_0 context 1 on Main island</td>
+</tr>
+<tr class="row-odd"><td>37</td>
+<td>MAIN_0_R5_2</td>
+<td>Non Secure</td>
+<td>Cortex R5_0 context 2 on Main island</td>
+</tr>
+<tr class="row-even"><td>38</td>
+<td>MAIN_0_R5_3</td>
+<td>Secure</td>
+<td>Cortex R5_0 context 3 on MCU island</td>
+</tr>
+<tr class="row-odd"><td>40</td>
+<td>MAIN_1_R5_0</td>
+<td>Non Secure</td>
+<td>Cortex R5_1 context 0 on Main island</td>
+</tr>
+<tr class="row-even"><td>41</td>
+<td>MAIN_1_R5_1</td>
+<td>Secure</td>
+<td>Cortex R5_1 context 1 on Main island</td>
+</tr>
+<tr class="row-odd"><td>42</td>
+<td>MAIN_1_R5_2</td>
+<td>Non Secure</td>
+<td>Cortex R5_1 context 2 on Main island</td>
+</tr>
+<tr class="row-even"><td>43</td>
+<td>MAIN_1_R5_3</td>
+<td>Secure</td>
+<td>Cortex R5_1 context 3 on MCU island</td>
+</tr>
+<tr class="row-odd"><td>50</td>
+<td>ICSSG_0</td>
+<td>Non Secure</td>
+<td>ICSSG context 0 on Main island</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>Description provides an intended purpose
+of the host ID, though on some systems,
+this might be used differently, backing memory and
+link allocations are made with the specified purpose
+in mind</li>
+<li>Security Status provides an intended purpose for the
+Host context</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+
+        <a href="devices.html" class="btn btn-neutral float-right" title="J721E Devices Descriptions" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+
+
+        <a href="../am6x/firewalls.html" class="btn btn-neutral" title="AM6 Firewall Descriptions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+
+    </div>
+
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div>
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+
+
+
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'19.07.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+
+
+
+
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+=======================================
+TISCI PM System Reset API Documentation
+=======================================
+
+This document describes the TISCI API set for issuing a warm reset to the
+system (system reset.)
+
+TISCI_MSG_SYS_RESET
+===================
+
+Objective
+----------
+
+Request for a system wide warm reset.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This is used to issue a system wide warm reset, for example when user
+wants to reboot the device for any reason, like error recovery, installation
+of new software etc. The message typically doesn't provide any return values,
+as the system wide reset is issued immediately.
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_SYS_RESET
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_sys_reset_req
+
+.. sysfwapistruct:: tisci_msg_sys_reset_resp

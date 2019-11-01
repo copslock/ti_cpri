@@ -1,0 +1,36 @@
+==========================
+AM6 Processor Descriptions
+==========================
+
+.. _soc_doc_am6_public_proc_desc_intro:
+
+Introduction
+============
+
+This chapter provides information of Processor and Host IDs that are permitted
+in the AM6 SoC. These Processor IDs represent an actual physical processor on
+the SoC
+
+NOTE: This should not be confused with HOST_ID.
+
+.. _soc_doc_am6_public_proc_desc_processors_list:
+
+Enumeration of Processor IDs
+============================
+
++----------------+------------------+------------------------------------------------+
+| Processor ID   | Processor Name   | Location in SoC                                |
++================+==================+================================================+
+| 0x20           | A53_CL0_C0       | COMPUTE_CLUSTER_MSMC0: (Cluster 0 Processor 0) |
++----------------+------------------+------------------------------------------------+
+| 0x21           | A53_CL0_C1       | COMPUTE_CLUSTER_MSMC0: (Cluster 0 Processor 1) |
++----------------+------------------+------------------------------------------------+
+| 0x22           | A53_CL1_C0       | COMPUTE_CLUSTER_MSMC0: (Cluster 1 Processor 0) |
++----------------+------------------+------------------------------------------------+
+| 0x23           | A53_CL1_C1       | COMPUTE_CLUSTER_MSMC0: (Cluster 1 Processor 1) |
++----------------+------------------+------------------------------------------------+
+| 0x01           | R5_CL0_C0        | MCU_SEC_MMR0: (Cluster 0 Processor 0)          |
++----------------+------------------+------------------------------------------------+
+| 0x02           | R5_CL0_C1        | MCU_SEC_MMR0: (Cluster 0 Processor 1)          |
++----------------+------------------+------------------------------------------------+
+

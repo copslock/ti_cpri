@@ -1,0 +1,19 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the SCICLIENT
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for the SCICLIENT
+ *  and is responsible for configuration of the paths for the various 
+ *  tools required to build the driver.
+ *
+ * Copyright (C) 2018, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Configure the SCICLIENT Release Version Information */
+var sciclientDriverReleaseVersion = (""+Pkg.version.replace(/\s/g, "")).split(',');
+
+var Build = xdc.useModule('xdc.bld.BuildEnvironment');
+Build.useTargets=null;
+

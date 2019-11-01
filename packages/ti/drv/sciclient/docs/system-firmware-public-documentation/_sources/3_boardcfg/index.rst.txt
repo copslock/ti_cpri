@@ -1,0 +1,11 @@
+##############################
+Chapter 3: Board Configuration
+##############################
+
+.. toctree::
+   :maxdepth: 1
+
+   BOARDCFG
+   BOARDCFG_RM
+   BOARDCFG_SEC
+   BOARDCFG_PM

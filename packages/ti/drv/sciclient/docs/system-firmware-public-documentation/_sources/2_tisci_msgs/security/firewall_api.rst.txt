@@ -1,0 +1,114 @@
+============================
+ Firewall TISCI Description
+============================
+
+.. _sec_ap_fwl_tisci_desc:
+
+This chapter provides information on Firewall API's provided by system firmware.
+There are three firewall API as listed below.
+
++------------------+------------------------------------------------------------+
+| TISCI Message ID |                        Message Name                        |
++==================+============================================================+
+| 0x9000           | :ref:`TISCI_MSG_SET_FWL_REGION <set-firewall-region>`.     |
++------------------+------------------------------------------------------------+
+| 0x9001           | :ref:`TISCI_MSG_GET_FWL_REGION <get-firewall-region>`.     |
++------------------+------------------------------------------------------------+
+| 0x9002           | :ref:`TISCI_MSG_CHANGE_FWL_OWNER <change-firewall-owner>`. |
++------------------+------------------------------------------------------------+
+
+Background Information
+======================
+
+Each firewall in the system is assigned an owner. Ownership is
+assigned using `Host ID`. Only a owner of a firewall can 
+
+- Configure the firewall permissions
+- Query the firewall permissions
+- Transfer the firewall ownership to another owner(host)
+
+Initial Configuration
+=====================
+
+System firmware configures the firewalls in the following manner on startup.
+
+1. DMSC internal memories are firewalled. Firewall ownership is assigned to DMSC.
+
+2. Secure proxy and associated resources required for DMSC operation are
+   firewalled. Firewall ownership is assigned to DMSC.
+
+3. All Navss resources not used by DMSC are firewalled and ownership of the
+   firewalls is assigned to Resource Manager(RM). The intent is that RM programs
+   the firewalls for Navss resources based on resource assignment in board
+   configuration.
+
+
+API Description
+===============
+
+.. _set-firewall-region:
+
+TISCI_MSG_SET_FWL_REGION - Set Firewall region
+----------------------------------------------
+
+**Usage**:
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_SET_FWL_REGION
+
+.. sysfwapistruct:: tisci_msg_fwl_set_firewall_region_req
+
+.. sysfwapistruct:: tisci_msg_fwl_set_firewall_region_resp
+
+.. _get-firewall-region:
+
+TISCI_MSG_GET_FWL_REGION - Get Firewall region
+----------------------------------------------
+
+**Usage**:
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_GET_FWL_REGION
+
+.. sysfwapistruct:: tisci_msg_fwl_get_firewall_region_req
+
+.. sysfwapistruct:: tisci_msg_fwl_get_firewall_region_resp
+
+.. _change-firewall-owner:
+
+TISCI_MSG_CHANGE_FWL_OWNER - Change Firewall Owner
+--------------------------------------------------
+
+**Usage**:
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_CHANGE_FWL_OWNER
+
+.. sysfwapistruct:: tisci_msg_fwl_change_owner_info_req
+
+.. sysfwapistruct:: tisci_msg_fwl_change_owner_info_resp
+

@@ -1,0 +1,150 @@
+===========================
+Secure AP Command Interface
+===========================
+
+.. _sec_ap_cmd_if_intro:
+
+Introduction
+============
+
+.. note::
+
+   This document is applicable to HS devices only.
+
+On K3 HS devices, the JTAG port is closed by default. At device run-time, access
+to JTAG port is controlled by System Firmware using knobs provided by the
+hardware. An external debugger should communicate with System Firmware running
+via Secure Access Point (Sec AP) in the DebugSS and unlock the required debug
+functionality.
+
+This document lists
+
+1. the commands that can be used by the external debugger,
+
+2. the response to the commands from software running on DMSC
+
+3. the format of the payload for the commands and responses
+
+4. the communication protocol to be used for command and data transfer.
+
+.. _sec_ap_cmd_if_data_rxtx_proto:
+
+Data transfer protocol
+======================
+
+1. All data is transferred one word at a time. Each word is 32 bits in
+   length.
+
+.. _sec_ap_cmd_if_data_tx_proto:
+
+Transmit protocol
+-----------------
+
+1. Write the number of (remaining) words to be transmitted in the 16
+   msb’s of the TX control register. The 16 lsb’s are to be set as zero.
+
+2. Write the word to be transmitted into the TX data register. The write
+   will automatically assert Bit 0 of the TX control register.
+
+3. Wait for the target to read the data by polling until Bit 0 is
+   cleared.
+
+4. Repeat steps (1), (2) and (3) until the complete data has been
+   transferred.
+
+Please note that one transmit transaction can contain theoritically
+contain a maximum of 65535 words. This can be further limited based on
+the command involved.
+
+.. _sec_ap_cmd_if_data_rx_proto:
+
+Receive Protocol
+----------------
+
+1. When waiting to receive data, poll the RX control register until Bit
+   0 is set to 1. This indicates that data is available in the RX data
+   register.
+
+2. The 16 lsb’s of the RX Control register indicate the number of words
+   of the data that is yet to be read.
+
+3. Read 1 word of data from RX data register. This automatically clears
+   Bit 0 of the RX control register.
+
+4. Repeat steps (1), (2) and (3) until required data is read.
+
+Timeout during data transfer
+----------------------------
+
+|sysfw| allows for a 360 ms delay between Words of a data transfer (read/write).
+If a timeout occurs, |sysfw| will discard the active SEC AP command.
+
+.. _sec_ap_cmd_if_cmds:
+
+Commands
+========
+
+Each command is a combination of
+
+1. Command ID - 1 Word
+2. Optional payload - N words where N depends on the command.
+
+.. _sec_ap_cmd_if_get_uid:
+
+Get UID
+-------
+
+This command is used to get the unique ID for the SOC to be used in the
+debug certificate. See the below command.
+
+The command ID is ``0x80B5AE71``. There is no payload associated with
+this command.
+
+The response returns a 32 byte value i.e. 8 Words. The MSB of Word[0]
+contains the MSB of UID.
+
+::
+
+    |      Word[0]        |   Word[1]    |     |  Word[7] |
+    | B[0] B[1] B[2] B[3] | B[4] .. B[7] | ....|   B[31]  |
+
+.. _sec_ap_cmd_if_open_jtag:
+
+Open JTAG
+---------
+
+This command is used to unlock the JTAG on a secure i.e. HS-SE device.
+The command ID is ``0x4968B2E9``. This payload for this command is a
+X.509 certificate with the debug extension and signed by one of the keys
+trusted in the customer board configuration.
+
+The certificate can be a maximum of 4 KB in size.
+
+The fields of the certificate should be filled as specified in the @ref
+sec_x509_cert_doc_debug_extension.
+
+This command has two responses.
+
+1. If JTAG unlock is successful, it returns ``0xDEAD3A17``.
+2. If JTAG unlock is unsuccessful, it returns ``0xDEADFA17``.
+
+If the command has failed, please review the settings in the certificate
+before resending.
+
+System Firmware will perform the following checks on the certificate
+before attempting to apply the debug settings.
+
+1. The signature on the certificate is verified with the public key in
+   the certificate.
+2. The public key used to sign the certificate must be present in the
+   System Firmware Keystore.
+3. Various parameters in the certificate are within the specified range.
+
+The command can be resent with a modified certificate if the JTAG unlock
+command has failed. However once JTAG unlock is successful, the same
+certificate needs to be used for subsequent unlock operations as well
+until the device is reset. This is because most of the registers
+controlling the debug operations can be written to only once after
+device reset. With a different certificate, it is likely that one of the
+debug registers need to be modified. The operation will fail as the
+register cannot be modified.

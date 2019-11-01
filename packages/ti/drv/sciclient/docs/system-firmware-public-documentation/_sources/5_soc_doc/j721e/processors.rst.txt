@@ -1,0 +1,47 @@
+============================
+J721E Processor Descriptions
+============================
+
+.. _soc_doc_j721e_public_proc_desc_intro:
+
+
+Introduction
+============
+
+This chapter provides information of Processor and Host IDs that are permitted
+in the J721E SoC. These Processor IDs represent an actual physical processor
+on the SoC.
+
+NOTE: This should not be confused with HOST_ID.
+
+.. _soc_doc_j721e_public_proc_desc_processors_list:
+
+
+Enumeration of Processor IDs
+============================
+
++----------------+------------------+-----------------------------------------------------------------------+
+| Processor ID   | Processor Name   | Location in SoC                                                       |
++================+==================+=======================================================================+
+| 0x20           | A72SS0_CORE0     | COMPUTE_CLUSTER_J7ES_TB_VDC_MAIN_0_DMSC_WRAP: (Cluster 0 Processor 0) |
++----------------+------------------+-----------------------------------------------------------------------+
+| 0x21           | A72SS0_CORE1     | COMPUTE_CLUSTER_J7ES_TB_VDC_MAIN_0_DMSC_WRAP: (Cluster 0 Processor 1) |
++----------------+------------------+-----------------------------------------------------------------------+
+| 0x03           | C66SS0_CORE0     | J7_MAIN_SEC_MMR_MAIN_0: (Cluster 2 Processor 0)                       |
++----------------+------------------+-----------------------------------------------------------------------+
+| 0x04           | C66SS1_CORE0     | J7_MAIN_SEC_MMR_MAIN_0: (Cluster 3 Processor 0)                       |
++----------------+------------------+-----------------------------------------------------------------------+
+| 0x30           | C71SS0           | COMPUTE_CLUSTER_J7ES_TB_VDC_MAIN_0_DMSC_WRAP: (Cluster 4 Processor 0) |
++----------------+------------------+-----------------------------------------------------------------------+
+| 0x01           | MCU_R5FSS0_CORE0 | J7_MCU_SEC_MMR_MCU_0: (Cluster 0 Processor 0)                         |
++----------------+------------------+-----------------------------------------------------------------------+
+| 0x02           | MCU_R5FSS0_CORE1 | J7_MCU_SEC_MMR_MCU_0: (Cluster 0 Processor 1)                         |
++----------------+------------------+-----------------------------------------------------------------------+
+| 0x06           | R5FSS0_CORE0     | J7_MAIN_SEC_MMR_MAIN_0: (Cluster 0 Processor 0)                       |
++----------------+------------------+-----------------------------------------------------------------------+
+| 0x07           | R5FSS0_CORE1     | J7_MAIN_SEC_MMR_MAIN_0: (Cluster 0 Processor 1)                       |
++----------------+------------------+-----------------------------------------------------------------------+
+| 0x08           | R5FSS1_CORE0     | J7_MAIN_SEC_MMR_MAIN_0: (Cluster 1 Processor 0)                       |
++----------------+------------------+-----------------------------------------------------------------------+
+| 0x09           | R5FSS1_CORE1     | J7_MAIN_SEC_MMR_MAIN_0: (Cluster 1 Processor 1)                       |
++----------------+------------------+-----------------------------------------------------------------------+

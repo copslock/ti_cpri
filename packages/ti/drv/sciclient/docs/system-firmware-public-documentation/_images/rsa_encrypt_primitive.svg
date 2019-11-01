@@ -1,0 +1,73 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+ width="840px" height="162px"
+ viewBox="0 0 840 162"
+ xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"
+ stroke-width="1" text-rendering="geometricPrecision">
+<polygon fill="white" points="192,7 226,7 226,16 192,16"/>
+<text x="210" y="16" textLength="33" font-family="Helvetica" font-size="12" fill="black" text-anchor="middle">
+
+host 0
+</text>
+<polygon fill="white" points="611,7 647,7 647,16 611,16"/>
+<text x="630" y="16" textLength="35" font-family="Helvetica" font-size="12" fill="black" text-anchor="middle">
+
+DMSC
+</text>
+<line x1="210" y1="22" x2="210" y2="50" stroke="black"/>
+<line x1="630" y1="22" x2="630" y2="50" stroke="black"/>
+<line x1="210" y1="33" x2="630" y2="33" stroke="black"/>
+<line x1="630" y1="33" x2="620" y2="39" stroke="black"/>
+<polygon fill="white" points="384,23 455,23 455,32 384,32"/>
+<text x="385" y="32" textLength="69" font-family="Helvetica" font-size="12" fill="black">
+RSA Encrypt
+</text>
+<polygon fill="white" points="295,34 543,34 543,43 295,43"/>
+<text x="296" y="43" textLength="246" font-family="Helvetica" font-size="12" fill="black">
+(Keystore slot, Plaintext Data, Output location)
+</text>
+<line x1="210" y1="50" x2="210" y2="78" stroke="black"/>
+<line x1="630" y1="50" x2="630" y2="78" stroke="black"/>
+<polygon fill="white" points="428,50 832,50 832,72 428,72"/>
+<line x1="428" y1="50" x2="832" y2="50" stroke="black"/>
+<line x1="428" y1="72" x2="832" y2="72" stroke="black"/>
+<line x1="428" y1="50" x2="428" y2="72" stroke="black"/>
+<line x1="832" y1="50" x2="832" y2="72" stroke="black"/>
+<polygon fill="white" points="528,57 731,57 731,66 528,66"/>
+<text x="529" y="66" textLength="201" font-family="Helvetica" font-size="12" fill="black">
+Copy plaintext data to DMSC memory
+</text>
+<line x1="210" y1="78" x2="210" y2="106" stroke="black"/>
+<line x1="630" y1="78" x2="630" y2="106" stroke="black"/>
+<polygon fill="white" points="428,78 832,78 832,100 428,100"/>
+<line x1="428" y1="78" x2="832" y2="78" stroke="black"/>
+<line x1="428" y1="100" x2="832" y2="100" stroke="black"/>
+<line x1="428" y1="78" x2="428" y2="100" stroke="black"/>
+<line x1="832" y1="78" x2="832" y2="100" stroke="black"/>
+<polygon fill="white" points="509,85 750,85 750,94 509,94"/>
+<text x="510" y="94" textLength="239" font-family="Helvetica" font-size="12" fill="black">
+Encrypt the data with the specified public key
+</text>
+<line x1="210" y1="106" x2="210" y2="134" stroke="black"/>
+<line x1="630" y1="106" x2="630" y2="134" stroke="black"/>
+<polygon fill="white" points="428,106 832,106 832,128 428,128"/>
+<line x1="428" y1="106" x2="832" y2="106" stroke="black"/>
+<line x1="428" y1="128" x2="832" y2="128" stroke="black"/>
+<line x1="428" y1="106" x2="428" y2="128" stroke="black"/>
+<line x1="832" y1="106" x2="832" y2="128" stroke="black"/>
+<polygon fill="white" points="501,113 758,113 758,122 501,122"/>
+<text x="502" y="122" textLength="255" font-family="Helvetica" font-size="12" fill="black">
+Copy ciphertext data to specified output location
+</text>
+<line x1="210" y1="134" x2="210" y2="162" stroke="black"/>
+<line x1="630" y1="134" x2="630" y2="162" stroke="black"/>
+<line x1="630" y1="145" x2="210" y2="145" stroke="black"/>
+<line x1="210" y1="145" x2="220" y2="151" stroke="black"/>
+<polygon fill="white" points="394,135 445,135 445,144 394,144"/>
+<text x="395" y="144" textLength="49" font-family="Helvetica" font-size="12" fill="black">
+Pass/Fail
+</text>
+<line x1="210" y1="156" x2="210" y2="162" stroke="black"/>
+<line x1="630" y1="156" x2="630" y2="162" stroke="black"/>
+</svg>

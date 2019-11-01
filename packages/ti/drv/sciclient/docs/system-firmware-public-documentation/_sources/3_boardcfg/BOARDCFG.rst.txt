@@ -1,0 +1,277 @@
+===================
+Board Configuration
+===================
+
+Board Configuration in System Firmware
+======================================
+
+There is board configuration data that serves two roles:
+
+1. Actual board design choices.
+2. Application defined boot-time configuration. These are detailed below.
+
+Functional goals
+================
+
+Board configuration module enables one time (per boot) configuration of the
+details of the integration of the SoC onto the board as well as one-time
+application specific configuration.
+
+Design
+======
+
+Board configuration consists of structured configurations that are placed into
+regular memory by the host software, made coherent (writeback and fences as
+required by host architecture) then passed to System Firmware via
+:ref:`TISCI_MSG_BOARD_CONFIG <pub_boardcfg_tisci>`. On HS devices, the board
+config blob is signed and encrypted using customer root public key and customer
+encryption key for HS-SE or HS-Prime. For HS-FS and GP devices there are no
+customer keys, therefore board config must be unsigned and plain text.
+
+It is presumed that this memory is owned by trusted software that will not
+intentionally corrupt the memory while System Firmware is processing. However,
+System Firmware will take reasonable precautions for misconfiguration by
+validating data before it is used.
+
+.. warning::
+
+   It is highly recommended that the TISCI_MSG_BOARD_CONFIG_PM message be sent
+   immediately after TISCI_MSG_BOARD_CONFIG before sending other boardcfg
+   messages to ensure RM and SECURITY have all resources configured as needed.
+
+Power management data used to statically define power management
+configuration is discussed in detail in
+:ref:`Power Management Board Configuration <pub_boardcfg_pm_intro>`.
+
+Resource management board configuration data is detailed in
+:doc:`Resource Management Board Configuration <BOARDCFG_RM>`.  The RM data
+defines the following for Hosts:
+
+- Resource range assignments
+- Order IDs
+- QoS values
+- Priority values
+- Host hierarchy
+
+Security data used to statically define security configuration is
+discussed in detail in
+:ref:`Security Management Board Configuration <pub_boardcfg_sec_intro>`.
+
+Compile Time Configuration
+--------------------------
+
++------------------------------+-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|            Define            | Type  |                                                                                                                                                           Description                                                                                                                                                            |
++==============================+=======+==================================================================================================================================================================================================================================================================================================================================+
+| BOARDCFG_MAX_MAIN_HOST_COUNT | (u16) | Maximum number of different processing entities for main, scales all main boardcfg tables. This is the number of simutaneous host id permitted after compacting the holes. Thus, as an example, in soc_doc_am6_public_host_desc_host_list, it is ((u16)18u).                                                                     |
++------------------------------+-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| BOARDCFG_MAX_MCU_HOST_COUNT  | (u16) | Maximum number of different processing entities for MCU, scales all MCU boardcfg tables. This is the number of simutaneous host id permitted after compacting the holes. In the example soc_doc_am6_public_host_desc_host_list, it could be up to ((u16)18u) to allow all processing entities to use dedicated resources in MCU. |
++------------------------------+-------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+.. _pub_boardcfg_tisci:
+
+TISCI API for Board Config
+--------------------------
+
+The following are the parameters required in the TI-SCI message to pass board
+configuration data to System Firmware after System Firmware sends boot
+notification complete.
+
+Usage
+^^^^^
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | Yes    |
++------------------------+--------+
+
+TISCI Message ID
+^^^^^^^^^^^^^^^^
+
+.. sysfwapimacro:: TISCI_MSG_BOARD_CONFIG
+
+Message Data Structures
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. sysfwapistruct:: tisci_msg_board_config_req
+
+.. sysfwapistruct:: tisci_msg_board_config_resp
+
+.. warning::
+
+   The boardcfg data structures described below **must** be placed in
+   MCU OCMC SRAM. The address used in the TISCI message will be
+   in MCU OCMC SRAM.
+
+.. warning::
+
+   Please ensure that MSMC is not being accessed when ``TISCI_MSG_BOARD_CONFIG``
+   is sent. |sysfw| reconfigures the MSMC firewall on receiving this message.
+   MSMC needs to be inactive for the firewall reconfiguration to succeed.
+
+.. _pub_boardcfg_abi_rev:
+
+ABI revision structure
+----------------------
+
+This design *requires* that both boardcfg_abi_maj and boardcfg_abi_min exactly
+match what is expected by System Firmware.
+
++------------------+------+-----------------------------------------------------------------------------------+
+|     Element      | Type |                                    Description                                    |
++==================+======+===================================================================================+
+| boardcfg_abi_maj | u8   | Major ABI version (for boardcfg_cfg version, not overall System Firmware version) |
++------------------+------+-----------------------------------------------------------------------------------+
+| boardcfg_abi_min | u8   | Minor ABI version (for boardcfg_cfg version, not overall System Firmware version) |
++------------------+------+-----------------------------------------------------------------------------------+
+
+.. _pub_boardcfg_cfg:
+
+Configuration substructure enumeration
+--------------------------------------
+
+This is a fixed size c-structure which defines the format of the configuration.
+
++--------------------+---------------------------------------------------------+----------------------------------------------------------------------+
+|      Element       |                          Type                           |                             Description                              |
++====================+=========================================================+======================================================================+
+| boardcfg_abi_rev   | :ref:`struct boardcfg_abi_rev <pub_boardcfg_abi_rev>`   | Board Config ABI version (separate from System Firmware ABI version) |
++--------------------+---------------------------------------------------------+----------------------------------------------------------------------+
+| control            | :ref:`struct boardcfg_control <pub_boardcfg_control>`   | System Firmware feature control selections                           |
++--------------------+---------------------------------------------------------+----------------------------------------------------------------------+
+| secproxy           | :ref:`struct boardcfg_secproxy <pub_boardcfg_secproxy>` | Secure proxy configuration                                           |
++--------------------+---------------------------------------------------------+----------------------------------------------------------------------+
+| msmc               | :ref:`struct boardcfg_msmc <pub_boardcfg_msmc>`         | MSMC configuration                                                   |
++--------------------+---------------------------------------------------------+----------------------------------------------------------------------+
+| debug_cfg          | :ref:`struct boardcfg_dbg_cfg <pub_boardcfg_dbg_cfg>`   | Debug/trace configuration                                            |
++--------------------+---------------------------------------------------------+----------------------------------------------------------------------+
+
+.. _pub_boardcfg_subhdr:
+
+boardcfg substructure header
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This contains a unique magic number for each substructure and the size of the
+associated superstructure for data validation/API compatibility checks.
+
++---------+------+------------------------------------------------------------------------+
+| Element | Type |                              Description                               |
++=========+======+========================================================================+
+| magic   | u16  | unique magic number for data integrity check                           |
++---------+------+------------------------------------------------------------------------+
+| size    | u16  | sizeof(superstructure containing this header) for data integrity check |
++---------+------+------------------------------------------------------------------------+
+
+.. _pub_boardcfg_control:
+
+boardcfg_control structure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The boardcfg_control structure is used to enable/disable features in System
+Firmware based on usecase.
+
++-----------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+|        Element        |                        Type                         |                                                          Description                                                          |
++=======================+=====================================================+===============================================================================================================================+
+| subhdr                | :ref:`struct boardcfg_subhdr <pub_boardcfg_subhdr>` | Magic and size for integrity check                                                                                            |
++-----------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+| main_isolation_enable | ftbool                                              | Enable/disable support for System Firmware main isolation. If disabled, main isolation SCI message will be rejected with NAK. |
++-----------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+| main_isolation_hostid | u16                                                 | Host-ID allowed to send SCI-message for main isolation. If mismatch, SCI message will be rejected with NAK.                   |
++-----------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------+
+
+.. _pub_boardcfg_secproxy:
+
+boardcfg_secproxy structure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++-------------------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|            Element            |                        Type                         |                                                                                                    Description                                                                                                    |
++===============================+=====================================================+===================================================================================================================================================================================================================+
+| subhdr                        | :ref:`struct boardcfg_subhdr <pub_boardcfg_subhdr>` | Magic and size for integrity check                                                                                                                                                                                |
++-------------------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| scaling_factor                | u8                                                  | Memory allocation for messages scaling factor. In current design, only value of "1" is supported. For future design, a value of "2" would double all memory allocations and credits, "3" would triple, and so on. |
++-------------------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| scaling_profile               | u8                                                  | Memory allocation for messages profile number. In current design, only a value of "1" is supported. "0" is always invalid due to fault tolerance.                                                                 |
++-------------------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| disable_main_nav_secure_proxy | u8                                                  | Do not configure main nav secure proxy. This removes all MSMC memory demands from System Firmware but limits MPU channels to one set of secure and one set of insecure. In current design, supports only "0".     |
++-------------------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+.. _pub_boardcfg_msmc:
+
+Design for boardcfg_msmc
+-------------------------
+
+Cache must be configured by System Firmware in order for MSMC to be used for
+main secure proxy backing memory and ring memory.
+
+boardcfg_msmc structure
+^^^^^^^^^^^^^^^^^^^^^^^
+
++-----------------+-----------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------+
+|     Element     |                        Type                         |                                                              Description                                                              |
++=================+=====================================================+=======================================================================================================================================+
+| subhdr          | :ref:`struct boardcfg_subhdr <pub_boardcfg_subhdr>` | Magic and size for integrity check                                                                                                    |
++-----------------+-----------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------+
+| msmc_cache_size | u8                                                  | fraction of msmc to be cache in /32 units. Rounds up. Since current msmc support /8 allocation this means that 1/32 rounds up to 1/8. |
++-----------------+-----------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------+
+
+.. _pub_boardcfg_debug_console:
+
+Design details for System Firmware Debug Console
+------------------------------------------------
+
+One value is provided to specific the debug console from the following options
+specified as bits (so all, some, or none can be enabled)
+
+.. _pub_boardcfg_dbg_dst_ports:
+
+boardcfg_dbg_dst_ports
+^^^^^^^^^^^^^^^^^^^^^^
+
++---------------------+----------------------------------------+
+|         Bit         |               Definition               |
++=====================+========================================+
+| TRACE_DST_UART0     | Traces to UART0 in wakeupss enabled    |
++---------------------+----------------------------------------+
+| TRACE_DST_ITM       | Traces to ITM (JTAG) enabled           |
++---------------------+----------------------------------------+
+| TRACE_DST_MEM       | Traces to memory buffer enabled        |
++---------------------+----------------------------------------+
+
+.. _pub_boardcfg_dbg_src:
+
+boardcfg_dbg_src
+^^^^^^^^^^^^^^^^
+
++----------------+---------------------------------------------+
+|      Bit       |                 Definition                  |
++================+=============================================+
+| TRACE_SRC_PM   | Traces from power management are allowed    |
++----------------+---------------------------------------------+
+| TRACE_SRC_RM   | Traces from resource management are allowed |
++----------------+---------------------------------------------+
+| TRACE_SRC_SEC  | Traces from security management are allowed |
++----------------+---------------------------------------------+
+| TRACE_SRC_BASE | Traces from baseport are allowed            |
++----------------+---------------------------------------------+
+| TRACE_SRC_USER | Traces from user tasks are allowed          |
++----------------+---------------------------------------------+
+| TRACE_SRC_SUPR | Traces from supervisor tasks are allowed    |
++----------------+---------------------------------------------+
+
+.. _pub_boardcfg_dbg_cfg:
+
+boardcfg_dbg_cfg
+^^^^^^^^^^^^^^^^
+
++-------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+|       Field       |                        Type                         |                                                                      Description                                                                      |
++===================+=====================================================+=======================================================================================================================================================+
+| subhdr            | :ref:`struct boardcfg_subhdr <pub_boardcfg_subhdr>` | Magic and size for integrity check                                                                                                                    |
++-------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+| trace_dst_enables | u16                                                 | Each bit from TRACE_DST in :ref:`struct boardcfg_dbg_dst_ports <pub_boardcfg_dbg_dst_ports>`. Using u16 to allow 2 bits per value for fault tolerance |
++-------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+| trace_src_enables | u16                                                 | Each bit from TRACE_SRC in :ref:`struct boardcfg_dbg_src <pub_boardcfg_dbg_src>`. Using u16 to allow 2 bits per value for fault tolerance             |
++-------------------+-----------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+

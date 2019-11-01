@@ -1,0 +1,1287 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TISCI PM Clock API Documentation &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../../index.html"/>
+        <link rel="up" title="Chapter 2: TISCI Message Documentation" href="../index.html"/>
+        <link rel="next" title="TISCI PM System Reset API Documentation" href="sysreset.html"/>
+        <link rel="prev" title="TISCI PM Device API Documentation" href="devices.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.07.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapter 2: TISCI Message Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general">General</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#power-management-pm">Power Management (PM)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="devices.html">TISCI PM Device API Documentation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">TISCI PM Clock API Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-set-clock">TISCI_MSG_SET_CLOCK</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-get-clock">TISCI_MSG_GET_CLOCK</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-set-clock-parent">TISCI_MSG_SET_CLOCK_PARENT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-get-clock-parent">TISCI_MSG_GET_CLOCK_PARENT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-get-num-clock-parents">TISCI_MSG_GET_NUM_CLOCK_PARENTS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-set-freq">TISCI_MSG_SET_FREQ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-query-freq">TISCI_MSG_QUERY_FREQ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-get-freq">TISCI_MSG_GET_FREQ</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sysreset.html">TISCI PM System Reset API Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#resource-management-rm">Resource Management (RM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#secure-management">Secure Management</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../5_soc_doc/index.html">Chapter 5: SoC Family Specific Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Chapter 2: TISCI Message Documentation</a> &raquo;</li>
+      
+    <li>TISCI PM Clock API Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tisci-pm-clock-api-documentation">
+<h1>TISCI PM Clock API Documentation<a class="headerlink" href="#tisci-pm-clock-api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This document describes the TISCI API set for configuring and controlling the
+clocks within the system.</p>
+<div class="section" id="clock-configuration-and-control-apis">
+<h3>Clock configuration and control APIs<a class="headerlink" href="#clock-configuration-and-control-apis" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">TISCI Message ID</th>
+<th class="head">Message Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0x0100</td>
+<td><a class="reference internal" href="#pm-clocks-msg-set-clock"><span class="std std-ref">TISCI_MSG_SET_CLOCK</span></a></td>
+</tr>
+<tr class="row-odd"><td>0x0101</td>
+<td><a class="reference internal" href="#pm-clocks-msg-get-clock"><span class="std std-ref">TISCI_MSG_GET_CLOCK</span></a></td>
+</tr>
+<tr class="row-even"><td>0x0102</td>
+<td><a class="reference internal" href="#pm-clocks-msg-set-clock-parent"><span class="std std-ref">TISCI_MSG_SET_CLOCK_PARENT</span></a></td>
+</tr>
+<tr class="row-odd"><td>0x0103</td>
+<td><a class="reference internal" href="#pm-clocks-msg-get-clock-parent"><span class="std std-ref">TISCI_MSG_GET_CLOCK_PARENT</span></a></td>
+</tr>
+<tr class="row-even"><td>0x0104</td>
+<td><a class="reference internal" href="#pm-clocks-msg-get-num-clock-parents"><span class="std std-ref">TISCI_MSG_GET_NUM_CLOCK_PARENTS</span></a></td>
+</tr>
+<tr class="row-odd"><td>0x010c</td>
+<td><a class="reference internal" href="#pm-clocks-msg-set-freq"><span class="std std-ref">TISCI_MSG_SET_FREQ</span></a></td>
+</tr>
+<tr class="row-even"><td>0x010d</td>
+<td><a class="reference internal" href="#pm-clocks-msg-query-freq"><span class="std std-ref">TISCI_MSG_QUERY_FREQ</span></a></td>
+</tr>
+<tr class="row-odd"><td>0x010e</td>
+<td><a class="reference internal" href="#pm-clocks-msg-get-freq"><span class="std std-ref">TISCI_MSG_GET_FREQ</span></a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Reference <a class="reference internal" href="../../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">Chapter 5: SoC Family Specific Documentation</span></a> to see clock IDs and device IDs for
+your SoC.</p>
+</div>
+</div>
+<div class="section" id="macros-used-in-this-document">
+<h3>Macros Used in this Document<a class="headerlink" href="#macros-used-in-this-document" title="Permalink to this headline">¶</a></h3>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_VALUE_CLOCK_SW_STATE_UNREQ</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">0</span></code></p>
+<p>The IP does not require this clock, it can be disabled, regardless of the
+ state of the device</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_VALUE_CLOCK_SW_STATE_AUTO</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">1</span></code></p>
+<p>Allow the system controller to automatically manage the state of this clock.
+ If the device is enabled, then the clock is enabled. If the device is set to
+ off or retention, then the clock is internally set as not being required
+ by the device. This is the default state.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_VALUE_CLOCK_SW_STATE_REQ</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">2</span></code></p>
+<p>Configure the clock to be enabled, regardless of the state of the device.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_VALUE_CLOCK_HW_STATE_NOT_READY</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">0</span></code></p>
+<p>Indicate hardware state of the clock is that it is not running.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_VALUE_CLOCK_HW_STATE_READY</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">1</span></code></p>
+<p>Indicate hardware state of the clock is that it is running.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_FLAG_CLOCK_ALLOW_SSC</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">BIT(8)</span></code></p>
+<p>Allow this clock to be modified via spread spectrum clocking.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_FLAG_CLOCK_ALLOW_FREQ_CHANGE</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">BIT(9)</span></code></p>
+<p>Allow this clock’s frequency to be changed while it is running
+ so long as it is within the min/max limits.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_FLAG_CLOCK_INPUT_TERM</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">BIT(10)</span></code></p>
+<p>Enable input termination, this is only applicable to clock inputs
+ on the SoC pseudo-device, BOARD0.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_FLAG_CLOCK_SSC_ACTIVE</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">BIT(11)</span></code></p>
+<p>Indicate that SSC is active for this clock.</p>
+</p>
+</div>
+<div class="section" id="large-clock-index-compatibility">
+<h3>Large Clock Index Compatibility<a class="headerlink" href="#large-clock-index-compatibility" title="Permalink to this headline">¶</a></h3>
+<p>Clock indexes identify clocks connected to devices. There are typically a
+small number of clocks connected to each device. The original API was
+designed with an 8-bit field to represent clock indexes allowing a maximum
+clock index of 254, which 255 being reserved to indicate an invalid clock
+index.</p>
+<p>The number of clocks connected to devices on newer SoCs has multiplied
+rapidly and has exceeded the 254 limit, largely due to very wide input muxes.
+The API has been extended to support these larger clock indexes while still
+remaining forward and reverse compatible. This change requires some action by
+users of the API when indexes larger than 254 are present.</p>
+<p>For each clock index within a message a 32-bit field has been appended to the
+end of the message. If a clock index is less than or equal to 254, the extra
+field is unused and the clock index is stored in the original 8-bit field. If
+the clock index is 255 or larger, the value 255 is stored is the original
+8-bit field and the actual value is stored in the extra 32-bit field. This
+applies to both requests and responses from the firmware.</p>
+<p>Note that if a host with large clock index support attempts to send a clock
+index 255 or greater to a firmware without large clock index support, the
+firmware will interpret the 255 value in the 8-bit clock index field as
+invalid and NAK the request. Similarly, if a request is made that requires
+the firmware to respond with a value 255 or greater (such as the number of
+clock parents) the firmware will return a NAK. If a host without large
+clock index support makes a request that requires a firmware with large
+clock index support to respond with a value of 255 or greater it will return
+an ACK but place 255 in the 8-bit field. This should be interpreted by the
+host as an invalid clock index.</p>
+<p>The host can also request the ABI version. ABI versions prior to 2.6 lack
+large clock index support.</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-set-clock">
+<span id="pm-clocks-msg-set-clock"></span><h2>TISCI_MSG_SET_CLOCK<a class="headerlink" href="#tisci-msg-set-clock" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="objective">
+<h3>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h3>
+<p>Setup a hardware device’s clock state</p>
+</div>
+<div class="section" id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>This requests for finer control of hardware device’s clocks. This allows for
+configuration for hardware blocks that require customization of the specific
+input clocks. NOTE: each of the clock IDs are relative to the hardware block.</p>
+</div>
+<div class="section" id="tisci-message-id">
+<h3>TISCI Message ID<a class="headerlink" href="#tisci-message-id" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_SET_CLOCK</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x0100U)</span></code></p>
+</div>
+<div class="section" id="message-data-structures">
+<h3>Message Data Structures<a class="headerlink" href="#message-data-structures" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_set_clock_req</strong></p>
+<p>Mark a clock as required/not required.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="4%" />
+<col width="6%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>device</td>
+<td>u32</td>
+<td>The device ID that the clock is connected to.</td>
+</tr>
+<tr class="row-even"><td>clk</td>
+<td>u8</td>
+<td>Each device has its own set of clock inputs. This indexes which clock input to modify.</td>
+</tr>
+<tr class="row-odd"><td>clk32</td>
+<td>u32</td>
+<td>Stores the actual clock index if clk field is set to 255. This field is ignored otherwise. This field can hold the full range of possible clock indexes, but for compatibility with older firmwares should only be used when the index is 255 or greater.</td>
+</tr>
+<tr class="row-even"><td>state</td>
+<td>u8</td>
+<td>The desired state of the clock, TISCI_MSG_VALUE_CLOCK_SW_STATE_REQ if the clock is currently required by the IP and TISCI_MSG_VALUE_CLOCK_SW_STATE_UNREQ if it is not. TISCI_MSG_VALUE_CLOCK_SW_STATE_AUTO enables the clock when the IP is set to enabled and disables it when the IP is set to disabled. This is the default state.</td>
+</tr>
+</tbody>
+</table>
+<p>Indicate that the selected clock is currently required/not required by
+ the IP.
+ Certain flags can be set in the message header for device clocks:
+ TISCI_MSG_FLAG_CLOCK_ALLOW_SSC, TISCI_MSG_FLAG_CLOCK_ALLOW_FREQ_CHANGE,
+ TISCI_MSG_FLAG_CLOCK_INPUT_TERM.
+ If the clock index is 255 or greater, this field should be set to 255
+ and the full value placed in the clk32 field. This is kept for backwards
+ compatibility with older firmwares.</p>
+</p>
+<p><p><strong>struct tisci_msg_set_clock_resp</strong></p>
+<p>Empty response for TISCI_MSG_SET_CLOCK</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="24%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header to provide ACK/NAK flags to the host.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.</p>
+</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-get-clock">
+<span id="pm-clocks-msg-get-clock"></span><h2>TISCI_MSG_GET_CLOCK<a class="headerlink" href="#tisci-msg-get-clock" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Objective<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Get the state of a clock to or from a hardware block.</p>
+</div>
+<div class="section" id="id2">
+<h3>Usage<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>This requests for additional information about the state of a clock
+within the system including the state it is programmed to and the actual
+state of the clock.</p>
+</div>
+<div class="section" id="id3">
+<h3>TISCI Message ID<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_GET_CLOCK</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x0101U)</span></code></p>
+</div>
+<div class="section" id="id4">
+<h3>Message Data Structures<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_get_clock_req</strong></p>
+<p>Get the current state of a clock</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="7%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>device</td>
+<td>u32</td>
+<td>The device ID that the clock is connected to.</td>
+</tr>
+<tr class="row-even"><td>clk</td>
+<td>u8</td>
+<td>Each device has its own set of clock inputs. This indexes which clock input to get.</td>
+</tr>
+<tr class="row-odd"><td>clk32</td>
+<td>u32</td>
+<td>Stores the actual clock index if clk field is set to 255. This field is ignored otherwise. This field can hold the full range of possible clock indexes, but for compatibility with older firmwares should only be used when the index is 255 or greater.</td>
+</tr>
+</tbody>
+</table>
+<p>If the clock index is 255 or greater, this field should be set to 255
+ and the full value placed in the clk32 field. This is kept for backwards
+ compatibility with older firmwares.</p>
+</p>
+<p><p><strong>struct tisci_msg_get_clock_resp</strong></p>
+<p>Clock state response.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="8%" />
+<col width="85%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>programmed_state</td>
+<td>u8</td>
+<td>The programmed state as set by the set message.</td>
+</tr>
+<tr class="row-even"><td>current_state</td>
+<td>u8</td>
+<td>The actual state of the clock. If it is desired that a clock be on, it is usually better to send a set message with a flag indicating that an ack be sent when the message is processed rather than attempting to poll this state.</td>
+</tr>
+</tbody>
+</table>
+</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-set-clock-parent">
+<span id="pm-clocks-msg-set-clock-parent"></span><h2>TISCI_MSG_SET_CLOCK_PARENT<a class="headerlink" href="#tisci-msg-set-clock-parent" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h3>Objective<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>SoC specific customization for setting up a specific clock parent ID for the
+various clock input options for a hardware block’s clock.</p>
+</div>
+<div class="section" id="id6">
+<h3>Usage<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>This is rarely used customization that may be required based on the usecase of
+the system where the reset input clock option may not suffice for the usecase
+attempted.</p>
+</div>
+<div class="section" id="message-id">
+<h3>Message ID<a class="headerlink" href="#message-id" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_SET_CLOCK_PARENT</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x0102U)</span></code></p>
+</div>
+<div class="section" id="id7">
+<h3>Message Data Structures<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_set_clock_parent_req</strong></p>
+<p>Set the clock parent</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="4%" />
+<col width="7%" />
+<col width="89%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>device</td>
+<td>u32</td>
+<td>The device ID that the clock is connected to.</td>
+</tr>
+<tr class="row-even"><td>clk</td>
+<td>u8</td>
+<td>Each device has its own set of clock inputs. This indexes which clock input to modify.</td>
+</tr>
+<tr class="row-odd"><td>clk32</td>
+<td>u32</td>
+<td>Stores the actual clock index if clk field is set to 255. This field is ignored otherwise. This field can hold the full range of possible clock indexes, but for compatibility with older firmwares should only be used when the index is 255 or greater.</td>
+</tr>
+<tr class="row-even"><td>parent</td>
+<td>u8</td>
+<td>The new clock parent is selectable by an index via this parameter.</td>
+</tr>
+<tr class="row-odd"><td>parent32</td>
+<td>u32</td>
+<td>Stores the actual parent clock index if parent field is set to 255. This field is ignored otherwise. This field can hold the full range of possible parent clock indexes, but for compatibility with older firmwares should only be used when the index is 255 or greater.</td>
+</tr>
+</tbody>
+</table>
+<p>Many IPs have a mux external to the IP that can select among different
+ clock sources. The clock must be disabled (TISCI_MSG_VALUE_CLOCK_SW_STATE_UNREQ)
+ for this message to succeed. If a set frequency command is not issued
+ before the clock is enabled again, then the execution of the enable
+ command will attempt to set the new parent to the old parent’s
+ frequency. If this fails, then the enable will fail.
+ Muxes that provide clocks to multiple devices are not currently
+ configurable via this API.
+ If the clock index is 255 or greater, this field should be set to 255
+ and the full value placed in the clk32 field. This is kept for backwards
+ compatibility with older firmwares.
+ If the parent clock index is 255 or greater, this field should be set to
+ 255 and the full value placed in the parent32 field. This is kept for
+ backwards compatibility with older firmwares.</p>
+</p>
+<p><p><strong>struct tisci_msg_set_clock_parent_resp</strong></p>
+<p>Empty response for TISCI_MSG_SET_CLOCK_PARENT</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="24%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header to provide ACK/NAK flags to the host.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.</p>
+</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-get-clock-parent">
+<span id="pm-clocks-msg-get-clock-parent"></span><h2>TISCI_MSG_GET_CLOCK_PARENT<a class="headerlink" href="#tisci-msg-get-clock-parent" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id8">
+<h3>Objective<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>Query the clock parent currently configured for a specific clock source of a
+hardware block</p>
+</div>
+<div class="section" id="id9">
+<h3>Usage<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>This is typically used to confirm the current clock parent to ensure that the
+requisite usecase for the hardware block can be satisfied. Note that if the
+programmed value in the underlying hardware is invalid, a NAK is returned for
+this message. Once a valid parent is programmed via a successful
+TISCI_MSG_SET_CLOCK_PARENT call, calls to TISCI_MSG_GET_CLOCK_PARENT will
+succeed.</p>
+</div>
+<div class="section" id="id10">
+<h3>Message ID<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_GET_CLOCK_PARENT</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x0103U)</span></code></p>
+</div>
+<div class="section" id="id11">
+<h3>Message Data Structures<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_get_clock_parent_req</strong></p>
+<p>Return the current clock parent</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="7%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>device</td>
+<td>u32</td>
+<td>The device ID that the clock is connected to.</td>
+</tr>
+<tr class="row-even"><td>clk</td>
+<td>u8</td>
+<td>Each device has its own set of clock inputs. This indexes which clock input to get.</td>
+</tr>
+<tr class="row-odd"><td>clk32</td>
+<td>u32</td>
+<td>Stores the actual clock index if clk field is set to 255. This field is ignored otherwise. This field can hold the full range of possible clock indexes, but for compatibility with older firmwares should only be used when the index is 255 or greater.</td>
+</tr>
+</tbody>
+</table>
+<p>If the hardware value indicating the current clock parent contains a
+ reserved value, a NAK is returned for this message. Once a valid parent
+ is programmed via a successful SET_CLOCK_PARENT call, calls to
+ GET_CLOCK_PARENT will succeed.
+ If the clock index is 255 or greater, this field should be set to 255
+ and the full value placed in the clk32 field. This is kept for backwards
+ compatibility with older firmwares.</p>
+</p>
+<p><p><strong>struct tisci_msg_get_clock_parent_resp</strong></p>
+<p>Clock parent response</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="14%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>parent</td>
+<td>u8</td>
+<td>The current clock parent.</td>
+</tr>
+<tr class="row-even"><td>parent32</td>
+<td>u32</td>
+<td>Parent Clock index if 255 or greater and parent field is set to 255. This field will contain 0xFFFFFFFF otherwise.</td>
+</tr>
+</tbody>
+</table>
+<p>If the parent clock index is 255 or greater, this field will be
+ set to 255 and the full value placed in the parent32 field. This is
+ for backwards compatibility with older firmwares.</p>
+</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-get-num-clock-parents">
+<span id="pm-clocks-msg-get-num-clock-parents"></span><h2>TISCI_MSG_GET_NUM_CLOCK_PARENTS<a class="headerlink" href="#tisci-msg-get-num-clock-parents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id12">
+<h3>Objective<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<p>Query for the number of parent clock paths available for a specific hardware
+block’s clock.</p>
+</div>
+<div class="section" id="id13">
+<h3>Usage<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>This is typically used to get the max number of clock parent options available
+for a specific hardware block’s clock.</p>
+</div>
+<div class="section" id="id14">
+<h3>Message ID<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_GET_NUM_CLOCK_PARENTS</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x0104U)</span></code></p>
+</div>
+<div class="section" id="id15">
+<h3>Message Data Structures<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_get_num_clock_parents_req</strong></p>
+<p>Return the number of possible parents for a clock</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="7%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>device</td>
+<td>u32</td>
+<td>The device ID that the clock is connected to.</td>
+</tr>
+<tr class="row-even"><td>clk</td>
+<td>u8</td>
+<td>Each device has its own set of clock inputs. This indexes which clock input to query.</td>
+</tr>
+<tr class="row-odd"><td>clk32</td>
+<td>u32</td>
+<td>Stores the actual clock index if clk field is set to 255. This field is ignored otherwise. This field can hold the full range of possible clock indexes, but for compatibility with older firmwares should only be used when the index is 255 or greater.</td>
+</tr>
+</tbody>
+</table>
+<p>If the clock index is 255 or greater, this field should be set to 255
+ and the full value placed in the clk32 field. This is kept for backwards
+ compatibility with older firmwares.</p>
+</p>
+<p><p><strong>struct tisci_msg_get_num_clock_parents_resp</strong></p>
+<p>Num clock parents response</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="13%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>num_parents</td>
+<td>u8</td>
+<td>The number of clock parents.</td>
+</tr>
+<tr class="row-even"><td>num_parents32</td>
+<td>u32</td>
+<td>Number of clock parents if 255 or greater and num_parents field is set to 255. This field will contain 0xFFFFFFFF otherwise.</td>
+</tr>
+</tbody>
+</table>
+<p>If the number of clock parents is 255 or greater, this field will
+ be set to 255 and the full value placed in the num_parents32 field.
+ This is for backwards compatibility with older firmwares.</p>
+</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-set-freq">
+<span id="pm-clocks-msg-set-freq"></span><h2>TISCI_MSG_SET_FREQ<a class="headerlink" href="#tisci-msg-set-freq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id16">
+<h3>Objective<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<p>Setup a clock frequency for a hardware block’s clock.</p>
+</div>
+<div class="section" id="id17">
+<h3>Usage<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>This is typically desired when the default frequency of the hardware block’s
+clock is not appropriate for the usecase desired.</p>
+<p>NOTE: Normally clock frequency management is automatically done by TISCI entity.
+In case of specific requests, TISCI evaluates capability to achieve requested
+range and responds with success/failure message.</p>
+<p>This sets the desired frequency for a clock within an allowable range. This
+message will fail on an enabled clock unless MSG_FLAG_CLOCK_ALLOW_FREQ_CHANGE is
+set for the clock. Additionally, if other clocks have their frequency modified
+due to this message, they also must have the MSG_FLAG_CLOCK_ALLOW_FREQ_CHANGE or
+be disabled.</p>
+<p>Calling set frequency on a clock input to the SoC pseudo-device will inform the
+PMMC of that clock’s frequency. Setting a frequency of zero will indicate the
+clock is disabled.</p>
+<p>Calling set frequency on clock outputs from the SoC pseudo-device will function
+similarly to setting the clock frequency on a device.</p>
+</div>
+<div class="section" id="id18">
+<h3>Message ID<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_SET_FREQ</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x010cU)</span></code></p>
+</div>
+<div class="section" id="id19">
+<h3>Message Data Structures<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_set_freq_req</strong></p>
+<p>Set the desired frequency for a clock.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="7%" />
+<col width="87%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>device</td>
+<td>u32</td>
+<td>The device ID that the clock is connected to.</td>
+</tr>
+<tr class="row-even"><td>min_freq_hz</td>
+<td>u64</td>
+<td>The minimum allowable frequency in Hz. This is the minimum allowable programmed frequency and does not account for clock tolerances and jitter.</td>
+</tr>
+<tr class="row-odd"><td>target_freq_hz</td>
+<td>u64</td>
+<td>The target clock frequency. The clock will be programmed at a rate as close to this target frequency as possible.</td>
+</tr>
+<tr class="row-even"><td>max_freq_hz</td>
+<td>u64</td>
+<td>The maximum allowable frequency in Hz. This is the maximum allowable programmed frequency and does not account for clock tolerances and jitter. The firmware will actually accept any frequency up to but not including max + 1.</td>
+</tr>
+<tr class="row-odd"><td>clk</td>
+<td>u8</td>
+<td>Each device has its own set of clock inputs. This indexes which clock input to modify.</td>
+</tr>
+<tr class="row-even"><td>clk32</td>
+<td>u32</td>
+<td>Stores the actual clock index if clk field is set to 255. This field is ignored otherwise. This field can hold the full range of possible clock indexes, but for compatibility with older firmwares should only be used when the index is 255 or greater.</td>
+</tr>
+</tbody>
+</table>
+<p>This set the desired frequency for a clock within an allowable
+ range. This message will fail on an enabled clock unless
+ TISCI_MSG_FLAG_CLOCK_ALLOW_FREQ_CHANGE is set for the clock. Additionally,
+ if other clocks have their frequency modified due to this message,
+ they also must have the TISCI_MSG_FLAG_CLOCK_ALLOW_FREQ_CHANGE or be
+ disabled.
+ Calling set frequency on a clock input to the SoC psuedo-device will
+ inform the PMMC of that clock’s frequency. Setting a frequency of
+ zero will indicate the clock is disabled.
+ Calling set frequency on clock outputs from the SoC pseudo-device will
+ function similarly to setting the clock frequency on a device.
+ If the clock index is 255 or greater, this field should be set to 255
+ and the full value placed in the clk32 field. This is kept for backwards
+ compatibility with older firmwares.</p>
+</p>
+<p><p><strong>struct tisci_msg_set_freq_resp</strong></p>
+<p>Empty response for TISCI_MSG_SET_FREQ</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="24%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header to provide ACK/NAK flags to the host.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.</p>
+</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-query-freq">
+<span id="pm-clocks-msg-query-freq"></span><h2>TISCI_MSG_QUERY_FREQ<a class="headerlink" href="#tisci-msg-query-freq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id20">
+<h3>Objective<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<p>Query to find closest match possible for a target frequency.</p>
+</div>
+<div class="section" id="id21">
+<h3>Usage<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>This message does no real operation, instead, it requests the system control
+entity to respond with the best frequency that can match a frequency range
+provided.</p>
+<p>NOTE: This is a snapshot view. In a multi processing system, it is very well
+possible that another processing entity might change the configuration after
+one entity has queried for best match capability. Only a SET_CLOCK_FREQ will
+guarantee the frequency is configured.</p>
+</div>
+<div class="section" id="id22">
+<h3>Message ID<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_QUERY_FREQ</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x010dU)</span></code></p>
+</div>
+<div class="section" id="id23">
+<h3>Message Data Structures<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_query_freq_req</strong></p>
+<p>Determine the result of a hypothetical set frequency operation.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="7%" />
+<col width="87%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>device</td>
+<td>u32</td>
+<td>The device ID that the clock is connected to.</td>
+</tr>
+<tr class="row-even"><td>min_freq_hz</td>
+<td>u64</td>
+<td>The minimum allowable frequency in Hz. This is the minimum allowable programmed frequency and does not account for clock tolerances and jitter.</td>
+</tr>
+<tr class="row-odd"><td>target_freq_hz</td>
+<td>u64</td>
+<td>The target clock frequency. A frequency will be found as close to the target frequency as possible.</td>
+</tr>
+<tr class="row-even"><td>max_freq_hz</td>
+<td>u64</td>
+<td>The maximum allowable frequency in Hz. This is the maximum allowable programmed frequency and does not account for clock tolerances and jitter. The firmware will actually accept any frequency up to but not including max + 1.</td>
+</tr>
+<tr class="row-odd"><td>clk</td>
+<td>u8</td>
+<td>Each device has its own set of clock inputs. This indexes which clock input to query.</td>
+</tr>
+<tr class="row-even"><td>clk32</td>
+<td>u32</td>
+<td>Stores the actual clock index if clk field is set to 255. This field is ignored otherwise. This field can hold the full range of possible clock indexes, but for compatibility with older firmwares should only be used when the index is 255 or greater.</td>
+</tr>
+</tbody>
+</table>
+<p>This allows the OS to determine what rate would be set given a set
+ of parameters. A nack will be received if a frequency is not available
+ in the given range.
+ If the clock index is 255 or greater, this field should be set to 255
+ and the full value placed in the clk32 field. This is kept for backwards
+ compatibility with older firmwares.</p>
+</p>
+<p><p><strong>struct tisci_msg_query_freq_resp</strong></p>
+<p>Result of a query operation</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="19%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>freq_hz</td>
+<td>u64</td>
+<td>The frequency in Hz that the hardware would set for the given parameters.</td>
+</tr>
+</tbody>
+</table>
+</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-get-freq">
+<span id="pm-clocks-msg-get-freq"></span><h2>TISCI_MSG_GET_FREQ<a class="headerlink" href="#tisci-msg-get-freq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id24">
+<h3>Objective<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
+<p>Get the clock frequency of a specific clock which belongs to a hardware block.</p>
+</div>
+<div class="section" id="id25">
+<h3>Usage<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>This is most used functionality and is meant for usage when the driver
+controlling the hardware block requires to know the input clock frequency for
+configuring internal dividers / multipliers as required.</p>
+</div>
+<div class="section" id="id26">
+<h3>Message ID<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_GET_FREQ</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x010eU)</span></code></p>
+</div>
+<div class="section" id="id27">
+<h3>Message Data Structures<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_get_freq_req</strong></p>
+<p>Get the current frequency of a device’s clock</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="7%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>device</td>
+<td>u32</td>
+<td>The device ID that the clock is connected to.</td>
+</tr>
+<tr class="row-even"><td>clk</td>
+<td>u8</td>
+<td>Each device has its own set of clock inputs. This indexes which clock input to query.</td>
+</tr>
+<tr class="row-odd"><td>clk32</td>
+<td>u32</td>
+<td>Stores the actual clock index if clk field is set to 255. This field is ignored otherwise. This field can hold the full range of possible clock indexes, but for compatibility with older firmwares should only be used when the index is 255 or greater.</td>
+</tr>
+</tbody>
+</table>
+<p>This message will only succeed if the clock is currently enabled, otherwise
+ it returns nack.
+ If the clock index is 255 or greater, this field should be set to 255
+ and the full value placed in the clk32 field. This is kept for backwards
+ compatibility with older firmwares.</p>
+</p>
+<p><p><strong>struct tisci_msg_get_freq_resp</strong></p>
+<p>Result of get frequency request</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="33%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>freq_hz</td>
+<td>u64</td>
+<td>The current frequency in Hz.</td>
+</tr>
+</tbody>
+</table>
+</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sysreset.html" class="btn btn-neutral float-right" title="TISCI PM System Reset API Documentation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="devices.html" class="btn btn-neutral" title="TISCI PM Device API Documentation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'19.07.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

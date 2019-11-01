@@ -1,0 +1,182 @@
+=======================================
+TISCI General Message API Documentation
+=======================================
+
+This document describes the TISCI API set for general messages such as those
+to fetch the firmware version in use, send usecase specific configuration, and
+get notified of the boot state of system-firmware.
+
+TISCI_MSG_VERSION
+=================
+
+Objective
+----------
+
+Retrieve the version of the currently running system-firmware.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This retrieves several pieces of information about the version of
+system-firmware that is loaded and running.
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_VERSION
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_version_req
+
+.. sysfwapistruct:: tisci_msg_version_resp
+
+TISCI_MSG_BOOT_NOTIFICATION
+===========================
+
+
+Objective
+----------
+
+Notify the system boot host that the system-firmware is ready
+to begin receiving and processing TISCI messages.
+
+Usage
+-----
+
++------------------------+--------------+
+| **Message Type**       | Notification |
++------------------------+--------------+
+| **Secure Queue Only?** | Yes          |
++------------------------+--------------+
+
+
+This is a system-firmware initiated notification message that is
+sent to the boot core of the system to notify system-firmware is
+ready to receive TISCI messages. Up until this point, no interaction
+is possible with system firmware.
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_BOOT_NOTIFICATION
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_boot_notification_req
+
+.. sysfwapistruct:: tisci_msg_boot_notification_resp
+
+TISCI_MSG_BOARD_CONFIG
+======================
+
+See :ref:`pub_boardcfg_tisci`.
+
+TISCI_MSG_BOARD_CONFIG_RM
+=========================
+
+See :ref:`pub_boardcfg_rm_tisci`.
+
+TISCI_MSG_BOARD_CONFIG_SECURITY
+===============================
+
+See :ref:`pub_boardcfg_security_tisci`.
+
+TISCI_MSG_BOARD_CONFIG_PM
+=========================
+
+See :ref:`pub_boardcfg_pm_tisci`.
+
+TISCI_MSG_QUERY_MSMC
+====================
+
+Objective
+---------
+
+Retrieve the MSMC memory available.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This API is enabled ONLY on SoCs that actually have MSMC memory. This
+retrieves valid start and end address of MSMC memory considering size
+of allocation for cache backing RAM and MSMC shared usage by System
+Firmware.
+
+This API is linked with the parameter provided in
+:ref:`pub_boardcfg_msmc`. The parameter **msmc_cache_size** is a value
+ranging from ``0x00`` to ``0x20`` independent of SoC and configured
+at system startup. This API is used by software components that start
+functionality later in the boot sequence and intends to manage or use
+the remaining SRAM contents.
+
+To understand the relationship, let's consider a SoC with actual
+physical MSMC SRAM available to allocate as 2MB:
+
+*case A) Allocation of 1/2 SRAM(1MB) for L3 backing RAM*
+
+.. figure:: ../../img/tisci-msmc-alloc-ext-images/msmc_alloc_strategy.png
+
+In the above example, when the **msmc_cache_size** parameter is ``0x10``,
+1MB is reserved for backing ram by the SoC. Memory needed for
+communication infrastructure is automatically relocated to the center
+of MSMC SRAM.
+
+The available MSMC SRAM for use by software queried via
+TISCI_MSG_QUERY_MSMC will respond with: start = ``0x0000000070000000``
+and end = ``0x00000000700EFFFF`` (1MB-64K)
+
+*case B) Allocation of 0bytes SRAM for L3 backing RAM*
+
+.. figure:: ../../img/tisci-msmc-alloc-ext-images/msmc_alloc_strategy_0cache.png
+
+In the above example, when the **msmc_cache_size** parameter is ``0x00``,
+no memory is reserved for backing ram by the SoC. Memory needed for
+communication infrastructure is automatically relocated to the far end
+of MSMC SRAM.
+
+The available MSMC SRAM for use by software queried via
+TISCI_MSG_QUERY_MSMC will respond with: start = ``0x0000000070000000``
+and end = ``0x00000000701EFFFF`` (2MB-64K)
+
+.. warning::
+
+   It is important to keep the following in mind. Software
+   applications must always use this API to know the actual SRAM
+   memory available for use. This is extremely critical if the
+   software component providing (example: bootloader) does not have
+   means to communicate information to the component that actually
+   uses the SRAM.
+
+   As a hardware behavior, a read from MSMC SRAM reserved for
+   backing L3 Cache will return 0x0 on a read, vs a write will cause
+   a data abort to that address. Meanwhile a read/write to the
+   memory reserved for communication memory will generate a firewall
+   exception.
+
+
+TISCI query MSMC
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_QUERY_MSMC
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_query_msmc_req
+
+.. sysfwapistruct:: tisci_query_msmc_resp

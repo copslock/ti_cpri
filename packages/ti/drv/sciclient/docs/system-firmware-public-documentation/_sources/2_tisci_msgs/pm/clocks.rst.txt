@@ -1,0 +1,392 @@
+================================
+TISCI PM Clock API Documentation
+================================
+
+Introduction
+============
+
+This document describes the TISCI API set for configuring and controlling the
+clocks within the system.
+
+Clock configuration and control APIs
+------------------------------------
+
++------------------+--------------------------------------------+
+| TISCI Message ID |             Message Name                   |
++==================+============================================+
+| 0x0100           | :ref:`pm_clocks_msg_set_clock`             |
++------------------+--------------------------------------------+
+| 0x0101           | :ref:`pm_clocks_msg_get_clock`             |
++------------------+--------------------------------------------+
+| 0x0102           | :ref:`pm_clocks_msg_set_clock_parent`      |
++------------------+--------------------------------------------+
+| 0x0103           | :ref:`pm_clocks_msg_get_clock_parent`      |
++------------------+--------------------------------------------+
+| 0x0104           | :ref:`pm_clocks_msg_get_num_clock_parents` |
++------------------+--------------------------------------------+
+| 0x010c           | :ref:`pm_clocks_msg_set_freq`              |
++------------------+--------------------------------------------+
+| 0x010d           | :ref:`pm_clocks_msg_query_freq`            |
++------------------+--------------------------------------------+
+| 0x010e           | :ref:`pm_clocks_msg_get_freq`              |
++------------------+--------------------------------------------+
+
+.. note::
+   Reference :ref:`pub_soc_family_doc` to see clock IDs and device IDs for
+   your SoC.
+
+Macros Used in this Document
+----------------------------
+
+.. sysfwapimacro:: TISCI_MSG_VALUE_CLOCK_SW_STATE_UNREQ
+.. sysfwapimacro:: TISCI_MSG_VALUE_CLOCK_SW_STATE_AUTO
+.. sysfwapimacro:: TISCI_MSG_VALUE_CLOCK_SW_STATE_REQ
+.. sysfwapimacro:: TISCI_MSG_VALUE_CLOCK_HW_STATE_NOT_READY
+.. sysfwapimacro:: TISCI_MSG_VALUE_CLOCK_HW_STATE_READY
+.. sysfwapimacro:: TISCI_MSG_FLAG_CLOCK_ALLOW_SSC
+.. sysfwapimacro:: TISCI_MSG_FLAG_CLOCK_ALLOW_FREQ_CHANGE
+.. sysfwapimacro:: TISCI_MSG_FLAG_CLOCK_INPUT_TERM
+.. sysfwapimacro:: TISCI_MSG_FLAG_CLOCK_SSC_ACTIVE
+
+Large Clock Index Compatibility
+-------------------------------
+
+Clock indexes identify clocks connected to devices. There are typically a
+small number of clocks connected to each device. The original API was
+designed with an 8-bit field to represent clock indexes allowing a maximum
+clock index of 254, which 255 being reserved to indicate an invalid clock
+index.
+
+The number of clocks connected to devices on newer SoCs has multiplied
+rapidly and has exceeded the 254 limit, largely due to very wide input muxes.
+The API has been extended to support these larger clock indexes while still
+remaining forward and reverse compatible. This change requires some action by
+users of the API when indexes larger than 254 are present.
+
+For each clock index within a message a 32-bit field has been appended to the
+end of the message. If a clock index is less than or equal to 254, the extra
+field is unused and the clock index is stored in the original 8-bit field. If
+the clock index is 255 or larger, the value 255 is stored is the original
+8-bit field and the actual value is stored in the extra 32-bit field. This
+applies to both requests and responses from the firmware.
+
+Note that if a host with large clock index support attempts to send a clock
+index 255 or greater to a firmware without large clock index support, the
+firmware will interpret the 255 value in the 8-bit clock index field as
+invalid and NAK the request. Similarly, if a request is made that requires
+the firmware to respond with a value 255 or greater (such as the number of
+clock parents) the firmware will return a NAK. If a host without large
+clock index support makes a request that requires a firmware with large
+clock index support to respond with a value of 255 or greater it will return
+an ACK but place 255 in the 8-bit field. This should be interpreted by the
+host as an invalid clock index.
+
+The host can also request the ABI version. ABI versions prior to 2.6 lack
+large clock index support.
+
+.. _pm_clocks_msg_set_clock:
+
+TISCI_MSG_SET_CLOCK
+===================
+
+Objective
+----------
+
+Setup a hardware device's clock state
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This requests for finer control of hardware device's clocks. This allows for
+configuration for hardware blocks that require customization of the specific
+input clocks. NOTE: each of the clock IDs are relative to the hardware block.
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_SET_CLOCK
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_set_clock_req
+
+.. sysfwapistruct:: tisci_msg_set_clock_resp
+
+.. _pm_clocks_msg_get_clock:
+
+TISCI_MSG_GET_CLOCK
+===================
+
+Objective
+---------
+
+Get the state of a clock to or from a hardware block.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This requests for additional information about the state of a clock
+within the system including the state it is programmed to and the actual
+state of the clock.
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_GET_CLOCK
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_get_clock_req
+
+.. sysfwapistruct:: tisci_msg_get_clock_resp
+
+.. _pm_clocks_msg_set_clock_parent:
+
+TISCI_MSG_SET_CLOCK_PARENT
+==========================
+
+Objective
+---------
+
+SoC specific customization for setting up a specific clock parent ID for the
+various clock input options for a hardware block's clock.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This is rarely used customization that may be required based on the usecase of
+the system where the reset input clock option may not suffice for the usecase
+attempted.
+
+Message ID
+----------
+
+.. sysfwapimacro:: TISCI_MSG_SET_CLOCK_PARENT
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_set_clock_parent_req
+
+.. sysfwapistruct:: tisci_msg_set_clock_parent_resp
+
+.. _pm_clocks_msg_get_clock_parent:
+
+TISCI_MSG_GET_CLOCK_PARENT
+==========================
+
+Objective
+---------
+
+Query the clock parent currently configured for a specific clock source of a
+hardware block
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This is typically used to confirm the current clock parent to ensure that the
+requisite usecase for the hardware block can be satisfied. Note that if the
+programmed value in the underlying hardware is invalid, a NAK is returned for
+this message. Once a valid parent is programmed via a successful
+TISCI_MSG_SET_CLOCK_PARENT call, calls to TISCI_MSG_GET_CLOCK_PARENT will
+succeed.
+
+
+Message ID
+----------
+
+.. sysfwapimacro:: TISCI_MSG_GET_CLOCK_PARENT
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_get_clock_parent_req
+
+.. sysfwapistruct:: tisci_msg_get_clock_parent_resp
+
+.. _pm_clocks_msg_get_num_clock_parents:
+
+TISCI_MSG_GET_NUM_CLOCK_PARENTS
+===============================
+
+Objective
+---------
+
+Query for the number of parent clock paths available for a specific hardware
+block's clock.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This is typically used to get the max number of clock parent options available
+for a specific hardware block's clock.
+
+Message ID
+----------
+
+.. sysfwapimacro:: TISCI_MSG_GET_NUM_CLOCK_PARENTS
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_get_num_clock_parents_req
+
+.. sysfwapistruct:: tisci_msg_get_num_clock_parents_resp
+
+.. _pm_clocks_msg_set_freq:
+
+TISCI_MSG_SET_FREQ
+==================
+
+Objective
+---------
+
+Setup a clock frequency for a hardware block's clock.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This is typically desired when the default frequency of the hardware block's
+clock is not appropriate for the usecase desired.
+
+NOTE: Normally clock frequency management is automatically done by TISCI entity.
+In case of specific requests, TISCI evaluates capability to achieve requested
+range and responds with success/failure message.
+
+This sets the desired frequency for a clock within an allowable range. This
+message will fail on an enabled clock unless MSG_FLAG_CLOCK_ALLOW_FREQ_CHANGE is
+set for the clock. Additionally, if other clocks have their frequency modified
+due to this message, they also must have the MSG_FLAG_CLOCK_ALLOW_FREQ_CHANGE or
+be disabled.
+
+Calling set frequency on a clock input to the SoC pseudo-device will inform the
+PMMC of that clock's frequency. Setting a frequency of zero will indicate the
+clock is disabled.
+
+Calling set frequency on clock outputs from the SoC pseudo-device will function
+similarly to setting the clock frequency on a device.
+
+Message ID
+----------
+
+.. sysfwapimacro:: TISCI_MSG_SET_FREQ
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_set_freq_req
+
+.. sysfwapistruct:: tisci_msg_set_freq_resp
+
+.. _pm_clocks_msg_query_freq:
+
+TISCI_MSG_QUERY_FREQ
+====================
+
+Objective
+---------
+
+Query to find closest match possible for a target frequency.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This message does no real operation, instead, it requests the system control
+entity to respond with the best frequency that can match a frequency range
+provided.
+
+NOTE: This is a snapshot view. In a multi processing system, it is very well
+possible that another processing entity might change the configuration after
+one entity has queried for best match capability. Only a SET_CLOCK_FREQ will
+guarantee the frequency is configured.
+
+Message ID
+----------
+
+.. sysfwapimacro:: TISCI_MSG_QUERY_FREQ
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_query_freq_req
+
+.. sysfwapistruct:: tisci_msg_query_freq_resp
+
+.. _pm_clocks_msg_get_freq:
+
+TISCI_MSG_GET_FREQ
+==================
+
+Objective
+---------
+
+Get the clock frequency of a specific clock which belongs to a hardware block.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+This is most used functionality and is meant for usage when the driver
+controlling the hardware block requires to know the input clock frequency for
+configuring internal dividers / multipliers as required.
+
+Message ID
+----------
+
+.. sysfwapimacro:: TISCI_MSG_GET_FREQ
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_get_freq_req
+
+.. sysfwapistruct:: tisci_msg_get_freq_resp

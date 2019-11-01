@@ -1,0 +1,13 @@
+lib/*
+docs/doxygen/html/
+tools/bin2c/bin2c.exe
+tools/bin2c/bin2c.out
+.dlls
+.executables
+.xdcenv.mak
+*.mak
+.interfaces
+.libraries
+package/*
+Settings.h
+Settings.xdc

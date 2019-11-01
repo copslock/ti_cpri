@@ -1,0 +1,619 @@
+===========================================
+Processor Boot Management TISCI Description
+===========================================
+
+Introduction
+============
+
+This chapter provides information about the messaging APIs for the processor
+boot control. APIs are divided into the following two sets:
+
+-  Book keeping APIs - Meant to control access to allow a reasonable usage
+   scenario of processors.
+-  Processor Control APIs - Meant to be the actual Processor Core controls.
+
+Book Keeping APIs:
+
++------------------+----------------------------------------------------------------+
+| TISCI Message ID |                          Message Name                          |
++==================+================================================================+
+| 0xC000           | :ref:`TISCI_MSG_PROC_REQUEST <proc-boot-request-processor>`.   |
++------------------+----------------------------------------------------------------+
+| 0xC001           | :ref:`TISCI_MSG_PROC_RELEASE <proc-boot-release-processor>`.   |
++------------------+----------------------------------------------------------------+
+| 0xC005           | :ref:`TISCI_MSG_PROC_HANDOVER <proc-boot-handover-processor>`. |
++------------------+----------------------------------------------------------------+
+
+Processor Control APIs:
+
++------------------+----------------------------------------------------------------------------------------+
+| TISCI Message ID |                                      Message Name                                      |
++==================+========================================================================================+
+| 0xC100           | :ref:`TISCI_MSG_PROC_SET_CONFIG <proc-boot-set-processor-configuration>`               |
++------------------+----------------------------------------------------------------------------------------+
+| 0xC101           | :ref:`TISCI_MSG_PROC_SET_CONTROL <proc-boot-set-processor-control>`                    |
++------------------+----------------------------------------------------------------------------------------+
+| 0xC120           | :ref:`TISCI_MSG_PROC_AUTH_BOOT <proc-boot-authenticate-image-and-configure-processor>` |
++------------------+----------------------------------------------------------------------------------------+
+| 0xC400           | :ref:`TISCI_MSG_PROC_GET_STATUS <proc_boot_get_processor_status>`                      |
++------------------+----------------------------------------------------------------------------------------+
+| 0xC401           | :ref:`TISCI_MSG_PROC_WAIT_STATUS <proc_boot_wait_processor_status>`                    |
++------------------+----------------------------------------------------------------------------------------+
+
+The APIs use the overall concepts explained in the following sections.
+
+ID definition
+-------------
+
+To help identify the various entities invovled, the following IDs are involved:
+
+-  HOST_ID is the concept of identifying processing entities (SoC specific)
+-  PROC_ID is the specific hardware processor instance involved (SoC specific)
+
+Access control definition
+-------------------------
+
+Access control is enforced via the Book keeping APIs. The basic definition of access is as follows:
+
+* We identify a requester (just like rest of TISCI) using Host ID (or plain Host).
+* By default, we permit all processors to be controlled by any other Host (no policing).
+* Board configuration provides: per PROC_ID, a limited list of "permitted host IDs"
+  which are permitted to control a processor. BUT with the following conditions:
+
+  * Only one host can control a processor at a time
+  * A host(with control) can hand over control of a processor to another host
+    in the permitted list.
+  * "recovery master" host id is identified in board cfg and this host can
+    override the ownership already established.
+
+In addition, ONLY a secure host can request for an authenticated image access.
+
+API access control will be as follows:
+
+-  request_processor: Only one host can get control from access list. However,
+   "recovery master" host can override previously allocated master.
+-  handover_processor: Only the host with current control of the processor.
+-  release_processor: Only the host with current control of the processor.
+-  set_processor_config: Only the host with current control of the processor.
+-  get_processor_config: Any host within the access control list.
+-  set_processor_control: Only the host with current control of the processor.
+-  get_processor_control: Any host within the access control list.
+-  authenticate_and_start_image: Only a *secure* host with current
+   control of the processor.
+-  set_processor_suspend_ready: Only the host with current control of
+   processor can report that the processor is ready to suspend
+-  get_processor_wake_reason: Any host within the access control list.
+
+Sequencing of APIs
+------------------
+
+The boot APIs must be used in correct sequence with the device and clock APIs to
+be operational. This sequence would be specific to the processor involved.
+
+Rationale: by encoding the sequence of processor boot along with boot
+configuration API will complicate management of processors, since the
+operational requirements are extremely varied. Some processors need the boot
+configuration done, clocked, and specific MMU/RAT configuration be done prior to
+be released from reset. Many of the operations may require interaction with
+specific processor internals that is hard to make generic and usecase
+independent.
+
+Example usage of APIs
+---------------------
+
+Example 1: Boot a processor from one core and let it self manage:
+
+#. Boot host: (optionally) PM apis to control clock and hold processor in
+   reset. This might be necessary for some processors to get the boot
+   vector registers to be accessible in the first place.
+#. Boot host: request_processor
+#. Boot host: set_processor_config -> set bootvector
+#. Alternatively call authenticate and start image API.
+#. Boot host: handover_processor -> give control to 'processor host'
+#. Boot host: PM apis to control clock and release processor from reset.
+   'processor host' gets active. It is probably better to release the processor
+   from reset after handover, in case the 'processor host' tries to do
+   additional operations. however this depends on usecase - use a sane
+   judgement as to how to sequence the APIs.
+#. Processor host: (continues to boot and do other TISCI APIs permitted)
+#. Processor host: set_processor_suspend_ready -> ready to suspend
+#. Processor WFI Wakeup:
+#. Processor host: get_processor_wake_reason -> get reason for wakeup.
+   .... until all operations are complete...
+#. Processor host: set_processor_suspend_ready -> state it is going down
+#. Processor host: release_processor -> Mark no longer required
+#. Processor WFI (NOTE: a processor cannot switch off it's own clocks -> so
+   in case of a self managed processor shutdown sequence, it will need
+   System firmware to help do the last stages of operation - typically
+   this will involve either shutdown OR reset sequence).
+
+Example 2: Boot a processor from one core and recover from another core:
+
+#.  Boot host: request_processor
+#.  Boot host: set_processor_config -> set bootvector
+#.  Boot host: handover_processor -> give control to 'processor host'
+#.  Boot host: PM apis to control clock and release processor boot host dies
+#.  Recovery Host: request_processor
+#.  Recovery Host: set_processor_config -> force power off
+#.  Recovery Host: PM apis to control clock and force power off of processor
+#.  Recovery Host: Additional cleanup API calls .... Restoration sequence....
+
+Processor Boot API Description
+==============================
+
+This Section goes into details on the various APIs involved for processor control
+
+.. note::
+   Reference :ref:`pub_soc_family_doc` to see Host IDs and Processor IDs for
+   your SoC.
+
+Book Keeping APIs
+-----------------
+
+These are the top level APIs that provide access control knobs for
+:ref:`processor operation APIs <proc-boot-processor-control-apis>` to be valid.
+
+.. _proc-boot-request-processor:
+
+TISCI_MSG_PROC_REQUEST - Request Processor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Usage**:
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+**TISCI Message ID**
+
+.. sysfwapimacro:: TISCI_MSG_PROC_REQUEST
+
+.. sysfwapistruct:: tisci_msg_proc_request_req
+
+.. sysfwapistruct:: tisci_msg_proc_request_resp
+
+.. _proc-boot-release-processor:
+
+TISCI_MSG_PROC_RELEASE - Release Processor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Usage**:
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+**TISCI Message ID**
+
+.. sysfwapimacro:: TISCI_MSG_PROC_RELEASE
+
+.. sysfwapistruct:: tisci_msg_proc_release_req
+
+.. sysfwapistruct:: tisci_msg_proc_release_resp
+
+.. _proc-boot-handover-processor:
+
+TISCI_MSG_PROC_HANDOVER - Handover Processor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Usage**:
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+**TISCI Message ID**
+
+.. sysfwapimacro:: TISCI_MSG_PROC_HANDOVER
+
+.. sysfwapistruct:: tisci_msg_proc_handover_req
+
+.. sysfwapistruct:: tisci_msg_proc_handover_resp
+
+.. _proc-boot-processor-control-apis:
+
+Processor Control APIs
+----------------------
+
+These are granular control APIs for control of the processor state themselves.
+These APIs need to be used in conjunction with standard Power Management APIs.
+
+.. note::
+   Not all APIs are supported for all processors. See :ref:`Processor Specific Flags <proc_boot_flags>`
+   for core specific flags (implies the applicable APIs are valid for that type of
+   core).
+
+.. _proc-boot-set-processor-configuration:
+
+TISCI_MSG_PROC_SET_CONFIG - Set Processor Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Purpose**: Provides a means for the host with current control to do the base
+configuration of the processor.
+
+**Usage**:
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+**TISCI Message ID**
+
+.. sysfwapimacro:: TISCI_MSG_PROC_SET_CONFIG
+
+.. sysfwapistruct:: tisci_msg_proc_set_config_req
+
+.. note::
+   Boot vector address and config are processor specific configurations. This
+   may be done in separate invocations as required in processor specific startup
+   sequence.
+
+.. sysfwapistruct:: tisci_msg_proc_set_config_resp
+
+.. attention::
+   Reason for failure is NOT provided to prevent security attacks by
+   scan. If permitted, System firmware logs shall provide relevant failure
+   information.
+
+.. _proc-boot-set-processor-control:
+
+TISCI_MSG_PROC_SET_CONTROL - Set Processor Control Flags
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Purpose**: Provides a means for the host with current control to setup limited
+control flags in specific cases.
+
+**Usage**:
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+**TISCI Message ID**
+
+.. sysfwapimacro:: TISCI_MSG_PROC_SET_CONTROL
+
+.. sysfwapistruct:: tisci_msg_proc_set_control_req
+
+.. sysfwapistruct:: tisci_msg_proc_set_control_resp
+
+.. attention::
+   Reason for failure is NOT provided to prevent security attacks by
+   scan. If permitted, System firmware logs shall provide relevant failure
+   information.
+
+.. _proc-boot-authenticate-image-and-configure-processor:
+
+TISCI_MSG_PROC_AUTH_BOOT - Authenticate Image and Configure Processor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Purpose**: Provides a means for the host with current control to do the following:
+
+-  Authenticate and load a binary using the certificate provided information
+-  Use certificate information also to setup critical processor specific
+   flags which is similar to
+   :ref:`Set Processor Configuration <proc-boot-set-processor-configuration>`.
+
+**Usage**:
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+**TISCI Message ID**
+
+.. sysfwapimacro:: TISCI_MSG_PROC_AUTH_BOOT
+
+.. sysfwapistruct:: tisci_msg_proc_auth_boot_req
+
+.. attention::
+
+    * The certificate itself shall contain relevant information about the
+      processor flags and configuration information.
+    * ONLY secure hosts are permitted to invoke this API in addition to
+      being part of the access control list.
+    * See Hosts description for the corresponding SoC to identify which hosts
+      are secure and which are not.
+
+.. attention::
+
+   Please see :doc:`sec_cert_format` for certificate format.
+
+.. sysfwapistruct:: tisci_msg_proc_auth_boot_resp
+
+.. attention::
+   Reason for failure is NOT provided to prevent security attacks by
+   scan. If permitted, System firmware logs shall provide relevant failure
+   information.
+
+.. _proc_boot_get_processor_status:
+
+TISCI_MSG_PROC_GET_STATUS - Get Processor Status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Purpose**: Provides a means for hosts in the permitted list to get the status
+of a physical processor. This is required for the hosts to sequence events in
+the correct order
+
+**Usage**:
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+**TISCI Message ID**
+
+.. sysfwapimacro:: TISCI_MSG_PROC_GET_STATUS
+
+.. sysfwapistruct:: tisci_msg_proc_get_status_req
+
+.. sysfwapistruct:: tisci_msg_proc_get_status_resp
+
+.. attention::
+   Reason for failure is NOT provided to prevent security attacks by
+   scan. If permitted, System firmware logs shall provide relevant failure
+   information.
+
+.. _proc_boot_wait_processor_status:
+
+TISCI_MSG_PROC_WAIT_STATUS - Wait for Processor Status
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Purpose**: Provides a means for hosts in the permitted list to wait for the
+status of a physical processor.
+
+.. warning::
+
+	This API that has impact on firmware performance and is typically
+	only required for the hosts to sequence events in the correct order
+	when executing from the processor itself. In short, avoid if possible.
+
+	The worst case delay could be upto:
+	(register operations and code overheads) +
+	num_wait_iterations(255) * delay_per_iteration_us(255) +
+	delay_before_iteration_loop_start_us (255) =
+	65.280 milli seconds + (register operations and code overheads)
+
+**Usage**:
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+**TISCI Message ID**
+
+.. sysfwapimacro:: TISCI_MSG_PROC_WAIT_STATUS
+
+.. sysfwapistruct:: tisci_msg_proc_status_wait_req
+
+.. sysfwapistruct:: tisci_msg_proc_status_wait_resp
+
+.. warning::
+
+	At least one of status_flags_1_set_all_wait, status_flags_1_set_any_wait,
+	status_flags_1_clr_all_wait or status_flags_1_clr_any_wait must be
+	requested.
+
+	Flags and sequences desired are very specific to processor and SoC involved. Please
+	refer to appropriate documentation for accurate sequencing and status information.
+
+.. note::
+
+	A trivial example for a hypothetical processor status wait could have the parameters as follows:
+
+	.. code-block:: bash
+
+		# No optional bits to be set
+		status_flags_1_set_all_wait = 0
+
+		# Either WFI OR WFE to be set as 1
+		status_flags_1_set_any_wait = WFI | WFE
+
+		# CLK_STOP must be to be cleared
+		status_flags_1_clr_all_wait = CLK_STOP
+
+		# No optional status bits to be cleared
+		status_flags_1_clr_any_wait = 0
+
+		# Check status every ~2 us
+		delay_per_iteration_us = 2
+
+		# Do not wait to start checks
+		delay_before_iteration_loop_start_us = 0
+
+		# Check for 10 times before timing out
+		num_wait_iterations = 10
+
+		# Must match at least for 2 consecutive iterations
+		num_match_iterations = 2
+
+.. attention::
+	Reason for failure is NOT provided to prevent security attacks by
+	scan. If permitted, System firmware logs shall provide relevant failure
+	information.
+
+.. _proc_boot_flags:
+
+Generic Processor Flags
+-----------------------
+
+-  config_flags_1 Field Reserved for Generic usage
+
++--------------------+------------+----------+--------------------------------------------------------------------------------------+
+|  Flag Name         | Bit Offset | Default  |                  Description                                                         |
++====================+============+==========+======================================================================================+
+| GEN_IGN_BOOTVECTOR | 28         | N/A      | Valid only for :ref:`config_flags_1_clear  <proc-boot-set-processor-configuration>`  |
+|                    |            |          | Flag indicating that SYSFW should not use the bootvector_lo and bootvector_hi fields |
+|                    |            |          | in the tisci_msg_proc_set_config_req structure.                                      |
++--------------------+------------+----------+--------------------------------------------------------------------------------------+
+
+Processor Specific Flags
+------------------------
+
+This section lists the flags that are specific to each processor types. These
+flags apply to the :ref:`processor control APIs <proc-boot-processor-control-apis>`.
+
+ARMV8 A53
+^^^^^^^^^
+
+-  config_flags_1 Fields
+
++-------------+------------+----------+-----------------------------------------------+
+|  Flag Name  | Bit Offset | Default  |                  Description                  |
++=============+============+==========+===============================================+
+| DBG_EN      | 0          | Enabled  | invasive Debug                                |
++-------------+------------+----------+-----------------------------------------------+
+| DBG_NIDEN   | 1          | Enabled  | Non-invasive Debug                            |
++-------------+------------+----------+-----------------------------------------------+
+| DBG_SPIDEN  | 2          | Enabled  | Secure invasive Debug                         |
++-------------+------------+----------+-----------------------------------------------+
+| DBG_SPNIDEN | 3          | Enabled  | Secure Non-invasive Debug                     |
++-------------+------------+----------+-----------------------------------------------+
+| ARCH32      | 8          | Disabled | 32bit mode (if disabled, implies 64 bit mode) |
++-------------+------------+----------+-----------------------------------------------+
+
+-  control_flags_1 Fields:
+
++------------+------------+---------+---------------------------------------------------------------------+
+| Flag Name  | Bit Offset | Default |                             Description                             |
++============+============+=========+=====================================================================+
+| ACINACTM   | 0          | N/A     | ACINACTM                                                            |
++------------+------------+---------+---------------------------------------------------------------------+
+| AINACTS    | 1          | N/A     | ACINACTM                                                            |
++------------+------------+---------+---------------------------------------------------------------------+
+| L2FLUSHREQ | 8          | N/A     | SoC level L2 Flush Request - See L2FLUSH_DONE status for completion |
++------------+------------+---------+---------------------------------------------------------------------+
+
+.. note::
+   Please refer to SoC Technical Reference Manual and
+   `ARM Technical Reference <http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0500e/CACJFAJC.html>`_
+   for information on sequencing required for startup and shutdown of CPUs in a cluster.
+   Applying these flags to any CPU in a cluster affects the corresponding cluster.
+
+-  status_flags_1 Fields
+
++--------------+------------+---------+------------------------------------------------+
+|  Flag Name   | Bit Offset | Default |                  Description                   |
++==============+============+=========+================================================+
+| WFE          | 0          | N/A     | Set if the core is in WFE state                |
++--------------+------------+---------+------------------------------------------------+
+| WFI          | 1          | N/A     | Set if the core is in WFI state                |
++--------------+------------+---------+------------------------------------------------+
+| L2FLUSH_DONE | 4          | N/A     | Set if the cluster's L2 flush done is complete |
++--------------+------------+---------+------------------------------------------------+
+| STANDBYWFIL2 | 5          | N/A     | Set if the cluster's L2 WFI is achieved        |
++--------------+------------+---------+------------------------------------------------+
+
+ARM R5
+^^^^^^
+
+-  config_flags_1 Fields
+
++-------------+------------+--------------+-------------------------------------------------------------------------------------------------------------+
+|  Flag Name  | Bit Offset |   Default    |                                                 Description                                                 |
++=============+============+==============+=============================================================================================================+
+| DBG_EN      | 0          | Enabled      | invasive Debug                                                                                              |
++-------------+------------+--------------+-------------------------------------------------------------------------------------------------------------+
+| DBG_NIDEN   | 1          | Enabled      | Non-invasive Debug                                                                                          |
++-------------+------------+--------------+-------------------------------------------------------------------------------------------------------------+
+| LOCKSTEP    | 8          | Efuse driven | On Write - Enable Lockstep (if permitted) - (1: Lockstep enabled, 0 - Lockstep disabled).                   |
+|             |            |              | On Read - Core Status - (1: Core in lockstep mode, 0 - Core in split mode)                                  |
++-------------+------------+--------------+-------------------------------------------------------------------------------------------------------------+
+| TE_INIT     | 9          | ARM          | Exception handling state at reset (0 - ARM, 1 - Thumb)                                                      |
++-------------+------------+--------------+-------------------------------------------------------------------------------------------------------------+
+| NMFI_EN     | 10         | Disabled     | Enable Core Non-Maskable Fast Interrupts                                                                    |
++-------------+------------+--------------+-------------------------------------------------------------------------------------------------------------+
+| TCM_RSTBASE | 11         | ATCM at 0x0  | Core A/BTCM Reset Base address Indicator (0 - BTCM located at address 0x0, 1 - ATCM located at address 0x0) |
++-------------+------------+--------------+-------------------------------------------------------------------------------------------------------------+
+| BTCM_EN     | 12         | Enabled      | Enable Core BTCM RAM at reset                                                                               |
++-------------+------------+--------------+-------------------------------------------------------------------------------------------------------------+
+| ATCM_EN     | 13         | Disabled     | Enable Core ATCM RAM at reset                                                                               |
++-------------+------------+--------------+-------------------------------------------------------------------------------------------------------------+
+
+-  control_flags_1 Fields
+
++-----------+------------+---------+-------------+
+| Flag Name | Bit Offset | Default | Description |
++===========+============+=========+=============+
+| CORE_HALT | 0          | Halted  | Halt Core   |
++-----------+------------+---------+-------------+
+
+-  status_flags_1 Fields
+
++--------------------+------------+--------------+------------------------------------------------------+
+|     Flag Name      | Bit Offset |   Default    |                     Description                      |
++====================+============+==============+======================================================+
+| WFE                | 0          | N/A          | Set if the core is in WFE state                      |
++--------------------+------------+--------------+------------------------------------------------------+
+| WFI                | 1          | N/A          | Set if the core is in WFI state                      |
++--------------------+------------+--------------+------------------------------------------------------+
+| CLK_GATED          | 2          | N/A          | Core Clock Stopped due to WFI or WFE state           |
++--------------------+------------+--------------+------------------------------------------------------+
+| LOCKSTEP_PERMITTED | 8          | Efuse driven | Is Lockstep configuration permitted - 1: yes, 0 - no |
++--------------------+------------+--------------+------------------------------------------------------+
+
+C7x DSP
+^^^^^^^
+
+-  config_flags_1 Fields
+
++----------------------------+------------+--------------+-----------------------------------------------------------------------+
+|  Flag Name                 | Bit Offset |   Default    |                                     Description                       |
++============================+============+==============+=======================================================================+
+| L2_PIPELINE_LATENCY_VALUE  | 0-3        | 0x1          | Set C7x Corepac L2 Pipeline latency. valid values: 1 to 5             |
++----------------------------+------------+--------------+-----------------------------------------------------------------------+
+| L2_ACCESS_LATENCY_VALUE    | 4-7        | 0x2          | Set C7x Corepac L2 Access latency. valid values: 2 to 5               |
++----------------------------+------------+--------------+-----------------------------------------------------------------------+
+
+-  control_flags_1 Fields
+
+**Not supported.**
+
+-  status_flags_1 Fields
+
+**Not supported.**
+
+C6x DSP
+^^^^^^^
+
+-  config_flags_1 Fields
+
++-------------------------------+------------+--------------+--------------------------------------------------------------------+
+|  Flag Name                    | Bit Offset |   Default    |                                     Description                    |
++===============================+============+==============+====================================================================+
+| SSCLK_MODE_DIV_CLK_MODE_VALUE | 0-2        | 0x00         | Controls the C66 clock rate for cluster logic and bus interfaces.  |
+|                               |            |              | (See warning note below)                                           |
+|                               |            |              | 0x1 - Div2 clock mode.                                             |
+|                               |            |              | 0x2 - Div3 clock mode.                                             |
+|                               |            |              | 0x3 - Div4 clock mode.                                             |
++-------------------------------+------------+--------------+--------------------------------------------------------------------+
+
+.. warning::
+
+	NOTE: Values of SSCLK_MODE_DIV_CLK_MODE_VALUE are TRM value + 1 for
+	avoiding '0' as a valid value which cannot be distinguished from values
+	we are not attempting to set
+
+-  control_flags_1 Fields
+
+**Not supported.**
+
+-  status_flags_1 Fields
+
+**Not supported.**

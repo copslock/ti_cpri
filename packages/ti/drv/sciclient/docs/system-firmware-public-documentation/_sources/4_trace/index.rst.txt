@@ -1,0 +1,8 @@
+##################################
+Chapter 4: Interpreting Trace Data
+##################################
+
+.. toctree::
+   :maxdepth: 1
+
+   trace

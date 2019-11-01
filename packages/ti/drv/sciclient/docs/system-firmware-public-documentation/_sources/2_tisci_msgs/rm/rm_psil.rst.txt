@@ -1,0 +1,181 @@
+===================================================
+Resource Management PSI-L TISCI Message Description
+===================================================
+
+Introduction
+============
+
+This chapter provides information on usage of the RM PSI-L management TISCI
+message API parameters.
+
++------------------+-------------------------------------------------------------+
+| TISCI Message ID |                        Message Name                         |
++==================+=============================================================+
+| 0x1280           | :ref:`TISCI_MSG_RM_PSIL_PAIR <pub_rm_public_psil_pair>`     |
++------------------+-------------------------------------------------------------+
+| 0x1281           | :ref:`TISCI_MSG_RM_PSIL_UNPAIR <pub_rm_public_psil_unpair>` |
++------------------+-------------------------------------------------------------+
+| 0x1282           | :ref:`TISCI_MSG_RM_PSIL_READ <pub_rm_public_psil_read>`     |
++------------------+-------------------------------------------------------------+
+| 0x1283           | :ref:`TISCI_MSG_RM_PSIL_WRITE <pub_rm_public_psil_write>`   |
++------------------+-------------------------------------------------------------+
+
+.. _pub_rm_public_psil_pair:
+
+TISCI_MSG_RM_PSIL_PAIR - PSI-L Pair
+===================================
+
+The **psil pair** TISCI message API is used to pair a SoC Navigator Subsystem
+source thread to a destination thread. Pairing the threads enables both threads
+and the source thread's registers are programmed using the destination thread's
+thread width and credit count capabilities. UDMAP channels mapped to PSI-L
+source and destination threads in the pair request will have their THRD_ID
+register programmed with the remote thread ID value.
+
+The host requesting a **psil pair** operation for threads mapped to UDMAP
+channels must be the owner, or the supervisor of the host owning, the UDMAP
+channels. Therefore, **psil pair** operations for UDMAP mapped threads must take
+place after the channel(s) are allocated and configured. For threads not mapped
+to UDMAP channels, the host requesting the **psil pair** operation must have
+access through the region firewall covering the entity to which the thread is
+mapped.
+
+The **psil pair** API can be used to pair source and destination threads within
+any Navigator Subsystem on the device.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_RM_PSIL_PAIR
+
+PSI-L Pair Message Parameters
+-----------------------------
+
++------------+----------------------------------------+--------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------+
+| Parameter  |                  Type                  |                                           Valid Values                                           |                                          Description                                           |
++============+========================================+==================================================================================================+================================================================================================+
+| hdr        | Generic TISCI message header (8 bytes) | :doc:`Valid Host IDs <../../5_soc_doc/am6x/hosts>`                                               | Generic TISCI message header. Contains the message ID, host ID, sequence number, and any flags |
++------------+----------------------------------------+--------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------+
+| nav_id     | u32                                    | :ref:`Valid Navigator Subsystem Device IDs <pub_soc_am6x_navss_ids>`                             | The SoC-specific Device ID of the Navigator subsystem in which the PSI-L proxy is located.     |
++------------+----------------------------------------+--------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------+
+| src_thread | u32                                    | :ref:`Valid Navigator Subsystem PSI-L Source Thread Indices <pub_soc_am6x_psil_thread_ids>`      | Specifies the PSI-L source thread ID to be paired to the destination ID.                       |
++------------+----------------------------------------+--------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------+
+| dst_thread | u32                                    | :ref:`Valid Navigator Subsystem PSI-L Destination Thread Indices <pub_soc_am6x_psil_thread_ids>` | Specifies the PSI-L destination thread ID to be aired to the source thread ID.                 |
++------------+----------------------------------------+--------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------+
+
+.. _pub_rm_public_psil_unpair:
+
+TISCI_MSG_RM_PSIL_UNPAIR - PSI-L Unpair
+=======================================
+
+The **psil unpair** TISCI message API is used to unpair a SoC Navigator
+Subsystem source thread from a destination thread. Unpairing the threads
+disables both threads and clears the source thread's registers. UDMAP channels
+mapped to PSI-L source and destination threads in the unpair request will have
+their THRD_ID register cleared.
+
+The host requesting a **psil unpair** operation for threads mapped to UDMAP
+channels must be the owner, or the supervisor of the host owning, the UDMAP
+channels. Therefore, **psil unpair** operations for UDMAP mapped threads must
+take place before the channel(s) are freed. For threads not mapped to UDMAP
+channels, the host requesting the **psil unpair** operation must have access
+through the region firewall covering the entity to which the thread is mapped.
+
+The **psil unpair** API can be used to unpair source and destination threads
+within any Navigator Subsystem on the device.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_RM_PSIL_UNPAIR
+
+PSI-L Unpair Message Parameters
+-------------------------------
+
++------------+----------------------------------------+--------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------+
+| Parameter  |                  Type                  |                                           Valid Values                                           |                                          Description                                           |
++============+========================================+==================================================================================================+================================================================================================+
+| hdr        | Generic TISCI message header (8 bytes) | :doc:`Valid Host IDs <../../5_soc_doc/am6x/hosts>`                                               | Generic TISCI message header. Contains the message ID, host ID, sequence number, and any flags |
++------------+----------------------------------------+--------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------+
+| nav_id     | u32                                    | :ref:`Valid Navigator Subsystem Device IDs <pub_soc_am6x_navss_ids>`                             | The SoC-specific Device ID of the Navigator subsystem in which the PSI-L proxy is located.     |
++------------+----------------------------------------+--------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------+
+| src_thread | u32                                    | :ref:`Valid Navigator Subsystem PSI-L Source Thread Indices <pub_soc_am6x_psil_thread_ids>`      | Specifies the PSI-L source thread ID to be unpaired from the destination ID.                   |
++------------+----------------------------------------+--------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------+
+| dst_thread | u32                                    | :ref:`Valid Navigator Subsystem PSI-L Destination Thread Indices <pub_soc_am6x_psil_thread_ids>` | Specifies the PSI-L destination thread ID to be unpaired from the source thread ID.            |
++------------+----------------------------------------+--------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------+
+
+.. _pub_rm_public_psil_read:
+
+TISCI_MSG_RM_PSIL_READ - PSI-L Thread Configuration Register Read
+=================================================================
+
+The **psil read** TISCI message API is used to read a PSI-L thread's
+configuration registers via a PSI-L configuration proxy.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_RM_PSIL_READ
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_rm_psil_read_req
+
+.. sysfwapistruct:: tisci_msg_rm_psil_read_resp
+
+.. _pub_rm_public_psil_write:
+
+TISCI_MSG_RM_PSIL_WRITE - PSI-L Thread Configuration Register Write
+===================================================================
+
+The **psil write** TISCI message API is used to write a PSI-L thread's
+configuration registers via a PSI-L configuration proxy.
+
+Usage
+-----
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+TISCI Message ID
+----------------
+
+.. sysfwapimacro:: TISCI_MSG_RM_PSIL_WRITE
+
+Message Data Structures
+-----------------------
+
+.. sysfwapistruct:: tisci_msg_rm_psil_write_req
+
+.. sysfwapistruct:: tisci_msg_rm_psil_write_resp

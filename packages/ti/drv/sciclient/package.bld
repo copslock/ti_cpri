@@ -1,0 +1,19 @@
+/******************************************************************************
+ * FILE PURPOSE: Build description for the SCICLIENT Package
+ ******************************************************************************
+ * FILE NAME: package.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build specification and description for the SCICLIENT
+ *
+ *
+ * Copyright (C) 2018, Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Generate Settings.xdc */
+var tplt = xdc.loadTemplate("./Settings.xdc.xdt");
+tplt.genFile("./Settings.xdc",sciclientDriverReleaseVersion);
+
+/* Generate paver.h */
+var tplt = xdc.loadTemplate("./sciclientver.h.xdt");
+tplt.genFile("./sciclientver.h",sciclientDriverReleaseVersion);
