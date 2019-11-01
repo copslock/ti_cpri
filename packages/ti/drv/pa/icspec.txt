@@ -1,0 +1,75 @@
+# Integration spec for modules used in the system 
+
+# nysh PDK components
+# Top PDK folders
+element /gtcsl_platform/Shannon/ti         CHK_GGXCNIE_R1400_NYSHDIAGAVV_1211MERGE_22FEB10 -nocheckout
+element /gtcsl_platform/Shannon/ti/csl/... DEV.CSL_SHANNON.01.00.00.10  -nocheckout
+element /gtcsl_platform/Shannon/ti/drv     DEV.SRIOLLD.01.00.00.09 -nocheckout
+element /gtcsl_platform/Nyquist/ti/csl/... DEV.CSL.C6616.01.00.00.23 -nocheckout
+
+# Common CSL IPs for NySh
+element /gtcsl_ip/bwmgmt/...               DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/cache/...                DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/chip/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/cpintc/...               DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/edma/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/emac/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/emif4/...                DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/gpio/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/i2c/...                  DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/idma/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/ipc/...                  DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/mdio/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/memprot/...              DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/msmc/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/pa/...                   DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/pllc/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/psc/...                  DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/sa/V0/...                DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/sa/V0/src...             DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/sem2/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/sgmii/...                DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/spi/...                  DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/srio/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/timer/...                DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/tsc/...                  DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/xmc/...                  DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/vusr/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/cptracer/...             DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/uart/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+
+# Shannon ONLY CSL IPs
+element /gtcsl_ip/emif16/...               DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+element /gtcsl_ip/tsip/...                 DEV.CSL_SHANNON.01.00.00.10 -nocheckout
+
+# Nyquist ONLY CSL IPs
+element /gtcsl_ip/aif/...                  DEV.CSL.C6616.01.00.00.23 -nocheckout
+element /gtcsl_ip/rac/...                  DEV.CSL.C6616.01.00.00.23 -nocheckout
+element /gtcsl_ip/tac/...                  DEV.CSL.C6616.01.00.00.23 -nocheckout
+element /gtcsl_ip/vcp2/...                 DEV.CSL.C6616.01.00.00.23 -nocheckout
+element /gtcsl_ip/fftc/...                 DEV.CSL.C6616.01.00.00.23 -nocheckout
+
+# #######################################################################
+# RM LLD
+# #######################################################################
+element /gtcsl_platform/Nyquist/ti/drv/rm/...    DEV.RM_LLD.01.00.00.02 -nocheckout
+element /gtcsl_platform/Appleton/ti/drv/rm/...   DEV.RM_LLD.01.00.00.02 -nocheckout
+
+# CPPI
+element /gtcsl_ip/cppi_lld/...                  DEV.CPPI_LLD.01.00.01.05 -nocheckout
+element /gtcsl_platform/Shannon/ti/drv/cppi/... DEV.CPPI_LLD.01.00.01.05 -nocheckout
+element /gtcsl_platform/Nyquist/ti/drv/cppi/... DEV.CPPI_LLD.01.00.01.05 -nocheckout
+element /gtcsl_platform/TurboNyquist/ti/drv/cppi/... DEV.CPPI_LLD.01.00.01.05 -nocheckout
+
+# QMSS
+element /gtcsl_ip/qmss_lld/...                  DEV.QMLLD.01.00.03.04 -nocheckout
+element /gtcsl_platform/Shannon/ti/drv/qmss/... DEV.QMLLD.01.00.03.04 -nocheckout
+element /gtcsl_platform/Nyquist/ti/drv/qmss/... DEV.QMLLD.01.00.03.04 -nocheckout
+element /gtcsl_platform/TurboNyquist/ti/drv/qmss/... DEV.QMLLD.01.00.03.04 -nocheckout
+
+# Top PDK folders
+element /gtcsl_ip/...                       DEV.X.PDK_APPLETON.01.00.00.05 -nocheckout
+element /gtcsl_platform/...                 DEV.X.PDK_APPLETON.01.00.00.05 -nocheckout 
+element /gtcsl_ip /main/0       -nocheckout
+element /gtcsl_platform /main/0 -nocheckout
+

@@ -1,0 +1,1 @@
+T:\gen\coverity\prevent-mingw-3.8.0\bin\cov-commit-defects --product pa_lld --description pa_lld -e cov_out\ti.drv.pa\lib\ti.drv.pa.ae64P\emit -o cov_out\ti.drv.pa\lib\ti.drv.pa.ae64P\output --user a0850410 --remote 158.218.108.140 --port 30800

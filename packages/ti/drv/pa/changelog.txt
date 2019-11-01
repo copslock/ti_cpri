@@ -1,0 +1,27 @@
+999.2.0.2
+-PA model updated to 090824 version
+-SA model initial integration
+
+999.1.0.2
+-forced lookup after finding an mpls header
+-mpls stat incremented for mpls packet
+-moved LUT1 clear to outside processing loop
+-fixed IP type checking for mpls packets
+-added reply routing for Pa_delHandle
+-fixed firmware bug which missed counting of incoming packets under high load
+-fixed firmware clear stats bug
+
+1.0.0.2
+-revised API to match RTSC standard
+-classify1.p bug fixed on allocating entry 32 in the table
+-paExample descriptors resized to 80 bytes
+
+1.0.0.1
+-PDSP soft reset value corrected
+-paAlloc returns NULL for parentFxns
+-fixed bug in naming of big endian library
+
+1.0.0.0
+-Initial version
+
+

@@ -1,0 +1,18 @@
+-ccs.linkFile "PASS_INSTALL_PATH/ti/drv/pa/test/PAPktCapTest/src/c66x/bios/framework.c"
+-ccs.linkFile "PASS_INSTALL_PATH/ti/drv/pa/test/PAPktCapTest/src/c66x/bios/fw_main.c" 
+-ccs.linkFile "PASS_INSTALL_PATH/ti/drv/pa/test/PAPktCapTest/src/c66x/bios/pcap_linker.cmd" 
+-ccs.linkFile "PASS_INSTALL_PATH/ti/drv/pa/test/PAPktCapTest/src/pcap_singlecore.c" 
+-ccs.linkFile "PASS_INSTALL_PATH/ti/drv/pa/example/emacExample/src/pa_mgmt.c" 
+-ccs.linkFile "PASS_INSTALL_PATH/ti/drv/pa/example/emacExample/src/cppi_qmss_mgmt.c" 
+-ccs.linkFile "PASS_INSTALL_PATH/ti/drv/pa/example/emacExample/src/setuprm.c" 
+-ccs.linkFile "PASS_INSTALL_PATH/ti/drv/pa/example/emacExample/src/c66x/bios/cpsw_mgmt.c" 
+-ccs.linkFile "PASS_INSTALL_PATH/ti/drv/pa/test/PAPktCapTest/k2h/c66/bios/pcap_test_k2h.cfg"
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/device/k2h/policy_dsp-only.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/device/k2h/policy_dsp_arm.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/rm/device/k2h/global-resource-list.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/cppi/device/k2h/src/cppi_device.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/qmss/device/k2h/src/qmss_device.c" 
+-ccs.linkFile "PDK_INSTALL_PATH/ti/drv/pa/device/k2h/src/nss_device.c" 
+-ccs.linkFile "PASS_INSTALL_PATH/ti/drv/pa/example/emacExample/k2h/c66/bios/singlecore_osal.c" 
+-ccs.setCompilerOptions "-D -mv64+ -g -DSOC_K2H -DNUM_PORTS=5 --diag_warning=225 -I${PASS_INSTALL_PATH} -I${PASS_INSTALL_PATH}/ti/drv/pa/test/PAPktCapTest/src -I${PASS_INSTALL_PATH}/ti/drv/pa/example/emacExample/src -I${PASS_INSTALL_PATH}/ti/drv/pa/example/emacExample/src -I${PASS_INSTALL_PATH}/ti/drv/pa/example/emacExample/src/c66x/bios -I${PDK_INSTALL_PATH}/ti/drv/cppi -I${PDK_INSTALL_PATH}/ti/drv/qmss"  -rtsc.enableRtsc
+

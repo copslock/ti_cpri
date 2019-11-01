@@ -1,0 +1,125 @@
+#*******************************************************************************
+#* FILE PURPOSE: Top level makefile for Creating Component Libraries for ARM
+#* architectures
+#*******************************************************************************
+#* FILE NAME: makefile
+#*
+#* DESCRIPTION: Defines Compiler tools paths, libraries , Build Options 
+#*
+#*
+#*******************************************************************************
+#*
+# (Mandatory) Specify where various tools are installed.
+
+#Default Do not use the shared object libraries for the test/example applications
+export USEDYNAMIC_LIB ?= "no"
+
+# DEVICE
+export DEVICE ?= k2l
+
+# LLD NAME
+ifeq ($(findstring $(DEVICE),k2h k2k),)
+    export LLD_NAME=pa2
+else
+    export LLD_NAME=pa
+endif        
+
+# Output for prebuilt generated libraries
+export ARMV7LIBDIR ?= ./lib
+export ARMV7OBJDIR ?= ./obj/$(DEVICE)
+export ARMV7BINDIR ?= ./bin/$(DEVICE)
+
+# ROOT Directory
+export ROOTDIR := ../../..
+
+# INCLUDE Directory
+export INCDIR := ../../..;$(PDK_INSTALL_PATH);$(ROOTDIR)
+
+# Common Macros used in make
+ifndef RM
+export RM = rm -f
+endif
+
+ifndef CP
+export CP = cp -p
+endif
+
+export MKDIR = mkdir -p
+
+ifndef RMDIR
+export RMDIR = rm -rf
+endif
+
+ifndef SED
+export SED = sed
+endif
+
+ifndef MAKE
+export MAKE = make
+endif
+
+# PHONY Targets
+.PHONY: all clean lib tests examples install installbin
+
+# all rule
+all: .executables 
+.executables: lib tests examples
+
+# Libraries
+lib: .libraries
+
+# tests Stub to add tests
+tests: 
+	@$(MAKE) -f ./test/PAUnitTest/$(DEVICE)/armv7/linux/build/makefile all
+
+# examples Stub to add Examples
+examples: 
+	@$(MAKE) -f ./example/emacExample/$(DEVICE)/armv7/linux/build/makefile all
+	@$(MAKE) -f ./example/multicoreExample/$(DEVICE)/armv7/linux/build/makefile all
+	
+# Make rule to create $(ARMV7LIBDIR)/libpa.a library
+.libraries: $(ARMV7LIBDIR)/lib$(LLD_NAME).a lib$(LLD_NAME).so
+
+$(ARMV7LIBDIR)/lib$(LLD_NAME).a:
+	@$(MAKE) -f ./build/armv7/libpa_aearmv7.mk $@
+
+lib$(LLD_NAME).so:
+	@$(MAKE) -f ./build/armv7/libpa_aearmv7.mk $@
+
+# Rule to clean $(ARMV7LIBDIR)/lib$(LLD_NMAE).a library
+clean:
+	@$(MAKE) -f ./build/armv7/libpa_aearmv7.mk $@
+	@$(RM) $(ARMV7LIBDIR)/lib$(LLD_NMAE).a
+	@$(MAKE) -f ./example/emacExample/$(DEVICE)/armv7/linux/build/makefile $@
+	@$(MAKE) -f ./example/multicoreExample/$(DEVICE)/armv7/linux/build/makefile $@
+	@$(MAKE) -f ./test/PAUnitTest/$(DEVICE)/armv7/linux/build/makefile $@
+	@$(RMDIR) $(ARMV7OBJDIR)/$(LLD_NMAE)
+	@$(RMDIR) $(ARMV7BINDIR)/$(LLD_NMAE)
+	@$(RMDIR) $(ARMV7OBJDIR_SO)/$(LLD_NAME)
+	@$(RM) $(ARMV7LIBDIR)/lib$(LLD_NAME).a
+	@$(RM) $(ARMV7LIBDIR)/lib$(LLD_NAME).so
+	@$(RM) $(ARMV7LIBDIR)/lib$(LLD_NAME).so.*
+
+installbin:
+	install -d $(INSTALL_BIN_BASE_DIR)
+	install -c -m 755 $(ARMV7BINDIR)/pa/example/paEmacExample.out $(INSTALL_BIN_BASE_DIR)/paEmacExample_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/pa/test/paUnitTest.out    $(INSTALL_BIN_BASE_DIR)/paUnitTest_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/pa/example/paMCExample.out $(INSTALL_BIN_BASE_DIR)/paMCExample_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/pa/example/paEmacExample_so.out $(INSTALL_BIN_BASE_DIR)/paEmacExample_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/pa/test/paUnitTest_so.out    $(INSTALL_BIN_BASE_DIR)/paUnitTest_so_$(DEVICE).out
+	install -c -m 755 $(ARMV7BINDIR)/pa/example/paMCExample_so.out $(INSTALL_BIN_BASE_DIR)/paMCExample_so_$(DEVICE).out	
+
+install:
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/pa/fw/v0
+	install -d $(INSTALL_INC_BASE_DIR)/ti/drv/pa/fw/v1
+	install -d $(INSTALL_LIB_BASE_DIR)
+	$(CP) ./*.h          $(INSTALL_INC_BASE_DIR)/ti/drv/pa
+	$(CP) -r ./device    $(INSTALL_INC_BASE_DIR)/ti/drv/pa/
+	$(CP) ./fw/pafw.h    $(INSTALL_INC_BASE_DIR)/ti/drv/pa/fw
+	$(CP) ./fw/v0/pafw.h $(INSTALL_INC_BASE_DIR)/ti/drv/pa/fw/v0
+	$(CP) ./fw/v1/pafw.h $(INSTALL_INC_BASE_DIR)/ti/drv/pa/fw/v1
+	$(CP) ./fw/v0/*_bin.c   $(INSTALL_INC_BASE_DIR)/ti/drv/pa/fw/v0
+	$(CP) ./fw/v1/*_bin.c   $(INSTALL_INC_BASE_DIR)/ti/drv/pa/fw/v1
+	@$(CP) -r $(ARMV7LIBDIR)/*.a       $(INSTALL_LIB_BASE_DIR)
+	@$(CP) -r $(ARMV7LIBDIR)/*.so       $(INSTALL_LIB_BASE_DIR)	
+	@$(CP) -r $(ARMV7LIBDIR)/*.so.*     $(INSTALL_LIB_BASE_DIR)
