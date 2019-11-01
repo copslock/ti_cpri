@@ -1,0 +1,13 @@
+TBS = 2792;
+UeCat = 4;
+UeTM = 1;
+MaxNumHarqProcess = 8;
+Nir = 228384;
+G = 25200;
+RV = 0;
+RNTI = 1;
+NumLayers = 1;
+CodeWord = 0;
+ns = 0:1;
+CellID = 1;
+Modulation = 2;

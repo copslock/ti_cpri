@@ -1,0 +1,4 @@
++1.9542e+00    # frame: 0, subframe: 4, slot 0, sample:     1
++6.4167e-01    # frame: 0, subframe: 4, slot 1, sample:     1
++1.1271e+00    # frame: 1, subframe: 2, slot 0, sample:     1
++1.2505e+00    # frame: 1, subframe: 2, slot 1, sample:     1

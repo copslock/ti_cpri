@@ -1,0 +1,90 @@
+/******************************************************************************
+ * FILE PURPOSE: Build configuration Script for the BCP Driver
+ ******************************************************************************
+ * FILE NAME: config.bld
+ *
+ * DESCRIPTION: 
+ *  This file contains the build configuration script for the BCP
+ *  and is responsible for configuration of the paths for the various 
+ *  tools required to build the driver.
+ *
+ * Copyright (C) 2012, 2014 Texas Instruments, Inc.
+ *****************************************************************************/
+
+/* Set package attribute as ZIP or TAR */
+Pkg.attrs.archiver = "tar";
+
+/* Get the Tools Base directory from the Environment Variable. */
+var toolsBaseDir = java.lang.System.getenv("C6X_GEN_INSTALL_PATH");
+
+/* Get the base directory for the BCP Driver Package */
+var lldPath = new java.io.File(".//").getPath();
+
+/* Get the extended debug flags */
+var extDbgFlags = java.lang.System.getenv("EXTDBGFLAGS");
+
+var lldInstallType;
+
+/* Read the part number from the environment variable. */
+var lldPartNumber = java.lang.System.getenv("PARTNO");
+
+/* Include Path */
+var lldIncludePath = " -i" + lldPath + "/src" + " -i" + lldPath  + " -i" + lldPath + "/test";
+
+/* Configure the BCP Driver Release Version Information */
+/* 3 steps: remove SPACE and TAB, convert to string and split to make array */
+var lldReleaseVersion = (""+Pkg.version.replace(/\s/g, "")).split(',');
+
+/* BCP Driver Coverity Analysis: Check the environment variable to determine if Static
+ * Analysis has to be done on the BCP Driver Code base or not? */
+var lldCoverityAnalysis = java.lang.System.getenv("LLDCOV");
+
+/* C66 compiler configuration for Little Endian Mode + ELF build. */
+var C66LE               =   xdc.useModule('ti.targets.elf.C66');
+C66LE.rootDir           =   toolsBaseDir;
+C66LE.ccOpts.prefix     =   "-mo -o3 -q -k -eo.o";
+if(extDbgFlags)
+    C66LE.ccOpts.prefix = C66LE.ccOpts.prefix + " " + extDbgFlags; 
+
+/* Check if we need to run the STATIC Analysis or not? */
+var coverityAnalysis = java.lang.System.getenv("STATIC_ANALYZE");
+
+/* Setup the Coverity Filters to perform Static Analysis. */
+if (coverityAnalysis == "ON") {
+    var coverityInstallPath = java.lang.System.getenv("STATIC_ANALYZE_PATH");
+    var cfgBase = xdc.getPackageBase("tisb.coverity.filters") + "cfg";
+
+    var coverityFilter = [
+    {
+        moduleName: "tisb.coverity.filters.Coverity",
+        params: {
+            cfgDir:  cfgBase,  // The Coverity configuration file directory
+            rootDir: coverityInstallPath,
+            outDir: xdc.csd() + "cov_out",
+            analyzeLibs: true
+        }
+    },
+    ];
+
+    /* Run the coverity filters on the C66 LE ELF Build only. */
+    C66LE.profiles["release"].filters = coverityFilter;
+}
+
+/* Check if we need to create the Makefiles? */
+var miniBuild = java.lang.System.getenv("MINI_PACKAGE");
+if (miniBuild == "ON")
+{
+    /* Add the filter for simple Makefile generation. Generate mini filters for C66 ELF only. */
+    var makeC66LEFilter = {
+        moduleName: "build.filter.Make",
+        params: {
+          makefileName: "simpleC66LE.mak",
+        }
+    };
+
+    C66LE.profiles["release"].filters[C66LE.profiles["release"].filters.length++] = makeC66LEFilter;
+
+}
+
+/* List all the build targets here. */
+Build.targets = [ C66LE ];

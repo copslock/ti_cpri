@@ -1,0 +1,24 @@
+numTrans = 2;
+SysBw = 1.4;
+numOFDM = 12;
+NumTti = 1;
+RNTI = 7;
+CellId = 236;
+deltaSs = 0;
+nDMRS1  = 0;
+nDMRS2  = 0;
+GrpHopEn = 0;
+SeqHopEn = 0;
+Alloc    =  0:0; % first PRB
+ModSch = 2;
+TBS = 144;
+AckEn = 1;
+AckBits = 1;
+McsACKoff = 3;
+RiEn  = 1;
+RiBits = 1;
+McsRIoff = 3;
+CqiEn = 1;
+CqiBits = 1;
+McsCQIoff = 3; 
+
