@@ -281,9 +281,44 @@ Board_STATUS Board_moduleClockInitMcu(void)
         status = Board_moduleClockEnable(gBoardClkModuleMcuID[index]);
         if(status != BOARD_SOK)
         {
-            return BOARD_INIT_CLOCK_FAIL;
+            status = BOARD_INIT_CLOCK_FAIL;
+            break;
         }
     }
+
+#if defined(BUILD_MCU)
+    if(status == BOARD_SOK)
+    {
+        int32_t  ret;
+        uint64_t mcuClkFreq;
+
+        ret = Sciclient_pmGetModuleClkFreq(TISCI_DEV_MCU_R5FSS0_CORE0,
+                                           TISCI_DEV_MCU_R5FSS0_CORE0_CPU_CLK,
+                                           &mcuClkFreq,
+                                           SCICLIENT_SERVICE_WAIT_FOREVER);
+        if(ret == 0)
+        {
+            Osal_HwAttrs  hwAttrs;
+            uint32_t      ctrlBitmap;
+
+            ret = Osal_getHwAttrs(&hwAttrs);
+            if(ret == 0)
+            {
+                /*
+                 * Change the timer input clock frequency configuration
+                   based on R5 CPU clock configured
+                 */
+                hwAttrs.cpuFreqKHz = (int32_t)(mcuClkFreq/1000U);
+                ctrlBitmap         = OSAL_HWATTR_SET_CPU_FREQ;
+                ret = Osal_setHwAttrs(ctrlBitmap, &hwAttrs);
+            }
+        }
+        if(ret != 0)
+        {
+            status = BOARD_INIT_CLOCK_FAIL;
+        }
+    }
+#endif
 
     return status;
 }
