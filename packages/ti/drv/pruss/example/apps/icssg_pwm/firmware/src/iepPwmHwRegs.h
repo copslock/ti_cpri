@@ -38,8 +38,8 @@
 #include <ti/csl/soc.h>
 
 /* IEP0/1 HW register base addresses */
-#define ICSS_IEP0_CFG_BASE  ( CSL_ICSS_IEP_CFG_BASE )
-#define ICSS_IEP1_CFG_BASE  ( ICSS_IEP0_CFG_BASE + CSL_ICSS_IEP_CFG_SIZE )
+#define ICSS_IEP0_CFG_BASE  ( CSL_ICSS_IEP0_CFG_BASE )
+#define ICSS_IEP1_CFG_BASE  ( ICSS_IEP0_CFG_BASE + CSL_ICSS_IEP0_CFG_SIZE )
 
 /* PWM trip reset event mask */
 #define PWM_TRIP_RESET_MASK ( CSL_ICSSCFG_PWM0_PWM0_TRIP_RESET_MASK )
