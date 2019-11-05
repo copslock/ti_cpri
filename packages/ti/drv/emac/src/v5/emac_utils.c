@@ -435,7 +435,7 @@ uint32_t *emac_util_get_R30_info(EMAC_IOctlR30Cmd cmd, uint32_t port, EMAC_Icssg
  */
 void emac_hw_mem_write(uint32_t addr, const void *ptr, uint32_t element_count)
 {
-    int i;
+    uint32_t  i;
     volatile uint32_t *dst = (volatile uint32_t *)(uintptr_t)addr;
     uint32_t *src = (uint32_t *)ptr;
     for (i = 0; i < element_count; i++)

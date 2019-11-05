@@ -593,7 +593,7 @@ void emac_ioctl_vlan_ctrl_set_default_tbl(uint32_t port_num, void* ctrl)
     EMAC_PER_PORT_ICSSG_FW_CFG *pEmacFwCfg;
     EMAC_ICSSG_SWITCH_FW_CFG *pSwitchFwCfg;
     EMAC_IOCTL_VLAN_FID_PARAMS *pVlanTblEntryParams = (EMAC_IOCTL_VLAN_FID_PARAMS*)ctrl;
-    int32_t count;
+    uint32_t count;
     uint16_t vlanEntry;
 
     UTILS_trace(UTIL_TRACE_LEVEL_INFO, emac_mcb.drv_trace_cb, "port: %d: ENTER",port_num);
@@ -609,9 +609,9 @@ void emac_ioctl_vlan_ctrl_set_default_tbl(uint32_t port_num, void* ctrl)
         vlanEntry  |=  (pVlanTblEntryParams->fid << 8);
 
         /* Initialize VLAN-FID table */
-        for(count=0; count < (EMAC_VLAN_TBL_MAX_ENTRIES-1); count++)
+        for(count=0U; count < (EMAC_VLAN_TBL_MAX_ENTRIES-1U); count++)
         {
-            CSL_REG16_WR(( emac_mcb.port_cb[port_num].icssSharedRamBaseAddr+ pSwitchFwCfg->defaultVlanTblOffset) +count*2, vlanEntry);
+            CSL_REG16_WR(( emac_mcb.port_cb[port_num].icssSharedRamBaseAddr+ pSwitchFwCfg->defaultVlanTblOffset) +count*2U, vlanEntry);
         }
     }
     UTILS_trace(UTIL_TRACE_LEVEL_INFO, emac_mcb.drv_trace_cb, "port: %d: EXIT",port_num);
@@ -783,8 +783,7 @@ void emac_ioctl_port_prio_mapping_ctrl(uint32_t port_num, void*  ctrl)
     uint32_t gateConfig = 0x50;
     uint32_t tempReg = 0;
     EMAC_FILTER3_CONFIG ft3ConfigPcp = {0xc, 0, 0, 0, 0, 5, 0, 0xff1f0000, 0, 0, 0xffffffff, 0xffffffff};
-    int8_t p;
-    int8_t c;
+    uint8_t pcp;
     uint8_t finalPrioQueueMap[EMAC_IOCTL_PRIO_MAX]={0};
 
     UTILS_trace(UTIL_TRACE_LEVEL_INFO, emac_mcb.drv_trace_cb, "port: %d: ENTER",port_num);
@@ -810,12 +809,12 @@ void emac_ioctl_port_prio_mapping_ctrl(uint32_t port_num, void*  ctrl)
         */
 
         /* set up filter type 3's to match pcp bits */
-        for (p = 0; p < EMAC_IOCTL_PRIO_MAX; p++)
+        for (pcp = 0U; pcp < EMAC_IOCTL_PRIO_MAX; pcp++)
         {
             /*Setup FT3[0:7] to detect PCP0 - PCP7 */
-            ft3Type = (uint32_t)((((uint32_t)p) << 21) | 0x00000081);
+            ft3Type = (uint32_t)((((uint32_t)pcp) << 21U) | 0x00000081U);
             ft3ConfigPcp.ft3Type = ft3Type;
-            emac_icssg_filter3_config(port_num, 0, p, &ft3ConfigPcp);
+            emac_icssg_filter3_config(port_num, 0, pcp, &ft3ConfigPcp);
         }
 
         /*Get the Queue mapping value from DRAM0 and calculate incoming PCP to Queue mapping*/
@@ -823,47 +822,47 @@ void emac_ioctl_port_prio_mapping_ctrl(uint32_t port_num, void*  ctrl)
         pSwitchFwCfg = (EMAC_ICSSG_SWITCH_FW_CFG*) pEmacFwCfg->pFwPortCfg;
         prioRegenMapOffset = pSwitchFwCfg->prioRegenTableOffset;
 
-        for(p = 0; p < EMAC_IOCTL_PRIO_MAX; p++)
+        for(pcp = 0U; pcp < EMAC_IOCTL_PRIO_MAX; pcp++)
         {
             /* Get regenerated value for PCP = p*/
-            tempVal = CSL_REG8_RD(icssgBaseAddr + prioRegenMapOffset + (p*4));
+            tempVal = CSL_REG8_RD(icssgBaseAddr + prioRegenMapOffset + (pcp*4U));
             /*Shift PCP value by 5 to get the value*/
             tempVal = tempVal >> 5;
 
-            finalPrioQueueMap[p] = (uint8_t)pPrioMap->portPrioMap[tempVal];
+            finalPrioQueueMap[pcp] = (uint8_t)pPrioMap->portPrioMap[tempVal];
         }
 
         /* Build up the or lists */
-        for (p = 0; p < EMAC_IOCTL_PRIO_MAX; p++)
+        for (pcp = 0U; pcp < EMAC_IOCTL_PRIO_MAX; pcp++)
         {
-            classSelect = finalPrioQueueMap[p];
-            orEnable[classSelect] |= (1 << p);
+            classSelect = finalPrioQueueMap[pcp];
+            orEnable[classSelect] |= (1U << pcp);
         }
 
         /* now program classifier c */
-        for (c = 0; c<EMAC_IOCTL_PRIO_MAX;c++ )
+        for (pcp = 0U; pcp < EMAC_IOCTL_PRIO_MAX;pcp++ )
         {
             /* Configure OR Enable*/
-            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS0_OR_EN_PRU0 + (8*c)), orEnable[c]);
+            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS0_OR_EN_PRU0 + (8U*pcp)), orEnable[pcp]);
             /* Configure AND Enable */
-            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS0_AND_EN_PRU0 + (8*c)), andEnable[c]);
+            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS0_AND_EN_PRU0 + (8U*pcp)), andEnable[pcp]);
             tempReg = CSL_REG32_RD(baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_CFG1_PRU0);
-            tempReg &= ~(0x3 << (c * 2));
+            tempReg &= ~(0x3U << (pcp * 2U));
             CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_CFG1_PRU0), tempReg);
             /* Configure NV Enable */
             /* Configure NV Enable bits (1 bit in upper16, 1bit in lower16 */
             tempReg = CSL_REG32_RD(baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_CFG2_PRU0);
-            if (orNvEnable[c])
-                tempReg |= 1 << (c + 16);
+            if (orNvEnable[pcp])
+                tempReg |= 1U << (pcp + 16U);
             else
-                tempReg &= ~(1 << (c + 16));
-            if (andNvEnable[c])
-                tempReg |= 1 << (c);
+                tempReg &= ~(1U << (pcp + 16U));
+            if (andNvEnable[pcp])
+                tempReg |= 1U << (pcp);
             else
-                tempReg &= ~(1 << (c));
+                tempReg &= ~(1U << (pcp));
             CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_CFG2_PRU0), tempReg);
             /* Configure class gate */
-            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_GATES0_PRU0 + (4*c)), gateConfig);
+            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_GATES0_PRU0 + (4U * pcp)), gateConfig);
         }
 
         /* Update Deafult Queue number for untagged packet*/
@@ -1072,7 +1071,7 @@ EMAC_DRV_ERR_E emac_ioctl_fdb_entry_ctrl(uint32_t port_num, void* p_params)
     uint16_t broadSideSlot;
 
     UTILS_trace(UTIL_TRACE_LEVEL_INFO, emac_mcb.drv_trace_cb, "port: %d: ENTER",port_num);
-    if ((entry->vlanId < (EMAC_VLAN_TBL_MAX_ENTRIES)) || (entry->vlanId == EMAC_VLAN_UNTAGGED))
+    if ((entry->vlanId < (int16_t)(EMAC_VLAN_TBL_MAX_ENTRIES)) || (entry->vlanId == EMAC_VLAN_UNTAGGED))
     {
         vlanDefaultTblAddr = emac_get_vlan_tbl_addr(port_num);
         emac_get_vlan_id(port_num, entry);
@@ -1213,17 +1212,16 @@ EMAC_DRV_ERR_E emac_ioctl_prio_regen_mapping_ctrl(uint32_t port_num, void*  ctrl
         uint32_t gateConfig = 0x50;
         uint32_t tempReg = 0;
         EMAC_FILTER3_CONFIG ft3ConfigPcp = {0xc, 0, 0, 0, 0, 5, 0, 0xff1f0000, 0, 0, 0xffffffff, 0xffffffff};
-        int8_t p;
-        int8_t c;
+        uint8_t pcp;
         uint8_t finalPrioQueueMap[EMAC_IOCTL_PRIO_MAX]={0};
 
         /* set up filter type 3's to match pcp bits */
-        for (p = 0; p < EMAC_IOCTL_PRIO_MAX; p++)
+        for (pcp = 0U; pcp < EMAC_IOCTL_PRIO_MAX; pcp++)
         {
             /*Setup FT3[0:7] to detect PCP0 - PCP7 */
-            ft3Type = (uint32_t)((((uint32_t)p) << 21) | 0x00000081);
+            ft3Type = (uint32_t)((((uint32_t)pcp) << 21U) | 0x00000081U);
             ft3ConfigPcp.ft3Type = ft3Type;
-            emac_icssg_filter3_config(port_num, 0, p, &ft3ConfigPcp);
+            emac_icssg_filter3_config(port_num, 0, pcp, &ft3ConfigPcp);
         }
 
         /*Get the Queue mapping value from DRAM0 and calculate incoming PCP to Queue mapping*/
@@ -1231,41 +1229,41 @@ EMAC_DRV_ERR_E emac_ioctl_prio_regen_mapping_ctrl(uint32_t port_num, void*  ctrl
         pSwitchFwCfg = (EMAC_ICSSG_SWITCH_FW_CFG*) pEmacFwCfg->pFwPortCfg;
         prioMapOffset = pSwitchFwCfg->prioMappingTableOffset;
         icssgBaseAddr = emac_mcb.port_cb[port_num].icssDram0BaseAddr;
-        for(p = 0; p < EMAC_IOCTL_PRIO_MAX; p++)
+        for(pcp = 0U; pcp < EMAC_IOCTL_PRIO_MAX; pcp++)
         {
-            finalPrioQueueMap[p] = CSL_REG8_RD(icssgBaseAddr + prioMapOffset + (pPrioRegenMap->prioRegenMap[p]));
+            finalPrioQueueMap[pcp] = CSL_REG8_RD(icssgBaseAddr + prioMapOffset + (pPrioRegenMap->prioRegenMap[pcp]));
         }
         /* Build up the or lists */
-        for (p = 0; p < EMAC_IOCTL_PRIO_MAX; p++)
+        for (pcp = 0U; pcp < EMAC_IOCTL_PRIO_MAX; pcp++)
         {
-            classSelect = finalPrioQueueMap[p];
-            orEnable[classSelect] |= (1 << p);
+            classSelect = finalPrioQueueMap[pcp];
+            orEnable[classSelect] |= (1U << pcp);
         }
 
         /* now program classifier c */
-        for (c = 0; c<EMAC_IOCTL_PRIO_MAX;c++ )
+        for (pcp = 0U; pcp < EMAC_IOCTL_PRIO_MAX; pcp++ )
         {
             /* Configure OR Enable*/
-            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS0_OR_EN_PRU0 + (8*c)), orEnable[c]);
+            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS0_OR_EN_PRU0 + (8U * pcp)), orEnable[pcp]);
             /* Configure AND Enable */
-            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS0_AND_EN_PRU0 + (8*c)), andEnable[c]);
+            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS0_AND_EN_PRU0 + (8U * pcp)), andEnable[pcp]);
             tempReg = CSL_REG32_RD(baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_CFG1_PRU0);
-            tempReg &= ~(0x3 << (c * 2));
+            tempReg &= ~(0x3U << (pcp * 2U));
             CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_CFG1_PRU0), tempReg);
             /* Configure NV Enable */
             /* Configure NV Enable bits (1 bit in upper16, 1bit in lower16 */
             tempReg = CSL_REG32_RD(baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_CFG2_PRU0);
-            if (orNvEnable[c])
-                tempReg |= 1 << (c + 16);
+            if (orNvEnable[pcp])
+                tempReg |= 1U << (pcp + 16U);
             else
-                tempReg &= ~(1 << (c + 16));
-            if (andNvEnable[c])
-                tempReg |= 1 << (c);
+                tempReg &= ~(1U << (pcp + 16U));
+            if (andNvEnable[pcp])
+                tempReg |= 1U << (pcp);
             else
-                tempReg &= ~(1 << (c));
+                tempReg &= ~(1U << (pcp));
             CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_CFG2_PRU0), tempReg);
             /* Configure class gate */
-            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_GATES0_PRU0 + (4*c)), gateConfig);
+            CSL_REG32_WR((baseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_CLASS_GATES0_PRU0 + (4U * pcp)), gateConfig);
         }
 
         emac_ioctl_get_fw_config(port_num, &pEmacFwCfg);
@@ -1439,7 +1437,7 @@ EMAC_DRV_ERR_E emac_ioctl_configure_cut_through_or_prempt_select_ctrl(uint32_t p
     }
     else
     {
-        int8_t queue_num;
+        uint8_t queue_num;
         uint8_t temp_byte;
         uintptr_t expressPremptiveQueueAddr;
         EMAC_IOCTL_PARAMS *pParams = (EMAC_IOCTL_PARAMS*) p_params;
@@ -1452,10 +1450,10 @@ EMAC_DRV_ERR_E emac_ioctl_configure_cut_through_or_prempt_select_ctrl(uint32_t p
             emac_mcb.port_cb[port_num].getFwCfg(port_num,&pEmacFwCfg);
             pSwitchFwCfg = (EMAC_ICSSG_SWITCH_FW_CFG*) pEmacFwCfg->pFwPortCfg;
             expressPremptiveQueueAddr = emac_mcb.port_cb[port_num].icssDram0BaseAddr + pSwitchFwCfg->expressPremptiveQueueOffset;
-            for (queue_num = 0; queue_num < EMAC_IOCTL_PRIO_MAX; queue_num++)
+            for (queue_num = 0U; queue_num < EMAC_IOCTL_PRIO_MAX; queue_num++)
             {
-                temp_byte = (entry->pcpPreemptMap[queue_num] << 4) | (entry->pcpCutThroughMap[queue_num] << 7);   /*as per bit order in descriptor flags. Helps save PRU cycles*/
-                CSL_REG8_WR(expressPremptiveQueueAddr+(queue_num*4), temp_byte);
+                temp_byte = (entry->pcpPreemptMap[queue_num] << 4U) | (entry->pcpCutThroughMap[queue_num] << 7U);   /*as per bit order in descriptor flags. Helps save PRU cycles*/
+                CSL_REG8_WR(expressPremptiveQueueAddr+(queue_num*4U), temp_byte);
             }
         }
     }

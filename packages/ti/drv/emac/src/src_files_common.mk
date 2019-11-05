@@ -27,7 +27,7 @@ PACKAGE_SRCS_COMMON += src/v5 soc/emac_soc_v5.h
 endif
 
 PACKAGE_SRCS_COMMON += makefile emac_component.mk nss_if.h \
-                      emac_hwcfg.h emac_drv.h emacver.h \
+                      emac_hwcfg.h emac_drv.h emac_ioctl.h emacver.h \
                       src/emac_osal.h \
                       build/makefile.mk \
 		      build/makefile_indp.mk \

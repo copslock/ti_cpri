@@ -531,17 +531,17 @@ emac_open_udma_channel_tx(uint32_t portNum,EMAC_PER_CHANNEL_CFG_TX*pChCfg)
     chPrms.cqRingPrms.elemCnt   = pChCfg->elementCount;
 
     /* Open TX channel for transmit */
-    retVal = Udma_chOpen(emac_mcb.port_cb[portNum].udmaHandle, pChCfg->chHandle, UDMA_CH_TYPE_TX, &chPrms);
+    retVal = Udma_chOpen(emac_mcb.port_cb[portNum].udmaHandle, (Udma_ChHandle)(pChCfg->chHandle), UDMA_CH_TYPE_TX, &chPrms);
 
     if(UDMA_SOK == retVal)
     {
         UdmaChTxPrms_init(&txPrms, UDMA_CH_TYPE_TX);
         txPrms.filterPsWords = TISCI_MSG_VALUE_RM_UDMAP_TX_CH_FILT_PSWORDS_ENABLED;
         txPrms.dmaPriority = UDMA_DEFAULT_UTC_CH_DMA_PRIORITY;
-        retVal = Udma_chConfigTx(pChCfg->chHandle, &txPrms);
+        retVal = Udma_chConfigTx((Udma_ChHandle)(pChCfg->chHandle), &txPrms);
         if(UDMA_SOK == retVal)
         {
-            retVal = Udma_chEnable(pChCfg->chHandle);
+            retVal = Udma_chEnable((Udma_ChHandle)(pChCfg->chHandle));
             if (UDMA_SOK == retVal)
             {
                 retVal =  EMAC_DRV_RESULT_OK;
@@ -583,7 +583,7 @@ emac_setup_udma_channel_interrupt(uint32_t portNum, EMAC_PER_CHANNEL_CFG_RX*pChC
     UdmaEventPrms_init(&eventPrms);
     eventPrms.eventType         = UDMA_EVENT_TYPE_DMA_COMPLETION;
     eventPrms.eventMode         = UDMA_EVENT_MODE_SHARED;
-    eventPrms.chHandle          = pChCfg->chHandle;
+    eventPrms.chHandle          = (Udma_ChHandle)(pChCfg->chHandle);
     eventPrms.masterEventHandle = NULL;
 
     pRxChannel->subChan[0].eventHandle = eventHandle;
@@ -603,10 +603,10 @@ emac_setup_udma_channel_interrupt(uint32_t portNum, EMAC_PER_CHANNEL_CFG_RX*pChC
     {
         EMAC_osalSemParamsInit(&semParams);
         semParams.mode = SemaphoreP_Mode_BINARY;
-        semParams.name= "rxSemaphore";
+        semParams.name= (char*)("rxSemaphore");
         if (eventType == EMAC__RX_PKT_CHAN)
         {
-            semParams.name= "rxSemaphore";
+            semParams.name= (char*)("rxSemaphore");
             EMAC_GLOBAL_RX_SEM_HANDLE(portNum, ringNum) =  EMAC_osalCreateBlockingLock(0,&semParams);
             if((EMAC_GLOBAL_RX_SEM_HANDLE(portNum, ringNum)) ==  NULL)
             {
@@ -615,7 +615,7 @@ emac_setup_udma_channel_interrupt(uint32_t portNum, EMAC_PER_CHANNEL_CFG_RX*pChC
         }
         else
         {
-            semParams.name= "rxMgmtSemaphore";
+            semParams.name= (char*)("rxMgmtSemaphore");
             EMAC_GLOBAL_RX_MGMT_SEM_HANDLE(portNum, ringNum) =  EMAC_osalCreateBlockingLock(0,&semParams);
             if((EMAC_GLOBAL_RX_MGMT_SEM_HANDLE(portNum, ringNum)) ==  NULL)
             {
@@ -648,8 +648,8 @@ emac_setup_additional_flows(uint32_t portNum, EMAC_PER_CHANNEL_CFG_RX*pChCfg, ui
             /* subChan 0 is the default flow, start with subChan 1 for additinal flows*/
             for (subChanNum = 1; subChanNum < pChCfg->nsubChan;subChanNum++)
             {
-                 freeRingHandle = pChCfg->subChan[subChanNum].freeRingHandle[0];
-                 completionRingHandle = pChCfg->subChan[subChanNum].compRingHandle;
+                 freeRingHandle = (Udma_RingHandle)(pChCfg->subChan[subChanNum].freeRingHandle[0]);
+                 completionRingHandle = (Udma_RingHandle)(pChCfg->subChan[subChanNum].compRingHandle);
  
                 if (channelType == EMAC__RX_PKT_CHAN)
                 {
@@ -756,7 +756,7 @@ emac_setup_udma_channel_rx(uint32_t portNum,EMAC_PER_CHANNEL_CFG_RX* pChCfg, uin
     uint32_t regVal;
 
     UTILS_trace(UTIL_TRACE_LEVEL_INFO, emac_mcb.drv_trace_cb, "port: %d: ENTER",portNum);
-    chHandle = pChCfg->chHandle;
+    chHandle = (Udma_ChHandle)(pChCfg->chHandle);
 
     if (pChCfg->nsubChan > 0)
     {
@@ -989,7 +989,7 @@ static int32_t
 emac_close_tx_subsystem (uint32_t port_num)
 {
     EMAC_CPPI_DESC_T *pCppiDesc;
-    int32_t chanNum;
+    uint32_t chanNum;
     Udma_ChHandle txChHandle;
     UTILS_trace(UTIL_TRACE_LEVEL_INFO, emac_mcb.drv_trace_cb, "port: %d: ENTER",port_num);
 
@@ -1127,7 +1127,7 @@ void emac_cleanup_free_ring(uint32_t portNum, uint64_t *pRingMem)
 static int32_t
 emac_close_rx_subsystem (uint32_t port_num)
 {
-    int32_t subChanNum ;
+    uint32_t subChanNum ;
     Udma_RingHandle ringHandle = NULL;
 
     uint32_t numSubChan;
@@ -1136,11 +1136,11 @@ emac_close_rx_subsystem (uint32_t port_num)
     if (emac_mcb.port_cb[port_num].mode_of_operation == EMAC_MODE_INTERRUPT)
     {
         EMAC_osalDeleteBlockingLock(EMAC_GLOBAL_RX_SEM_HANDLE(port_num, subChanNum));
-        Udma_eventUnRegister(emac_mcb.port_cb[port_num].rxPktCh.subChan[subChanNum].eventHandle);
+        Udma_eventUnRegister((Udma_EventHandle)(emac_mcb.port_cb[port_num].rxPktCh.subChan[subChanNum].eventHandle));
         if (port_num != EMAC_CPSW_PORT_NUM)
         {
             EMAC_osalDeleteBlockingLock(EMAC_GLOBAL_RX_MGMT_SEM_HANDLE(port_num, subChanNum));
-            Udma_eventUnRegister(emac_mcb.port_cb[port_num].rxMgmtCh.subChan[subChanNum].eventHandle);
+            Udma_eventUnRegister((Udma_EventHandle)(emac_mcb.port_cb[port_num].rxMgmtCh.subChan[subChanNum].eventHandle));
         }
     }
 
@@ -1149,19 +1149,19 @@ emac_close_rx_subsystem (uint32_t port_num)
     {
         Udma_chClose(emac_mcb.port_cb[port_num].rxPktCh.rxChHandle);
         emac_cleanup_comp_ring(port_num, emac_mcb.port_cb[port_num].rxPktCh.rxChHandle->cqRing);
-        emac_cleanup_free_ring(port_num, emac_mcb.port_cb[port_num].rxPktCh.subChan[0].freeRingMem[0]);
+        emac_cleanup_free_ring(port_num, (uint64_t *)(emac_mcb.port_cb[port_num].rxPktCh.subChan[0].freeRingMem[0]));
         numSubChan = emac_mcb.port_cb[port_num].rxPktCh.nsubChan;
         if (numSubChan > 1)
         {
             Udma_flowFree(emac_mcb.port_cb[port_num].rxPktCh.flowHandle);
-            for(subChanNum = 1;subChanNum < numSubChan;subChanNum++)
+            for(subChanNum = 1; subChanNum < numSubChan;subChanNum++)
             {
                 ringHandle = emac_mcb.port_cb[port_num].pollTable.rxPkt[subChanNum].compRingHandle;
                 emac_cleanup_comp_ring(port_num, ringHandle);
                 Udma_ringFree(ringHandle);
 
                 ringHandle = emac_mcb.port_cb[port_num].pollTable.rxPkt[subChanNum].freeRingHandle;
-                emac_cleanup_free_ring(port_num, emac_mcb.port_cb[port_num].rxPktCh.subChan[subChanNum].freeRingMem[0]);
+                emac_cleanup_free_ring(port_num, (uint64_t *)(emac_mcb.port_cb[port_num].rxPktCh.subChan[subChanNum].freeRingMem[0]));
                 Udma_ringFree(ringHandle);
             }
         }
@@ -1171,7 +1171,7 @@ emac_close_rx_subsystem (uint32_t port_num)
     if (emac_mcb.port_cb[port_num].rxMgmtCh2.rxChHandle)
     {
         Udma_chClose(emac_mcb.port_cb[port_num].rxMgmtCh2.rxChHandle);
-        emac_cleanup_free_ring(port_num, emac_mcb.port_cb[port_num].rxMgmtCh2.subChan[0].freeRingMem[0]);
+        emac_cleanup_free_ring(port_num, (uint64_t *)(emac_mcb.port_cb[port_num].rxMgmtCh2.subChan[0].freeRingMem[0]));
     }
 
     /* free up resources for rx mgmt channel and sub-channels */
@@ -1179,7 +1179,7 @@ emac_close_rx_subsystem (uint32_t port_num)
     {
         Udma_chClose(emac_mcb.port_cb[port_num].rxMgmtCh.rxChHandle);
         emac_cleanup_comp_ring(port_num, emac_mcb.port_cb[port_num].rxMgmtCh.rxChHandle->cqRing);
-        emac_cleanup_free_ring(port_num, emac_mcb.port_cb[port_num].rxMgmtCh.subChan[0].freeRingMem[0]);
+        emac_cleanup_free_ring(port_num, (uint64_t *)(emac_mcb.port_cb[port_num].rxMgmtCh.subChan[0].freeRingMem[0]));
         numSubChan = emac_mcb.port_cb[port_num].rxMgmtCh.nsubChan;
         if (numSubChan > 1)
         {
@@ -1191,7 +1191,7 @@ emac_close_rx_subsystem (uint32_t port_num)
                 Udma_ringFree(ringHandle);
     
                 ringHandle = emac_mcb.port_cb[port_num].pollTable.rxMgmt[subChanNum].freeRingHandle;
-                emac_cleanup_free_ring(port_num, emac_mcb.port_cb[port_num].rxMgmtCh.subChan[subChanNum].freeRingMem[0]);
+                emac_cleanup_free_ring(port_num, (uint64_t *)(emac_mcb.port_cb[port_num].rxMgmtCh.subChan[subChanNum].freeRingMem[0]));
                 Udma_ringFree(ringHandle);
             }
         }
@@ -1267,7 +1267,7 @@ static EMAC_DRV_ERR_E emac_interposer_setup_switch(uint32_t port_num,  EMAC_OPEN
  */
 static void emac_config_icssg_dual_mac_fw(uint32_t port_num, EMAC_HwAttrs_V5 *hwAttrs)
 {
-    int32_t bufferPoolNum;
+    uint32_t bufferPoolNum;
     EMAC_PER_PORT_ICSSG_FW_CFG *pEmacFwCfg;
     EMAC_PRU_CFG_T pruCfg;
     Udma_FlowHandle flowHandle;
@@ -1324,9 +1324,9 @@ static void emac_config_icssg_dual_mac_fw(uint32_t port_num, EMAC_HwAttrs_V5 *hw
             pruCfg.mgr_flow= Udma_flowGetNum( flowHandle);
         }
 
-        for (bufferPoolNum = 8; bufferPoolNum < EMAC_NUM_TRANSMIT_FW_QUEUES*2;bufferPoolNum++)
+        for (bufferPoolNum = 8U; bufferPoolNum < EMAC_NUM_TRANSMIT_FW_QUEUES*2;bufferPoolNum++)
         {
-            pruCfg.tx_bs[bufferPoolNum] = pDmFwCfg->txHostQueueSize[bufferPoolNum-8];
+            pruCfg.tx_bs[bufferPoolNum] = pDmFwCfg->txHostQueueSize[bufferPoolNum-8U];
         }
     
         emac_hw_mem_write(hwAttrs->portCfg[port_num].icssSharedRamBaseAddr, &(pruCfg),(sizeof(EMAC_PRU_CFG_T)/4));
@@ -1806,11 +1806,11 @@ static EMAC_DRV_ERR_E EMAC_get_stats_v5(uint32_t port_num, EMAC_STATISTICS_T*   
 /*
  *  ======== emac_read_icssg_hw_stats ========
  */
-void emac_read_icssg_hw_stats(uintptr_t statsBaseAddr, uint32_t* statPtr, int8_t statsOffset, bool clear)
+void emac_read_icssg_hw_stats(uintptr_t statsBaseAddr, uint32_t* statPtr, uint8_t statsOffset, bool clear)
 
 {
     uint32_t *tempStatsPtr = (uint32_t*)statPtr;
-    int8_t i;
+    uint8_t i;
     for (i = statsOffset;  i < sizeof(EMAC_STATISTICS_ICSSG_T)/4; i++)
     {
         *tempStatsPtr = CSL_REG32_RD(statsBaseAddr+ (i *4));
@@ -1851,7 +1851,7 @@ static EMAC_DRV_ERR_E EMAC_get_stats_icssg_v5(uint32_t port_num, EMAC_STATISTICS
                 if ((emac_is_port_open(0,3) == true))
                 {
                     /* need to query port 0 for RX*/
-                    emac_read_icssg_hw_stats(emac_mcb.port_cb[0].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU0, statPtr, 0, clear);
+                    emac_read_icssg_hw_stats(emac_mcb.port_cb[0].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU0, statPtr, 0U, clear);
                     /* need to query port 3 for TX*/
                     statPtr = (uint32_t*)p_stats + EMAC_ICSSG_TX_STATS_OFFSET ;
                     emac_read_icssg_hw_stats(emac_mcb.port_cb[3].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU1, (uint32_t*)p_stats + EMAC_ICSSG_TX_STATS_OFFSET, EMAC_ICSSG_TX_STATS_OFFSET, clear);
@@ -1863,7 +1863,7 @@ static EMAC_DRV_ERR_E EMAC_get_stats_icssg_v5(uint32_t port_num, EMAC_STATISTICS
                 if ((emac_is_port_open(2,1) == true))
                 {
                     /* need to query port 2 for RX */
-                    emac_read_icssg_hw_stats(emac_mcb.port_cb[2].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU0, statPtr, 0, clear);
+                    emac_read_icssg_hw_stats(emac_mcb.port_cb[2].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU0, statPtr, 0U, clear);
                     /* need to query port 1 for TX */
                     statPtr = (uint32_t*)p_stats + EMAC_ICSSG_TX_STATS_OFFSET;
                     emac_read_icssg_hw_stats(emac_mcb.port_cb[1].icssgCfgRegBaseAddr + CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU1, (uint32_t*)p_stats + EMAC_ICSSG_TX_STATS_OFFSET , EMAC_ICSSG_TX_STATS_OFFSET, clear);
@@ -1875,7 +1875,7 @@ static EMAC_DRV_ERR_E EMAC_get_stats_icssg_v5(uint32_t port_num, EMAC_STATISTICS
                 if ((emac_is_port_open(0,3) == true))
                 {
                     /* need to query port 0 for RX*/
-                    emac_read_icssg_hw_stats(emac_mcb.port_cb[0].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU0, statPtr, 0, clear);
+                    emac_read_icssg_hw_stats(emac_mcb.port_cb[0].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU0, statPtr, 0U, clear);
                     /* need to query port 3 for TX*/
                     statPtr = (uint32_t*)p_stats + EMAC_ICSSG_TX_STATS_OFFSET;
                     emac_read_icssg_hw_stats(emac_mcb.port_cb[3].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU1, (uint32_t*)p_stats + EMAC_ICSSG_TX_STATS_OFFSET, EMAC_ICSSG_TX_STATS_OFFSET, clear);
@@ -1887,7 +1887,7 @@ static EMAC_DRV_ERR_E EMAC_get_stats_icssg_v5(uint32_t port_num, EMAC_STATISTICS
                 if ((emac_is_port_open(1,1) == true))
                 {
                     /* need to query port 2 for RX*/
-                    emac_read_icssg_hw_stats(emac_mcb.port_cb[2].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU0, statPtr, 0, clear);
+                    emac_read_icssg_hw_stats(emac_mcb.port_cb[2].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU0, statPtr, 0U, clear);
                     /* need to query port 1 for TX*/
                     statPtr = (uint32_t*)p_stats + EMAC_ICSSG_TX_STATS_OFFSET;
                     emac_read_icssg_hw_stats(emac_mcb.port_cb[1].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU1, (uint32_t*)p_stats + EMAC_ICSSG_TX_STATS_OFFSET , EMAC_ICSSG_TX_STATS_OFFSET, clear);
@@ -1902,11 +1902,11 @@ static EMAC_DRV_ERR_E EMAC_get_stats_icssg_v5(uint32_t port_num, EMAC_STATISTICS
                     {
                         if ((port_num & 1) == 0)
                         {
-                            emac_read_icssg_hw_stats(emac_mcb.port_cb[port_num].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU0, statPtr, 0, clear);
+                            emac_read_icssg_hw_stats(emac_mcb.port_cb[port_num].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU0, statPtr, 0U, clear);
                         }
                         else
                         {
-                            emac_read_icssg_hw_stats(emac_mcb.port_cb[port_num].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU1, statPtr, 0, clear);
+                            emac_read_icssg_hw_stats(emac_mcb.port_cb[port_num].icssgCfgRegBaseAddr +  CSL_ICSS_G_PR1_MII_RT_PR1_MII_RT_G_CFG_REGS_G_RX_STAT_GOOD_PRU1, statPtr, 0U, clear);
                         }
                         retVal = EMAC_DRV_RESULT_OK;
                     }
