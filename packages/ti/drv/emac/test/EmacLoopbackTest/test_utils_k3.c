@@ -1474,17 +1474,51 @@ void emac_test_get_cpsw_stats(void)
     UART_printf("EMAC_UT_%d  collecting cpsw stats passed\n", app_test_id);
 }
 
+#define APP_TEST_AM65XX_PG1_0_VERSION (0x0BB5A02FU)
+
 void app_test_udma_init(void)
 {
     int32_t         retVal = UDMA_SOK;
     Udma_InitPrms   initPrms;
     uint32_t        instId;
 
-#ifdef EMAC_TEST_APP_CPSW
+#if defined (SOC_AM65XX)
+#if defined (EMAC_TEST_APP_CPSW)
+    /* if A53 and pg 1.0 use mcu navss due to hw errata*/
+    uint32_t pgVersion = CSL_REG32_RD(CSL_WKUP_CTRL_MMR0_CFG0_BASE + CSL_WKUP_CTRL_MMR_CFG0_JTAGID);
+#if defined (BUILD_MPU1_0)
+    if (pgVersion == APP_TEST_AM65XX_PG1_0_VERSION)
+    {
+        instId = UDMA_INST_ID_MCU_0;
+    }
+    else
+    {
+        instId = UDMA_INST_ID_MAIN_0;
+    }
+#else
     instId = UDMA_INST_ID_MCU_0;
-    UdmaInitPrms_init(instId, &initPrms);
+#endif
+#else
+    /* icssg use case */
+    instId = UDMA_INST_ID_MAIN_0;
+#endif
+#endif
+
+#if defined (SOC_J721E)
+#if defined (EMAC_TEST_APP_CPSW)
+#if defined (BUILD_MPU1_0)
+    instId = UDMA_INST_ID_MAIN_0;
+#elif defined (BUILD_MCU1_0)
+    instId = UDMA_INST_ID_MCU_0;
 #else
     instId = UDMA_INST_ID_MAIN_0;
+#endif
+#else
+    /* icssg use case */
+    instId = UDMA_INST_ID_MAIN_0;
+#endif
+#endif
+
     UdmaInitPrms_init(instId, &initPrms);
 
     initPrms.rmInitPrms.numIrIntr = EMAC_MAX_PORTS*8;
@@ -1496,7 +1530,7 @@ void app_test_udma_init(void)
 
     initPrms.rmInitPrms.startFreeRing= 2;
     initPrms.rmInitPrms.numFreeRing = 300;
-#endif
+
     /* UDMA driver init */
     retVal = Udma_init(&gUdmaDrvObj, &initPrms);
     if(UDMA_SOK == retVal)
