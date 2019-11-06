@@ -38,11 +38,6 @@ endif
 
 COMP = drvnimu
 
-# Temporary override since this component has known warnings for listed SOCS
-ifeq ($(SOC),$(filter $(SOC), dra72x dra75x am574x am572x am571x k2h k2k k2l k2e k2g am437x am335x dra78x omapl137 omapl138 ))
-override TREAT_WARNINGS_AS_ERROR=no
-export TREAT_WARNINGS_AS_ERROR
-endif
 lib_$(COMP)_BUILD_DEPENDENCY = soc
 
 $(COMP)_DOXYGEN_SUPPORT = no

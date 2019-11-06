@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016, Texas Instruments Incorporated
+# Copyright (c) 2016-2019, Texas Instruments Incorporated
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ MODULE_NAME = nimu_icss_indp
 #  need to be included for this component
 INCLUDE_EXTERNAL_INTERFACES = xdc pdk ndk bios
 
-CFLAGS_LOCAL_COMMON = $(PDK_CFLAGS)
+CFLAGS_LOCAL_COMMON = $(PDK_CFLAGS) -DNDK_NOUSERAPIS
 
 # Include common make files
 ifeq ($(MAKERULEDIR), )

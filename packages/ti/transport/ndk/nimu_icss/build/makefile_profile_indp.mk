@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016, Texas Instruments Incorporated
+# Copyright (c) 2016-2019, Texas Instruments Incorporated
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -35,15 +35,16 @@ include $(PDK_NIMU_ICSS_COMP_PATH)/src/src_files_common.mk
 
 MODULE_NAME = nimu_icss_profile_indp
 
+CFLAGS_LOCAL_COMMON = $(PDK_CFLAGS) -DNDK_NOUSERAPIS 
 # List all the external components/interfaces, whose interface header files
 #  need to be included for this component
 INCLUDE_EXTERNAL_INTERFACES = xdc pdk ndk bios
 
 ifeq ($(BUILDTYPE),$(filter $(BUILDTYPE), profile profiledma))
   ifeq ($(CORE),$(filter $(CORE), a15_0 a9host a8host))
-    CFLAGS_LOCAL_COMMON = $(PDK_CFLAGS) -finstrument-functions -gdwarf-3 -g -D_ENABLE_BM
+    CFLAGS_LOCAL_COMMON += -finstrument-functions -gdwarf-3 -g -D_ENABLE_BM
   else
-    CFLAGS_LOCAL_COMMON = $(PDK_CFLAGS) --entry_parm=address --exit_hook=ti_utils_exit --exit_parm=address --entry_hook=ti_utils_entry -g -D_ENABLE_BM
+    CFLAGS_LOCAL_COMMON += --entry_parm=address --exit_hook=ti_utils_exit --exit_parm=address --entry_hook=ti_utils_entry -g -D_ENABLE_BM
   endif
 endif
 
