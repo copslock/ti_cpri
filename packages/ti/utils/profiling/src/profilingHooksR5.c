@@ -102,8 +102,12 @@ utilsProfilingElem elemlog[MAX_LOG] = {{0}};
  *  used by the instrumentation functions themselves. This is recorded and
  *  passed into post-processing for a more accurate result.
  */
-#pragma FUNC_CANNOT_INLINE(empty_fn);
 void empty_fn(void); /*for misra warnings*/
+#ifdef __cplusplus
+#pragma FUNC_CANNOT_INLINE
+#else
+#pragma FUNC_CANNOT_INLINE(empty_fn);
+#endif
 void empty_fn(void){
 }
 
@@ -178,8 +182,12 @@ void ti_utils_exit(void (* func_addr)(void)){
     }
 }
 
-#pragma NO_HOOKS (TaskRegisterId)
 void TaskRegisterId(int32_t hookSetId); /*for misra warnings*/
+#ifdef __cplusplus
+#pragma NO_HOOKS
+#else
+#pragma NO_HOOKS(TaskRegisterId);
+#endif
 void TaskRegisterId(int32_t hookSetId)
 {
 	CurrentTaskHookSetId = hookSetId;
@@ -191,8 +199,12 @@ void TaskRegisterId(int32_t hookSetId)
 
 /* ======== mySwitch ========
 * invoked whenever a Task switch occurs/is made ready to run */
-#pragma NO_HOOKS (mySwitch)
 void mySwitch(const void* prev, const void* next); /*for misra warnings*/
+#ifdef __cplusplus
+#pragma NO_HOOKS
+#else
+#pragma NO_HOOKS(mySwitch);
+#endif
 void mySwitch(const void* prev, const void* next)
 {
     if (log_idx < MAX_LOG){
