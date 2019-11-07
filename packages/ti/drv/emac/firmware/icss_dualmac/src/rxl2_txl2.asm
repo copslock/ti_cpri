@@ -91,6 +91,7 @@ DATA_ONLY	.set	1 ;control path moved to RTU
  .include "iep.h"
  .include "psisandf.h"
  .include "hd_helper.h"
+ .include "pa_stat.h"
 
 loop_here	.macro
 here?:	jmp	here?
@@ -516,12 +517,14 @@ no_new_tx:
 ; We either retranssmit or drop the packet
 ;  
 tx_proc_col:
+	m_inc_stat	r1.b0, TX_COL_RETRIES
 	qble	txp_max_retry, GRegs.ret_cnt, 16 ; todo: define
 	qblt	txp_max_retry, GRegs.tx_blk, 2	 ; TODO: update for late col
 	start_backoff_timer GRegs.ret_cnt
 	add	GRegs.ret_cnt, GRegs.ret_cnt, 1
 	qba	no_new_tx 
 txp_max_retry:
+	m_inc_stat	r1.b0, TX_COL_DROPPED
 	qbbs	txp_max_01, GRegs.tx.b.flags, f_next_dma	
 	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_P_FLAG
 	qba	txp_max_02
