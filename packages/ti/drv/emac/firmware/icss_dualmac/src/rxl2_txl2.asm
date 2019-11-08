@@ -62,7 +62,6 @@
 ; SLICE0 or SLICE1 must be defined  (but not both)
 ; WAIT_FOR_DEBUGGER:  wait for debugger to attach
 ; VLAN_ENABLED
-; PSILOOP
 DATA_ONLY	.set	1 ;control path moved to RTU
 
 ; sanity check ;{{{1
@@ -89,7 +88,6 @@ DATA_ONLY	.set	1 ;control path moved to RTU
  .include "filter.h"
  .include "lebe.h"
  .include "ipc.h"
- .include "psiloop.h"
  .include "iep.h"
  .include "psisandf.h"
 
@@ -262,7 +260,6 @@ RX:
 	ldi	GRegs.snf.b.rd_cur, MINPS
 	ldi	r30, 1522  ;todo - make a parameter
 	ldi32	r10, FW_CONFIG
-	lbbo	&r2, r10, CFG_N_BURST, 4
 
 ; set pru ready status
 	ldi32	r0, PRU_READY
@@ -278,19 +275,12 @@ wait_rtu_ready:
 ;BG TASK:     r24-r29  are global ;{{{1
 ;-------------------------------------------------------------------------
 	zero	&r18, 24
-	mov	BgRegs.borg_limit, r2 ; GS_NBURST ;
 
 ;================================
-; BG LOOP:  stay here until we see
-;            GRegs.pkt_cnt.w.tx == BgRegs.borg_limit if in borg mode
-;            until cmd cancel seen
-;=================================
+; BG LOOP:  until cmd cancel seen
+;================================
 bg_loop:
 	add	BgRegs.bg_cnt, BgRegs.bg_cnt, 1 ;loop count
-;can we exit?
-	qbeq	skip_chk, BgRegs.borg_limit, 0
-	qbeq	bg_done, GRegs.pkt_cnt.w.tx, BgRegs.borg_limit ; done
-skip_chk:
 ; if RTU started shutdown process - disable TM and loop forever
 	ldi32	r0, FW_CONFIG
 	ldi32	r1, RTU_STARTED_SHUTDOWN
@@ -338,12 +328,10 @@ th_schedule0:
 scheduler:
 	TM_DISABLE
 	qbeq	bg_schedule0, GRegs.tx.b.state, TX_S_IDLE ;if tx state is idle, check IPC for new descriptor
-	qbeq	bg_schedule1, GRegs.tx.b.state, TX_S_ERR ;if tx state is idle, check IPC for new descriptor
- .if $isdefed("PSILOOP")
-	qbeq	bg_schedulePL, GRegs.tx.b.state, TX_S_LOOP ;if psi loopback
- .endif
-
-;TX ACTIVE.
+	qbne	sched_done, GRegs.tx.b.state, TX_S_ERR ;if tx state is idle, check IPC for new descriptor
+;error case (underflow)
+;todo
+	ldi	GRegs.tx.b.state, TX_S_IDLE
 sched_done:
 	TM_ENABLE
 	jmp	bg_loop
@@ -354,13 +342,8 @@ bg_schedule0:
 ;check dma0
 	PRU_IPC_RX_CH0Q	sched_done, r2, XFR2VBUS_XID_READ0
 ; have new packet in r2= len-flags
- .if $isdefed("PSILOOP")
-	PSILOOP_TX_INIT	r2, XFR2VBUS_XID_READ0
-;don't pingpong with PSILOOP!
- .else
 	TX_TASK_INIT2_shell	r2
 	set	GRegs.tx.b.flags, GRegs.tx.b.flags, f_next_dma
- .endif
 	TM_ENABLE
 	jmp	bg_loop
 bg_chk1:
@@ -370,23 +353,6 @@ bg_chk1:
 	clr	GRegs.tx.b.flags, GRegs.tx.b.flags, f_next_dma
 	TM_ENABLE
 	jmp	bg_loop
-
-bg_schedule1:
-;error case (underflow)
-;todo
-	ldi	GRegs.tx.b.state, TX_S_IDLE
-	TM_ENABLE
-	jmp	bg_loop
- .if $isdefed("PSILOOP")
-bg_schedulePL:
-;psi loopback
-	flip_tx_r10_r23
-	PSILOOP_TX_POLL	XFR2VBUS_XID_READ0, psi_poll_done, psi_poll_done
-psi_poll_done:
-	flip_tx_r10_r23
-	TM_ENABLE
-	jmp	bg_loop
- .endif
 
 ;-------------------------------------
 ; done with packets.
@@ -414,7 +380,7 @@ bg_done:
 
 ;---------------------------------------------------------------------
 ; TX_EOF  EvENT {{{1
-;----------------------------------------------------------------------
+;---------------------------------------------------------------------
 TX_EOF:
 	qbne	tx_underflow, GRegs.tx.b.state, TX_S_W_EOF
 ; TX TS processing
@@ -425,46 +391,27 @@ TX_EOF:
 	sbbo	&r2, r10, 0, 8
 	SPIN_TOG_LOCK_LOC	PRU_RTU_TX_TS_READY
 no_tx_ts:
-	flip_tx_r0_r23
-
-;-----------------------------
-;Legit EOF. Restore registers
-;-----------------------------
-legit_tx_eof:
-	flip_tx_r0_r23
 	qbbs	teof_chk1, GRegs.tx.b.flags, f_next_dma
-;check dma0
 	PRU_IPC_RX_CH0Q	no_new_tx, r2, XFR2VBUS_XID_READ0
-; have new packet in r2= len-flags
 	TX_TASK_INIT2	r2
 	set	GRegs.tx.b.flags, GRegs.tx.b.flags, f_next_dma 
 	jmp	tx_eof_on_deck_done
 teof_chk1:
-;check 2nd dma
 	PRU_IPC_RX_CH0Q	no_new_tx, r3, XFR2VBUS_XID_READ1
 	TX_TASK_INIT2	r3
 	clr	GRegs.tx.b.flags, GRegs.tx.b.flags, f_next_dma
 
-;started next pkt, terminate task
 tx_eof_on_deck_done:
 	TM_YIELD
-;these next 2 instructions are done in delayed branch fashion
 	flip_tx_r0_r23
 	add	GRegs.pkt_cnt.w.tx, GRegs.pkt_cnt.w.tx, 1
 	loop_here
 
-;---------------------------------------------
-;eof w/ no new packet to TX
-;---------------------------------------------
 no_new_tx:
 	ldi	GRegs.tx.b.state, TX_S_IDLE
-	TM_YIELD
-	add	GRegs.pkt_cnt.w.tx, GRegs.pkt_cnt.w.tx, 1
-	flip_tx_r0_r23
-	loop_here
+	qba	tx_eof_on_deck_done
 
 ;------exception cases------
-;underflow case:
 tx_underflow:
 	ldi	GRegs.tx.b.state, TX_S_ERR
 	TM_YIELD
@@ -480,48 +427,15 @@ tx_underflow:
 ;----------------------------------------------------------------------
 TX_FIFO:
 	qbeq	handle_portq, GRegs.tx.b.state, TX_S_ACTIVE
-;ignore rest
 	TM_YIELD
 	loop_here
 
-;----------------------
-; FROM PORTQ CASE
-;----------------------
 handle_portq:
 	flip_tx_r0_r23
-;
-;check to see if need to preempt!
-; conditions:  preempt enabled on port and pkt is preemptible
-;              and enuf bytes sent and  enuf bytes left and
-;              (hold set or Express Frame waiting )
-;if not preemptible pkt skip all
-	qbbs	skip_preempt, TxRegs.ds_flags, 4 ; R_TX_D1.f_desc_express
-	qbne	skip_preempt, TxRegs.pp_ppok, PPOK
-	qbbs	do_preempt, GRegs.tx.b.flags, f_tx_hold
-	qbbs	do_preempt, GRegs.tx.b.flags, f_tx_efq
-	qbbc	skip_preempt, GRegs.tx.b.flags, f_tx_efqd
-do_preempt:
-	END_TX_MCRC	;send MCRC
-	mov	TxRegs.stash_ds_flags, TxRegs.ds_flags
-	mov	TxRegs.stash_tx_len, GRegs.tx.b.len
-
-	set	GRegs.tx.b.flags, GRegs.tx.b.flags, f_tx_stash ;so we know
-	ldi	GRegs.tx.b.state, TX_S_W_PEOF
-	TM_YIELD
-	flip_tx_r0_r23
-	add	TxRegs.pp_count, TxRegs.pp_count, 1
-	loop_here
-
-skip_preempt:
-;assume data is here
 	TX_FILL_FIFO	XFR2VBUS_XID_READ0
 	TM_YIELD
 	flip_tx_r0_r23
 	loop_here
-
-;-------------------------------------------------------------------------
-; End TX_FIFO  EVENT
-;-------------------------------------------------------------------------
 
 ;-------------------------------------------------------------------------
 ;RXTX_ERR EVENT  ; {{{1

@@ -82,7 +82,6 @@ RX_RAW	.set	1
  .include "txrate.h"
  .include "rtu_psi.h"
  .include "iep.h"
- .include "psiloop.h"
 
 loop_here .macro
 here?:	jmp	here?
