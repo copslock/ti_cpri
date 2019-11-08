@@ -64,7 +64,8 @@
 #define SERVICENAMELEN         32U
 #define HEAPALIGNMENT          8U
 
-typedef struct RPMessage_Object*            RPMessage_EndptPool[MAXENDPOINTS];
+struct RPMessage_Object_s;
+typedef struct RPMessage_Object_s*            RPMessage_EndptPool[MAXENDPOINTS];
 
 /* ========================================================================== */
 /*                         Structure Declarations                             */

@@ -421,7 +421,7 @@ int32_t Ipc_getMailboxIntrRouterCfg(uint32_t selfId, uint32_t clusterId,
 
 const char* Ipc_getCoreName(uint32_t procId)
 {
-    char*     p = (void*)0;
+    char*     p = (char*)0;
     uint32_t id = procId;
 
     if(id < IPC_MAX_PROCS)
