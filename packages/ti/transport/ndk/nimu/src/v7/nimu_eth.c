@@ -35,7 +35,7 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-
+#include <string.h>
 #include <ti/csl/soc.h>
 #include <ti/csl/hw_types.h>
 
@@ -79,6 +79,7 @@ extern void Osal_free(void*       ptr, uint32_t      num_bytes);
 extern void Osal_TaskSleep(uint32_t sleepTime);
 
 #define NIMU_CPSW_PORT_NUM ((uint32_t)6U)
+#define NIMU_PORT_NAME_LEN ((uint32_t)5U)
 
 #define     NIMU_PKT_MTU_DEFAULT             1518
 
@@ -489,12 +490,13 @@ int32_t NimuEmacInit(uint32_t portNum, STKEVENT_Handle hEvent)
 {
     int32_t retVal = 0;
     NIMU_EMAC_DATA*      ptr_pvt_data;
+    char names[NIMU_CPSW_PORT_NUM][NIMU_PORT_NAME_LEN]={"eth0","eth1","eth2","eth3","eth4","eth5"};
 
     /* memset netif device struct */
     mmZeroInit((void*)(&ptr_device[portNum]), sizeof(NETIF_DEVICE));
 
     /* Allocate memory for the private data */
-    ptr_pvt_data = mmAlloc(sizeof(NIMU_EMAC_DATA));
+    ptr_pvt_data = (NIMU_EMAC_DATA*)(mmAlloc(sizeof(NIMU_EMAC_DATA)));
     if (ptr_pvt_data == NULL)
     {
         NIMU_drv_log ("Error: Unable to allocate private memory data\n");
@@ -515,8 +517,7 @@ int32_t NimuEmacInit(uint32_t portNum, STKEVENT_Handle hEvent)
         /* MCast List is EMPTY */
         ptr_pvt_data->pdi.mCastCnt    = 0;
         ptr_pvt_data->pdi.portNum = portNum;
-        sprintf(ptr_device[portNum].name,"eth%d\n", portNum);
-
+        strcpy(ptr_device[portNum].name, names[portNum]);
         ptr_device[portNum].mtu         = ETH_MAX_PAYLOAD - ETHHDR_SIZE;
         ptr_device[portNum].pvt_data    = (void *)ptr_pvt_data;
     

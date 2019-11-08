@@ -11,7 +11,7 @@ extern "C" {
  *
  *   path  ti/transport/ndk/nimu/nimu_ver.h
  *
- *   @brief  nimu for CPSW transport Version Definitions
+ *   @brief  nimu Driver Version Definitions
  *
  *  ============================================================
  *  Copyright (c) Texas Instruments Incorporated 2015-2019
@@ -47,17 +47,17 @@ extern "C" {
 */
 
 /**
- * @brief   This is the nimu Transport Version. Versions numbers are encoded in the following 
+ * @brief   This is the nimu Driver Version. Versions numbers are encoded in the following 
  * format:
  *  0xAABBCCDD -> Arch (AA); API Changes (BB); Major (CC); Minor (DD)
  */
 #define NIMU_TRANSPORT_VERSION_ID                     (0x01000011)
 
 /**
- * @brief   This is the version string which describes the nimu transport along with the
+ * @brief   This is the version string which describes the nimu driver along with the
  * date and build information.
  */
-#define NIMU_TRANSPORT_VERSION_STR                    "nimu tranport Revision: 01.00.00.17"
+#define NIMU_TRANSPORT_VERSION_STR                    "nimu Driver Revision: 01.00.00.17"
 
 
 #ifdef __cplusplus

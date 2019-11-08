@@ -58,7 +58,6 @@ M4LE.ccOpts.prefix  = "-o4 -qq -pdsw255 -DMAKEFILE_BUILD";
 var A9LE            = xdc.useModule('gnu.targets.arm.A9F');
 A9LE.rootDir        = a9ToolsBaseDir;
 A9LE.ccOpts.prefix  = "-mno-unaligned-access -c -mtune=cortex-a9 -marm -g -gstrict-dwarf -Wall -D__ARMv7 -D_LITTLE_ENDIAN=1";
-/* A9LE.ccOpts.prefix  = "-c -mcpu=cortex-a9 -mtune=cortex-a9 -march=armv7-a -mfpu=neon -mfloat-abi=hard -eo.$(OBJEXT) -ea.$(ASMEXT) -mlong-calls -fdata-sections -funsigned-char -ffunction-sections -Wall -Dgcc -Darmv7a -D_LITTLE_ENDIAN=1 -D SUPPORT_UNALIGNED -MD -MF $(DEPFILE).P "; */
 
 /* ARMv7 A8 compiler configuration */
 var A8LE            = xdc.useModule('gnu.targets.arm.A8F');

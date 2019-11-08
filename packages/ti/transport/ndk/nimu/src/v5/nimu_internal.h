@@ -45,7 +45,6 @@
 #ifndef _NIMU_INTERNAL_H_
 #define _NIMU_INTERNAL_H_
 
-//#include <ti/csl/tistdtypes.h>
 #include <ti/ndk/inc/stkmain.h>
 
 /* CSL EMAC include */

@@ -48,13 +48,6 @@
  *
  */
 
-#include <stdio.h> /* to use printf */
-#include <stdint.h>
-
-
-
-
-
 #include <ti/csl/csl_chip.h>
 #include <ti/csl/csl_semAux.h>
 #include <ti/csl/csl_bootcfgAux.h>
@@ -154,12 +147,6 @@ void CycleDelay (int32_t iCount)
   }
 #endif
 }
-
-void System_flush(void)
-{
-    fflush(stdout);
-}
-
 
 void nimu_task_poll_link(unsigned int* arg0, unsigned int* arg1)
 {
@@ -789,7 +776,7 @@ nimu_alloc_pkt
     Uint32              pkt_size
 )
 {
-    PBM_Handle pbmHandle;
+    PBM_Handle pbmHandle = NULL;
     EMAC_PKT_DESC_T*    p_pkt_desc = NULL;
      uint8_t* bufferPtr;
 

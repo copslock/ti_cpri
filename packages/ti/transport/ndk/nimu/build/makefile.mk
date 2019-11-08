@@ -33,7 +33,7 @@
 include $(PDK_INSTALL_PATH)/ti/build/Rules.make
 
 MODULE_NAME = nimu
-CFLAGS_LOCAL_COMMON =
+CFLAGS_LOCAL_COMMON = -DNDK_NOUSERAPIS
 
 ifeq ($(SOC),$(filter $(SOC), am571x am572x am574x am437x am335x dra72x dra75x dra78x))
 include $(PDK_NIMU_COMP_PATH)/src/v4/src_files_v4.mk
