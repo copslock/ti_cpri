@@ -60,8 +60,6 @@ extern "C" {
 
 #if defined (SOC_AM65XX)
 #include <ti/csl/src/ip/intr_router/V0/csl_intr_router.h>
-#include <ti/csl/src/ip/fss/V0/cslr_fss.h>
-#include <ti/csl/src/ip/rat/V0/csl_rat.h>
 #include <ti/csl/soc/am65xx/src/cslr_soc_baseaddress.h>
 #include <ti/csl/soc/am65xx/src/cslr_mcu_ctrl_mmr.h>
 #include <ti/csl/soc/am65xx/src/cslr_mcu_pll_mmr.h>
@@ -70,8 +68,6 @@ extern "C" {
 
 #if defined (SOC_J721E)
 #include <ti/csl/src/ip/intr_router/V0/csl_intr_router.h>
-#include <ti/csl/src/ip/fss/V0/cslr_fss.h>
-#include <ti/csl/src/ip/rat/V0/csl_rat.h>
 #include <ti/csl/soc/j721e/src/cslr_soc_baseaddress.h>
 #include <ti/csl/soc/j721e/src/cslr_mcu_ctrl_mmr.h>
 #include <ti/csl/soc/j721e/src/cslr_mcu_pll_mmr.h>
