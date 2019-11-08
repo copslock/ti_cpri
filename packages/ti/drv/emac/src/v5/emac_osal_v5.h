@@ -68,6 +68,10 @@
 #ifndef EMAC_OSAL_V5_H
 #define EMAC_OSAL_V5_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* include TI OSAL library interface header files */
 #include <ti/osal/osal.h>
 #include <ti/drv/emac/src/emac_osal.h>
@@ -107,9 +111,7 @@ static inline void Emac_osalFreeAlign
     void *result = (void *)*(aligned - 1);
     Osal_free(result, size);
 }
-//typedef uint64_t physptr_t;
 
-#if 1
 #if defined (__aarch64__)
 typedef uint64_t physptr_t;
 #else
@@ -117,9 +119,9 @@ typedef uint32_t physptr_t;
 #endif
 #endif
 
+
+#ifdef __cplusplus
+}
 #endif
 
-/**
-@}
-*/
-#endif /* __EMAC_OSAL_H__ */
+#endif /* EMAC_OSAL_V5_H */
