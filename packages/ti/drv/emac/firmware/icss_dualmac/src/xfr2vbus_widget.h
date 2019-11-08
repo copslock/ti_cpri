@@ -111,8 +111,7 @@ XFR2VBUS_READ64_RESULT	.macro 	 rnum
 
 XFR2VBUS_WAIT4READY .macro rnum
 $1:	xin	rnum, &r18, 4
-	qbeq	$2, r18.w0, 0x5
-$2:
+	qbne	$1, r18.w0, 0x5
  .endm
 
 ;read in data8
