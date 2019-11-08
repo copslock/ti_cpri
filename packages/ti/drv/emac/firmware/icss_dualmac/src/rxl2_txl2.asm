@@ -234,6 +234,10 @@ $2:	set	r31, r31, 29		;tx.eof
 
 Start:
 	TM_DISABLE
+	ldi32	r0, 0x80000000	;TODO: driver has to enable PA_STAT
+	ldi32	r1, 0x3c000
+	sbbo	&r0, r1, 8, 4
+
 	zero	&r0, 124
 	P2P_IPC_ZAP	;zap IPC area
 	xout	XFR2VBUS_XID_READ0, &r18, 4 ;disable xfr2vbus autoread mode
@@ -461,6 +465,7 @@ bg_done:
 TX_EOF:
 	qbne	tx_underflow, GRegs.tx.b.state, TX_S_W_EOF
 	flip_tx_r0_r23
+	m_inc_stat	r0.b0, 82
 	qbbs	tx_proc_col, GRegs.speed_f, f_stopped_due_col
 ; TX TS processing
 	qbbc	no_tx_ts, TxRegs.ds_flags, 5 ; we don't need tx_ts
