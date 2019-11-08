@@ -1,7 +1,7 @@
 ;
 ;  TEXAS INSTRUMENTS TEXT FILE LICENSE
 ;
-;   Copyright (c) 2018-2019 Texas Instruments Incorporated
+;   Copyright (c) 2019 Texas Instruments Incorporated
 ;
 ;  All rights reserved not granted herein.
 ;
@@ -52,68 +52,25 @@
 ;  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 ;  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-;---------------------------------------
-; file: smem.h
-; purpose:  smem layout
-;---------------------------------------
+TX_COL_RETRIES	.set	80
+TX_COL_DROPPED	.set	81
 
-;f/w configuration
- .if $isdefed("SLICE0")
-FW_CONFIG	.set	0x10000
- .else
-FW_CONFIG	.set	0x18000
+; index is just a number but not an offset.
+m_inc_stat .macro reg, index
+ .if $defined("PRU0")
+	ldi	reg, index
+	sbco	&reg, c9, 0x40, 1
  .endif
-FW_CONFIG_END		.set	(FW_CONFIG+1000 - 1)
-
-;MQ = port queues + 2 queues for RTU2RTU IPC
-;  =
-;- test (only 64 entries x 8 queue @12bytes) [portq] +
-;       (32 entries x 2 queues  @ 8 bytes )  [r2R IPC queues]
-MQBASE_START	.set	(FW_CONFIG_END + 1)
-MQBASE_END	.set	(MQBASE_START + 64*12*8+32*8*2-1)
-
-;vlan info area
-VLAN_START	.set	(MQBASE_END+1)
-
-; static configuration
-CFG_STATUS	.set 0x00	; only PRU can write here
-CFG_ADDR_LO	.set CFG_STATUS + 4
-CFG_ADDDR_HI	.set CFG_ADDR_LO + 4
-CFG_TX_BS_0	.set CFG_ADDDR_HI + 4
-CFG_TX_BS_8	.set (CFG_TX_BS_0 + 4 * 8)
-CFG_ACT_THR_N	.set (CFG_TX_BS_8 + 4 * 8)
-CFG_EGR_RATE_LIM_EN	.set CFG_ACT_THR_N + 4
-CFG_DEF_FLOW	.set CFG_EGR_RATE_LIM_EN + 4
-CFG_MGR_FLOW	.set CFG_DEF_FLOW + 4
-CFG_FLAGS	.set CFG_MGR_FLOW + 4
-CFG_N_BURST	.set CFG_FLAGS + 4 ;just for debug
-CFG_RTU_STATUS	.set CFG_N_BURST + 4 ; only RTU can write here
-CFG_OUT		.set CFG_RTU_STATUS + 4
-CFG_RES		.set CFG_OUT + 4
-
-CFG_SEED	.set CFG_RES + 4 ; seed to calculate random value
-BD_OFS_0	.set CFG_SEED + 4;
-BD_OFS_1	.set BD_OFS_0 + 8
-TX_IPG		.set BD_OFS_1 + 8
-BD_FREE		.set TX_IPG + 4
-
-
-TX_TS_BASE	.set 0x300
-
-; we will write 4 x 32bit area to process TX TS
-; word0 and word1 - TS
-; word2 - flags
-; word3 - cookie
-;
-
-RX_TS_BASE	.set TX_TS_BASE  + 16
-
-;============================================
-
-PRU_READY	.set 0x1234ad52
-RTU_READY	.set 0x44554841
-PRU_DONE	.set 0x10000001
-
-RTU_STARTED_SHUTDOWN	.set 0x12343333
-RTU_STOPPED	.set 0x1234DEAD
-PRU_STOPPED	.set 0x4455DEAD
+ .if $defined("PRU1")
+	ldi	reg, (index + 128)
+	sbco	&reg, c9, 0x44, 1
+ .endif
+ .if $defined("RTU0")
+	ldi	reg, index
+	sbco	&reg, c9, 0x48, 1
+ .endif
+ .if $defined("RTU1")
+	ldi	reg, (index + 128)
+	sbco	&reg, c9, 0x4c, 1
+ .endif
+	.endm

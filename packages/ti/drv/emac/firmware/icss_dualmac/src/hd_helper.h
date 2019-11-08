@@ -52,68 +52,114 @@
 ;  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 ;  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-;---------------------------------------
-; file: smem.h
-; purpose:  smem layout
-;---------------------------------------
+READ_RGMII_CFG	.macro rtmp, speed_flags
+	TM_DISABLE
+	lbco	&rtmp, c9, 0x4, 4
+	and	rtmp.b0, rtmp.b0, f_mask_o ; takes only speed/duplex related bits
+	and	speed_flags, speed_flags, f_mask_a ; clean old status
+	or	speed_flags, speed_flags, rtmp.b0
+	TM_ENABLE
+	.endm
 
-;f/w configuration
- .if $isdefed("SLICE0")
-FW_CONFIG	.set	0x10000
+; most likely IPG and backoff is the same timer
+; so, we will need only one macro 
+if_ipg_not_expired	.macro then_go
+	; TODO check IPG
+	; if not expired jmp then_go
+	ldi32	r2, FW_CONFIG
+	lbbo	&r3, r2, TX_IPG, 4 ;
+	lbco	&r4, c11, 0x0c, 4  ; read cycle counte
+	qbgt	then_go, r4, r3	   ; not expired yet
+	clr	GRegs.speed_f, GRegs.speed_f, f_wait_ipg
+	.endm
+
+; touch r2, r3, r4
+reset_cycle_cnt .macro
+	lbco	&r2, c11, 0x0, 4 ; disable cycle counter
+	clr	r2.t3
+	sbco	&r2, c11, 0x0, 4
+	zero	&r3, 4		 ; reset cycle counter
+	sbco	&r3, c11, 0xc, 4
+	set	r2.t3		 ; enable cycle counter
+	sbco	&r2, c11, 0x0, 4
+	.endm
+
+IPG_10MBPS	.set 2400 ; (12 * 8 * 100) nsec / 4
+IPG_10MBPS7	.set 3800 ; ((12 + 7) * 8 * 100) nsec / 4
+IPG_10MBPS_ADJ	.set 600  ; (3 * 8 * 100) / 4
+IPG_100MBPS_ADJ	.set 60   ; (3 * 8 * 10) / 4
+
+start_backoff_timer .macro num
+	reset_cycle_cnt
+	mov	r2, num
+	qbge	$3, r2, 9
+	ldi	r2, 9
+$3:	ldi	r3, 1		; create mask
+	not	r3, r3		;
+	lsl	r3, r3, r2	;
+	not	r3, r3		;
+	GET_IEP_CNT	r4	;
+	xor	r4.w0, r4.w0, r4.w2
+	ldi32	r2, FW_CONFIG	   ; read value from SEED
+	lbbo	&r5, r2, CFG_SEED, 4	; get seed
+	xor	r4, r4, r5	; xor time with seed 
+	and	r4, r4, r3	; mask with backoff interval
+	qbbc	$1, GRegs.speed_f, f_100mbps
+	; for 100 mbps multiply on 5.12 usec (r4 << 7) 
+	lsl	r3, r4, 7
+	ldi	r5, IPG_100MBPS_ADJ ;
+	qba	$2
+$1:	; for 10 mbps multiply on 51.2 usec (r4 << 10) + (r4 << 8)
+	lsl	r3, r4, 10
+	lsl	r4, r4, 8
+	add	r3, r3, r4
+	; for 10 MBPS we need to maintain IPG manually
+	; so if r3 is 0 then set it to 9.6 usec
+	qbne	$2, r3, 0
+	ldi	r3, IPG_10MBPS
+	ldi	r5, IPG_10MBPS_ADJ ;
+$2:	add	r3, r3, r5
+	sbbo	&r3, r2, TX_IPG, 4 ; store it to TX_IPG
+	set	GRegs.speed_f, GRegs.speed_f, f_wait_ipg
+	.endm
+
+start_ipg_timer .macro
+	reset_cycle_cnt
+	ldi32	r2, FW_CONFIG	   ;
+	ldi	r4, IPG_10MBPS7
+	sbbo	&r4, r2, TX_IPG, 4 ; store it to TX_IPG
+	set	GRegs.speed_f, GRegs.speed_f, f_wait_ipg
+	.endm
+
+
+; read 8bytes from smem offset to reg and reg+1
+; we use r0
+read_bd_from_smem .macro reg, offset
+	ldi32	r0, FW_CONFIG + offset
+	lbbo	&reg, r0, 0, 8
+	.endm
+
+write_bd_to_smem .macro reg, offset
+	ldi32	r0, FW_CONFIG + offset
+	sbbo	&reg, r0, 0, 8
+	.endm
+
+update_col_status .macro
+ .if $defined("SLICE0")
+	lbco	&r2, c27, 0x38, 4
  .else
-FW_CONFIG	.set	0x18000
+	lbco	&r2, c27, 0x3c, 4
  .endif
-FW_CONFIG_END		.set	(FW_CONFIG+1000 - 1)
+	qbbc	$1, r2, 1
+	set	GRegs.speed_f, GRegs.speed_f, f_col_detected
+$1:
+	.endm
 
-;MQ = port queues + 2 queues for RTU2RTU IPC
-;  =
-;- test (only 64 entries x 8 queue @12bytes) [portq] +
-;       (32 entries x 2 queues  @ 8 bytes )  [r2R IPC queues]
-MQBASE_START	.set	(FW_CONFIG_END + 1)
-MQBASE_END	.set	(MQBASE_START + 64*12*8+32*8*2-1)
+read_col_status .macro	reg
+ .if $defined("SLICE0")
+	lbco	&reg, c27, 0x38, 4
+ .else
+	lbco	&reg, c27, 0x3c, 4
+ .endif
+	.endm
 
-;vlan info area
-VLAN_START	.set	(MQBASE_END+1)
-
-; static configuration
-CFG_STATUS	.set 0x00	; only PRU can write here
-CFG_ADDR_LO	.set CFG_STATUS + 4
-CFG_ADDDR_HI	.set CFG_ADDR_LO + 4
-CFG_TX_BS_0	.set CFG_ADDDR_HI + 4
-CFG_TX_BS_8	.set (CFG_TX_BS_0 + 4 * 8)
-CFG_ACT_THR_N	.set (CFG_TX_BS_8 + 4 * 8)
-CFG_EGR_RATE_LIM_EN	.set CFG_ACT_THR_N + 4
-CFG_DEF_FLOW	.set CFG_EGR_RATE_LIM_EN + 4
-CFG_MGR_FLOW	.set CFG_DEF_FLOW + 4
-CFG_FLAGS	.set CFG_MGR_FLOW + 4
-CFG_N_BURST	.set CFG_FLAGS + 4 ;just for debug
-CFG_RTU_STATUS	.set CFG_N_BURST + 4 ; only RTU can write here
-CFG_OUT		.set CFG_RTU_STATUS + 4
-CFG_RES		.set CFG_OUT + 4
-
-CFG_SEED	.set CFG_RES + 4 ; seed to calculate random value
-BD_OFS_0	.set CFG_SEED + 4;
-BD_OFS_1	.set BD_OFS_0 + 8
-TX_IPG		.set BD_OFS_1 + 8
-BD_FREE		.set TX_IPG + 4
-
-
-TX_TS_BASE	.set 0x300
-
-; we will write 4 x 32bit area to process TX TS
-; word0 and word1 - TS
-; word2 - flags
-; word3 - cookie
-;
-
-RX_TS_BASE	.set TX_TS_BASE  + 16
-
-;============================================
-
-PRU_READY	.set 0x1234ad52
-RTU_READY	.set 0x44554841
-PRU_DONE	.set 0x10000001
-
-RTU_STARTED_SHUTDOWN	.set 0x12343333
-RTU_STOPPED	.set 0x1234DEAD
-PRU_STOPPED	.set 0x4455DEAD

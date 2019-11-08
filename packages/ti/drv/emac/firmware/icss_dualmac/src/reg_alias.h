@@ -138,7 +138,10 @@ pkt_len			.ushort
 		.endstruct
 	.endunion ;rx
 
-scratch	.uint
+speed_f	.ubyte		; speed/duplex flags
+ret_cnt	.ubyte		; retransmission counter
+tx_blk	.ubyte		; tx 64 byte blocks counter
+res	.ubyte		; 
 
 tx	.union
 x		.uint
@@ -179,6 +182,32 @@ res			.ubyte
 	.endstruct ;Struct_GLOBAL
 
 GRegs	.sassign r24, Struct_GLOBAL
+
+; 100/10Mbps/half duplex port flags. That is mirror of the correcponding bits
+; of the ICSSG_RGMII_CFG register
+ .if $isdefed("SLICE0")
+f_100mbps	.set	1
+f_1gbps		.set	2
+f_half_d	.set	3
+f_mask_o	.set	0xe
+f_mask_a	.set	0xf1
+
+f_col_detected	.set	4
+f_stopped_due_col .set	5
+f_wait_ipg	.set	6
+
+
+ .else
+f_100mbps	.set	5
+f_1gbps		.set	6
+f_half_d	.set	7
+f_mask_o	.set	0xe0
+f_mask_a	.set	0x1f
+
+f_col_detected	.set	0
+f_stopped_due_col .set	1
+f_wait_ipg	.set	2
+ .endif
 
 ;RX flags
 f_tohost	.set 0
@@ -300,7 +329,9 @@ other_port 	.set	1
 Struct_RTU_GLOBAL .struct
 ;-1-
 ret_addr	.ushort
-res1		.ushort
+res		.ubyte
+speed_f		.ubyte
+
 ;-2-
 StallMask	.ubyte
 ActThrdNum	.ubyte

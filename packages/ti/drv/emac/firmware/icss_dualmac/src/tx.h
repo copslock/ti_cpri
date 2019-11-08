@@ -149,7 +149,6 @@ TX_TASK_INIT2_shell	.macro	r_d
 ;main macro to initialize TX from s&f IPC 'queue'
 ; r_d  holds descriptor
 TX_TASK_INIT2	.macro	r_d
-
 ;temporary
 	mov	TxRegs.ds_flags, r_d.w2 ;descriptor2(flags, etc)
 	mov	GRegs.tx.b.len, r_d.w0  ;save length we are expecting to transmit
@@ -198,9 +197,11 @@ $3:	sub	GRegs.tx.b.len, GRegs.tx.b.len, 64
 	jmp	$9
 
 $4:	LAST_DMA_TO_TXL2 runit
+	qbbc	$6, GRegs.speed_f, f_half_d ; don't tell RTU yet 
 	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_P_FLAG
 	jmp	$6
 $5:	LAST_DMA_TO_TXL2 (runit + 1)
+	qbbc	$6, GRegs.speed_f, f_half_d ; don't tell RTU yet 
 	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_E_FLAG
 $6:	;close out tx
 	qbbs	$7, TxRegs.ds_flags, 0	;f_desc_do_crc

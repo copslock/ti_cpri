@@ -72,8 +72,8 @@ IEP_BASE1	.set	0x2f000
 IEP_CFG1_BASEx	.set	 (0x26000+0x30)
 
 IEP_GCFG	.set	0x00
-IEP_C64_HI	.set	0x10
-IEP_C64_LO	.set	0x14
+IEP_C64_HI	.set	0x14
+IEP_C64_LO	.set	0x10
 IEP_CAP_RX_S0	.set	0x20
 IEP_CAP_RX_S1	.set	0x30
 IEP_CAP_TX_S0	.set	0x40
@@ -171,5 +171,14 @@ GET_PKT_TX_TS	.macro 	 r_ts_h
 	ldi32	r0, (IEP_BASE1+IEP_CAP_TX_S1)
  .endif
 	lbbo	&r_ts_h, r0, 0, 8
+ .endm
+
+GET_IEP_CNT	.macro reg
+ .if $isdefed("SLICE0")
+	ldi32	r0, (IEP_BASE0+IEP_C64_LO)
+ .else ; slice1
+	ldi32	r0, (IEP_BASE1+IEP_C64_LO)
+ .endif
+	lbbo	&reg, r0, 0, 4
  .endm
 
