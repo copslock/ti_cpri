@@ -44,6 +44,8 @@
 extern "C" {
 #endif
 
+#define    IPC_INVALID_PROCID (0XFFU)   /**< Invalid Proc ID */
+
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
@@ -68,7 +70,23 @@ int32_t Ipc_getMailboxInfoRx(uint32_t selfId, uint32_t remoteId,
 int32_t Ipc_getMailboxIntrRouterCfg(uint32_t selfId, uint32_t clusterId,
                  uint32_t userId, Ipc_MbConfig* cfg, uint32_t cnt);
 uint32_t Ipc_getMailboxBaseAddr(uint32_t custerId);
+
+/**
+ * \brief Returns the core name for get core id
+ *
+ * \param procId [IN] Id of desired core.
+ *
+ * \return name of the given core id
+ * */
 const char* Ipc_getCoreName(uint32_t procId);
+
+/**
+ * \brief Returns Core ID based on core build flag
+ *
+ * \return Code ID of the current core
+ **/
+uint32_t Ipc_getCoreId(void);
+
 
 /* For Maxwell Device */
 #if defined (SOC_AM65XX)
