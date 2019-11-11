@@ -89,35 +89,6 @@ static Board_STATUS Board_sysInit(void)
         Sciclient_configPrmsInit(&config);
         ret = Sciclient_init(&config);
 
-#if defined(BUILD_MCU)
-        uint64_t mcuClkFreq;
-
-        if(ret == 0)
-        {
-            ret = Sciclient_pmGetModuleClkFreq(TISCI_DEV_MCU_R5FSS0_CORE0,
-                                               TISCI_DEV_MCU_R5FSS0_CORE0_CPU_CLK,
-                                               &mcuClkFreq,
-                                               SCICLIENT_SERVICE_WAIT_FOREVER);
-        }
-        if(ret == 0)
-        {
-            Osal_HwAttrs  hwAttrs;
-            uint32_t      ctrlBitmap;
-
-            ret = Osal_getHwAttrs(&hwAttrs);
-            if(ret == 0)
-            {
-                /*
-                 * Change the timer input clock frequency configuration
-                   based on R5 CPU clock configured
-                 */
-                hwAttrs.cpuFreqKHz = (int32_t)(mcuClkFreq/1000U);
-                ctrlBitmap         = OSAL_HWATTR_SET_CPU_FREQ;
-                ret = Osal_setHwAttrs(ctrlBitmap, &hwAttrs);
-            }
-        }
-#endif
-
         if(ret != 0)
         {
             status = BOARD_FAIL;
