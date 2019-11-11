@@ -117,7 +117,7 @@ typedef struct Ipc_InitPrms_s
      *   If NULL, the driver will assume a one-one mapping.
      *
      *   Note: The init fxn will initialize this to the default one-one map
-     *   function #Ipc_defaultPhyToVirtFxn
+     *   function Ipc_defaultPhyToVirtFxn
      */
     Ipc_VirtToPhyFxn        virtToPhyFxn;
     /**< If not NULL, this function will be called to convert virtual address
@@ -125,7 +125,7 @@ typedef struct Ipc_InitPrms_s
      *   If NULL, the driver will assume a one-one mapping.
      *
      *   Note: The init fxn will initialize this to the default one-one map
-     *   function #Ipc_defaultVirtToPhyFxn
+     *   function Ipc_defaultVirtToPhyFxn
      */
     Ipc_OsalPrms            osalPrms;
     /**< OSAL callback  parameters */
@@ -204,6 +204,9 @@ uint32_t RPMessage_getObjMemRequired(void);
  *  Can be called from Main or Task context.  Must be called before
  *  calling any other RPMessage function;
  *
+ *  \param params [IN] Address of the RPMessage_Params structure
+ *                used to create the RPMessage
+ *
  *  \return      #IPC_SOK or #IPC_EFAIL
  */
 int32_t RPMessage_init(RPMessage_Params *params);
@@ -214,6 +217,8 @@ int32_t RPMessage_init(RPMessage_Params *params);
  *  Can be called from Main or Task context.  Must be called after
  *  calling RPMessage_init. Must be called before any other RPMessage
  *  function to communicate with this proc;
+ *
+ *  \param proc [IN] Remote Proc ID
  *
  *  \return      #IPC_SOK or #IPC_EFAIL
  */
@@ -336,7 +341,7 @@ int32_t RPMessage_recv(RPMessage_Handle handle, void* data, uint16_t *len,
  *  \ref RPMessage_send
  */
 int32_t RPMessage_recvNb(RPMessage_Handle handle, void* data, uint16_t *len,
-                   uint32_t *rplyEndPt, uint32_t *rplyProcId);
+                   uint32_t *rplyEndPt, uint32_t *fromProcId);
 
 /**
  *  \brief Sends data to a remote processor.
@@ -455,7 +460,7 @@ int32_t RPMessage_announce(uint32_t remoteProcId, uint32_t endPt,
  *  It's expected that user of this driver shall invoke this function, on
  *  reception of interrupt from the mailbox associated with remote processor
  *
- *  \param remoteProcId    [IN] The remote processor ID
+ *  \param srcProcId    [IN] The remote processor ID
  *
  *  \return     - None
  *
@@ -466,8 +471,8 @@ void Ipc_newMessageIsr(uint32_t srcProcId);
  *
  *  \warning To be used only when built for baremetal
  *
- *  \param  uint16_t    Remote Processor Identifier
- *  \param  uint16_t    Own Proc ID
+ *  \param  selfId    Self Processor Identifier
+ *  \param  remoteProcId Remote Processor ID
  *
  *  \return None
  */
@@ -477,8 +482,8 @@ void Ipc_mailboxEnableNewMsgInt(uint16_t selfId, uint16_t remoteProcId);
  *
  *  \warning To be used only when built for baremetal
  *
- *  \param  uint16_t    Remote Processor Identifier
- *  \param  uint16_t    Own Proc ID
+ *  \param  selfId    Self Processor Identifier
+ *  \param  remoteProcId    Remote Processor ID
  *
  *  \return None
  */
