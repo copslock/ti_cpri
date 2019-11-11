@@ -59,8 +59,6 @@
 #include "I2C_log.h"
 #include "I2C_board.h"
 #ifdef SOC_AM65XX
-#include <ti/csl/src/ip/fss/V0/cslr_fss.h>
-#include <ti/csl/src/ip/rat/V0/csl_rat.h>
 #include <ti/csl/soc/am65xx/src/cslr_soc_baseaddress.h>
 #include <ti/csl/soc/am65xx/src/cslr_mcu_ctrl_mmr.h>
 #include <ti/csl/soc/am65xx/src/cslr_mcu_pll_mmr.h>
@@ -69,8 +67,6 @@
 #endif
 
 #ifdef SOC_J721E
-#include <ti/csl/src/ip/fss/V0/cslr_fss.h>
-#include <ti/csl/src/ip/rat/V0/csl_rat.h>
 #include <ti/csl/soc.h>
 #if defined (BUILD_DSP_1) || defined (BUILD_DSP_2)
 #include <ti/csl/csl_chipAux.h>
