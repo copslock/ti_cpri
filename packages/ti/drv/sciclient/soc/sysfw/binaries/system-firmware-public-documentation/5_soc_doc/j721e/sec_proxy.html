@@ -1,0 +1,1372 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>J721E Secure Proxy Descriptions &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../../index.html"/>
+        <link rel="up" title="Chapter 5: SoC Family Specific Documentation" href="../index.html"/>
+        <link rel="next" title="J721E Processor Descriptions" href="processors.html"/>
+        <link rel="prev" title="j721e Navigator Subsystem Descriptions" href="navss.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.08.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapter 5: SoC Family Specific Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#am6-soc-family">AM6 SoC Family</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#j721e-soc-family">J721E SoC Family</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="hosts.html">J721E Host Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">J721E Devices Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clocks.html">J721E Clock Identifiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="resasg_types.html">j721e Board Configuration Resource Assignment Type Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_sources.html">j721e Peripheral Interrupt Source Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_dsts.html">j721e Peripheral Interrupt Destination Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="navss.html">j721e Navigator Subsystem Descriptions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">J721E Secure Proxy Descriptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enumeration-of-secure-proxies">Enumeration of Secure Proxies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#thread-allocation-per-secure-proxy">Thread Allocation per Secure Proxy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="processors.html">J721E Processor Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firewalls.html">J721E Firewall Descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Chapter 5: SoC Family Specific Documentation</a> &raquo;</li>
+      
+    <li>J721E Secure Proxy Descriptions</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="j721e-secure-proxy-descriptions">
+<h1>J721E Secure Proxy Descriptions<a class="headerlink" href="#j721e-secure-proxy-descriptions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="soc-doc-j721e-public-sproxy-desc-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This chapter provides information of Secure Proxies and communication paths
+that are permitted in the J721E SoC. These host IDs represent processing entities
+(or PEs) which is mandatory identification of a Host in a processor. See
+PE/Host documentation for further information</p>
+</div>
+<div class="section" id="enumeration-of-secure-proxies">
+<span id="soc-doc-j721e-public-sproxy-desc-sproxy-list"></span><h2>Enumeration of Secure Proxies<a class="headerlink" href="#enumeration-of-secure-proxies" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="35%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Sproxy ID</th>
+<th class="head">Sproxy Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>NAVSS0_SEC_PROXY_0</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>MCU_NAVSS0_SEC_PROXY_0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="thread-allocation-per-secure-proxy">
+<span id="soc-doc-j721e-public-sproxy-desc-sproxy-per-list"></span><h2>Thread Allocation per Secure Proxy<a class="headerlink" href="#thread-allocation-per-secure-proxy" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="secure-proxy-thread-allocation-for-navss0-sec-proxy-0">
+<span id="soc-doc-j721e-public-sproxy-desc-sproxy-per-list-navss0-sec-proxy-0"></span><h3>Secure Proxy thread allocation for NAVSS0_SEC_PROXY_0<a class="headerlink" href="#secure-proxy-thread-allocation-for-navss0-sec-proxy-0" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="11%" />
+<col width="8%" />
+<col width="5%" />
+<col width="7%" />
+<col width="29%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Secure Proxy Thread ID</th>
+<th class="head">Direction (write or read)</th>
+<th class="head">Number of Messages</th>
+<th class="head">Host</th>
+<th class="head">Host Function</th>
+<th class="head">IRQ (threshold)</th>
+<th class="head">IRQ (error)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>read</td>
+<td>2</td>
+<td>A72_0</td>
+<td>notify</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_64, COMPUTE_CLUSTER0_GIC500SS/SPI_64</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_64, COMPUTE_CLUSTER0_GIC500SS/SPI_64</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>read</td>
+<td>30</td>
+<td>A72_0</td>
+<td>response</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_65, COMPUTE_CLUSTER0_GIC500SS/SPI_65</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_65, COMPUTE_CLUSTER0_GIC500SS/SPI_65</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>write</td>
+<td>10</td>
+<td>A72_0</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>write</td>
+<td>20</td>
+<td>A72_0</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>4</td>
+<td>write</td>
+<td>2</td>
+<td>A72_0</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>5</td>
+<td>read</td>
+<td>2</td>
+<td>A72_1</td>
+<td>notify</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_66, COMPUTE_CLUSTER0_GIC500SS/SPI_66</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_66, COMPUTE_CLUSTER0_GIC500SS/SPI_66</td>
+</tr>
+<tr class="row-even"><td>6</td>
+<td>read</td>
+<td>30</td>
+<td>A72_1</td>
+<td>response</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_67, COMPUTE_CLUSTER0_GIC500SS/SPI_67</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_67, COMPUTE_CLUSTER0_GIC500SS/SPI_67</td>
+</tr>
+<tr class="row-odd"><td>7</td>
+<td>write</td>
+<td>10</td>
+<td>A72_1</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>8</td>
+<td>write</td>
+<td>20</td>
+<td>A72_1</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>9</td>
+<td>write</td>
+<td>2</td>
+<td>A72_1</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>10</td>
+<td>read</td>
+<td>2</td>
+<td>A72_2</td>
+<td>notify</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_68, COMPUTE_CLUSTER0_GIC500SS/SPI_68</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_68, COMPUTE_CLUSTER0_GIC500SS/SPI_68</td>
+</tr>
+<tr class="row-odd"><td>11</td>
+<td>read</td>
+<td>22</td>
+<td>A72_2</td>
+<td>response</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_69, COMPUTE_CLUSTER0_GIC500SS/SPI_69</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_69, COMPUTE_CLUSTER0_GIC500SS/SPI_69</td>
+</tr>
+<tr class="row-even"><td>12</td>
+<td>write</td>
+<td>2</td>
+<td>A72_2</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>13</td>
+<td>write</td>
+<td>20</td>
+<td>A72_2</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>14</td>
+<td>write</td>
+<td>2</td>
+<td>A72_2</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>15</td>
+<td>read</td>
+<td>2</td>
+<td>A72_3</td>
+<td>notify</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_70, COMPUTE_CLUSTER0_GIC500SS/SPI_70</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_70, COMPUTE_CLUSTER0_GIC500SS/SPI_70</td>
+</tr>
+<tr class="row-even"><td>16</td>
+<td>read</td>
+<td>7</td>
+<td>A72_3</td>
+<td>response</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_71, COMPUTE_CLUSTER0_GIC500SS/SPI_71</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_71, COMPUTE_CLUSTER0_GIC500SS/SPI_71</td>
+</tr>
+<tr class="row-odd"><td>17</td>
+<td>write</td>
+<td>2</td>
+<td>A72_3</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>18</td>
+<td>write</td>
+<td>5</td>
+<td>A72_3</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>19</td>
+<td>write</td>
+<td>2</td>
+<td>A72_3</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>20</td>
+<td>read</td>
+<td>2</td>
+<td>A72_4</td>
+<td>notify</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_72, COMPUTE_CLUSTER0_GIC500SS/SPI_72</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_72, COMPUTE_CLUSTER0_GIC500SS/SPI_72</td>
+</tr>
+<tr class="row-odd"><td>21</td>
+<td>read</td>
+<td>7</td>
+<td>A72_4</td>
+<td>response</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_73, COMPUTE_CLUSTER0_GIC500SS/SPI_73</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_73, COMPUTE_CLUSTER0_GIC500SS/SPI_73</td>
+</tr>
+<tr class="row-even"><td>22</td>
+<td>write</td>
+<td>2</td>
+<td>A72_4</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>23</td>
+<td>write</td>
+<td>5</td>
+<td>A72_4</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>24</td>
+<td>write</td>
+<td>2</td>
+<td>A72_4</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>25</td>
+<td>read</td>
+<td>2</td>
+<td>C7X_0</td>
+<td>notify</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_734, COMPUTE_CLUSTER0_GIC500SS/SPI_734</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_734, COMPUTE_CLUSTER0_GIC500SS/SPI_734</td>
+</tr>
+<tr class="row-even"><td>26</td>
+<td>read</td>
+<td>7</td>
+<td>C7X_0</td>
+<td>response</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_735, COMPUTE_CLUSTER0_GIC500SS/SPI_735</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_735, COMPUTE_CLUSTER0_GIC500SS/SPI_735</td>
+</tr>
+<tr class="row-odd"><td>27</td>
+<td>write</td>
+<td>2</td>
+<td>C7X_0</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>28</td>
+<td>write</td>
+<td>5</td>
+<td>C7X_0</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>29</td>
+<td>write</td>
+<td>2</td>
+<td>C7X_0</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>30</td>
+<td>read</td>
+<td>2</td>
+<td>C7X_1</td>
+<td>notify</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_732, COMPUTE_CLUSTER0_GIC500SS/SPI_732</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_732, COMPUTE_CLUSTER0_GIC500SS/SPI_732</td>
+</tr>
+<tr class="row-odd"><td>31</td>
+<td>read</td>
+<td>7</td>
+<td>C7X_1</td>
+<td>response</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_733, COMPUTE_CLUSTER0_GIC500SS/SPI_733</td>
+<td>COMPUTE_CLUSTER0_CLEC/SOC_EVENTS_IN_733, COMPUTE_CLUSTER0_GIC500SS/SPI_733</td>
+</tr>
+<tr class="row-even"><td>32</td>
+<td>write</td>
+<td>2</td>
+<td>C7X_1</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>33</td>
+<td>write</td>
+<td>5</td>
+<td>C7X_1</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>34</td>
+<td>write</td>
+<td>2</td>
+<td>C7X_1</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>35</td>
+<td>read</td>
+<td>2</td>
+<td>C6X_0_0</td>
+<td>notify</td>
+<td>C66SS0_CORE0/C66_EVENT_IN_SYNC_4</td>
+<td>C66SS0_CORE0/C66_EVENT_IN_SYNC_4</td>
+</tr>
+<tr class="row-even"><td>36</td>
+<td>read</td>
+<td>7</td>
+<td>C6X_0_0</td>
+<td>response</td>
+<td>C66SS0_CORE0/C66_EVENT_IN_SYNC_5</td>
+<td>C66SS0_CORE0/C66_EVENT_IN_SYNC_5</td>
+</tr>
+<tr class="row-odd"><td>37</td>
+<td>write</td>
+<td>2</td>
+<td>C6X_0_0</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>38</td>
+<td>write</td>
+<td>5</td>
+<td>C6X_0_0</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>39</td>
+<td>write</td>
+<td>2</td>
+<td>C6X_0_0</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>40</td>
+<td>read</td>
+<td>2</td>
+<td>C6X_0_1</td>
+<td>notify</td>
+<td>C66SS0_CORE0/C66_EVENT_IN_SYNC_6</td>
+<td>C66SS0_CORE0/C66_EVENT_IN_SYNC_6</td>
+</tr>
+<tr class="row-odd"><td>41</td>
+<td>read</td>
+<td>7</td>
+<td>C6X_0_1</td>
+<td>response</td>
+<td>C66SS0_CORE0/C66_EVENT_IN_SYNC_7</td>
+<td>C66SS0_CORE0/C66_EVENT_IN_SYNC_7</td>
+</tr>
+<tr class="row-even"><td>42</td>
+<td>write</td>
+<td>2</td>
+<td>C6X_0_1</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>43</td>
+<td>write</td>
+<td>5</td>
+<td>C6X_0_1</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>44</td>
+<td>write</td>
+<td>2</td>
+<td>C6X_0_1</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>45</td>
+<td>read</td>
+<td>2</td>
+<td>C6X_1_0</td>
+<td>notify</td>
+<td>C66SS1_CORE0/C66_EVENT_IN_SYNC_4</td>
+<td>C66SS1_CORE0/C66_EVENT_IN_SYNC_4</td>
+</tr>
+<tr class="row-even"><td>46</td>
+<td>read</td>
+<td>7</td>
+<td>C6X_1_0</td>
+<td>response</td>
+<td>C66SS1_CORE0/C66_EVENT_IN_SYNC_5</td>
+<td>C66SS1_CORE0/C66_EVENT_IN_SYNC_5</td>
+</tr>
+<tr class="row-odd"><td>47</td>
+<td>write</td>
+<td>2</td>
+<td>C6X_1_0</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>48</td>
+<td>write</td>
+<td>5</td>
+<td>C6X_1_0</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>49</td>
+<td>write</td>
+<td>2</td>
+<td>C6X_1_0</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>50</td>
+<td>read</td>
+<td>2</td>
+<td>C6X_1_1</td>
+<td>notify</td>
+<td>C66SS1_CORE0/C66_EVENT_IN_SYNC_6</td>
+<td>C66SS1_CORE0/C66_EVENT_IN_SYNC_6</td>
+</tr>
+<tr class="row-odd"><td>51</td>
+<td>read</td>
+<td>7</td>
+<td>C6X_1_1</td>
+<td>response</td>
+<td>C66SS1_CORE0/C66_EVENT_IN_SYNC_7</td>
+<td>C66SS1_CORE0/C66_EVENT_IN_SYNC_7</td>
+</tr>
+<tr class="row-even"><td>52</td>
+<td>write</td>
+<td>2</td>
+<td>C6X_1_1</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>53</td>
+<td>write</td>
+<td>5</td>
+<td>C6X_1_1</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>54</td>
+<td>write</td>
+<td>2</td>
+<td>C6X_1_1</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>55</td>
+<td>read</td>
+<td>2</td>
+<td>GPU_0</td>
+<td>notify</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>56</td>
+<td>read</td>
+<td>7</td>
+<td>GPU_0</td>
+<td>response</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>57</td>
+<td>write</td>
+<td>2</td>
+<td>GPU_0</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>58</td>
+<td>write</td>
+<td>5</td>
+<td>GPU_0</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>59</td>
+<td>write</td>
+<td>2</td>
+<td>GPU_0</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>60</td>
+<td>read</td>
+<td>2</td>
+<td>MAIN_0_R5_0</td>
+<td>notify</td>
+<td>R5FSS0_CORE0/INTR_224</td>
+<td>R5FSS0_CORE0/INTR_224</td>
+</tr>
+<tr class="row-odd"><td>61</td>
+<td>read</td>
+<td>7</td>
+<td>MAIN_0_R5_0</td>
+<td>response</td>
+<td>R5FSS0_CORE0/INTR_225</td>
+<td>R5FSS0_CORE0/INTR_225</td>
+</tr>
+<tr class="row-even"><td>62</td>
+<td>write</td>
+<td>2</td>
+<td>MAIN_0_R5_0</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>63</td>
+<td>write</td>
+<td>5</td>
+<td>MAIN_0_R5_0</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>64</td>
+<td>write</td>
+<td>2</td>
+<td>MAIN_0_R5_0</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>65</td>
+<td>read</td>
+<td>2</td>
+<td>MAIN_0_R5_1</td>
+<td>notify</td>
+<td>R5FSS0_CORE0/INTR_226</td>
+<td>R5FSS0_CORE0/INTR_226</td>
+</tr>
+<tr class="row-even"><td>66</td>
+<td>read</td>
+<td>7</td>
+<td>MAIN_0_R5_1</td>
+<td>response</td>
+<td>R5FSS0_CORE0/INTR_227</td>
+<td>R5FSS0_CORE0/INTR_227</td>
+</tr>
+<tr class="row-odd"><td>67</td>
+<td>write</td>
+<td>2</td>
+<td>MAIN_0_R5_1</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>68</td>
+<td>write</td>
+<td>5</td>
+<td>MAIN_0_R5_1</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>69</td>
+<td>write</td>
+<td>2</td>
+<td>MAIN_0_R5_1</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>70</td>
+<td>read</td>
+<td>1</td>
+<td>MAIN_0_R5_2</td>
+<td>notify</td>
+<td>R5FSS0_CORE1/INTR_224</td>
+<td>R5FSS0_CORE1/INTR_224</td>
+</tr>
+<tr class="row-odd"><td>71</td>
+<td>read</td>
+<td>2</td>
+<td>MAIN_0_R5_2</td>
+<td>response</td>
+<td>R5FSS0_CORE1/INTR_225</td>
+<td>R5FSS0_CORE1/INTR_225</td>
+</tr>
+<tr class="row-even"><td>72</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_0_R5_2</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>73</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_0_R5_2</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>74</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_0_R5_2</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>75</td>
+<td>read</td>
+<td>1</td>
+<td>MAIN_0_R5_3</td>
+<td>notify</td>
+<td>R5FSS0_CORE1/INTR_226</td>
+<td>R5FSS0_CORE1/INTR_226</td>
+</tr>
+<tr class="row-even"><td>76</td>
+<td>read</td>
+<td>2</td>
+<td>MAIN_0_R5_3</td>
+<td>response</td>
+<td>R5FSS0_CORE1/INTR_227</td>
+<td>R5FSS0_CORE1/INTR_227</td>
+</tr>
+<tr class="row-odd"><td>77</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_0_R5_3</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>78</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_0_R5_3</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>79</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_0_R5_3</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>80</td>
+<td>read</td>
+<td>2</td>
+<td>MAIN_1_R5_0</td>
+<td>notify</td>
+<td>R5FSS1_CORE0/INTR_224</td>
+<td>R5FSS1_CORE0/INTR_224</td>
+</tr>
+<tr class="row-odd"><td>81</td>
+<td>read</td>
+<td>7</td>
+<td>MAIN_1_R5_0</td>
+<td>response</td>
+<td>R5FSS1_CORE0/INTR_225</td>
+<td>R5FSS1_CORE0/INTR_225</td>
+</tr>
+<tr class="row-even"><td>82</td>
+<td>write</td>
+<td>2</td>
+<td>MAIN_1_R5_0</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>83</td>
+<td>write</td>
+<td>5</td>
+<td>MAIN_1_R5_0</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>84</td>
+<td>write</td>
+<td>2</td>
+<td>MAIN_1_R5_0</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>85</td>
+<td>read</td>
+<td>2</td>
+<td>MAIN_1_R5_1</td>
+<td>notify</td>
+<td>R5FSS1_CORE0/INTR_226</td>
+<td>R5FSS1_CORE0/INTR_226</td>
+</tr>
+<tr class="row-even"><td>86</td>
+<td>read</td>
+<td>7</td>
+<td>MAIN_1_R5_1</td>
+<td>response</td>
+<td>R5FSS1_CORE0/INTR_227</td>
+<td>R5FSS1_CORE0/INTR_227</td>
+</tr>
+<tr class="row-odd"><td>87</td>
+<td>write</td>
+<td>2</td>
+<td>MAIN_1_R5_1</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>88</td>
+<td>write</td>
+<td>5</td>
+<td>MAIN_1_R5_1</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>89</td>
+<td>write</td>
+<td>2</td>
+<td>MAIN_1_R5_1</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>90</td>
+<td>read</td>
+<td>1</td>
+<td>MAIN_1_R5_2</td>
+<td>notify</td>
+<td>R5FSS1_CORE1/INTR_224</td>
+<td>R5FSS1_CORE1/INTR_224</td>
+</tr>
+<tr class="row-odd"><td>91</td>
+<td>read</td>
+<td>2</td>
+<td>MAIN_1_R5_2</td>
+<td>response</td>
+<td>R5FSS1_CORE1/INTR_225</td>
+<td>R5FSS1_CORE1/INTR_225</td>
+</tr>
+<tr class="row-even"><td>92</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_1_R5_2</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>93</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_1_R5_2</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>94</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_1_R5_2</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>95</td>
+<td>read</td>
+<td>1</td>
+<td>MAIN_1_R5_3</td>
+<td>notify</td>
+<td>R5FSS1_CORE1/INTR_226</td>
+<td>R5FSS1_CORE1/INTR_226</td>
+</tr>
+<tr class="row-even"><td>96</td>
+<td>read</td>
+<td>2</td>
+<td>MAIN_1_R5_3</td>
+<td>response</td>
+<td>R5FSS1_CORE1/INTR_227</td>
+<td>R5FSS1_CORE1/INTR_227</td>
+</tr>
+<tr class="row-odd"><td>97</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_1_R5_3</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>98</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_1_R5_3</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>99</td>
+<td>write</td>
+<td>1</td>
+<td>MAIN_1_R5_3</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>100</td>
+<td>read</td>
+<td>2</td>
+<td>ICSSG_0</td>
+<td>notify</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>101</td>
+<td>read</td>
+<td>7</td>
+<td>ICSSG_0</td>
+<td>response</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>102</td>
+<td>write</td>
+<td>2</td>
+<td>ICSSG_0</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>103</td>
+<td>write</td>
+<td>5</td>
+<td>ICSSG_0</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>104</td>
+<td>write</td>
+<td>2</td>
+<td>ICSSG_0</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="secure-proxy-thread-allocation-for-mcu-navss0-sec-proxy-0">
+<span id="soc-doc-j721e-public-sproxy-desc-sproxy-per-list-mcu-navss0-sec-proxy-0"></span><h3>Secure Proxy thread allocation for MCU_NAVSS0_SEC_PROXY_0<a class="headerlink" href="#secure-proxy-thread-allocation-for-mcu-navss0-sec-proxy-0" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="18%" />
+<col width="14%" />
+<col width="8%" />
+<col width="11%" />
+<col width="16%" />
+<col width="16%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Secure Proxy Thread ID</th>
+<th class="head">Direction (write or read)</th>
+<th class="head">Number of Messages</th>
+<th class="head">Host</th>
+<th class="head">Host Function</th>
+<th class="head">IRQ (threshold)</th>
+<th class="head">IRQ (error)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>read</td>
+<td>2</td>
+<td>MCU_0_R5_0</td>
+<td>notify</td>
+<td>MCU_R5FSS0_CORE0/INTR_64</td>
+<td>MCU_R5FSS0_CORE0/INTR_64</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>read</td>
+<td>7</td>
+<td>MCU_0_R5_0</td>
+<td>response</td>
+<td>MCU_R5FSS0_CORE0/INTR_65</td>
+<td>MCU_R5FSS0_CORE0/INTR_65</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>write</td>
+<td>2</td>
+<td>MCU_0_R5_0</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>write</td>
+<td>5</td>
+<td>MCU_0_R5_0</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>4</td>
+<td>write</td>
+<td>2</td>
+<td>MCU_0_R5_0</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>5</td>
+<td>read</td>
+<td>2</td>
+<td>MCU_0_R5_1</td>
+<td>notify</td>
+<td>MCU_R5FSS0_CORE0/INTR_66</td>
+<td>MCU_R5FSS0_CORE0/INTR_66</td>
+</tr>
+<tr class="row-even"><td>6</td>
+<td>read</td>
+<td>7</td>
+<td>MCU_0_R5_1</td>
+<td>response</td>
+<td>MCU_R5FSS0_CORE0/INTR_67</td>
+<td>MCU_R5FSS0_CORE0/INTR_67</td>
+</tr>
+<tr class="row-odd"><td>7</td>
+<td>write</td>
+<td>2</td>
+<td>MCU_0_R5_1</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>8</td>
+<td>write</td>
+<td>5</td>
+<td>MCU_0_R5_1</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>9</td>
+<td>write</td>
+<td>2</td>
+<td>MCU_0_R5_1</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>10</td>
+<td>read</td>
+<td>1</td>
+<td>MCU_0_R5_2</td>
+<td>notify</td>
+<td>MCU_R5FSS0_CORE1/INTR_64</td>
+<td>MCU_R5FSS0_CORE1/INTR_64</td>
+</tr>
+<tr class="row-odd"><td>11</td>
+<td>read</td>
+<td>2</td>
+<td>MCU_0_R5_2</td>
+<td>response</td>
+<td>MCU_R5FSS0_CORE1/INTR_65</td>
+<td>MCU_R5FSS0_CORE1/INTR_65</td>
+</tr>
+<tr class="row-even"><td>12</td>
+<td>write</td>
+<td>1</td>
+<td>MCU_0_R5_2</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>13</td>
+<td>write</td>
+<td>1</td>
+<td>MCU_0_R5_2</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>14</td>
+<td>write</td>
+<td>1</td>
+<td>MCU_0_R5_2</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>15</td>
+<td>read</td>
+<td>1</td>
+<td>MCU_0_R5_3</td>
+<td>notify</td>
+<td>MCU_R5FSS0_CORE1/INTR_66</td>
+<td>MCU_R5FSS0_CORE1/INTR_66</td>
+</tr>
+<tr class="row-even"><td>16</td>
+<td>read</td>
+<td>2</td>
+<td>MCU_0_R5_3</td>
+<td>response</td>
+<td>MCU_R5FSS0_CORE1/INTR_67</td>
+<td>MCU_R5FSS0_CORE1/INTR_67</td>
+</tr>
+<tr class="row-odd"><td>17</td>
+<td>write</td>
+<td>1</td>
+<td>MCU_0_R5_3</td>
+<td>high_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>18</td>
+<td>write</td>
+<td>1</td>
+<td>MCU_0_R5_3</td>
+<td>low_priority</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>19</td>
+<td>write</td>
+<td>1</td>
+<td>MCU_0_R5_3</td>
+<td>notify_resp</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="processors.html" class="btn btn-neutral float-right" title="J721E Processor Descriptions" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="navss.html" class="btn btn-neutral" title="j721e Navigator Subsystem Descriptions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'19.08.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

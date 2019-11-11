@@ -31,7 +31,7 @@
  *
  */
 /**
- *  \file sciclient_fmwSecureProxyMap.c
+ *  \file V1/sciclient_fmwSecureProxyMap.c
  *
  *  \brief File containing the secure proxy map for all hosts.
  *

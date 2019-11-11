@@ -1,0 +1,551 @@
+#!/bin/bash
+
+LSF_REBOOT_SCRIPT=/db/qt/com/blackbox
+# List of all XDS machines to Lauterbach's connected to them
+declare -A lb_machines
+# Currently functional t32 systems
+lb_machines[xds01]="lbties01"
+lb_machines[xds05]="lbties05"
+lb_machines[xds09]="lbties03"
+lb_machines[xdszebu30]="lbzebu30"
+lb_machines[xdszebu44]="lbzebu44"
+lb_machines[xdszebu42]="lbzebu42"
+lb_machines[xdszebu40]="lbzebu40"
+lb_machines[xdsties15]="lbties06"
+lb_machines[sim]=""
+lb_machines[gdb]=""
+lb_machines[usb]=""
+
+FONT="FONT=SMALL"
+if [ -z "$T32DIR" ]; then
+	if [ -d "/opt/t32" ]; then
+		T32DIR=/opt/t32
+	fi
+	if [ -z "$T32DIR" -a -d "/sim/lcpd/apps/t32" ]; then
+		T32DIR=/sim/lcpd/apps/t32/
+		TEXTFONT="TEXTFONT=Monospace"
+		FONT="FONT=MEDIUM"
+	fi
+	if [ -z "$T32DIR" -a -d "/data/gem5/t32/" ]; then
+		T32DIR=/data/gem5/t32/
+		TEXTFONT="TEXTFONT=Monospace"
+		FONT="FONT=MEDIUM"
+	fi
+fi
+if [ -z "$T32DIR" ]; then
+	echo "Unable to find Trace32 installation.. exiting.."
+	exit 1
+else
+	echo "T32 directory: $T32DIR"
+fi
+
+if [ -z "$TMP" ]; then
+	TMP=/tmp
+fi
+
+if [ -z "$CMM_DIR" ]; then
+	FILE="${BASH_SOURCE[0]}"
+
+	rpath=`which realpath 2>/dev/null`
+	if [ -n "$rpath" ]; then
+		FILE=`realpath ${FILE}`
+	fi
+	rpath=`which realpath-8.25 2>/dev/null`
+	if [ -n "$rpath" ]; then
+		FILE=`realpath-8.25 ${FILE}`
+	fi
+	CMM_DIR="$( cd "$( dirname "${FILE}" )" && pwd )"
+fi
+
+LSF=0
+if [ -x $LSF_REBOOT_SCRIPT ]; then
+	LSF=1
+fi
+
+all_machines=""
+for machine in "${!lb_machines[@]}"
+do
+	all_machines="$all_machines $machine"
+done
+all_lbs=""
+for machine in "${!lb_machines[@]}"
+do
+	all_lbs="$all_lbs ${lb_machines[$machine]}"
+done
+
+declare -A options_help
+usage() {
+	if [ -n "$*" ]; then
+		echo "ERROR: $*"
+	fi
+	echo "Help:"
+	echo "See http://avv.design.ti.com/cgi-bin/qt for QTs that have lauterbach"
+	echo "This is a wrapper script that lets us start up T32 in various configurations"
+	echo
+	echo -n "Usage: $0 "
+	for option in "${!options_help[@]}"
+	do
+		arg=`echo ${options_help[$option]}|cut -d ':' -f1`
+		if [ -n "$arg" ]; then
+			arg=" $arg"
+		fi
+		echo -n "[-$option$arg] "
+	done
+	echo -e "\nWhere:"
+	for option in "${!options_help[@]}"
+	do
+		arg=`echo ${options_help[$option]}|cut -d ':' -f1`
+		txt=`echo ${options_help[$option]}|cut -d ':' -f2`
+		tb="\t\t"
+		if [ -n "$arg" ]; then
+			arg=" $arg"
+			tb="\t"
+		fi
+		echo -e "   -$option$arg:$tb$txt"
+	done
+	echo
+	echo "Mapping of Lauterbachs to various machines:"
+	for machine in "${!lb_machines[@]}"
+	do
+		echo "  $machine --> ${lb_machines[$machine]}"
+	done
+	echo
+	echo "Examples of usage:"
+	echo "Connect to the Lauterbach on QT xds01 ARMv8 (a53):"
+	echo "$0 -m xds01"
+	echo "OR"
+	echo "$0 -l lbties01"
+	echo "Connect to the Lauterbach on QT xds09 ARMv8 (a53):"
+	echo "$0 -m xds09"
+	echo "OR"
+	echo "$0 -l lbties03"
+	echo "Connect to the Lauterbach simulator:"
+	echo "$0 -m sim"
+	echo "Connect to the Lauterbach to a GDB server (such as OpenOCD): See http://www2.lauterbach.com/pdf/frontend_gdb.pdf "
+	echo "$0 -m gdb"
+	echo "Connect to the Lauterbach on QT xds09 for ARMV7 (M3/R5):"
+	echo "$0 -m xds09 -7"
+	echo "OR"
+	echo "$0 -l lbties03 -7"
+	echo
+	echo "NOTES on AMP mode"
+	echo "Always start amp 0 first -this is the masterID"
+	echo "Example: connect to A53 core 0 and 1 in AMP mode"
+	echo "$0 -m xds09 -a 0"
+	echo "$0 -m xds09 -a 1"
+	echo
+	echo "startup T32 with options -s ./startup.cmm cpu0 run1 test.cmm:"
+	echo "$0 -m xds09 -a 0 -T '-s ./startup.cmm cpu0 run1 test.cmm'"
+	echo "will turn to <path>/t32marm-qt -c /tmp/asdasa -s ./startup.cmm cpu0 run1 test.cmm"
+	echo "Here, anything after -T in between the ''s will be passed as is to t32 as an option"
+	echo
+}
+options_help[m]="mach_name:mach_name is QT/Zebu Machine Name, one of $all_machines (defaults to sim)"
+options_help[l]="lb_name:lb_name is QT/Zebu Lauterbach Name, one of $all_lbs"
+options_help[8]=":ARM V8 arch (default)"
+options_help[A]=":A53 v8 arch"
+options_help[M]=":CM3 v7 arch"
+options_help[R]=":R5 v7 arch"
+options_help[7]=":ARM v7 arch"
+options_help[6]=":C6000 arch"
+options_help[P]=":PRU arch"
+options_help[h]=":This help text"
+options_help[c]="cfg_file: generate 'cfg_file' as config file instead of temporary one"
+options_help[T]="'arg1 arg2':Additional Trace32 arguments arg1 arg2 in ''"
+options_help[a]="amp_core: Use AMP mode of T32 to connect to 'amp_core' where amp_core is a number 0-n"
+options_help[s]=":Single instance mode(NOT AMP)"
+options_help[b]=":Start T32 in background mode - default for AMP"
+options_help[p]="start_port:In AMP mode, which port to start from."
+options_help[f]=":Force foreground(use at end to override AMP settings)"
+options_help[t]="additional_text:Add additional text to t32 window"
+options_help[X]="XauthMagicCookie: Start remote X using local PC with magic cookie 'XauthMagicCookie'"
+options_help[x]=":Use \$XAUTHCOOKIE variable from environment as XauthMagicCookie: Start remote X using local PC with magic cookie 'XauthMagicCookie'"
+options_help[r]=":Reboot Lauterbach prior to using it (Valid ONLY ON LSF farm)"
+
+# Defaults
+MACHINE=sim
+LB=""
+MODE=64
+BG=0
+AMP_PORT_START=10000
+LEGOP=1
+T32_EXTRA_ARGS=""
+REBOOT=0
+while getopts "m:l:c:T:a:p:t:X:AMR87hsbfxr6P" opt
+do
+	LEGOP=0
+	case $opt in
+	m)
+		MACHINE=$OPTARG
+	;;
+	l)
+		LB=$OPTARG
+	;;
+	r)
+		if [ $LSF -eq 1 ]; then
+			REBOOT=1
+		else
+			usage "Cannot Reboot Lauterbach since we are not on LSF farm"
+			exit 1
+		fi
+	;;
+	b)
+		BG=1
+	;;
+	f)
+		BG=0
+	;;
+	p)
+		AMP_PORT_START=$OPTARG
+	;;
+	[8A])
+		# Talk to V8 core
+		MODE=64
+	;;
+	[MR7])
+		# Talk to V7 core
+		MODE=32
+	;;
+	6)
+		# Talk to C6000
+		MODE=6000
+	;;
+	P)
+		# Talk to PRUSS
+		MODE="pru"
+	;;
+	s)
+		if [ x"$SINGLE" == x0 ]; then
+			usage "Conflict - Single AND AMP mode requested"
+			exit 1
+		fi
+		SINGLE=1
+	;;
+	t)
+		ADDITIONAL_T32_TEXT=$OPTARG
+	;;
+	a)
+		if [ x"$SINGLE" == x1 ]; then
+			usage "Conflict - Single AND AMP mode requested"
+			exit 1
+		fi
+		SINGLE=0
+		AMP_CORE=$OPTARG
+		BG=1
+	;;
+	x)
+		if [ -z "$XAUTHCOOKIE" ]; then
+			usage "env var \$XAUTHCOOKIE missing- first run xauth list \$DISPLAY on local PC"
+			exit 1
+		fi
+		MY_XAUTHCOOKIE=$XAUTHCOOKIE
+	;;
+	X)
+		MY_XAUTHCOOKIE=$OPTARG
+	;;
+	c)
+		CONFIG_FILE=$OPTARG
+	;;
+	T)
+		T32_EXTRA_ARGS="$OPTARG"
+	;;
+	h)
+		usage
+		exit 0
+	;;
+	\?)
+		usage "Invalid Option '-$OPTARG'"
+		exit 1
+	;;
+	:)
+		usage "Option '-$OPTARG' Needs an argument."
+		exit 1
+	;;
+	esac
+done
+# Get rid of all the options we passed as arguments remaining set passed on to T32 as is
+shift $(($OPTIND - 1))
+
+if [ $LEGOP -eq 1 ]; then
+	usage "Still Using Legacy options... See if you can upgrade command line.. Will proceed though.."
+	XDS="$1"
+	if [ x"$XDS" == x"xds01" -o x"$XDS" == x"lbties01" ]; then
+		LB=lbties01
+		shift
+	fi
+	if [ x"$XDS" == x"xds09" -o x"$XDS" == x"lbties03" ]; then
+		LB=lbties03
+		shift
+	fi
+
+	ARCH="$1"
+	if [ -z "$ARCH" -o x"$ARCH" == x64 ]; then
+		MODE=64
+		shift
+	fi
+
+	if [ x"$ARCH" == x32 ]; then
+		MODE=32
+		shift
+	fi
+fi
+# Cleanup Hooks
+TMPC=0
+cleanup() {
+	if [ "$TMPC" -eq 1 ]; then
+		rm -f $CONFIG_FILE 2>/dev/null
+	fi
+}
+cleanup_auto() {
+	if [ "$BG" -eq 0 ]; then
+		cleanup
+	fi
+}
+trap cleanup_auto INT EXIT TERM
+
+if [ -z "$CONFIG_FILE" ]; then
+	CONFIG_FILE=`mktemp`
+	TMPC=1
+fi
+# Default is single instance mode
+if [ -z "$SINGLE" ]; then
+	SINGLE=1
+fi
+
+if [ x"$LB" != x ]; then
+	# Validate LB name and find MACHINE
+	FND=0
+	for machine in "${!lb_machines[@]}"
+	do
+		lb=${lb_machines[$machine]}
+		if [ "$lb" == "$LB" ]; then
+			MACHINE=$machine
+			FND=1
+			break
+		fi
+	done
+	if [ "$FND" -eq 0 ]; then
+		usage "Lauterbach '$LB' not valid?"
+		exit 1
+	fi
+else
+	# Validate MACHINE name and find LB
+	FND=0
+	for machine in "${!lb_machines[@]}"
+	do
+		if [ "$machine" == "$MACHINE" ]; then
+			LB=${lb_machines[$machine]}
+			FND=1
+			break
+		fi
+	done
+	if [ "$FND" -eq 0 ]; then
+		usage "Machine '$MACHINE' not valid?"
+		exit 1
+	fi
+fi
+
+if [ x"$LB" != x ]; then
+	LB_IS_NAME=`echo $LB|grep "lbties\|lbzebu"`
+	if [ -n "$LB_IS_NAME" ]; then
+		if [ $REBOOT -eq 1 ]; then
+			echo "Rebooting Lauterbach"
+			$LSF_REBOOT_SCRIPT boot $LB
+			echo "Sleeping for 30 seconds for T32 to be functional"
+			sleep 30
+		fi
+		LB=$LB.dal.design.ti.com
+	fi
+fi
+
+screen_section() {
+	echo "SCREEN="
+	if [ -n "$FONT" ]; then
+		echo "$FONT"
+	fi
+	if [ -n "$TEXTFONT" ]; then
+		echo "$TEXTFONT"
+	fi
+	if [ -n "$*" ]; then
+		echo "$*"
+	fi
+}
+generate_single_mach_config() {
+	echo
+	echo "PBI="
+	echo "NET"
+	echo "NODE=$LB"
+	echo
+	screen_section "HEADER=TRACE32 Single For PowerView for $CPU_TYPE on Lauterbach $LB [Connected to $MACHINE] - Single instance mode $ADDITIONAL_T32_TEXT"
+}
+
+generate_amp_mach_config() {
+	echo
+	echo "OS="
+	echo "ID=T32_$ID"
+	echo
+	echo "IC=NETASSIST"
+	echo "PORT="$((AMP_PORT_START + AMP_CORE))
+	echo "PACKLEN=1024"
+	echo
+
+	echo "PBI="
+	echo "NET"
+	echo "NODE=$LB"
+	echo "CORE="$((AMP_CORE + 1))
+	echo
+
+	screen_section "HEADER=TRACE32 AMP $AMP_CORE For PowerView for $CPU_TYPE on Lauterbach $LB [Connected to $MACHINE] $ADDITIONAL_T32_TEXT"
+
+}
+
+generate_sim_config() {
+	screen_section "HEADER=TRACE32 For PowerView for $CPU_TYPE on Lauterbach Simulator $ADDITIONAL_T32_TEXT"
+}
+generate_gdb_config() {
+	echo "PBI=GDB"
+	echo
+	echo "OS="
+
+	echo
+	screen_section "HEADER=TRACE32 For PowerView for $CPU_TYPE on GDB $ADDITIONAL_T32_TEXT"
+}
+generate_usb_config() {
+	echo "OS="
+
+	if [ $SINGLE -ne 1 ]; then
+		echo "ID=T32_$ID"
+		echo
+		echo "IC=NETASSIST"
+		echo "PORT="$((AMP_PORT_START + AMP_CORE))
+		echo "PACKLEN=1024"
+	fi
+	echo
+	echo "PBI="
+	echo "USB"
+	if [ $SINGLE -ne 1 ]; then
+		echo "NODE=$LB"
+		echo "CORE="$((AMP_CORE + 1))
+	fi
+	echo
+
+	echo
+	if [ $SINGLE -ne 1 ]; then
+		screen_section "HEADER=TRACE32 AMP $AMP_CORE For PowerView for $CPU_TYPE on Lauterbach $LB [Connected to $MACHINE] $ADDITIONAL_T32_TEXT"
+	else
+		screen_section "HEADER=TRACE32 For PowerView for $CPU_TYPE on USB $ADDITIONAL_T32_TEXT"
+	fi
+}
+
+generate_config() {
+	if [ $MODE == 32 ]; then
+		export CPU_TYPE="ARMV7[A15/A8/R5/M3..]"
+		ID="A0"
+	fi
+	if [ $MODE == 64 ]; then
+		export CPU_TYPE="ARMV8[A53/A72..]"
+		ID="A0"
+	fi
+	if [ $MODE == "pru" ]; then
+		export CPU_TYPE="PRUSS/ICSSG"
+		ID="A0"
+	fi
+	if [ $MODE == "6000" ]; then
+		export CPU_TYPE="C66x"
+		ID="A0"
+	fi
+	case $MACHINE in
+	"gdb")
+		generate_gdb_config >$CONFIG_FILE
+		;;
+	"sim")
+		generate_sim_config >$CONFIG_FILE
+		;;
+	"usb")
+		generate_usb_config >$CONFIG_FILE
+		;;
+	*)
+		if [ $SINGLE -eq 1 ]; then
+			generate_single_mach_config > $CONFIG_FILE
+		else
+			generate_amp_mach_config > $CONFIG_FILE
+		fi
+	esac
+}
+
+generate_config
+
+# Start up T32
+if [  "$MODE"  == 64 ]; then
+	T32_ARCH="marm64-qt"
+fi
+
+if [  "$MODE"  == 32 ]; then
+	T32_ARCH="marm-qt"
+fi
+
+if [  "$MODE"  == "6000" ]; then
+	T32_ARCH="m6000-qt"
+fi
+
+if [  "$MODE"  == "pru" ]; then
+	T32_ARCH="mpru-qt"
+fi
+
+if [ -n "$MY_XAUTHCOOKIE" ]; then
+	export DISPLAY=`echo $SSH_CLIENT | awk '{print $1}'`:0
+	echo "Enabling DISPLAY=$DISPLAY (cookie=$MY_XAUTHCOOKIE)"
+	xauth add $DISPLAY MIT-MAGIC-COOKIE-1 $MY_XAUTHCOOKIE
+	export XAUTHORITY=~/.Xauthority
+fi
+
+mkfontdir . 2>/dev/null
+xset +fp $T32DIR/fonts 2>/dev/null
+export T32SYS=$T32DIR
+export T32TMP=/tmp
+export T32ID=T32
+export ACROBAT_PATH=/opt/Adobe/Reader9/
+export PATH=$PATH:$T32DIR/bin
+cd $CMM_DIR
+run_t32()
+{
+	echo "Starting $*"
+	echo "Configuration:"
+	if [ "$SINGLE" -eq 1 ]; then
+		echo "Single: Yes"
+	else
+		echo "AMP: Yes"
+		echo "AMP COREID: $AMP_CORE"
+		echo "AMP PORT: "$((AMP_PORT_START + AMP_CORE))
+	fi
+	echo "Machine: $MACHINE"
+	if [ x"$LB" == x ]; then
+		echo "LB: N/A"
+	else
+		echo "LB: $LB"
+	fi
+	echo -n "Config File: $CONFIG_FILE "
+	if [ $TMPC -eq 0 ]; then
+		echo "(Will not be deleted)"
+	else
+		echo "(Temporary - delete on completion)"
+	fi
+	if [ $MODE -eq 32 ]; then
+		echo "MODE: 32 bit mode"
+	else
+		echo "MODE: 64 bit mode"
+	fi
+
+	if [ -n "$T32_EXTRA_ARGS" ]; then
+		echo "T32 Extra Args: $T32_EXTRA_ARGS"
+	fi
+	$T32DIR/./bin/pc_linux64/t32${T32_ARCH} -c $CONFIG_FILE $T32_EXTRA_ARGS
+
+	cleanup
+}
+if [ $BG -eq 0 ]; then
+	run_t32 forground
+else
+	run_t32 background &
+	echo "Background PSID: $!"
+fi

@@ -40,7 +40,7 @@
  * \par IMPORTANT NOTE
  *   <b> The interfaces defined in this package are bound to change.
  *   Release notes/user guide list the additional limitation/restriction
- *   of this module/interfaces. </b> See also \ref TI_DISCLAIMER. \n
+ *   of this module/interfaces. </b> \n
  *   <b> Refer to top level user guide for detailed features,
  *    limitations and usage description.
  *    </b>
@@ -216,16 +216,49 @@
 /* ========================================================================== */
 
 #include <stdint.h>
+#include <stddef.h>
+
+/* TISCI Include */
+#define TISCI_BIT(n)  (1UL << (n))
+
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/tisci_protocol.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/tisci_boardcfg.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/tisci_core.h>
+#if defined (SOC_AM65XX)
+#include <ti/drv/sciclient/soc/sysfw/include/am65x/tisci_resasg_types.h>
+#include <ti/drv/sciclient/soc/sysfw/include/am65x/tisci_hosts.h>
+#include <ti/drv/sciclient/soc/sysfw/include/am65x/tisci_sec_proxy.h>
+#include <ti/drv/sciclient/soc/sysfw/include/am65x/tisci_boardcfg_constraints.h>
+#endif
+#if defined (SOC_J721E)
+#include <ti/drv/sciclient/soc/sysfw/include/j721e/tisci_resasg_types.h>
+#include <ti/drv/sciclient/soc/sysfw/include/j721e/tisci_hosts.h>
+#include <ti/drv/sciclient/soc/sysfw/include/j721e/tisci_sec_proxy.h>
+#include <ti/drv/sciclient/soc/sysfw/include/j721e/tisci_boardcfg_constraints.h>
+#endif
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_sec_macros.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_firewall.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_procboot.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_keystore.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_rng.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_sa2ul_pka.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/pm/tisci_pm_clock.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/pm/tisci_pm_device.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/pm/tisci_pm_core.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_ra.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_irq.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_udmap.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_psil.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_shared.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_core.h>
 
 #include <ti/drv/sciclient/include/sciclient_soc.h>
-
-#include <ti/drv/sciclient/include/tisci/tisci_includes.h>
-
 #include <ti/drv/sciclient/include/sciclient_pm.h>
 #include <ti/drv/sciclient/include/sciclient_rm.h>
 #include <ti/drv/sciclient/include/sciclient_genericMsgs.h>
 #include <ti/drv/sciclient/include/sciclient_procboot.h>
 #include <ti/drv/sciclient/include/sciclient_boardcfg.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

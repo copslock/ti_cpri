@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Signing binaries for Secure Boot &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../index.html"/>
+        <link rel="up" title="Chapter 6: Topic User Guides" href="index.html"/>
+        <link rel="next" title="Asymmetric Key Services" href="asymmetric_key_services.html"/>
+        <link rel="prev" title="Chapter 6: Topic User Guides" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.08.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5_soc_doc/index.html">Chapter 5: SoC Family Specific Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Chapter 6: Topic User Guides</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Signing binaries for Secure Boot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#signing-an-unencrypted-binary-for-secure-boot">Signing an unencrypted binary for secure boot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#signing-an-encrypted-binary-for-secure-boot">Signing an encrypted binary for secure boot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="asymmetric_key_services.html">Asymmetric Key Services</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Chapter 6: Topic User Guides</a> &raquo;</li>
+      
+    <li>Signing binaries for Secure Boot</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="signing-binaries-for-secure-boot">
+<h1>Signing binaries for Secure Boot<a class="headerlink" href="#signing-binaries-for-secure-boot" title="Permalink to this headline">¶</a></h1>
+<p>This document describes the various steps in signing binaries for secure boot.
+Usecases are listed in order of increasing complexity.</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#pub-sign-unencrypted-mpk"><span class="std std-ref">Signing an unencrypted binary for secure boot</span></a></li>
+<li><a class="reference internal" href="#pub-sign-encrypted-mek"><span class="std std-ref">Signing an encrypted binary for secure boot</span></a></li>
+</ol>
+<div class="section" id="signing-an-unencrypted-binary-for-secure-boot">
+<span id="pub-sign-unencrypted-mpk"></span><h2>Signing an unencrypted binary for secure boot<a class="headerlink" href="#signing-an-unencrypted-binary-for-secure-boot" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Calculate SHA2-512 hash of the binary. Populate the <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-image-integrity-ext"><span class="std std-ref">System Firmware Image Integrity Extension</span></a>
+with the calculated hash and the length of the binary.</li>
+<li>Determine where the image needs to be loaded at runtime and populate the
+<a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-load-ext"><span class="std std-ref">System Firmware Load Extension</span></a>.</li>
+<li>Populate the <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-swrev-ext"><span class="std std-ref">System Firmware Software Revision Extension</span></a> with the software revision value
+for the binary. The software revision is used to enforce rollback
+protection.</li>
+<li>If the binary is to be used to bring a core out of reset, populate the
+<a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-boot-ext"><span class="std std-ref">System Firmware Boot Extension</span></a> with the appropriate values.</li>
+<li>Choose a private key to the sign the certificate. System Firmware only
+supports signing a certificate with active MPK.</li>
+<li>Sign the X509 certificate populated in steps (1)-(4).</li>
+<li>Append the binary to the signed X509 certificate.</li>
+<li>On the target, load the output of step (7) to a memory location. Use the memory
+location as the payload of the <a class="reference internal" href="../2_tisci_msgs/security/PROC_BOOT.html#proc-boot-authenticate-image-and-configure-processor"><span class="std std-ref">TISCI_MSG_PROC_AUTH_BOOT</span></a>
+TISCI message.</li>
+</ol>
+</div>
+<div class="section" id="signing-an-encrypted-binary-for-secure-boot">
+<span id="pub-sign-encrypted-mek"></span><h2>Signing an encrypted binary for secure boot<a class="headerlink" href="#signing-an-encrypted-binary-for-secure-boot" title="Permalink to this headline">¶</a></h2>
+<p>Using an encrypted binary for secure boot requires minor changes to the signing
+process described above. The binary needs to be encrypted first and used as an
+input to the signing process described above. Some of the values populated in
+X509 extensions are also modified. This section describes the encryption
+operation and changes in populating the X509 extensions. First, the steps to
+encrypt the binary are listed below.</p>
+<ol class="arabic simple">
+<li>Pad the binary with zeros until the length is a multiple of 16 bytes.</li>
+<li>Append a 32 byte long random string to the binary output in step (1). This
+random string is used by System Firmware to verify successful decryption. This string
+needs to be populated in the X509 certificate.</li>
+<li>Choose 16 byte long random string as the initialization vector(IV) for CBC
+encryption. This string also needs to be populated in the X509 certificate.</li>
+<li>Choose the key to encrypt the binary. System Firmware only supports
+encryption with the active MEK.</li>
+<li>Encrypt the binary output from step (2) with key chosen in step (4) in
+AES-256-CBC mode. Use the string chosen in step (3) as the initialization
+vector.</li>
+</ol>
+<p>When using encryption, the X509 encryption extension needs to be populated in
+the certificate before signing. The following changes apply to the other extensions.</p>
+<ol class="arabic simple">
+<li>The length of binary output in step (2) above needs to be populated in the
+X509 image integrity extension.</li>
+<li>The binary output of step (5) needs to be used when calculating the hash to be
+populated in the X509 image integrity extension.</li>
+<li>The binary output of step (5) must be appended to the signed X509 certificate
+instead of the unencrypted binary.</li>
+</ol>
+<p>Please refer to <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-image-integrity-ext"><span class="std std-ref">System Firmware Image Integrity Extension</span></a> and <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-encryption-ext"><span class="std std-ref">System Firmware Encryption Extension</span></a>.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="asymmetric_key_services.html" class="btn btn-neutral float-right" title="Asymmetric Key Services" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Chapter 6: Topic User Guides" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'19.08.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

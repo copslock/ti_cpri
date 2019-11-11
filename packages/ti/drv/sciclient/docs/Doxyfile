@@ -82,16 +82,9 @@ WARN_LOGFILE           =
 INPUT                  = ./sciclient.h      \
                          ./include          \
                          ./src              \
-                         ./soc/V0           \
-                         ./include/tisci    \
-                         ./include/tisci/pm \
-                         ./include/tisci/rm \
-                         ./include/tisci/security 
-
-
-FILE_PATTERNS          = *.h
-
-RECURSIVE              = NO
+                         ./soc              
+FILE_PATTERNS          = *.h *.c
+RECURSIVE              = YES
 EXCLUDE                = NO
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = *firmware*.h

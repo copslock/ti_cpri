@@ -1,0 +1,748 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Board Configuration &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../index.html"/>
+        <link rel="up" title="Chapter 3: Board Configuration" href="index.html"/>
+        <link rel="next" title="Resource Management Board Configuration" href="BOARDCFG_RM.html"/>
+        <link rel="prev" title="Chapter 3: Board Configuration" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.08.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Chapter 3: Board Configuration</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Board Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#board-configuration-in-system-firmware">Board Configuration in System Firmware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-goals">Functional goals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#design">Design</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compile-time-configuration">Compile Time Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-api-for-board-config">TISCI API for Board Config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#abi-revision-structure">ABI revision structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-substructure-enumeration">Configuration substructure enumeration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#design-for-boardcfg-msmc">Design for boardcfg_msmc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#design-details-for-system-firmware-debug-console">Design details for System Firmware Debug Console</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="BOARDCFG_RM.html">Resource Management Board Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BOARDCFG_SEC.html">Security Board Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BOARDCFG_PM.html">Power Management Board Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5_soc_doc/index.html">Chapter 5: SoC Family Specific Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Chapter 3: Board Configuration</a> &raquo;</li>
+      
+    <li>Board Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="board-configuration">
+<h1>Board Configuration<a class="headerlink" href="#board-configuration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="board-configuration-in-system-firmware">
+<h2>Board Configuration in System Firmware<a class="headerlink" href="#board-configuration-in-system-firmware" title="Permalink to this headline">¶</a></h2>
+<p>There is board configuration data that serves two roles:</p>
+<ol class="arabic simple">
+<li>Actual board design choices.</li>
+<li>Application defined boot-time configuration. These are detailed below.</li>
+</ol>
+</div>
+<div class="section" id="functional-goals">
+<h2>Functional goals<a class="headerlink" href="#functional-goals" title="Permalink to this headline">¶</a></h2>
+<p>Board configuration module enables one time (per boot) configuration of the
+details of the integration of the SoC onto the board as well as one-time
+application specific configuration.</p>
+</div>
+<div class="section" id="design">
+<h2>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h2>
+<p>Board configuration consists of structured configurations that are placed into
+regular memory by the host software, made coherent (writeback and fences as
+required by host architecture) then passed to System Firmware via
+<a class="reference internal" href="#pub-boardcfg-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG</span></a>. On HS devices, the board
+config blob is signed and encrypted using customer root public key and customer
+encryption key for HS-SE or HS-Prime. For HS-FS and GP devices there are no
+customer keys, therefore board config must be unsigned and plain text.</p>
+<p>It is presumed that this memory is owned by trusted software that will not
+intentionally corrupt the memory while System Firmware is processing. However,
+System Firmware will take reasonable precautions for misconfiguration by
+validating data before it is used.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is highly recommended that the TISCI_MSG_BOARD_CONFIG_PM message be sent
+immediately after TISCI_MSG_BOARD_CONFIG before sending other boardcfg
+messages to ensure RM and SECURITY have all resources configured as needed.</p>
+</div>
+<p>Power management data used to statically define power management
+configuration is discussed in detail in
+<a class="reference internal" href="BOARDCFG_PM.html#pub-boardcfg-pm-intro"><span class="std std-ref">Power Management Board Configuration</span></a>.</p>
+<p>Resource management board configuration data is detailed in
+<a class="reference internal" href="BOARDCFG_RM.html"><span class="doc">Resource Management Board Configuration</span></a>.  The RM data
+defines the following for Hosts:</p>
+<ul class="simple">
+<li>Resource range assignments</li>
+<li>Order IDs</li>
+<li>QoS values</li>
+<li>Priority values</li>
+<li>Host hierarchy</li>
+</ul>
+<p>Security data used to statically define security configuration is
+discussed in detail in
+<a class="reference internal" href="BOARDCFG_SEC.html#pub-boardcfg-sec-intro"><span class="std std-ref">Security Management Board Configuration</span></a>.</p>
+<div class="section" id="compile-time-configuration">
+<h3>Compile Time Configuration<a class="headerlink" href="#compile-time-configuration" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="2%" />
+<col width="90%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Define</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>BOARDCFG_MAX_MAIN_HOST_COUNT</td>
+<td>(u16)</td>
+<td>Maximum number of different processing entities for main, scales all main boardcfg tables. This is the number of simutaneous host id permitted after compacting the holes. Thus, as an example, in soc_doc_am6_public_host_desc_host_list, it is ((u16)18u).</td>
+</tr>
+<tr class="row-odd"><td>BOARDCFG_MAX_MCU_HOST_COUNT</td>
+<td>(u16)</td>
+<td>Maximum number of different processing entities for MCU, scales all MCU boardcfg tables. This is the number of simutaneous host id permitted after compacting the holes. In the example soc_doc_am6_public_host_desc_host_list, it could be up to ((u16)18u) to allow all processing entities to use dedicated resources in MCU.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tisci-api-for-board-config">
+<span id="pub-boardcfg-tisci"></span><h3>TISCI API for Board Config<a class="headerlink" href="#tisci-api-for-board-config" title="Permalink to this headline">¶</a></h3>
+<p>The following are the parameters required in the TI-SCI message to pass board
+configuration data to System Firmware after System Firmware sends boot
+notification complete.</p>
+<div class="section" id="usage">
+<h4>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tisci-message-id">
+<h4>TISCI Message ID<a class="headerlink" href="#tisci-message-id" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_BOARD_CONFIG</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x000BU)</span></code></p>
+</div>
+<div class="section" id="message-data-structures">
+<h4>Message Data Structures<a class="headerlink" href="#message-data-structures" title="Permalink to this headline">¶</a></h4>
+<p><p><strong>struct tisci_msg_board_config_req</strong></p>
+<p>TISCI_MSG_BOARD_CONFIG request to provide the location and size of the boardcfg structure.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="23%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>boardcfgp_low</td>
+<td>u32</td>
+<td>Low 32-bits of physical pointer to boardcfg struct.</td>
+</tr>
+<tr class="row-even"><td>boardcfgp_high</td>
+<td>u32</td>
+<td>High 32-bits of physical pointer to boardcfg struct.</td>
+</tr>
+<tr class="row-odd"><td>boardcfg_size</td>
+<td>u16</td>
+<td>Size of configuration data.</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p><p><strong>struct tisci_msg_board_config_resp</strong></p>
+<p>Empty response for TISCI_MSG_BOARD_CONFIG.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="43%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.</p>
+</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The boardcfg data structures described below <strong>must</strong> be placed in
+MCU OCMC SRAM. The address used in the TISCI message will be
+in MCU OCMC SRAM.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Please ensure that MSMC is not being accessed when <code class="docutils literal"><span class="pre">TISCI_MSG_BOARD_CONFIG</span></code>
+is sent. System Firmware reconfigures the MSMC firewall on receiving this message.
+MSMC needs to be inactive for the firewall reconfiguration to succeed.</p>
+</div>
+</div>
+</div>
+<div class="section" id="abi-revision-structure">
+<span id="pub-boardcfg-abi-rev"></span><h3>ABI revision structure<a class="headerlink" href="#abi-revision-structure" title="Permalink to this headline">¶</a></h3>
+<p>This design <em>requires</em> that both boardcfg_abi_maj and boardcfg_abi_min exactly
+match what is expected by System Firmware.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="6%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Element</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>boardcfg_abi_maj</td>
+<td>u8</td>
+<td>Major ABI version (for boardcfg_cfg version, not overall System Firmware version)</td>
+</tr>
+<tr class="row-odd"><td>boardcfg_abi_min</td>
+<td>u8</td>
+<td>Minor ABI version (for boardcfg_cfg version, not overall System Firmware version)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="configuration-substructure-enumeration">
+<span id="pub-boardcfg-cfg"></span><h3>Configuration substructure enumeration<a class="headerlink" href="#configuration-substructure-enumeration" title="Permalink to this headline">¶</a></h3>
+<p>This is a fixed size c-structure which defines the format of the configuration.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="39%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Element</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>boardcfg_abi_rev</td>
+<td><a class="reference internal" href="#pub-boardcfg-abi-rev"><span class="std std-ref">struct boardcfg_abi_rev</span></a></td>
+<td>Board Config ABI version (separate from System Firmware ABI version)</td>
+</tr>
+<tr class="row-odd"><td>control</td>
+<td><a class="reference internal" href="#pub-boardcfg-control"><span class="std std-ref">struct boardcfg_control</span></a></td>
+<td>System Firmware feature control selections</td>
+</tr>
+<tr class="row-even"><td>secproxy</td>
+<td><a class="reference internal" href="#pub-boardcfg-secproxy"><span class="std std-ref">struct boardcfg_secproxy</span></a></td>
+<td>Secure proxy configuration</td>
+</tr>
+<tr class="row-odd"><td>msmc</td>
+<td><a class="reference internal" href="#pub-boardcfg-msmc"><span class="std std-ref">struct boardcfg_msmc</span></a></td>
+<td>MSMC configuration</td>
+</tr>
+<tr class="row-even"><td>debug_cfg</td>
+<td><a class="reference internal" href="#pub-boardcfg-dbg-cfg"><span class="std std-ref">struct boardcfg_dbg_cfg</span></a></td>
+<td>Debug/trace configuration</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="boardcfg-substructure-header">
+<span id="pub-boardcfg-subhdr"></span><h4>boardcfg substructure header<a class="headerlink" href="#boardcfg-substructure-header" title="Permalink to this headline">¶</a></h4>
+<p>This contains a unique magic number for each substructure and the size of the
+associated superstructure for data validation/API compatibility checks.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="7%" />
+<col width="83%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Element</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>magic</td>
+<td>u16</td>
+<td>unique magic number for data integrity check</td>
+</tr>
+<tr class="row-odd"><td>size</td>
+<td>u16</td>
+<td>sizeof(superstructure containing this header) for data integrity check</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="boardcfg-control-structure">
+<span id="pub-boardcfg-control"></span><h4>boardcfg_control structure<a class="headerlink" href="#boardcfg-control-structure" title="Permalink to this headline">¶</a></h4>
+<p>The boardcfg_control structure is used to enable/disable features in System
+Firmware based on usecase.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="26%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Element</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>subhdr</td>
+<td><a class="reference internal" href="#pub-boardcfg-subhdr"><span class="std std-ref">struct boardcfg_subhdr</span></a></td>
+<td>Magic and size for integrity check</td>
+</tr>
+<tr class="row-odd"><td>main_isolation_enable</td>
+<td>ftbool</td>
+<td>Enable/disable support for System Firmware main isolation. If disabled, main isolation SCI message will be rejected with NAK.</td>
+</tr>
+<tr class="row-even"><td>main_isolation_hostid</td>
+<td>u16</td>
+<td>Host-ID allowed to send SCI-message for main isolation. If mismatch, SCI message will be rejected with NAK.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="boardcfg-secproxy-structure">
+<span id="pub-boardcfg-secproxy"></span><h4>boardcfg_secproxy structure<a class="headerlink" href="#boardcfg-secproxy-structure" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="18%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Element</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>subhdr</td>
+<td><a class="reference internal" href="#pub-boardcfg-subhdr"><span class="std std-ref">struct boardcfg_subhdr</span></a></td>
+<td>Magic and size for integrity check</td>
+</tr>
+<tr class="row-odd"><td>scaling_factor</td>
+<td>u8</td>
+<td>Memory allocation for messages scaling factor. In current design, only value of “1” is supported. For future design, a value of “2” would double all memory allocations and credits, “3” would triple, and so on.</td>
+</tr>
+<tr class="row-even"><td>scaling_profile</td>
+<td>u8</td>
+<td>Memory allocation for messages profile number. In current design, only a value of “1” is supported. “0” is always invalid due to fault tolerance.</td>
+</tr>
+<tr class="row-odd"><td>disable_main_nav_secure_proxy</td>
+<td>u8</td>
+<td>Do not configure main nav secure proxy. This removes all MSMC memory demands from System Firmware but limits MPU channels to one set of secure and one set of insecure. In current design, supports only “0”.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="design-for-boardcfg-msmc">
+<span id="pub-boardcfg-msmc"></span><h3>Design for boardcfg_msmc<a class="headerlink" href="#design-for-boardcfg-msmc" title="Permalink to this headline">¶</a></h3>
+<p>Cache must be configured by System Firmware in order for MSMC to be used for
+main secure proxy backing memory and ring memory.</p>
+<div class="section" id="boardcfg-msmc-structure">
+<h4>boardcfg_msmc structure<a class="headerlink" href="#boardcfg-msmc-structure" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="26%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Element</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>subhdr</td>
+<td><a class="reference internal" href="#pub-boardcfg-subhdr"><span class="std std-ref">struct boardcfg_subhdr</span></a></td>
+<td>Magic and size for integrity check</td>
+</tr>
+<tr class="row-odd"><td>msmc_cache_size</td>
+<td>u8</td>
+<td>fraction of msmc to be cache in /32 units. Rounds up. Since current msmc support /8 allocation this means that 1/32 rounds up to 1/8.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="design-details-for-system-firmware-debug-console">
+<span id="pub-boardcfg-debug-console"></span><h3>Design details for System Firmware Debug Console<a class="headerlink" href="#design-details-for-system-firmware-debug-console" title="Permalink to this headline">¶</a></h3>
+<p>One value is provided to specific the debug console from the following options
+specified as bits (so all, some, or none can be enabled)</p>
+<div class="section" id="boardcfg-dbg-dst-ports">
+<span id="pub-boardcfg-dbg-dst-ports"></span><h4>boardcfg_dbg_dst_ports<a class="headerlink" href="#boardcfg-dbg-dst-ports" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Bit</th>
+<th class="head">Definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>TRACE_DST_UART0</td>
+<td>Traces to UART0 in wakeupss enabled</td>
+</tr>
+<tr class="row-odd"><td>TRACE_DST_ITM</td>
+<td>Traces to ITM (JTAG) enabled</td>
+</tr>
+<tr class="row-even"><td>TRACE_DST_MEM</td>
+<td>Traces to memory buffer enabled</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="boardcfg-dbg-src">
+<span id="pub-boardcfg-dbg-src"></span><h4>boardcfg_dbg_src<a class="headerlink" href="#boardcfg-dbg-src" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Bit</th>
+<th class="head">Definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>TRACE_SRC_PM</td>
+<td>Traces from power management are allowed</td>
+</tr>
+<tr class="row-odd"><td>TRACE_SRC_RM</td>
+<td>Traces from resource management are allowed</td>
+</tr>
+<tr class="row-even"><td>TRACE_SRC_SEC</td>
+<td>Traces from security management are allowed</td>
+</tr>
+<tr class="row-odd"><td>TRACE_SRC_BASE</td>
+<td>Traces from baseport are allowed</td>
+</tr>
+<tr class="row-even"><td>TRACE_SRC_USER</td>
+<td>Traces from user tasks are allowed</td>
+</tr>
+<tr class="row-odd"><td>TRACE_SRC_SUPR</td>
+<td>Traces from supervisor tasks are allowed</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="boardcfg-dbg-cfg">
+<span id="pub-boardcfg-dbg-cfg"></span><h4>boardcfg_dbg_cfg<a class="headerlink" href="#boardcfg-dbg-cfg" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="24%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>subhdr</td>
+<td><a class="reference internal" href="#pub-boardcfg-subhdr"><span class="std std-ref">struct boardcfg_subhdr</span></a></td>
+<td>Magic and size for integrity check</td>
+</tr>
+<tr class="row-odd"><td>trace_dst_enables</td>
+<td>u16</td>
+<td>Each bit from TRACE_DST in <a class="reference internal" href="#pub-boardcfg-dbg-dst-ports"><span class="std std-ref">struct boardcfg_dbg_dst_ports</span></a>. Using u16 to allow 2 bits per value for fault tolerance</td>
+</tr>
+<tr class="row-even"><td>trace_src_enables</td>
+<td>u16</td>
+<td>Each bit from TRACE_SRC in <a class="reference internal" href="#pub-boardcfg-dbg-src"><span class="std std-ref">struct boardcfg_dbg_src</span></a>. Using u16 to allow 2 bits per value for fault tolerance</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="BOARDCFG_RM.html" class="btn btn-neutral float-right" title="Resource Management Board Configuration" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Chapter 3: Board Configuration" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'19.08.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

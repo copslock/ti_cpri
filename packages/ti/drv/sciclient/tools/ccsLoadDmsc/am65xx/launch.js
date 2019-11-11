@@ -98,7 +98,7 @@ function connectTargets()
     dsDMSC_0.target.connect();
     print("Loading DMSC Firmware...");
     // Load the DMSC firmware
-    dsDMSC_0.memory.loadRaw(0, 0x40000, thisJsFileDirectory +"/../../soc/V0/ti-sci-firmware-am65x-gp.bin", 32, false);
+    dsDMSC_0.memory.loadRaw(0, 0x40000, thisJsFileDirectory +"/../../soc/sysfw/binaries/ti-sci-firmware-am65x-gp.bin", 32, false);
     print("DMSC Firmware Load Done...");
     // Set Stack pointer and Program Counter
     stackPointer = dsDMSC_0.memory.readWord(0, 0x40000);

@@ -1,0 +1,955 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Resource Management Board Configuration &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../index.html"/>
+        <link rel="up" title="Chapter 3: Board Configuration" href="index.html"/>
+        <link rel="next" title="Security Board Configuration" href="BOARDCFG_SEC.html"/>
+        <link rel="prev" title="Board Configuration" href="BOARDCFG.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.08.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Chapter 3: Board Configuration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="BOARDCFG.html">Board Configuration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Resource Management Board Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#static-resource-management-configuration-in-system-firmware">Static Resource Management Configuration in System Firmware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functional-goals">Functional goals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#design">Design</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#static-resource-assignment-configurations">Static Resource Assignment Configurations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resource-assignment-validation">Resource Assignment Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-api-for-resource-management-board-config">TISCI API for Resource Management Board Config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ti-sci-api-for-get-resource-assignment-range">TI-SCI API for Get Resource Assignment Range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">TISCI Message ID</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Message Data Structures</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="BOARDCFG_SEC.html">Security Board Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="BOARDCFG_PM.html">Power Management Board Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5_soc_doc/index.html">Chapter 5: SoC Family Specific Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Chapter 3: Board Configuration</a> &raquo;</li>
+      
+    <li>Resource Management Board Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="resource-management-board-configuration">
+<h1>Resource Management Board Configuration<a class="headerlink" href="#resource-management-board-configuration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="static-resource-management-configuration-in-system-firmware">
+<h2>Static Resource Management Configuration in System Firmware<a class="headerlink" href="#static-resource-management-configuration-in-system-firmware" title="Permalink to this headline">¶</a></h2>
+<p>The host configuration attributes portion of the RM board configuration
+statically defines the allowed values for:</p>
+<ul class="simple">
+<li>Order IDs</li>
+<li>QoS levels</li>
+<li>Bus priorities</li>
+<li>Scheduling priorities</li>
+<li>Atype</li>
+</ul>
+<p>Allowed values are defined for each host ID supported.</p>
+<p>Applications are able to query DMSC for the allowed values assigned to hosts
+for runtime discovery of a host’s attributes.</p>
+<p>The resource assignment portion of the RM board configuration statically defines
+usage of resource ranges for use by all SoC hosts.  The resource management
+subsystem references the resource assignment board configuration for all
+resource configuration requests.</p>
+<p>Applications are able to query DMSC for the resource ranges assigned to hosts
+allowing runtime discovery of assigned resources.</p>
+<p>Please see <a class="reference internal" href="BOARDCFG.html"><span class="doc">Board Configuration</span></a> for information on the overall
+Board Configuration design.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This message MUST be sent in order to initialize the Resource Management
+capabilities of system firmware. Until it is received no Resource Management
+services are available.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The Resource Management board configuration message is rejected if resource
+assignment data is not sent and does not conform to the resource assignment
+validation guidelines.  Please see <a class="reference internal" href="#pub-boardcfg-rm-resasg-validation"><span class="std std-ref">Resource Assignment Validation</span></a>
+for a description of the resource assignment data validation guidelines.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">There are limitations when using HOST_ID_ALL as the owner of a resource
+range assignment.  Please see <a class="reference internal" href="#pub-boardcfg-rm-resasg-cfg"><span class="std std-ref">Static Resource Assignment Configurations</span></a> for a
+description on the use cases and limitations behind different resource
+range configurations.</p>
+</div>
+</div>
+<div class="section" id="functional-goals">
+<h2>Functional goals<a class="headerlink" href="#functional-goals" title="Permalink to this headline">¶</a></h2>
+<p>Resource Management board configuration gates operation of the RM subsystem
+until reception by DMSC and enables one time (per boot) configuration of SoC
+host attributes and assignment of managed SoC resources amongst SoC hosts.</p>
+</div>
+<div class="section" id="design">
+<h2>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h2>
+<p>A standalone RM board configuration message initializes the RM subsystem and
+contains the host configuration attributes and the resource assignment data.
+The RM subsystem is not considered functional until after the RM board
+configuration message is received by DMSC.  The RM board configuration data can
+be sent any time after the standard boardcfg message, <a class="reference internal" href="BOARDCFG.html#pub-boardcfg-cfg"><span class="std std-ref">Configuration substructure enumeration</span></a>
+is received.  The RM board configuration message can only be sent once.  RM
+board configuration messages received after the first are NACK’d.</p>
+<p>The separation of boardcfg reception and subsystem startup is to
+reduce DMSC boot time.  The resource management data is placed into regular
+memory by the host software, made coherent (writeback and fences as required by
+host architecture) then passed to System Firmware via
+<a class="reference internal" href="#pub-boardcfg-rm-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_RM</span></a>.  On HS devices, the
+board config blob is signed and encrypted using customer root
+public key and customer encryption key for HS-SE or HS-Prime. For HS-FS and
+GP devices there are no customer keys, therefore board config must be
+unsigned and plain text.</p>
+<p>The resource management data is provided separately to reduce DMSC boot time.
+The resource management board cfg message is sent any time after the boot
+notification message is sent and has no dependence upon reception of the
+standard board configuration message,
+<a class="reference internal" href="BOARDCFG.html#pub-boardcfg-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG</span></a>.</p>
+<p>The RM board configuration contains host configuration data.  The host
+configuration data format is described by <a class="reference internal" href="#pub-boardcfg-rm-host-cfg"><span class="std std-ref">boardcfg_rm_host_cfg structure</span></a>.</p>
+<p>RM board configuration contains static assignments of resources to hosts via
+the resource assignment data.  The resource
+assignment data format is described by <a class="reference internal" href="#pub-boardcfg-rm-resasg"><span class="std std-ref">boardcfg_rm_resasg structure</span></a> which
+defines a variable length array at the end of the RM board cfg data structure.
+Users must append a fixed length array to the end <a class="reference internal" href="#pub-boardcfg-rm"><span class="std std-ref">boardcfg_rm structure</span></a> to
+represent the resource assignment data array.  The resource
+assignment array is a list of <a class="reference internal" href="#pub-boardcfg-rm-resasg-entry"><span class="std std-ref">boardcfg_rm_resasg_entry (resource assignment) structure</span></a> elements.  The
+final goal is for the maximum number of elements receivable by DMSC RM to be the
+number of hosts times the number of unique resources in the SoC.  The current
+size is 2 times the number of unique resources in the SoC.  Resource assignment
+lists sized greater than this will have the RM boardcfg message NACK’d.</p>
+<p>The RM board configuration data is sorted and indexed upon reception for faster
+runtime access.  The sort increases the response time of DMSC to the RM board
+configuration TISCI message.  To improve the response time to the RM board
+configuration TISCI message the RM board configuration resource assignment
+array can be pre-sorted.  The pre-sorted array must be in ascending resource
+type order.  Then within each resource type the entries must be sorted in
+ascending start_resource value order.</p>
+<p>Assigned resource ranges are retrievable at runtime by sending System Firmware
+a request via
+<a class="reference internal" href="#pub-boardcfg-resasg-get-tisci"><span class="std std-ref">TISCI_MSG_RM_GET_RESOURCE_RANGE</span></a>.  The
+specified resource type’s range is returned for the host who sent the request.</p>
+<div class="section" id="static-resource-assignment-configurations">
+<span id="pub-boardcfg-rm-resasg-cfg"></span><h3>Static Resource Assignment Configurations<a class="headerlink" href="#static-resource-assignment-configurations" title="Permalink to this headline">¶</a></h3>
+<p>The RM board configuration static resource assignment functionality supports
+the following range assignment configurations.</p>
+<ul>
+<li><p class="first">Single owner assignments (Most common use case, recommended configuration
+whenever possible):</p>
+<ul class="simple">
+<li>Every SoC host ID can be assigned no more than one resource range per
+resource type.  At DMSC init, firewalls are configured to allow host IDs
+access to all resource ranges they’ve been assigned.  The RM subsystem
+cannot guarantee resource range query response and resource configuration
+for ranges defined beyond the first for a host ID.</li>
+</ul>
+</li>
+<li><p class="first">Dual owner assignments (Niche use case when two hosts require access and
+configuration rights to a resource):</p>
+<ul>
+<li><p class="first">An overlap between two resource ranges can be defined for two host IDs.
+Resource firewalls allow up to two unique hosts to access a resource.
+Overlapping ranges between host IDs allows both host IDs to configure
+non-real-time registers and access the real-time registers.</p>
+<p>The RM boardcfg TISCI message is NACK’d if an overlap of more than two
+range definitions per resource type is detected.</p>
+</li>
+</ul>
+</li>
+<li><p class="first">Open access assignments (Extremely niche use cases where all hosts require
+access and configuration rights to a resource):</p>
+<ul class="simple">
+<li>The HOST_ID_ALL host ID can be used to assign a range of resources for use by
+all host IDs.  In this case, the firewall is configured to allow all hosts
+to access a resource.  This feature must be used judiciously, only for
+resources that must be shared by more than two host IDs.  Management of
+resources within a range assigned to HOST_ID_ALL is performed by the user
+application.</li>
+<li>A resource range assigned to HOST_ID_ALL cannot overlap with another resource
+range.  The RM boardcfg TISCI message is NACK’d if an overlap with a range
+assigned to HOST_ID_ALL is detected.</li>
+<li>Populate the secondary_host parameter of the
+tisci_msg_rm_get_resource_range_req TISCI message API with HOST_ID_ALL in
+order to retrieve the range assigned to HOST_ID_ALL for a resource type.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="resource-assignment-validation">
+<span id="pub-boardcfg-rm-resasg-validation"></span><h3>Resource Assignment Validation<a class="headerlink" href="#resource-assignment-validation" title="Permalink to this headline">¶</a></h3>
+<p>The resource assignment data received through the RM boardcfg message is
+validated.  The resource data is validated to prevent RM resource assignment
+errors that can cause operational failures during post-initialization runtime
+of the SoC applications.  Validation criteria:</p>
+<ul class="simple">
+<li>The resource assignment substructure header magic number must match the
+magic number defined for the RM boardcfg resource assignment substructure</li>
+<li>The resource assignment substructure header size must match the size of
+<a class="reference internal" href="#pub-boardcfg-rm-resasg"><span class="std std-ref">boardcfg_rm_resasg substructure</span></a> definition.</li>
+<li>The resource assignment entry array size in bytes cannot be zero.  The RM
+subsystem requires a resource assignment array in order to operate.  Passing
+no resource assignments causes the RM boardcfg message to be rejected.</li>
+<li>The resource assignment entry array size cannot be greater than the size of
+the DMSC internal storage for the resource assignment array.</li>
+<li>The resource assignment entry array size must be a multiple of the
+<a class="reference internal" href="#pub-boardcfg-rm-resasg-entry"><span class="std std-ref">boardcfg_rm_resasg_entry</span></a> size</li>
+<li>Resource assignments can overlap to assign resources to multiple hosts
+according to <a class="reference internal" href="#pub-boardcfg-rm-resasg-cfg"><span class="std std-ref">Static Resource Assignment Configurations</span></a>.
+The overlap validation criteria:<ul>
+<li>No more than two resource ranges of the same resource type can overlap</li>
+<li>Overlapping resource ranges of the same resource type cannot be assigned to
+the same Host ID</li>
+<li>Resource ranges assigned to the HOST_ID_ALL Host ID cannot overlap with
+any other resource ranges of the same resource type</li>
+</ul>
+</li>
+<li>Resource assignment ranges and types are checked by the RM subsystem drivers
+to make sure they are valid according to the SoC resources managed by each
+driver.  The RM boardcfg message is rejected if a resource range is found to
+not have a valid type or resource range for the SoC managed resources.</li>
+<li>Resource assignment ranges and types are checked by the RM subsystem drivers
+to verify the ranges is not assignment usage of a DMSC reserved resource to
+a SoC Host ID.  The RM boardcfg message is rejected if a resource range
+assigns a DMSC reserved resource to a Host ID.  Any resource defined as
+“Reserved for use by DMSC” in the SoC Family Specific Documentation section
+of the user guide cannot be part of a resource assignment entry.</li>
+</ul>
+</div>
+<div class="section" id="tisci-api-for-resource-management-board-config">
+<span id="pub-boardcfg-rm-tisci"></span><h3>TISCI API for Resource Management Board Config<a class="headerlink" href="#tisci-api-for-resource-management-board-config" title="Permalink to this headline">¶</a></h3>
+<p>The following are the parameters required in the TI-SCI message to pass
+RM resource management board configuration data to DMSC after DMSC sends boot
+notification complete.  The resource management board configuration message
+is not dependent on reception of the standard board configuration message.</p>
+<div class="section" id="usage">
+<h4>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tisci-message-id">
+<h4>TISCI Message ID<a class="headerlink" href="#tisci-message-id" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_BOARD_CONFIG_RM</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x000CU)</span></code></p>
+</div>
+<div class="section" id="message-data-structures">
+<h4>Message Data Structures<a class="headerlink" href="#message-data-structures" title="Permalink to this headline">¶</a></h4>
+<p><p><strong>struct tisci_msg_board_config_rm_req</strong></p>
+<p>TISCI_MSG_BOARD_CONFIG_RM request to provide the location and size of the boardcfg Resource Management configuration structure.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="19%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>boardcfg_rmp_low</td>
+<td>u32</td>
+<td>Low 32-bits of physical pointer to boardcfg RM configuration struct.</td>
+</tr>
+<tr class="row-even"><td>boardcfg_rmp_high</td>
+<td>u32</td>
+<td>High 32-bits of physical pointer to boardcfg RM configuration struct.</td>
+</tr>
+<tr class="row-odd"><td>boardcfg_rm_size</td>
+<td>u16</td>
+<td>Size of RM configuration data.</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p><p><strong>struct tisci_msg_board_config_rm_resp</strong></p>
+<p>Empty response for TISCI_MSG_BOARD_CONFIG_RM.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="43%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.</p>
+</p>
+</div>
+</div>
+<div class="section" id="ti-sci-api-for-get-resource-assignment-range">
+<span id="pub-boardcfg-resasg-get-tisci"></span><h3>TI-SCI API for Get Resource Assignment Range<a class="headerlink" href="#ti-sci-api-for-get-resource-assignment-range" title="Permalink to this headline">¶</a></h3>
+<p>The following are the parameters required in the TI-SCI message to retrieve
+the range of a specific resource assigned to a host.</p>
+</div>
+<div class="section" id="id1">
+<h3>Usage<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id2">
+<h3>TISCI Message ID<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_RM_GET_RESOURCE_RANGE</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x1500U)</span></code></p>
+<p>RM TISCI message to request a resource range assignment for a host</p>
+</p>
+</div>
+<div class="section" id="id3">
+<h3>Message Data Structures<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_rm_get_resource_range_req</strong></p>
+<p>Retrieves a host’s assigned range for a resource</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="6%" />
+<col width="8%" />
+<col width="86%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Standard TISCI header</td>
+</tr>
+<tr class="row-odd"><td>type</td>
+<td>u16</td>
+<td>Resource assignment type used to form unique resource type.  Only 10 LSB are valid.  Types are found in the “Enumeration of Resource Type IDs” section of the DMSC public document.</td>
+</tr>
+<tr class="row-even"><td>subtype</td>
+<td>u8</td>
+<td>Resource assignment subtype used to form unique resource type.  Only 6 LSB are valid.  Subtypes are found in the “Enumeration of Resource Type IDs” section of the DMSC public document.</td>
+</tr>
+<tr class="row-odd"><td>secondary_host</td>
+<td>u8</td>
+<td>The host processing entity attempting to allocate the ring if not set to &#64;ref TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST.  Otherwise, the host within the TISCI message header is the host attempting to allocate the ring.</td>
+</tr>
+</tbody>
+</table>
+<p>Returns the range for a unique resource type assigned to the specified host,
+ or secondary host.  The unique resource type is formed by combining the
+ 10 LSB of type and the 6 LSB of subtype.
+ Unique types which do not map to an SoC resource will not be NACK’d.  Instead
+ the tisci_msg_rm_get_resource_range_resp range_start and range_num values are
+ zeroed.  This provides a known response mechanism across varied SoCs.
+ Populating secondary_host with &#64;ref TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST
+ specifies the value as unused.</p>
+</p>
+<p><p><strong>struct tisci_msg_rm_get_resource_range_resp</strong></p>
+<p>Get resource range response message</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="19%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Standard TISCI header</td>
+</tr>
+<tr class="row-odd"><td>range_start</td>
+<td>u16</td>
+<td>Start index of retrieved resource range.  Zero if the resource is not valid.</td>
+</tr>
+<tr class="row-even"><td>range_num</td>
+<td>u16</td>
+<td>Number of resources in the range.  Zero if the resource is not valid.</td>
+</tr>
+</tbody>
+</table>
+<p>Response sent to host processor containing the requested resource range
+ assigned to the host who sent the range request.
+ The range_start and range_num values are zero if the type and subtype in the
+ range request do not form a unique resource type for the SoC.  In this case,
+ the response will still contain an ACK.</p>
+</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The boardcfg data structures described below <strong>must</strong> be placed in
+MCU OCMC SRAM. The address used in the TISCI message will be
+in MCU OCMC SRAM.</p>
+</div>
+<div class="section" id="boardcfg-rm-structure">
+<span id="pub-boardcfg-rm"></span><h4>boardcfg_rm structure<a class="headerlink" href="#boardcfg-rm-structure" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="43%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>rev</td>
+<td><a class="reference internal" href="BOARDCFG.html#pub-boardcfg-abi-rev"><span class="std std-ref">ABI revision structure</span></a></td>
+<td>Resource Management board
+config ABI version (separate
+from primary board config ABI
+version)</td>
+</tr>
+<tr class="row-odd"><td>host_cfg</td>
+<td><a class="reference internal" href="#pub-boardcfg-rm-host-cfg"><span class="std std-ref">boardcfg_rm_host_cfg structure</span></a></td>
+<td>Host configuration structure</td>
+</tr>
+<tr class="row-even"><td>resasg</td>
+<td><a class="reference internal" href="#pub-boardcfg-rm-resasg"><span class="std std-ref">boardcfg_rm_resasg structure</span></a></td>
+<td>Resource assignment
+configuration structure</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="boardcfg-rm-host-cfg-structure">
+<span id="pub-boardcfg-rm-host-cfg"></span><h4>boardcfg_rm_host_cfg structure<a class="headerlink" href="#boardcfg-rm-host-cfg-structure" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="49%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>subhdr</td>
+<td><a class="reference internal" href="BOARDCFG.html#pub-boardcfg-subhdr"><span class="std std-ref">boardcfg substructure header</span></a></td>
+<td>Magic and size for integrity
+check</td>
+</tr>
+<tr class="row-odd"><td>host_cfg_entries</td>
+<td><a class="reference internal" href="#pub-boardcfg-rm-host-cfg-entry"><span class="std std-ref">boardcfg_rm_host_cfg_entry structure</span></a> [32]</td>
+<td>Array sized for scalable
+number of hosts describing
+each host’s configuration
+attributes</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="boardcfg-rm-host-cfg-entry-structure">
+<span id="pub-boardcfg-rm-host-cfg-entry"></span><h4>boardcfg_rm_host_cfg_entry structure<a class="headerlink" href="#boardcfg-rm-host-cfg-entry-structure" title="Permalink to this headline">¶</a></h4>
+<p>The boardcfg_rm_host_cfg_entry structure describes a host’s configuration
+attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="8%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>host_id</td>
+<td>u8</td>
+<td>Processing entity host ID</td>
+</tr>
+<tr class="row-odd"><td>allowed_atype</td>
+<td>u8</td>
+<td>Allowed atype configuration for the host ID.
+The host ID gets assigned a list of atypes
+which are allowed. atype is a 2-bit field
+with 3 possible values. Thus in one 8-bit
+word, flags are set specifying whether or
+not an atype value is allowed for the host
+ID. For each atype, the value of 01b means
+not allowed, 10b means allowed, and 11b and
+00b are invalid/errors. These are encoded in
+a bitfield because there is one set of
+allowed atypes for every host ID.</td>
+</tr>
+<tr class="row-even"><td>allowed_qos</td>
+<td>u16</td>
+<td>Allowed QoS level configuration for host ID.
+The host ID gets assigned a list of QoS
+levels which are allowed. As QoS level is a
+3-bit field, there are 8 possible order-IDs.
+Thus in one 16-bit word, flags are set
+specifying whether or not the QoS level is
+allowed for the host ID. For each QoS level,
+the value of 01b means not allowed, 10b
+means allowed, and 11b and 00b are
+invalid/errors. These are encoded in a
+bitfield because there is one set of allowed
+QoS levels for every host ID.</td>
+</tr>
+<tr class="row-odd"><td>allowed_orderid</td>
+<td>u32</td>
+<td>Allowed order-ID configuration for the host
+ID.  The host ID gets assigned a list of
+order-IDs which are allowed. As order-ID is
+a 4-bit field, there are 16 possible
+order-IDs. Thus in one 32-bit word, flags
+are set specifying whether or not the
+order-ID is allowed for the host ID. For
+each order-ID, the value of 01b means not
+allowed, 10b means allowed, and 11b and 00b
+are invalid/errors. These are encoded in a
+bitfield because there is one set of allowed
+order-IDs for every host ID.</td>
+</tr>
+<tr class="row-even"><td>allowed_priority</td>
+<td>u16</td>
+<td>Allowed bus priority configuration for host
+ID.  The host ID gets assigned a list of bus
+priorities which are allowed. As bus
+priority is a 3-bit field, there are 8
+possible bus priorities. Thus in one 16-bit
+word, flags are set specifying whether or
+not the bus priority is allowed for the host
+ID. For each bus priority, the value of 01b
+means not allowed, 10b means allowed, and
+11b and 00b are invalid/errors. These are
+encoded in a bitfield because there is one
+set of allowed bus priorities for every host
+ID.</td>
+</tr>
+<tr class="row-odd"><td>allowed_sched_priority</td>
+<td>u8</td>
+<td>Allowed UDMAP channel scheduling priority
+configuration for host ID.  The host ID gets
+assigned a list of UDMAP channel scheduling
+priorities which are allowed. As UDMAP
+channel scheduling priority is a 2-bit
+field, there are 4 possible UDMAP channel
+scheduling priorities. Thus in one 8-bit
+word, flags are set specifying whether or
+not UDMAP channel scheduling priority is
+allowed for the host ID. For each priority,
+the value of 01b means not allowed, 10b
+means allowed, and 11b and 00b are
+invalid/errors.  These are encoded in a
+bitfield because there is one set of allowed
+UDMAP channel scheduling priorities for
+every host ID.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="boardcfg-rm-resasg-structure">
+<span id="pub-boardcfg-rm-resasg"></span><h4>boardcfg_rm_resasg structure<a class="headerlink" href="#boardcfg-rm-resasg-structure" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="41%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>subhdr</td>
+<td><a class="reference internal" href="BOARDCFG.html#pub-boardcfg-subhdr"><span class="std std-ref">boardcfg substructure header</span></a></td>
+<td>Magic and size for integrity check</td>
+</tr>
+<tr class="row-odd"><td>resasg_entries_size</td>
+<td>u16</td>
+<td>Size of resource assignment entry
+array in bytes</td>
+</tr>
+<tr class="row-even"><td>reserved</td>
+<td>u16</td>
+<td>Reserved to keep 4-byte alignment</td>
+</tr>
+<tr class="row-odd"><td>resasg_entries</td>
+<td><a class="reference internal" href="#pub-boardcfg-rm-resasg-entry"><span class="std std-ref">boardcfg_rm_resasg_entry (resource assignment) structure</span></a> []</td>
+<td>Array of resource assignment entries
+defined as variable length array.
+The user must define their own
+structure with a fixed length array
+in place of resasg_entries[].</td>
+</tr>
+</tbody>
+</table>
+<p>Example user structure for RM boardcfg:</p>
+<div class="code c highlight-cpp"><div class="highlight"><pre><span></span><span class="cp">#define RESASG_ENTRIES (100)</span>
+
+<span class="k">struct</span> <span class="n">local_rm_boardcfg</span> <span class="p">{</span>
+        <span class="k">struct</span> <span class="n">boardcfg_rm</span>              <span class="n">rm_boardcfg</span><span class="p">;</span>
+        <span class="k">struct</span> <span class="n">boardcfg_rm_resasg_entry</span> <span class="n">resasg_entries</span><span class="p">[</span><span class="n">RESASG_ENTRIES</span><span class="p">];</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="boardcfg-rm-resasg-entry-resource-assignment-structure">
+<span id="pub-boardcfg-rm-resasg-entry"></span><h4>boardcfg_rm_resasg_entry (resource assignment) structure<a class="headerlink" href="#boardcfg-rm-resasg-entry-resource-assignment-structure" title="Permalink to this headline">¶</a></h4>
+<p>There is one boardcfg_rm_resasg_entry per resource per host. This structure
+allows one contiguous block of any resource to be assigned to one processing
+entity</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="8%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>start_resource</td>
+<td>u16</td>
+<td>First resource number (inclusive) for this host_id
+and resource type</td>
+</tr>
+<tr class="row-odd"><td>num_resource</td>
+<td>u16</td>
+<td>Number of continuous resources allocated to this
+host_id and resource type. 0 means unused</td>
+</tr>
+<tr class="row-even"><td>type</td>
+<td>u16</td>
+<td>Unique type value identifying the resource whose
+range is assigned to host_id</td>
+</tr>
+<tr class="row-odd"><td>host_id</td>
+<td>u8</td>
+<td>Host ID as defined in secure proxy configuration</td>
+</tr>
+<tr class="row-even"><td>reserved</td>
+<td>u8</td>
+<td>Byte reservation to assure contiguous resasg entries
+are aligned on 8-byte boundaries</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="design-details-for-interrupt-management">
+<h4>Design details for interrupt management<a class="headerlink" href="#design-details-for-interrupt-management" title="Permalink to this headline">¶</a></h4>
+<p>Within interrupt management, interrupts are routed through interrupt aggregators
+(IAs) and interrupt routers (IRs).</p>
+<p>Whenever interrupt routers broadcast the interrupt to multiple interrupt
+controllers then it is possible for one processing entity to take outputs that
+could have been used by another processing entity, precluding the second
+processing entity from routing a required interrupt. Thus IRs with broadcast
+outputs need resource reservation capability. On AM6, these are the GPIO
+interrupt routers (in main and mcu), as well as the MAIN2MCU interrupt router.</p>
+<p>Each interrupt aggregator virtual interrupt allows grouping up to 64
+peripheral events to one host interrupt. It’s possible for one host to
+take all of these virtual interrupts.  It’s also possible for one host to take
+all peripheral events.  Thus, resource reservation capability is required for
+peripheral events and interrupt aggregator virtual interrupts.</p>
+<p>Interrupt routes terminate at host processor interrupt controller inputs.  A
+single host is capable of consuming all interrupt controller intputs.
+Therefore, resource reservation is required for host processor interrupt
+controller IRQs.</p>
+<p>The unique types used to identify interrupt management reserved resources are
+found in <a class="reference internal" href="../5_soc_doc/am6x/resasg_types.html"><span class="doc">Enumeration of Resource Type IDs</span></a>.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="BOARDCFG_SEC.html" class="btn btn-neutral float-right" title="Security Board Configuration" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="BOARDCFG.html" class="btn btn-neutral" title="Board Configuration" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'19.08.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

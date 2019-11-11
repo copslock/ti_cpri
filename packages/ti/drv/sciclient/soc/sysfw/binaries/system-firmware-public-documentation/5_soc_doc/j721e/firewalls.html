@@ -1,0 +1,1616 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>J721E Firewall Descriptions &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../../index.html"/>
+        <link rel="up" title="Chapter 5: SoC Family Specific Documentation" href="../index.html"/>
+        <link rel="next" title="Chapter 6: Topic User Guides" href="../../6_topic_user_guides/index.html"/>
+        <link rel="prev" title="J721E Processor Descriptions" href="processors.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.08.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapter 5: SoC Family Specific Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#am6-soc-family">AM6 SoC Family</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#j721e-soc-family">J721E SoC Family</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="hosts.html">J721E Host Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">J721E Devices Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clocks.html">J721E Clock Identifiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="resasg_types.html">j721e Board Configuration Resource Assignment Type Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_sources.html">j721e Peripheral Interrupt Source Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_dsts.html">j721e Peripheral Interrupt Destination Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="navss.html">j721e Navigator Subsystem Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sec_proxy.html">J721E Secure Proxy Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="processors.html">J721E Processor Descriptions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">J721E Firewall Descriptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-of-region-based-firewalls">List of Region Based Firewalls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-of-channelized-firewalls">List of Channelized Firewalls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#list-of-priv-ids">List of priv-ids</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Chapter 5: SoC Family Specific Documentation</a> &raquo;</li>
+      
+    <li>J721E Firewall Descriptions</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="j721e-firewall-descriptions">
+<h1>J721E Firewall Descriptions<a class="headerlink" href="#j721e-firewall-descriptions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="soc-doc-j721e-public-fwl-desc-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This chapter provides information on firewalls that system firmware configures
+by default at boot time. Guide to read the tables in this chapter is provided
+below. For more details on firewalls refer to “Interconnect Firewalls” section
+of TRM and <a class="reference internal" href="../../2_tisci_msgs/security/firewall_api.html#sec-ap-fwl-tisci-desc"><span class="std std-ref">Firewall TISCI Description</span></a>.</p>
+<ul class="simple">
+<li>Firewall ID: The firewall ID uniquely identifies each firewall</li>
+<li>Owner: <a class="reference internal" href="hosts.html#soc-doc-j721e-public-host-desc-host-list"><span class="std std-ref">Host ID</span></a> that is owner of the firewall</li>
+<li>CBA_PERMISSION_x: Each firewall region/channel can have up to 3 slots for configuring permissions. Each permission slot takes the form of [user, permission], where user is a host and permission is a combination of r-read, w-write, c-cache, d-debug. The priv-id, secure/non-secure, user/privileged information are derived from the host id.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the below table, a firewall owned by RM implies that the corresponding resource is managed by the resource manager.
+Firewall configuration is internally handled by RM based on RM boardcfg.</p>
+</div>
+</div>
+<div class="section" id="list-of-region-based-firewalls">
+<span id="soc-doc-j721e-public-fwl-desc-region-fwl-list"></span><h2>List of Region Based Firewalls<a class="headerlink" href="#list-of-region-based-firewalls" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="8%" />
+<col width="15%" />
+<col width="13%" />
+<col width="18%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Firewall ID</th>
+<th class="head">Owner</th>
+<th class="head">Start Address</th>
+<th class="head">End Address</th>
+<th class="head">CBA_PERMISSION_0</th>
+<th class="head">CBA_PERMISSION_1</th>
+<th class="head">CBA_PERMISSION_2</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>513</td>
+<td>dmsc</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>514</td>
+<td>dmsc</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>515</td>
+<td>dmsc</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>639</td>
+<td>dmsc</td>
+<td>0x45000000</td>
+<td>0x45FFFFFF</td>
+<td>dmsc,rwd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>1280</td>
+<td>none</td>
+<td>0x00000000</td>
+<td>0xFFFFFFFFFFF</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>2312</td>
+<td>none</td>
+<td>0x00000000</td>
+<td>0xFFFFFFFFFFF</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>4160</td>
+<td>dmsc</td>
+<td>0x38000000</td>
+<td>0x383FFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>4288</td>
+<td>dmsc</td>
+<td>0x31160000</td>
+<td>0x311603FF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>4288</td>
+<td>dmsc</td>
+<td>0x31080000</td>
+<td>0x310BFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>4288</td>
+<td>dmsc</td>
+<td>0x3C000000</td>
+<td>0x3C3FFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>4288</td>
+<td>dmsc</td>
+<td>0x32000000</td>
+<td>0x3201FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>4352</td>
+<td>dmsc</td>
+<td>0x30802000</td>
+<td>0x3080201F</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>4352</td>
+<td>dmsc</td>
+<td>0x30940000</td>
+<td>0x3097FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>4352</td>
+<td>dmsc</td>
+<td>0x33D00000</td>
+<td>0x33DFFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>4352</td>
+<td>dmsc</td>
+<td>0x31100000</td>
+<td>0x31100FFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>4352</td>
+<td>dmsc</td>
+<td>0x31110000</td>
+<td>0x31113FFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>4352</td>
+<td>dmsc</td>
+<td>0x31040000</td>
+<td>0x31043FFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>4352</td>
+<td>dmsc</td>
+<td>0x33800000</td>
+<td>0x339FFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>4384</td>
+<td>dmsc</td>
+<td>0x31150000</td>
+<td>0x311500FF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>4384</td>
+<td>dmsc</td>
+<td>0x30D00000</td>
+<td>0x30D07FFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>4384</td>
+<td>dmsc</td>
+<td>0x30B00000</td>
+<td>0x30B1FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>4384</td>
+<td>dmsc</td>
+<td>0x30C00000</td>
+<td>0x30C0FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>4384</td>
+<td>dmsc</td>
+<td>0x35000000</td>
+<td>0x351FFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>4384</td>
+<td>dmsc</td>
+<td>0x34000000</td>
+<td>0x340FFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>4648</td>
+<td>dmsc</td>
+<td>0x30800000</td>
+<td>0x3080001F</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>4648</td>
+<td>dmsc</td>
+<td>0x30900000</td>
+<td>0x30907FFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>4648</td>
+<td>dmsc</td>
+<td>0x33C00000</td>
+<td>0x33C3FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>4656</td>
+<td>dmsc</td>
+<td>0x30801000</td>
+<td>0x3080101F</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>4656</td>
+<td>dmsc</td>
+<td>0x30908000</td>
+<td>0x3090FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>4656</td>
+<td>dmsc</td>
+<td>0x33C40000</td>
+<td>0x33C7FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>4664</td>
+<td>dmsc</td>
+<td>0x31120000</td>
+<td>0x311200FF</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>4664</td>
+<td>dmsc</td>
+<td>0x33400000</td>
+<td>0x3343FFFF</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>4664</td>
+<td>dmsc</td>
+<td>0x31130000</td>
+<td>0x31133FFF</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>4680</td>
+<td>dmsc</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4688</td>
+<td>dmsc</td>
+<td>0x33000000</td>
+<td>0x3303FFFF</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>4704</td>
+<td>dmsc</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>everyone,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4760</td>
+<td>none</td>
+<td>0x70000000</td>
+<td>0x701FFFFF</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>4760</td>
+<td>dmsc</td>
+<td>0x60000000</td>
+<td>0x6CFFFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4760</td>
+<td>none</td>
+<td>0x6D000000</td>
+<td>0x6DFFFFFF</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>4760</td>
+<td>dmsc</td>
+<td>0x6E000000</td>
+<td>0x6EFFFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4760</td>
+<td>dmsc</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>sproxy_private,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4761</td>
+<td>none</td>
+<td>0x70000000</td>
+<td>0x701FFFFF</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>4761</td>
+<td>dmsc</td>
+<td>0x60000000</td>
+<td>0x6CFFFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4761</td>
+<td>none</td>
+<td>0x6D000000</td>
+<td>0x6DFFFFFF</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>4761</td>
+<td>dmsc</td>
+<td>0x6E000000</td>
+<td>0x6EFFFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4761</td>
+<td>dmsc</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>sproxy_private,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6156</td>
+<td>dmsc</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>6176</td>
+<td>dmsc</td>
+<td>0x285D0000</td>
+<td>0x285D03FF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>6176</td>
+<td>dmsc</td>
+<td>0x28440000</td>
+<td>0x2847FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>6176</td>
+<td>dmsc</td>
+<td>0x2B800000</td>
+<td>0x2BBFFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>6176</td>
+<td>dmsc</td>
+<td>0x2A280000</td>
+<td>0x2A29FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>6240</td>
+<td>dmsc</td>
+<td>0x283C0000</td>
+<td>0x283C001F</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>6240</td>
+<td>dmsc</td>
+<td>0x28560000</td>
+<td>0x2856FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>6240</td>
+<td>dmsc</td>
+<td>0x2A700000</td>
+<td>0x2A7FFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>6240</td>
+<td>dmsc</td>
+<td>0x28570000</td>
+<td>0x285701FF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>6240</td>
+<td>dmsc</td>
+<td>0x28580000</td>
+<td>0x28580FFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>6240</td>
+<td>dmsc</td>
+<td>0x28480000</td>
+<td>0x28481FFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>6240</td>
+<td>dmsc</td>
+<td>0x2A600000</td>
+<td>0x2A6FFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>6248</td>
+<td>dmsc</td>
+<td>0x285C0000</td>
+<td>0x285C00FF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>6248</td>
+<td>dmsc</td>
+<td>0x28400000</td>
+<td>0x28401FFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>6248</td>
+<td>dmsc</td>
+<td>0x284A0000</td>
+<td>0x284A3FFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>6248</td>
+<td>dmsc</td>
+<td>0x284C0000</td>
+<td>0x284C3FFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-even"><td>6248</td>
+<td>dmsc</td>
+<td>0x2AA00000</td>
+<td>0x2AA3FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>6248</td>
+<td>dmsc</td>
+<td>0x2A800000</td>
+<td>0x2A83FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>6268</td>
+<td>dmsc</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>everyone,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6269</td>
+<td>dmsc</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>sproxy_private,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6288</td>
+<td>dmsc</td>
+<td>0x2B000000</td>
+<td>0x2B3FFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="list-of-channelized-firewalls">
+<span id="soc-doc-j721e-public-fwl-desc-channel-fwl-list"></span><h2>List of Channelized Firewalls<a class="headerlink" href="#list-of-channelized-firewalls" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="7%" />
+<col width="13%" />
+<col width="12%" />
+<col width="25%" />
+<col width="16%" />
+<col width="16%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Firewall ID</th>
+<th class="head">Owner</th>
+<th class="head">Start Channel</th>
+<th class="head">End Channel</th>
+<th class="head">CBA_PERMISSION_0</th>
+<th class="head">CBA_PERMISSION_1</th>
+<th class="head">CBA_PERMISSION_2</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>4128</td>
+<td>dmsc</td>
+<td>974</td>
+<td>1023</td>
+<td>sproxy_private,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4224</td>
+<td>dmsc</td>
+<td>974</td>
+<td>1023</td>
+<td>sproxy_private,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4320</td>
+<td>rm</td>
+<td>0</td>
+<td>0</td>
+<td>block_everyone,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4320</td>
+<td>rm</td>
+<td>256</td>
+<td>256</td>
+<td>block_everyone,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4368</td>
+<td>rm</td>
+<td>0</td>
+<td>0</td>
+<td>block_everyone,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4368</td>
+<td>rm</td>
+<td>1</td>
+<td>299</td>
+<td>dmsc,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4368</td>
+<td>rm</td>
+<td>300</td>
+<td>300</td>
+<td>block_everyone,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4368</td>
+<td>rm</td>
+<td>301</td>
+<td>439</td>
+<td>dmsc,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4644</td>
+<td>rm</td>
+<td>0</td>
+<td>0</td>
+<td>block_everyone,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4652</td>
+<td>rm</td>
+<td>0</td>
+<td>0</td>
+<td>block_everyone,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4660</td>
+<td>dmsc</td>
+<td>0</td>
+<td>0</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4660</td>
+<td>none</td>
+<td>1</td>
+<td>63</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>4672</td>
+<td>dmsc</td>
+<td>0</td>
+<td>159</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4684</td>
+<td>dmsc</td>
+<td>0</td>
+<td>0</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4684</td>
+<td>none</td>
+<td>1</td>
+<td>63</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>4696</td>
+<td>dmsc</td>
+<td>0</td>
+<td>9</td>
+<td>a72_secure_supervisor,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4696</td>
+<td>dmsc</td>
+<td>10</td>
+<td>24</td>
+<td>a72_non_secure_supervisor,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4696</td>
+<td>dmsc</td>
+<td>25</td>
+<td>29</td>
+<td>main_0_c7x_0_secure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4696</td>
+<td>dmsc</td>
+<td>30</td>
+<td>34</td>
+<td>main_0_c7x_0_nonsecure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4696</td>
+<td>dmsc</td>
+<td>35</td>
+<td>39</td>
+<td>main_0_c6x_0_secure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4696</td>
+<td>dmsc</td>
+<td>40</td>
+<td>44</td>
+<td>main_0_c6x_0_nonsecure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4696</td>
+<td>dmsc</td>
+<td>45</td>
+<td>49</td>
+<td>main_0_c6x_1_secure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4696</td>
+<td>dmsc</td>
+<td>50</td>
+<td>54</td>
+<td>main_0_c6x_1_nonsecure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4696</td>
+<td>dmsc</td>
+<td>55</td>
+<td>59</td>
+<td>gpu_0,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4696</td>
+<td>dmsc</td>
+<td>60</td>
+<td>64</td>
+<td>main_0_r5_0_nonsecure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4696</td>
+<td>dmsc</td>
+<td>65</td>
+<td>69</td>
+<td>main_0_r5_0_secure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4696</td>
+<td>dmsc</td>
+<td>70</td>
+<td>74</td>
+<td>main_0_r5_1_nonsecure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4696</td>
+<td>dmsc</td>
+<td>75</td>
+<td>79</td>
+<td>main_0_r5_1_secure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4696</td>
+<td>dmsc</td>
+<td>80</td>
+<td>84</td>
+<td>main_1_r5_0_nonsecure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4696</td>
+<td>dmsc</td>
+<td>85</td>
+<td>89</td>
+<td>main_1_r5_0_secure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4696</td>
+<td>dmsc</td>
+<td>90</td>
+<td>94</td>
+<td>main_1_r5_1_nonsecure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4696</td>
+<td>dmsc</td>
+<td>95</td>
+<td>99</td>
+<td>main_1_r5_1_secure,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>4696</td>
+<td>dmsc</td>
+<td>100</td>
+<td>104</td>
+<td>main_0_icssg_0,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>4696</td>
+<td>dmsc</td>
+<td>112</td>
+<td>159</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6152</td>
+<td>dmsc</td>
+<td>5</td>
+<td>5</td>
+<td>everyone,r</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6152</td>
+<td>dmsc</td>
+<td>0</td>
+<td>4</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6152</td>
+<td>dmsc</td>
+<td>6</td>
+<td>89</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6160</td>
+<td>rm</td>
+<td>4</td>
+<td>4</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6160</td>
+<td>dmsc</td>
+<td>46</td>
+<td>47</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6160</td>
+<td>rm</td>
+<td>52</td>
+<td>53</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6160</td>
+<td>dmsc</td>
+<td>93</td>
+<td>95</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6160</td>
+<td>rm</td>
+<td>100</td>
+<td>101</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6160</td>
+<td>dmsc</td>
+<td>252</td>
+<td>255</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6208</td>
+<td>rm</td>
+<td>0</td>
+<td>0</td>
+<td>block_everyone,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6208</td>
+<td>rm</td>
+<td>256</td>
+<td>256</td>
+<td>block_everyone,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6244</td>
+<td>rm</td>
+<td>0</td>
+<td>3</td>
+<td>dmsc,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6244</td>
+<td>rm</td>
+<td>4</td>
+<td>4</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6244</td>
+<td>rm</td>
+<td>5</td>
+<td>45</td>
+<td>dmsc,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6244</td>
+<td>dmsc</td>
+<td>46</td>
+<td>47</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6244</td>
+<td>rm</td>
+<td>48</td>
+<td>51</td>
+<td>dmsc,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6244</td>
+<td>rm</td>
+<td>52</td>
+<td>53</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6244</td>
+<td>rm</td>
+<td>54</td>
+<td>92</td>
+<td>dmsc,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6244</td>
+<td>dmsc</td>
+<td>93</td>
+<td>95</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6264</td>
+<td>dmsc</td>
+<td>0</td>
+<td>9</td>
+<td>pulsar_0,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6264</td>
+<td>dmsc</td>
+<td>10</td>
+<td>19</td>
+<td>pulsar_1,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6264</td>
+<td>dmsc</td>
+<td>76</td>
+<td>89</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6272</td>
+<td>rm</td>
+<td>4</td>
+<td>4</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6272</td>
+<td>dmsc</td>
+<td>46</td>
+<td>47</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6272</td>
+<td>rm</td>
+<td>52</td>
+<td>53</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6272</td>
+<td>dmsc</td>
+<td>93</td>
+<td>95</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6272</td>
+<td>rm</td>
+<td>100</td>
+<td>101</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6272</td>
+<td>dmsc</td>
+<td>252</td>
+<td>255</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6272</td>
+<td>dmsc</td>
+<td>256</td>
+<td>285</td>
+<td>sproxy_private,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="list-of-priv-ids">
+<span id="soc-doc-j721e-public-fwl-desc-priv-id-list"></span><h2>List of priv-ids<a class="headerlink" href="#list-of-priv-ids" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="11%" />
+<col width="10%" />
+<col width="15%" />
+<col width="15%" />
+<col width="8%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Master name</th>
+<th class="head">priv-id</th>
+<th class="head">secure</th>
+<th class="head">non-secure</th>
+<th class="head">privileged</th>
+<th class="head">user</th>
+<th class="head">HOST-IDs</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>a72_non_secure_supervisor</td>
+<td>1</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+<td>12,13,14</td>
+</tr>
+<tr class="row-odd"><td>a72_secure_supervisor</td>
+<td>1</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>False</td>
+<td>10,11</td>
+</tr>
+<tr class="row-even"><td>sproxy_private</td>
+<td>11</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>main_0_c7x_0_secure</td>
+<td>21</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>20</td>
+</tr>
+<tr class="row-even"><td>main_0_c7x_0_nonsecure</td>
+<td>21</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>21</td>
+</tr>
+<tr class="row-odd"><td>pulsar_0</td>
+<td>96</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+<td>3,4</td>
+</tr>
+<tr class="row-even"><td>pulsar_1</td>
+<td>97</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>False</td>
+<td>5,6</td>
+</tr>
+<tr class="row-odd"><td>main_0_icssg_0</td>
+<td>136</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>50</td>
+</tr>
+<tr class="row-even"><td>gpu_0</td>
+<td>187</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>30</td>
+</tr>
+<tr class="row-odd"><td>everyone</td>
+<td>195</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>block_everyone</td>
+<td>197</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>dmsc</td>
+<td>202</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>main_0_r5_0_nonsecure</td>
+<td>212</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>35</td>
+</tr>
+<tr class="row-odd"><td>main_0_r5_0_secure</td>
+<td>212</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>36</td>
+</tr>
+<tr class="row-even"><td>main_0_r5_1_nonsecure</td>
+<td>213</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>37</td>
+</tr>
+<tr class="row-odd"><td>main_0_r5_1_secure</td>
+<td>213</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>38</td>
+</tr>
+<tr class="row-even"><td>main_1_r5_0_nonsecure</td>
+<td>214</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>40</td>
+</tr>
+<tr class="row-odd"><td>main_1_r5_0_secure</td>
+<td>214</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>41</td>
+</tr>
+<tr class="row-even"><td>main_1_r5_1_nonsecure</td>
+<td>215</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>42</td>
+</tr>
+<tr class="row-odd"><td>main_1_r5_1_secure</td>
+<td>215</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>43</td>
+</tr>
+<tr class="row-even"><td>main_0_c6x_0_secure</td>
+<td>220</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>25</td>
+</tr>
+<tr class="row-odd"><td>main_0_c6x_0_nonsecure</td>
+<td>220</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>26</td>
+</tr>
+<tr class="row-even"><td>main_0_c6x_1_secure</td>
+<td>221</td>
+<td>True</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>27</td>
+</tr>
+<tr class="row-odd"><td>main_0_c6x_1_nonsecure</td>
+<td>221</td>
+<td>False</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+<td>28</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../6_topic_user_guides/index.html" class="btn btn-neutral float-right" title="Chapter 6: Topic User Guides" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="processors.html" class="btn btn-neutral" title="J721E Processor Descriptions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'19.08.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

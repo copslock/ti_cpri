@@ -66,16 +66,16 @@
 /*                          Function Declarations                             */
 /* ========================================================================== */
 
-/**<
+/**
  *  \brief   Gives the address for status register for a particular thread.
  *
  *  \param   thread    Index of the thread.
  *
- *  \return  address.
+ *  \return  address   address of the thread status
  */
 static inline uint32_t Sciclient_threadStatusReg(uint32_t thread);
 
-/**<
+/**
  *  \brief   Read a 32 bit word from the thread.
  *
  *  \param   thread    Index of the thread to be read from.
@@ -85,7 +85,7 @@ static inline uint32_t Sciclient_threadStatusReg(uint32_t thread);
  */
 static inline uint32_t Sciclient_readThread32(uint32_t thread, uint8_t idx);
 
-/**<
+/**
  *  \brief   Read the current thread count.
  *
  *  \param   thread    Index of the thread to be read from.
@@ -94,18 +94,17 @@ static inline uint32_t Sciclient_readThread32(uint32_t thread, uint8_t idx);
  */
 static inline uint32_t Sciclient_readThreadCount(uint32_t thread);
 
-/**<
+/**
  *  \brief   Validate thread has no errors and has space to accept the next
  *           message.
  *
  *  \param   thread    Index of the thread.
- *  \param   timeout   Wait for timeout if operation is complete.
  *
  *  \return  status    Status of the message.
  */
 static int32_t Sciclient_verifyThread(uint32_t thread);
 
-/**<
+/**
  *  \brief   Check if there are credits to write to the thread.
  *
  *  \param   thread    Index of the thread.
@@ -115,10 +114,11 @@ static int32_t Sciclient_verifyThread(uint32_t thread);
  */
 static int32_t Sciclient_waitThread(uint32_t thread, uint32_t timeout);
 
-/**<
+/**
  *  \brief   API to send the message to the thread.
  *
  *  \param   thread         Index of the thread.
+ *  \param   pSecHeader     Pointer to the security header extension.
  *  \param   pHeader        Pointer to the header structure.
  *  \param   pPayload       Pointer to the payload structure.
  *  \param   payloadSize    Size of the payload.
@@ -131,7 +131,7 @@ static void Sciclient_sendMessage(uint32_t        thread,
                                   const uint8_t  *pPayload,
                                   uint32_t        payloadSize);
 
-/**<
+/**
  *  \brief   API to identify which mode the CPU is operating in. This utility
  *           function would read CPU related registers to know which mode
  *           (secure or non secure) the CPU is in and then would determine the
@@ -139,13 +139,13 @@ static void Sciclient_sendMessage(uint32_t        thread,
  *           a given code, users of SCICLENT would need to modify this function
  *           and recompile.
  *
- *  \param   None
+ *  \param   messageType The Message ID to be checked.
  *
  *  \return  retVal     SCICLENT Context of the CPU
  */
 static uint32_t Sciclient_getCurrentContext(uint16_t messageType);
 
-/**<
+/**
  *  \brief   This utility function would find the proxy map context id for
  *           'gSciclientMap' corresponding to a particular interrupt number.
  *
@@ -155,7 +155,7 @@ static uint32_t Sciclient_getCurrentContext(uint16_t messageType);
  */
 static int32_t Sciclient_contextIdFromIntrNum(uint32_t intrNum);
 
-/**<
+/**
  *  \brief   API to flush/remove all outstanding messages on a thread .
  *
  *  \param   thread    Index of the thread.
@@ -164,7 +164,7 @@ static int32_t Sciclient_contextIdFromIntrNum(uint32_t intrNum);
  */
 static void Sciclient_flush(uint32_t thread);
 
-/**<
+/**
  *  \brief   ISR called when a response is received from DMSC.
  *
  *  \param   arg    Not used.

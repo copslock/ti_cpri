@@ -1,0 +1,937 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>AM6 Navigator Subsystem Descriptions &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../../index.html"/>
+        <link rel="up" title="Chapter 5: SoC Family Specific Documentation" href="../index.html"/>
+        <link rel="next" title="AM6 Secure Proxy Descriptions" href="sec_proxy.html"/>
+        <link rel="prev" title="AM6 Peripheral IRQ Destination Descriptions" href="irq_dsts.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.08.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapter 5: SoC Family Specific Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#am6-soc-family">AM6 SoC Family</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="hosts.html">AM6 Host Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">AM6 Devices Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clocks.html">AM6 Clock Identifiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="resasg_types.html">AM6 Board Configuration Resource Assignment Type Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_sources.html">AM6 Peripheral IRQ Source Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_dsts.html">AM6 Peripheral IRQ Destination Descriptions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">AM6 Navigator Subsystem Descriptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-device-ids">Navigator Subsystem Device IDs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-ring-indices">Navigator Subsystem Ring Indices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-channel-and-flow-indices">Navigator Subsystem Channel and Flow Indices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-virtual-interrupts">Navigator Subsystem Virtual Interrupts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-global-events">Navigator Subsystem Global Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-psi-l-source-and-destination-thread-ids">Navigator Subsystem PSI-L Source and Destination Thread IDs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sec_proxy.html">AM6 Secure Proxy Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="processors.html">AM6 Processor Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="runtime_keystore.html">AM6 Runtime Keystore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firewalls.html">AM6 Firewall Descriptions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#j721e-soc-family">J721E SoC Family</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Chapter 5: SoC Family Specific Documentation</a> &raquo;</li>
+      
+    <li>AM6 Navigator Subsystem Descriptions</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="am6-navigator-subsystem-descriptions">
+<h1>AM6 Navigator Subsystem Descriptions<a class="headerlink" href="#am6-navigator-subsystem-descriptions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This chapter provides information on the Navigator Subsystems in the am6
+SoC. Some System Firmware TISCI messages take Navigator Subsystem
+specific inputs. This chapter provides information on the valid values
+for applicable TISCI message parameters.</p>
+</div>
+<div class="section" id="navigator-subsystem-device-ids">
+<span id="pub-soc-am6x-navss-ids"></span><h2>Navigator Subsystem Device IDs<a class="headerlink" href="#navigator-subsystem-device-ids" title="Permalink to this headline">¶</a></h2>
+<p>Some System Firmware TISCI message APIs require the device ID of the
+Navigator Subsystem to be modified as part of the request. Based on the
+<a class="reference internal" href="devices.html"><span class="doc">AM6 Device IDs</span></a> these are the valid Navigator
+Subsystem device IDs.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="48%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Ring Accelerator Device ID</th>
+<th class="head">Ring Accelerator Device Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>187</td>
+<td>AM6_DEV_NAVSS0_RINGACC0</td>
+</tr>
+<tr class="row-odd"><td>195</td>
+<td>AM6_DEV_MCU_NAVSS0_RINGACC0</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">UDMAP Device ID</th>
+<th class="head">UDMAP Device Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>188</td>
+<td>AM6_DEV_NAVSS0_UDMAP0</td>
+</tr>
+<tr class="row-odd"><td>194</td>
+<td>AM6_DEV_MCU_NAVSS0_UDMAP0</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">PSI-L Device ID</th>
+<th class="head">PSI-L Device Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>118</td>
+<td>AM6_DEV_NAVSS0</td>
+</tr>
+<tr class="row-odd"><td>119</td>
+<td>AM6_DEV_MCU_NAVSS0</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="48%" />
+<col width="52%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Interrupt Aggregator Device ID</th>
+<th class="head">Interrupt Aggregator Device Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>179</td>
+<td>AM6_DEV_NAVSS0_UDMASS_INTA0</td>
+</tr>
+<tr class="row-odd"><td>180</td>
+<td>AM6_DEV_NAVSS0_MODSS_INTA0</td>
+</tr>
+<tr class="row-even"><td>181</td>
+<td>AM6_DEV_NAVSS0_MODSS_INTA1</td>
+</tr>
+<tr class="row-odd"><td>189</td>
+<td>AM6_DEV_MCU_NAVSS0_INTR_AGGR_0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="navigator-subsystem-ring-indices">
+<span id="pub-soc-am6x-navss-rings"></span><h2>Navigator Subsystem Ring Indices<a class="headerlink" href="#navigator-subsystem-ring-indices" title="Permalink to this headline">¶</a></h2>
+<p>This section describes valid Navigator Subsystem Ring Accelerator ring
+indices for each Navigator ring type. The ring index and type ID are
+used in some Ring Accelerator based TISCI messages.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Resources marked as reserved for use by DMSC <strong>cannot</strong> be assigned to a
+host within the RM Board Configuration resource assignment array.  The
+RM Board Configuration is rejected if an overlap with a reserved resouce
+is detected.</p>
+</div>
+<p><strong>Main Navigator Subsystem</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="64%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Ring Type</th>
+<th class="head">Ring Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>UDMAP Tx
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>UDMAP Tx</td>
+<td>1 to 151</td>
+</tr>
+<tr class="row-even"><td>UDMAP Rx
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>152</td>
+</tr>
+<tr class="row-odd"><td>UDMAP Rx</td>
+<td>153 to 301</td>
+</tr>
+<tr class="row-even"><td>General Purpose
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>302 to 303</td>
+</tr>
+<tr class="row-odd"><td>General Purpose</td>
+<td>304 to 767</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">Monitor Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Ring Monitors</td>
+<td>0 to 31</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MCU Navigator Subsystem</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="49%" />
+<col width="51%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Ring Type</th>
+<th class="head">Ring Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>UDMAP Tx</td>
+<td>0 to 47</td>
+</tr>
+<tr class="row-odd"><td>UDMAP Rx</td>
+<td>48 to 95</td>
+</tr>
+<tr class="row-even"><td>General Purpose</td>
+<td>96 to 255</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="62%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">Ring Monitor Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Ring Monitors</td>
+<td>0 to 31</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="navigator-subsystem-channel-and-flow-indices">
+<span id="pub-soc-am6x-udmap-channel-and-flow-indices"></span><h2>Navigator Subsystem Channel and Flow Indices<a class="headerlink" href="#navigator-subsystem-channel-and-flow-indices" title="Permalink to this headline">¶</a></h2>
+<p>This section describes valid Navigator Subsystem UDMAP transmit channel
+and receive channel indices for each Navigator UDMAP channel type. The
+receive flow index range has no type information since it’s required for
+receive flows.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Resources marked as reserved for use by DMSC <strong>cannot</strong> be assigned to a
+host within the RM Board Configuration resource assignment array.  The
+RM Board Configuration is rejected if an overlap with a reserved resouce
+is detected.</p>
+</div>
+<p><strong>Main Navigator Subsystem</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="49%" />
+<col width="14%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Tx Channel Type</th>
+<th class="head">Type ID</th>
+<th class="head">Tx Channel Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>High Capacity
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>High Capacity</td>
+<td>1</td>
+<td>1 to 7</td>
+</tr>
+<tr class="row-even"><td>Standard</td>
+<td>0</td>
+<td>8 to 119</td>
+</tr>
+<tr class="row-odd"><td>External</td>
+<td>2</td>
+<td>120 to 151</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="49%" />
+<col width="14%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Rx Channel Type</th>
+<th class="head">Type ID</th>
+<th class="head">Rx Channel Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>High Capacity
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>1</td>
+<td>0 to 1</td>
+</tr>
+<tr class="row-odd"><td>High Capacity</td>
+<td>1</td>
+<td>2 to 7</td>
+</tr>
+<tr class="row-even"><td>Standard</td>
+<td>0</td>
+<td>8 to 149</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="28%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Rx Flow Type</th>
+<th class="head">Rx Flow Index Range</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Static
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>0 to 1</td>
+<td>Receive flows
+statically mapped to
+receive channels</td>
+</tr>
+<tr class="row-odd"><td>Static</td>
+<td>2 to 149</td>
+<td>Receive flows
+statically mapped to
+receive channels</td>
+</tr>
+<tr class="row-even"><td>Common flows</td>
+<td>150 to 299</td>
+<td>Receive flows usable
+in receive channel
+flow range register</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MCU Navigator Subsystem</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="18%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Tx Channel Type</th>
+<th class="head">Type ID</th>
+<th class="head">Tx Channel Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>High Capacity</td>
+<td>1</td>
+<td>0 to 1</td>
+</tr>
+<tr class="row-odd"><td>Standard</td>
+<td>0</td>
+<td>2 to 47</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="18%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Rx Channel Type</th>
+<th class="head">Type ID</th>
+<th class="head">Rx Channel Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>High Capacity</td>
+<td>1</td>
+<td>0 to 1</td>
+</tr>
+<tr class="row-odd"><td>Standard</td>
+<td>0</td>
+<td>2 to 47</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Rx Flow Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0 to 95</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="navigator-subsystem-virtual-interrupts">
+<span id="pub-soc-am6x-vints"></span><h2>Navigator Subsystem Virtual Interrupts<a class="headerlink" href="#navigator-subsystem-virtual-interrupts" title="Permalink to this headline">¶</a></h2>
+<p>This section describes Navigator Subsystem virtual interrupts.  The virtual
+interrupts are used in interrupt management based TISCI messages.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Resources marked as reserved for use by DMSC <strong>cannot</strong> be assigned to a
+host within the RM Board Configuration resource assignment array.  The
+RM Board Configuration is rejected if an overlap with a reserved resouce
+is detected.</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="24%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">IA Name</th>
+<th class="head">IA Device ID</th>
+<th class="head">VINT Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>AM6_DEV_NAVSS0_UDMASS_INTA0
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>179</td>
+<td>0 - 15</td>
+</tr>
+<tr class="row-odd"><td>AM6_DEV_NAVSS0_UDMASS_INTA0</td>
+<td>179</td>
+<td>16 - 255</td>
+</tr>
+<tr class="row-even"><td>AM6_DEV_NAVSS0_MODSS_INTA0</td>
+<td>180</td>
+<td>0 - 63</td>
+</tr>
+<tr class="row-odd"><td>AM6_DEV_NAVSS0_MODSS_INTA1</td>
+<td>181</td>
+<td>0 - 63</td>
+</tr>
+<tr class="row-even"><td>AM6_DEV_MCU_NAVSS0_INTR_AGGR_0
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>189</td>
+<td>0 - 7</td>
+</tr>
+<tr class="row-odd"><td>AM6_DEV_MCU_NAVSS0_INTR_AGGR_0</td>
+<td>189</td>
+<td>8 - 255</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="navigator-subsystem-global-events">
+<span id="pub-soc-am6x-global-events"></span><h2>Navigator Subsystem Global Events<a class="headerlink" href="#navigator-subsystem-global-events" title="Permalink to this headline">¶</a></h2>
+<p>This section describes Navigator Subsystem global events.  The global
+events are used in Interrupt management based TISCI messages.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Resources marked as reserved for use by DMSC <strong>cannot</strong> be assigned to a
+host within the RM Board Configuration resource assignment array.  The
+RM Board Configuration is rejected if an overlap with a reserved resouce
+is detected.</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="44%" />
+<col width="29%" />
+<col width="27%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Global Event Destination</th>
+<th class="head">Global Event Offset</th>
+<th class="head">Global Event Count</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Main NavSS UDMASS IA0 SEVI
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>0</td>
+<td>16</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS UDMASS IA0 SEVI</td>
+<td>16</td>
+<td>4592</td>
+</tr>
+<tr class="row-even"><td>MCU NavSS UDMASS IA0 SEVI
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>16384</td>
+<td>8</td>
+</tr>
+<tr class="row-odd"><td>MCU NavSS UDMASS IA0 SEVI</td>
+<td>16392</td>
+<td>1528</td>
+</tr>
+<tr class="row-even"><td>Main NavSS MODSS IA0 SEVI</td>
+<td>20480</td>
+<td>1024</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS MODSS IA1 SEVI</td>
+<td>22528</td>
+<td>1024</td>
+</tr>
+<tr class="row-even"><td>Main NavSS UDMASS IA0 MEVI</td>
+<td>32768</td>
+<td>512</td>
+</tr>
+<tr class="row-odd"><td>MCU NavSS UDMASS IA0 MEVI</td>
+<td>34816</td>
+<td>128</td>
+</tr>
+<tr class="row-even"><td>Main NavSS UDMASS IA0 GEVI</td>
+<td>36864</td>
+<td>512</td>
+</tr>
+<tr class="row-odd"><td>MCU NavSS UDMASS IA0 GEVI</td>
+<td>39936</td>
+<td>256</td>
+</tr>
+<tr class="row-even"><td>Main NavSS MCRC LEVI</td>
+<td>43008</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>MCU NavSS MCRC LEVI</td>
+<td>43136</td>
+<td>4</td>
+</tr>
+<tr class="row-even"><td>Main NavSS UDMAP Trigger</td>
+<td>49152</td>
+<td>1024</td>
+</tr>
+<tr class="row-odd"><td>MCU NavSS UDMAP Trigger</td>
+<td>56320</td>
+<td>256</td>
+</tr>
+<tr class="row-even"><td>MSMC DRU</td>
+<td>61440</td>
+<td>64</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="navigator-subsystem-psi-l-source-and-destination-thread-ids">
+<span id="pub-soc-am6x-psil-thread-ids"></span><h2>Navigator Subsystem PSI-L Source and Destination Thread IDs<a class="headerlink" href="#navigator-subsystem-psi-l-source-and-destination-thread-ids" title="Permalink to this headline">¶</a></h2>
+<p>This section describes valid Navigator Subsystem PSI-L source and
+destination thread IDs for each thread type. The thread IDs are used in
+the PSI-L based TISCI messages.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">PSI-L threads marked as reserved for use by DMSC <strong>cannot</strong> be assigned
+be linked to another thread.</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="63%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Source Thread ID Type</th>
+<th class="head">Source Thread ID Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Main NavSS UDMAP0 Threads (Tx channels)
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>0x1000</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS UDMAP0 Threads (Tx channels)</td>
+<td>0x1001 to 0x1077</td>
+</tr>
+<tr class="row-even"><td>Main NavSS SAUL0
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>0x4000</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS SAUL0</td>
+<td>0x4001 to 0x4003</td>
+</tr>
+<tr class="row-even"><td>Main NavSS ICSSG0</td>
+<td>0x4100 to 0x4113</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS ICSSG1</td>
+<td>0x4200 to 0x4213</td>
+</tr>
+<tr class="row-even"><td>Main NavSS ICSSG2</td>
+<td>0x4300 to 0x4313</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS PDMA Main 0</td>
+<td>0x4400 to 0x443F</td>
+</tr>
+<tr class="row-even"><td>Main NavSS PDMA Main 1</td>
+<td>0x4500 to 0x453F</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS PDMA Debug</td>
+<td>0x4600 to 0x463F</td>
+</tr>
+<tr class="row-even"><td>Main NavSS CAL0</td>
+<td>0x4700 to 0x4707</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS MSMC0</td>
+<td>0x4800 to 0x483F</td>
+</tr>
+<tr class="row-even"><td>MCU NavSS UDMAP0 Threads (Tx channels)</td>
+<td>0x6000 to 0x602F</td>
+</tr>
+<tr class="row-odd"><td>MCU NavSS CPSW0</td>
+<td>0x7000 to 0x7000</td>
+</tr>
+<tr class="row-even"><td>MCU NavSS PDMA MCU 0</td>
+<td>0x7100 to 0x713F</td>
+</tr>
+<tr class="row-odd"><td>MCU NavSS PDMA MCU 1</td>
+<td>0x7200 to 0x723F</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="59%" />
+<col width="41%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Destination Thread ID Type</th>
+<th class="head">Destination Thread ID Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Main NavSS UDMAP0 Threads (Rx channels)
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>0x9000 to 0x9001</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS UDMAP0 Threads (Rx channels)</td>
+<td>0x9002 to 0x9095</td>
+</tr>
+<tr class="row-even"><td>Main NavSS SAUL0
+(<strong>Reserved for use by DMSC</strong>)</td>
+<td>0xC000</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS SAUL0</td>
+<td>0xC001</td>
+</tr>
+<tr class="row-even"><td>Main NavSS ICSSG0</td>
+<td>0xC100 to 0xC10F</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS ICSSG1</td>
+<td>0xC200 to 0xC20F</td>
+</tr>
+<tr class="row-even"><td>Main NavSS ICSSG2</td>
+<td>0xC300 to 0xC30F</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS PDMA Main 0</td>
+<td>0xC400 to 0xC43F</td>
+</tr>
+<tr class="row-even"><td>Main NavSS PDMA Main 1</td>
+<td>0xC500 to 0xC53F</td>
+</tr>
+<tr class="row-odd"><td>Main NavSS PDMA Debug</td>
+<td>0xC600 to 0xC63F</td>
+</tr>
+<tr class="row-even"><td>Main NavSS MSMC0</td>
+<td>0xC800 to 0xC83F</td>
+</tr>
+<tr class="row-odd"><td>MCU NavSS UDMAP0 Threads (Rx channels)</td>
+<td>0xE000 to 0xE02F</td>
+</tr>
+<tr class="row-even"><td>MCU NavSS CPSW0</td>
+<td>0xF000 to 0xF007</td>
+</tr>
+<tr class="row-odd"><td>MCU NavSS PDMA MCU 0</td>
+<td>0xF100 to 0xF13F</td>
+</tr>
+<tr class="row-even"><td>MCU NavSS PDMA MCU 1</td>
+<td>0xF200 to 0xF23F</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sec_proxy.html" class="btn btn-neutral float-right" title="AM6 Secure Proxy Descriptions" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="irq_dsts.html" class="btn btn-neutral" title="AM6 Peripheral IRQ Destination Descriptions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'19.08.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

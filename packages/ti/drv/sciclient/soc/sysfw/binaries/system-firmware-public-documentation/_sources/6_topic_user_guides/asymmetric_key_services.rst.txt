@@ -1,0 +1,250 @@
+========================
+ Asymmetric Key Services
+========================
+
+This document describes the asymmetric key services available in |sysfw|.
+
+Introduction
+============
+
+Asymmetric key services refer to the foundational operations on which all public
+key cryptography schemes are built:
+
+#. Encrypt a message with a public key
+#. Decrypt a message with a private key
+#. Sign (encrypt) a message with a private key
+#. Verify (decrypt) a signature with a public key
+
+|sysfw| provides APIs to perform these operations through a Public Key
+Accelerator (PKA) module. The remainder of the document describes the details of
+these operations for RSA and Elliptic Curve algorithms.
+
+For all of the operations, we assume that the required keys are already present
+in the keystore.
+
+Data Format
+===========
+
+All key parameters, input, and output vectors use the :ref:`BIGINT
+format<pub_bigint_data_format>` supported by PKA. The host is responsible for
+supplying the input data in this format and must extract output data
+accordingly.
+
+.. _pub_bigint_data_format:
+
+BIGINT data format
+------------------
+
+Asymmetric key operations are performed by a Public Key Accelerator (PKA)
+hardware module which expects key parameters and input/output data blocks to be
+in a particular format in order to generalize the operations across all key
+types and sizes. |sysfw| enforces the data format referred to as BIGINT in order
+to facilitate translation of these parameters to the PKA module.
+
+BIGINT is a series of 32-bit words used to represent a little-endian byte stream
+and the size of the stream. The first word will contain the size of the byte
+stream in words, i.e.:
+
+.. code-block:: c
+
+  ceil(number_of_bytes_in_stream / 4)
+
+Following the size word will be an array of words holding the LE byte array. An
+example below shows a 10-byte data block in bytes and again in BIGINT format.
+Note that the byte array is padded with extra zeros in the MSBs if it is too
+small to completely fill the last BIGINT array slot.
+
+.. code-block:: c
+
+  /* Data block shown as a byte stream */
+  u8 data_block[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99};
+
+  /* Same data in BIGINT format:
+   *   First word is the size = ceil(10/4) = 3
+   *   Next 3 words contain the byte data (little endian)
+   *   Last word padded with zeros to fill unused data
+   */
+  u32 data_block_bigint[] = {0x3, 0x33221100, 0x77665544, 0x00009988};
+
+In general, for a given byte array, the BIGINT array size will be
+
+.. code-block:: c
+
+  /**
+   * Length of a biginteger array in words, the +1 is for the size
+   */
+  #define BIGINT_LEN(bytelen)              (((bytelen + 3) / 4U) + 1U)
+
+With RSA Keys
+=============
+
+|sysfw| provides API's directly corresponding to the Cryptographic Primitives
+specified in Section 5 of RFC8017 [1]. This allows user to implement the
+encryption and signature schemes specified in RFC8017 while maintaining key
+secrecy using |sysfw|.
+
+Note that the cryptographic primitives provide fundamental operations on which
+higher-level encryption and signature schemes may be implemented. There is no
+assumption made on format or padding of the data nor on what the contents of the
+data represent.
+
+RSA Encryption Primitive (RSAEP)
+--------------------------------
+
+To use RSAEP, the user invokes |sysfw| API with the following arguments.
+
+1. Index in the keystore containing the public key to be used for encryption.
+2. Memory location containing the plaintext data.
+3. Memory location to which the encrypted output ciphertext data must be
+   copied.
+
+|sysfw| copies the plaintext data into DMSC internal memory, encrypts it
+with the specified public key, and copies the ciphertext into the specified
+output location.
+
+.. figure:: ../img/asymmetric-key-images/rsa_encrypt_primitive.svg
+   :width: 70%
+
+RSA Decryption Primitive (RSADP)
+--------------------------------
+
+To use RSADP, the user invokes |sysfw| API with the following arguments.
+
+1. Index in the keystore containing the private key to be used for decryption.
+2. Memory location containing the ciphertext data.
+3. Memory location to which the decrypted plaintext data must be copied.
+
+|sysfw| copies the ciphertext into DMSC internal memory, decrypts it with the
+specified private key, and copies the decrypted plaintext data into the
+specified output location.
+
+.. figure:: ../img/asymmetric-key-images/rsa_decrypt_primitive.svg
+   :width: 70%
+
+RSA Signature Primitive (RSASP1)
+--------------------------------
+
+To use RSASP1, the user invokes |sysfw| API with the following arguments.
+
+1. Index in the keystore containing the private key to be used for signing.
+2. Memory location containing the plaintext data.
+3. Memory location to which the generated ciphertext data (signature) must be
+   copied.
+
+|sysfw| copies the message hash into DMSC internal memory, performs the signing
+operation with the private key, and copies the signature into the specified
+output location.
+
+.. figure:: ../img/asymmetric-key-images/rsa_signature_primitive.svg
+   :width: 70%
+
+RSA Verification Primitive (RSAVP1)
+-----------------------------------
+
+To use RSAVP1, the user invokes |sysfw| API with the following arguments.
+
+1. Index in the keystore containing the public key to be used for the verify
+   operation.
+2. Memory location containing the signature.
+3. Memory location to which the plaintext data must be copied.
+
+|sysfw| copies the signature into DMSC internal memory and performs the verify
+operation using the specified public key. It copies the generated message hash
+to the specified output location.
+
+.. figure:: ../img/asymmetric-key-images/rsa_verify_primitive.svg
+   :width: 70%
+
+With EC Keys
+============
+
+|sysfw| supports API's necessary to implement ECDSA sign and verify operations
+as per [2] below. In both the operations, calculation of the hash of the message
+is required to be performed before invoking the API. This allows the |sysfw|
+API's to be independent of the hash algorithm chosen.
+
+.. note::
+
+  According to [3] below, it is recommended to choose a hash with bit length
+  equal to the security strength associated with the bit length of the curve's
+  group order `n`. If the length of the hash is greater than the bit length of
+  `n` then the user must truncate to select only the leftmost n bits (that is,
+  the `n` MSBs of the BIGINT representation of the hash) or else |sysfw|
+  operation will fail. A hash with bit length less than `n` will effectively
+  reduce the strength of the security of the digital signature to the
+  strength of the hash function, at best.
+
+ECDSA Sign
+----------
+
+For creating a ECDSA signature of a message, the user
+
+1. Calculates the hash of the message with a desired algorithm.
+
+2. Invokes the ECDSA sign API with the below arguments.
+
+   1. the hash of the message,
+   2. the slot number of the private key to be used for signing in the keystore
+      and
+   3. the memory location where the signature of the message must be placed.
+
+3. |sysfw| copies the hash of the message into DMSC internal memory, calculates
+   the signature of the message using the specified private key and copies the
+   signature to the specified memory location.
+
+.. figure:: ../img/asymmetric-key-images/ecdsa_sign.svg
+   :width: 70%
+
+ECDSA Verify
+------------
+
+For verifying a message with ECDSA signature, the user
+
+1. Calculates the hash of the message using the algorithm specified by the
+   sender of the message.
+
+2. Invokes the |sysfw| ECDSA verify API with the below arguments
+
+   1. the hash of the message,
+   2. the slot number of the senders public key in the keystore and
+   3. the signature of the message.
+
+3. |sysfw| copies the hash and signature into DMSC internal memory, verifies the
+   signature and hash against the public key. The pass/fail status is returned
+   in the response message.
+
+.. figure:: ../img/asymmetric-key-images/ecdsa_verify.svg
+   :width: 70%
+
+Return failures
+===============
+
+For all of the above functions, |sysfw| will only return an ACK when successful
+or a NACK if unsuccessful.  Possible reasons for a NACK can be one or more of
+the following:
+
+* ID of the host requesting access to the key to be used by the primitive
+  operation does not match the Host ID specified for that key slot
+* Key slot requested does not hold a valid key
+* Type of operation requested does not have the corresponding usage
+  flag set for the specified key slot
+* Host is requesting operation on a data in memory which they do not own
+  (UDMA transfer to/from DMSC internal memory will fail)
+* Key parameters are not valid and cause PKA operation to fail (|sysfw| does not
+  enforce that the user provides valid key parameters otherwise)
+* Input data is too large
+
+  * For RSA - size of the input data is larger than the modulus
+  * For ECDSA - length of the hash data is larger than the group order
+
+References
+==========
+
+1. PKCS #1: RSA Cryptography Specifications Version 2.2,
+   https://tools.ietf.org/html/rfc8017
+
+2. Standards for Efficient Cryptography Group, "Elliptic Curve Cryptography",
+   SEC 1, Version 2.0, May 2009 http://www.secg.org/sec1-v2.pdf 
+
+3. Digital Signature Standard (DSS), FIPS PUB 186-4
+   https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf

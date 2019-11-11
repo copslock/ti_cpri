@@ -1,0 +1,787 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Security X509 Certificate Documentation &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../../index.html"/>
+        <link rel="up" title="Chapter 2: TISCI Message Documentation" href="../index.html"/>
+        <link rel="next" title="Processor Boot Management TISCI Description" href="PROC_BOOT.html"/>
+        <link rel="prev" title="Resource Management PSI-L TISCI Message Description" href="../rm/rm_psil.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.08.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapter 2: TISCI Message Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#power-management-pm">Power Management (PM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#resource-management-rm">Resource Management (RM)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#secure-management">Secure Management</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Security X509 Certificate Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extensions">Extensions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="PROC_BOOT.html">Processor Boot Management TISCI Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firewall_api.html">Firewall TISCI Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sec_ap_data_transfer.html">Secure AP Command Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rng_api.html">Random Number Generator API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="keystore.html">Runtime Keystore TISCI Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asymmetric_key_services.html">Asymmetric Key Services TISCI Description</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../5_soc_doc/index.html">Chapter 5: SoC Family Specific Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Chapter 2: TISCI Message Documentation</a> &raquo;</li>
+      
+    <li>Security X509 Certificate Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="security-x509-certificate-documentation">
+<h1>Security X509 Certificate Documentation<a class="headerlink" href="#security-x509-certificate-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<span id="sysfw-x509-ext-doc"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This document describes the X509 extensions supported by the X509 parser in System Firmware.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This document is only applicable to HS devices. System Firmware does not include a
+X509 parser on GP devices.</p>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>ISO 8824-1 | ITU-T X.680 (08/2015): Information technology - Abstract Syntax
+Notation One (ASN.1): Specification of basic notation,
+<a class="reference external" href="http://handle.itu.int/11.1002/1000/12479">http://handle.itu.int/11.1002/1000/12479</a></li>
+<li>ISO 8825-1 | ITU-T X.690 (09/2015): Information technology - ASN.1 encoding
+rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules
+(CER) and Distinguished Encoding Rules (DER)
+<a class="reference external" href="http://handle.itu.int/11.1002/1000/12483">http://handle.itu.int/11.1002/1000/12483</a></li>
+<li>ISO/IEC 9594-8 | ITU-T X.509 (10/2016): Information technology - Open Systems
+Interconnection - The Directory: Public-key and attribute certificate
+frameworks
+<a class="reference external" href="http://handle.itu.int/11.1002/1000/13031">http://handle.itu.int/11.1002/1000/13031</a></li>
+<li><a class="reference internal" href="PROC_BOOT.html"><span class="doc">Processor Boot Management TISCI Description</span></a></li>
+</ol>
+</div>
+<div class="section" id="extensions">
+<span id="sysfw-x509-ext-summary"></span><h2>Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h2>
+<p>The following X509 extensions are supported by System Firmware.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="49%" />
+<col width="51%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Extension Name</th>
+<th class="head">Purpose</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#sysfw-boot-ext"><span class="std std-ref">System Firmware Boot Extension</span></a></td>
+<td>Provide boot information</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#sysfw-image-integrity-ext"><span class="std std-ref">System Firmware Image Integrity Extension</span></a></td>
+<td>Image hash and length</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#sysfw-swrev-ext"><span class="std std-ref">System Firmware Software Revision Extension</span></a></td>
+<td>revision of binary for anti-rollback</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#sysfw-load-ext"><span class="std std-ref">System Firmware Load Extension</span></a></td>
+<td>Provide load information</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#sysfw-debug-ext"><span class="std std-ref">System Firmware Debug Extension</span></a></td>
+<td>To unlock debug port</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#sysfw-encryption-ext"><span class="std std-ref">System Firmware Encryption Extension</span></a></td>
+<td>Encryption extension</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="sysfw-boot-extension">
+<span id="sysfw-boot-ext"></span><h3>System Firmware Boot Extension<a class="headerlink" href="#sysfw-boot-extension" title="Permalink to this headline">¶</a></h3>
+<p>This extension adds support for booting various cores on a K3 SOC. It is
+identified by the OID <strong>1.3.6.1.4.1.294.1.33</strong>. The structure of the field is
+shown below in ASN.1 notation.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">SYSFW</span><span class="o">-</span><span class="nl">Boot</span> <span class="p">:</span><span class="o">=</span> <span class="n">SEQUENCE</span>
+<span class="p">{</span>
+    <span class="n">bootCore</span> <span class="n">INTEGER</span><span class="p">,</span> <span class="o">--</span> <span class="n">indicates</span> <span class="n">the</span> <span class="n">core</span> <span class="n">in</span> <span class="n">the</span> <span class="n">device</span> <span class="n">that</span> <span class="n">needs</span> <span class="n">to</span> <span class="n">be</span> <span class="n">booted</span>
+                      <span class="o">--</span> <span class="n">with</span> <span class="n">the</span> <span class="n">image</span> <span class="n">accompanying</span> <span class="k">this</span> <span class="n">certificate</span><span class="p">.</span>
+    <span class="n">configFlags_set</span> <span class="n">INTEGER</span><span class="p">,</span> <span class="o">--</span> <span class="n">Configuration</span> <span class="n">options</span> <span class="k">for</span> <span class="n">the</span> <span class="n">core</span> <span class="n">being</span> <span class="n">booted</span><span class="p">.</span>
+                             <span class="o">--</span> <span class="n">flags</span> <span class="n">to</span> <span class="n">set</span>
+    <span class="n">configFlags_clr</span> <span class="n">INTEGER</span><span class="p">,</span> <span class="o">--</span> <span class="n">Configuration</span> <span class="n">options</span> <span class="k">for</span> <span class="n">the</span> <span class="n">core</span> <span class="n">being</span> <span class="n">booted</span>
+                             <span class="o">--</span> <span class="n">flags</span> <span class="n">to</span> <span class="n">clear</span>
+    <span class="n">resetVec</span> <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span> <span class="o">--</span> <span class="n">Location</span> <span class="n">of</span> <span class="n">reset</span> <span class="n">vector</span> <span class="k">for</span> <span class="n">the</span> <span class="n">core</span><span class="p">.</span>
+
+    <span class="n">fieldValid</span> <span class="n">INTEGER</span> <span class="o">--</span> <span class="n">indicates</span> <span class="n">which</span> <span class="n">of</span> <span class="n">the</span> <span class="n">reserved</span> <span class="n">fields</span> <span class="n">in</span> <span class="n">the</span> <span class="n">extension</span> <span class="n">are</span>
+                       <span class="o">--</span> <span class="n">valid</span>
+    <span class="n">rsvd1</span>     <span class="n">INTEGER</span><span class="p">,</span> <span class="o">--</span> <span class="n">reserved</span> <span class="n">field</span> <span class="k">for</span> <span class="n">future</span> <span class="n">use</span>
+    <span class="n">rsvd2</span>     <span class="n">INTEGER</span><span class="p">,</span> <span class="o">--</span> <span class="n">reserved</span> <span class="n">field</span> <span class="k">for</span> <span class="n">future</span> <span class="n">use</span>
+    <span class="n">rsvd3</span>     <span class="n">INTEGER</span><span class="p">,</span> <span class="o">--</span> <span class="n">reserved</span> <span class="n">field</span> <span class="k">for</span> <span class="n">future</span> <span class="n">use</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The boot extension is decoded into the below structure.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">sec_boot_ctrl</span> <span class="p">{</span>
+    <span class="n">u32</span> <span class="n">bootCore</span><span class="p">;</span>
+    <span class="n">u32</span> <span class="n">configFlags_set</span><span class="p">;</span>
+    <span class="n">u32</span> <span class="n">configFlags_clr</span><span class="p">;</span>
+    <span class="n">u64</span> <span class="n">resetVec</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The reserved fields are for future use and are not decoded currently.</p>
+<div class="section" id="populating-the-certificate-fields">
+<h4>Populating the certificate fields<a class="headerlink" href="#populating-the-certificate-fields" title="Permalink to this headline">¶</a></h4>
+<p>For an example, please refer to the section <code class="docutils literal"><span class="pre">[</span> <span class="pre">sysfw_boot_seq</span> <span class="pre">]</span></code> in <a class="reference internal" href="#sysfw-x509-template-example"><span class="std std-ref">Sample x509 template</span></a>.</p>
+<ol class="arabic">
+<li><p class="first"><code class="docutils literal"><span class="pre">bootCore</span></code> should be initialized to the Core ID of the targeted core.
+Core ID should be obtained from the SOC data. e.g. For booting a
+core with ID <code class="docutils literal"><span class="pre">0x20</span></code>, the relevant line in the X509 template is</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="n">boot_seq</span> <span class="p">]</span>
+<span class="n">bootCore</span> <span class="o">=</span> <span class="nl">INTEGER</span><span class="p">:</span><span class="mh">0x20</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">configFlags_set</span></code></p>
+</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>This is a 32 bit field that indicates core specific flags that need
+to be set before booting the core. The representation is big endian.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><code class="docutils literal"><span class="pre">configFlags_clr</span></code></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>This is a 32 bit field that indicates core specific flags that need
+to be cleared before booting core. The representation is big endian.</li>
+</ul>
+<blockquote>
+<div>Please refer to the SOC and core specific documentation on the supported
+flags. The flags are passed to
+<a class="reference internal" href="PROC_BOOT.html#proc-boot-set-processor-configuration"><span class="std std-ref">set_processor_config</span></a> API as
+is. Please ensure that the flags set or cleared are valid according to the
+API.</div></blockquote>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li><code class="docutils literal"><span class="pre">resetVec</span></code></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>This is a 64 bit field indicating the address of the reset vector
+that needs to be programmed. The representation is big endian.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="sysfw-image-integrity-extension">
+<span id="sysfw-image-integrity-ext"></span><h3>System Firmware Image Integrity Extension<a class="headerlink" href="#sysfw-image-integrity-extension" title="Permalink to this headline">¶</a></h3>
+<p>This extension adds support for specifying a hash and size of the accompanying
+payload. It is identified by the OID <strong>1.3.6.1.4.1.294.1.34</strong>. The structure of
+the field is shown below in ASN.1 notation.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">SYSFW</span><span class="o">-</span><span class="nl">INTEGRITY</span> <span class="p">:</span><span class="o">=</span> <span class="n">SEQUENCE</span>
+<span class="p">{</span>
+   <span class="n">shaType</span> <span class="n">OID</span><span class="p">,</span> <span class="o">--</span> <span class="n">indicates</span> <span class="n">OID</span> <span class="n">of</span> <span class="n">the</span> <span class="n">hash</span> <span class="n">used</span><span class="p">.</span> <span class="n">Must</span> <span class="n">always</span> <span class="n">be</span> <span class="n">set</span> <span class="n">to</span> <span class="n">SHA2</span><span class="o">-</span><span class="mi">512</span>
+                <span class="o">--</span> <span class="nl">OID</span><span class="p">:</span><span class="mf">2.16.840.1.101.3.4.2.3</span>
+   <span class="n">shaValue</span> <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span> <span class="o">--</span> <span class="n">SHA2</span><span class="o">-</span><span class="mi">512</span> <span class="n">value</span> <span class="n">of</span> <span class="n">the</span> <span class="n">payload</span>
+   <span class="n">imageSize</span> <span class="n">INTEGER</span><span class="p">,</span> <span class="o">--</span> <span class="n">Size</span> <span class="n">of</span> <span class="n">the</span> <span class="n">image</span> <span class="n">in</span> <span class="n">bytes</span><span class="p">.</span> <span class="n">This</span> <span class="n">will</span> <span class="n">be</span> <span class="n">amount</span> <span class="n">of</span> <span class="n">data</span>
+                      <span class="o">--</span> <span class="n">used</span> <span class="n">when</span> <span class="n">checking</span> <span class="n">the</span> <span class="n">image</span> <span class="n">integrity</span><span class="p">,</span> <span class="n">copying</span> <span class="n">the</span> <span class="n">image</span>
+                      <span class="o">--</span> <span class="n">to</span> <span class="n">its</span> <span class="n">destination</span> <span class="n">or</span> <span class="n">when</span> <span class="n">decrypting</span> <span class="n">the</span> <span class="n">image</span><span class="p">.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sysfw-software-revision-extension">
+<span id="sysfw-swrev-ext"></span><h3>System Firmware Software Revision Extension<a class="headerlink" href="#sysfw-software-revision-extension" title="Permalink to this headline">¶</a></h3>
+<p>System Firmware reuses the Software Revision extension/OID as defined by ROM as no
+additional information is required. This is identified by OID
+<strong>1.3.6.1.4.1.294.1.3</strong>.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">SYSFW</span><span class="o">-</span><span class="nl">SWREV</span><span class="p">:</span><span class="o">=</span> <span class="n">SEQUENCE</span>
+<span class="p">{</span>
+   <span class="n">swrev</span> <span class="n">INTEGER</span> <span class="o">--</span> <span class="mi">32</span> <span class="n">bit</span> <span class="n">value</span> <span class="n">indicating</span> <span class="n">the</span> <span class="n">revision</span> <span class="n">of</span> <span class="n">the</span> <span class="n">binary</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sysfw-load-extension">
+<span id="sysfw-load-ext"></span><h3>System Firmware Load Extension<a class="headerlink" href="#sysfw-load-extension" title="Permalink to this headline">¶</a></h3>
+<p>System Firmware uses the Load extension to determine where the image is loaded
+as part of authentication. The load extension is identified by OID <strong>1.3.6.1.4.1.294.1.35</strong>. This is a new extension defined by System Firmware.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">SYSFW</span><span class="o">-</span><span class="nl">LOAD</span> <span class="p">:</span><span class="o">=</span> <span class="n">SEQUENCE</span>
+<span class="p">{</span>
+     <span class="n">destAddr</span> <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span> <span class="o">--</span> <span class="n">Address</span> <span class="n">to</span> <span class="n">which</span> <span class="n">the</span> <span class="n">image</span> <span class="n">accompanying</span> <span class="k">this</span> <span class="n">certificate</span>
+                            <span class="o">--</span> <span class="n">needs</span> <span class="n">to</span> <span class="n">be</span> <span class="n">copied</span><span class="p">.</span>
+     <span class="n">auth_in_place</span> <span class="n">INTEGER</span> <span class="o">--</span> <span class="n">Controls</span> <span class="k">if</span><span class="o">/</span><span class="n">how</span> <span class="n">the</span> <span class="n">authenticated</span> <span class="n">binary</span> <span class="n">is</span> <span class="n">copied</span> <span class="n">to</span> <span class="n">a</span> <span class="n">different</span>
+                           <span class="o">--</span> <span class="n">location</span><span class="p">.</span> <span class="n">See</span> <span class="n">below</span> <span class="k">for</span> <span class="n">more</span> <span class="n">information</span><span class="p">.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The load extension is decoded into the below structure.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">ti_load_info</span> <span class="p">{</span>
+ <span class="n">u64</span> <span class="n">destAddr</span><span class="p">;</span>
+ <span class="n">u8</span>  <span class="n">auth_in_place</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h4>Populating the certificate fields<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic">
+<li><p class="first"><code class="docutils literal"><span class="pre">destAddr</span></code></p>
+<ul class="simple">
+<li>This is a 64 bit field indicating the address to which the data
+needs to be copied. The representation is big endian.</li>
+</ul>
+</li>
+<li><p class="first"><code class="docutils literal"><span class="pre">auth_in_place</span></code></p>
+<ul>
+<li><p class="first">This is an integer field used to indicate whether the binary should be copied
+to the specified load address during authentication. The valid values for this
+field and their interpretation are described below.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Value</th>
+<th class="head">Action</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Normal operation. Binary is copied to load address.</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>In place operation. Binary is not moved.</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>In place operation variant. Binary is moved to the beginning of
+the buffer i.e. binary now starts at the location where the
+certificate started</td>
+</tr>
+<tr class="row-odd"><td>Any
+other
+value</td>
+<td>invalid operation</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="sysfw-encryption-extension">
+<span id="sysfw-encryption-ext"></span><h3>System Firmware Encryption Extension<a class="headerlink" href="#sysfw-encryption-extension" title="Permalink to this headline">¶</a></h3>
+<p>System Firmware reuses the Encryption extension/OID as defined by ROM as no
+additional information is required. This is identified by OID
+<strong>1.3.6.1.4.1.294.1.4</strong>.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">SYSFW</span><span class="o">-</span><span class="nl">ENCRYPT</span> <span class="p">:</span><span class="o">=</span> <span class="n">SEQUENCE</span>
+<span class="p">{</span>
+   <span class="n">initalVector</span> <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span>
+   <span class="n">randomString</span> <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span>
+   <span class="n">iterationCnt</span> <span class="n">INTEGER</span><span class="p">,</span>
+   <span class="n">salt</span> <span class="n">OCTET</span> <span class="n">STRING</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The encryption extension is decoded into the following data structure.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">ti_enc_info</span> <span class="p">{</span>
+ <span class="n">u8</span> <span class="n">initialVector</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+ <span class="n">u8</span> <span class="n">randomString</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+ <span class="n">u8</span> <span class="n">iterationCnt</span><span class="p">;</span>
+ <span class="n">u8</span> <span class="n">salt</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="section" id="id2">
+<h4>Populating the certificate fields<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li><code class="docutils literal"><span class="pre">initialVector</span></code><ul>
+<li>This is the 16 byte initialization vector to be used in AES-CBC
+decryption.</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">randomString</span></code><ul>
+<li>This field indicates the random 32 byte string that was appended to the
+binary before encrypting the combined binary. System Firmware will compare the last
+32 bytes of the decryption output against the <code class="docutils literal"><span class="pre">randomString</span></code> field from
+the X509 certificate to verify the success of decryption operation.</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">iterationCnt</span></code><ul>
+<li>This field is reserved and must be initialized to zero.</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">salt</span></code><ul>
+<li>This field is 32 bytes long. It is reserved and must be initialized to zero.</li>
+</ul>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">System Firmware always loads the binary to the location specified by <a class="reference internal" href="#sysfw-load-ext"><span class="std std-ref">System Firmware Load Extension</span></a>
+before performing in-place decryption at the loaded location.</p>
+</div>
+</div>
+</div>
+<div class="section" id="sysfw-debug-extension">
+<span id="sysfw-debug-ext"></span><h3>System Firmware Debug Extension<a class="headerlink" href="#sysfw-debug-extension" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This extension is not yet finalized.</p>
+</div>
+<p>The custom extension field used for debug control is identified by the OID
+<strong>1.3.6.1.4.1.294.1.8</strong>. The structure of the field is shown below in
+ASN.1 notation.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">UID</span><span class="o">-</span><span class="n">Debug</span> <span class="o">::=</span> <span class="n">SEQUENCE</span>
+<span class="p">{</span>
+    <span class="n">uid</span> <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span> <span class="o">--</span> <span class="n">unique</span> <span class="n">ID</span> <span class="n">of</span> <span class="n">the</span> <span class="n">device</span> <span class="k">for</span> <span class="n">which</span> <span class="k">this</span> <span class="n">certificate</span> <span class="n">applies</span>
+    <span class="n">debugCtrl</span> <span class="n">INTEGER</span><span class="p">,</span> <span class="o">--</span> <span class="n">debug</span> <span class="n">control</span> <span class="n">information</span>
+    <span class="n">coreDbgEn</span> <span class="n">INTEGER</span><span class="p">,</span> <span class="o">--</span> <span class="n">Core</span> <span class="n">IDs</span> <span class="k">for</span> <span class="n">which</span> <span class="n">debug</span> <span class="n">must</span> <span class="n">be</span> <span class="n">enabled</span>
+    <span class="n">coreDbgSecEn</span> <span class="n">INTEGER</span><span class="p">,</span> <span class="o">--</span> <span class="n">Core</span> <span class="n">IDs</span> <span class="k">for</span> <span class="n">which</span> <span class="n">secure</span> <span class="n">debug</span> <span class="n">must</span> <span class="n">be</span> <span class="n">enabled</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The debug control data is decoded as a structure below:</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">sdbg_debug_ctrl</span> <span class="p">{</span>
+    <span class="n">u16</span> <span class="n">debug_priv_level</span><span class="p">;</span>
+    <span class="n">u16</span> <span class="n">hw_key_hide_flags</span><span class="p">;</span>
+    <span class="n">u8</span> <span class="n">debug_core_sel</span><span class="p">[</span><span class="n">MAX_CPU_CORES</span><span class="p">];</span>
+    <span class="n">u8</span> <span class="n">sec_debug_core_sel</span><span class="p">[</span><span class="n">MAX_CPU_CORES</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The table below shows the way <strong>UID-Debug</strong> fields are decoded into <strong>struct sdbg_debug_ctrl</strong>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">sdbg_debug_ctrl member</th>
+<th class="head">X.509 certificate debug extension field</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>debug_priv_level</td>
+<td>debugCtrl field is decoded as a u32 value and the lower 16
+bit value is picked up</td>
+</tr>
+<tr class="row-odd"><td>hw_key_hide_flags</td>
+<td>debugCtrl field is decoded as a u32 value and the upper 16
+bit value is picked up</td>
+</tr>
+<tr class="row-even"><td>debug_core_sel</td>
+<td>coreDbgEn field is decoded as an array of u8 values of
+host-IDs for which non-secure debug should be enabled</td>
+</tr>
+<tr class="row-odd"><td>sec_debug_core_sel</td>
+<td>coreDbgSecEn field is decoded as an array of u8 values of
+host-IDs for which secure debug should be enabled</td>
+</tr>
+</tbody>
+</table>
+<p>The following table shows the enumeration of values for <strong>debug_priv_level</strong>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="9%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Enumeration name</th>
+<th class="head">Value</th>
+<th class="head">Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DEBUG_DISABLE</td>
+<td>0</td>
+<td>Disable debug</td>
+</tr>
+<tr class="row-odd"><td>DEBUG_PRESERVE</td>
+<td>1</td>
+<td>Preserve current setting by locking registers</td>
+</tr>
+<tr class="row-even"><td>DEBUG_PUBLIC</td>
+<td>2</td>
+<td>Enable debug at public (non-secure) user and
+privileged level</td>
+</tr>
+<tr class="row-odd"><td>DEBUG_PUBLIC_USER</td>
+<td>3</td>
+<td>Enable debug at public (non-secure) user level only</td>
+</tr>
+<tr class="row-even"><td>DEBUG_FULL</td>
+<td>4</td>
+<td>Enable full debug (both secure and non-secure
+privileged and user levels)</td>
+</tr>
+<tr class="row-odd"><td>DEBUG_SECURE_USER</td>
+<td>5</td>
+<td>Enable debug for both secure and non-secure at user
+level only</td>
+</tr>
+</tbody>
+</table>
+<p>The following table shows the enumeration of the bitfield <strong>hw_key_hide_flags</strong>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="8%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Enumeration name</th>
+<th class="head">Value</th>
+<th class="head">Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>CERT_KEY_FLAGS_KEK</td>
+<td>1</td>
+<td>If this bit is set, the KEK must be hidden with a
+software KEK</td>
+</tr>
+<tr class="row-odd"><td>CERT_KEY_FLAGS_CUST_SSK</td>
+<td>2</td>
+<td>If this bit is set, customer secret keys (SMPK &amp;
+BMPK) must be hidden</td>
+</tr>
+</tbody>
+</table>
+<p>For an example, please refer to the section <code class="docutils literal"><span class="pre">[</span> <span class="pre">debug</span> <span class="pre">]</span></code> in <a class="reference internal" href="#sysfw-x509-template-example"><span class="std std-ref">Sample x509 template</span></a>.</p>
+</div>
+<div class="section" id="sample-x509-template">
+<span id="sysfw-x509-template-example"></span><h3>Sample x509 template<a class="headerlink" href="#sample-x509-template" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The template below shows all the X509 extensions supported by the System Firmware
+ASN1 parser. Depending on the usecase, the certificate may contain only a few
+of these extensions.</p>
+<ul class="last simple">
+<li>For performing JTAG unlock, only Software revision (<code class="docutils literal"><span class="pre">swrv</span></code>) and
+Debug(<code class="docutils literal"><span class="pre">debug</span></code>) extensions are required.</li>
+<li>For authenticating a binary, only the Load (<code class="docutils literal"><span class="pre">sysfw_image_load</span></code>) and
+Image integrity (<code class="docutils literal"><span class="pre">sysfw_image_integrity</span></code>) extensions are required.</li>
+</ul>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">[</span> req <span class="o">]</span>
+<span class="nv">distinguished_name</span> <span class="o">=</span> req_distinguished_name
+<span class="nv">x509_extensions</span> <span class="o">=</span> v3_ca
+<span class="nv">prompt</span> <span class="o">=</span> no
+
+<span class="nv">dirstring_type</span> <span class="o">=</span> nobmp
+
+<span class="c1"># This information will be filled by the end user.</span>
+<span class="c1"># The current data is only a place holder.</span>
+<span class="c1"># System firmware does not make decisions based</span>
+<span class="c1"># on the contents of this distinguished name block.</span>
+<span class="o">[</span> req_distinguished_name <span class="o">]</span>
+<span class="nv">C</span> <span class="o">=</span> US
+<span class="nv">ST</span> <span class="o">=</span> Texas
+<span class="nv">L</span> <span class="o">=</span> Dallas
+<span class="nv">O</span> <span class="o">=</span> Texas Instruments
+<span class="nv">OU</span> <span class="o">=</span> K3
+<span class="nv">CN</span> <span class="o">=</span> www.ti.com
+<span class="nv">emailAddress</span> <span class="o">=</span> noreply@ti.com
+
+<span class="o">[</span> v3_ca <span class="o">]</span>
+<span class="nv">basicConstraints</span> <span class="o">=</span> CA:true
+<span class="m">1</span>.3.6.1.4.1.294.1.3<span class="o">=</span>ASN1:SEQUENCE:swrv
+<span class="m">1</span>.3.6.1.4.1.294.1.4<span class="o">=</span>ASN1:SEQUENCE:encryption
+<span class="m">1</span>.3.6.1.4.1.294.1.33<span class="o">=</span>ASN1:SEQUENCE:sysfw_boot_seq
+<span class="m">1</span>.3.6.1.4.1.294.1.34<span class="o">=</span>ASN1:SEQUENCE:sysfw_image_integrity
+<span class="m">1</span>.3.6.1.4.1.294.1.35<span class="o">=</span>ASN1:SEQUENCE:sysfw_image_load
+
+<span class="o">[</span> sysfw_boot_seq <span class="o">]</span>
+<span class="nv">bootCore</span> <span class="o">=</span> INTEGER:0x20
+<span class="nv">bootCoreOpts_set</span> <span class="o">=</span> INTEGER:0x00000000
+<span class="nv">bootCoreOpts_clr</span> <span class="o">=</span> INTEGER:0x00000000
+<span class="nv">resetVec</span> <span class="o">=</span> FORMAT:HEX,OCT:41c02100
+<span class="nv">flagsValid</span> <span class="o">=</span> INTEGER:0x00
+<span class="nv">rsvd1</span> <span class="o">=</span> INTEGER:0x00
+<span class="nv">rsdv2</span> <span class="o">=</span> INTEGER:0x00
+<span class="nv">rsdv3</span> <span class="o">=</span> INTEGER:0x00
+
+<span class="o">[</span> sysfw_image_integrity <span class="o">]</span>
+<span class="nv">shaType</span> <span class="o">=</span> OID:2.16.840.1.101.3.4.2.3
+<span class="nv">shaValue</span> <span class="o">=</span> FORMAT:HEX,OCT:TEST_IMAGE_SHA512
+<span class="c1"># Replace TEST_IMAGE_LENGTH with actual image length</span>
+<span class="nv">imageSize</span> <span class="o">=</span> INTEGER:TEST_IMAGE_LENGTH
+
+<span class="o">[</span> sysfw_image_load <span class="o">]</span>
+<span class="nv">destAddr</span> <span class="o">=</span> FORMAT:HEX,OCT:41c02100
+<span class="nv">authInPlace</span> <span class="o">=</span> INTEGER:0
+
+<span class="o">[</span> swrv <span class="o">]</span>
+<span class="nv">swrv</span> <span class="o">=</span> INTEGER:0
+
+<span class="o">[</span> debug <span class="o">]</span>
+<span class="nv">debugUID</span> <span class="o">=</span> FORMAT:HEX,OCT:0000000000000000000000000000000000000000000000000000000000000000
+<span class="nv">debugType</span> <span class="o">=</span> INTEGER:0x00010005
+<span class="nv">coreDbgEn</span> <span class="o">=</span> INTEGER:0x20210102
+<span class="nv">coreDbgSecEn</span> <span class="o">=</span> INTEGER:0x2223
+
+<span class="o">[</span> encryption <span class="o">]</span>
+<span class="nv">initalVector</span> <span class="o">=</span>  FORMAT:HEX,OCT:TEST_IMAGE_ENC_IV
+<span class="nv">randomString</span> <span class="o">=</span>  FORMAT:HEX,OCT:TEST_IMAGE_ENC_RS
+<span class="nv">iterationCnt</span> <span class="o">=</span>  INTEGER:TEST_IMAGE_KEY_DERIVE_INDEX
+<span class="nv">salt</span>         <span class="o">=</span>  FORMAT:HEX,OCT:TEST_IMAGE_KEY_DERIVE_SALT
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="PROC_BOOT.html" class="btn btn-neutral float-right" title="Processor Boot Management TISCI Description" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../rm/rm_psil.html" class="btn btn-neutral" title="Resource Management PSI-L TISCI Message Description" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'19.08.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

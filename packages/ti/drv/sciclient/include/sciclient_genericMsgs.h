@@ -78,9 +78,9 @@ extern "C" {
  *  Queries the sysfw for details on msmc. Response will contain the start and
  *  end address of the msmc region available
  *
- *  \n<b>Message</b>:    #TISCI_MSG_QUERY_MSMC
- *  \n<b>Request</b>:    #tisci_query_msmc_req
- *  \n<b>Response</b>:   #tisci_query_msmc_resp
+ *  \n<b>Message</b>:    @ref TISCI_MSG_QUERY_MSMC
+ *  \n<b>Request</b>:    @ref tisci_query_msmc_req
+ *  \n<b>Response</b>:   @ref tisci_query_msmc_resp
  *
  *  \param  req             Pointer to msmc query request payload
  *

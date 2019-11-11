@@ -1,0 +1,452 @@
+======================================
+j721e Navigator Subsystem Descriptions
+======================================
+
+Introduction
+============
+
+This chapter provides information on the Navigator Subsystems in the j721e SoC.
+Some System Firmware TISCI messages take Navigator Subsystem specific inputs.
+This chapter provides information on the valid values for applicable TISCI
+message parameters.
+
+.. _pub_soc_j721e_navss_ids:
+
+Navigator Subsystem Device IDs
+==============================
+
+Some System Firmware TISCI message APIs require the device ID of the Navigator
+Subsystem to be modified as part of the request. Based on :doc:`j721e Device IDs
+<devices>` these are the valid Navigator Subsystem device IDs.
+
++------------------------------------+----------------------------------+
+| Interrupt Aggregator Device Name   |   Interrupt Aggregator Device ID |
++====================================+==================================+
+| J721E_DEV_NAVSS0_MODSS_INTAGGR_0   |                              207 |
++------------------------------------+----------------------------------+
+| J721E_DEV_NAVSS0_MODSS_INTAGGR_1   |                              208 |
++------------------------------------+----------------------------------+
+| J721E_DEV_NAVSS0_UDMASS_INTAGGR_0  |                              209 |
++------------------------------------+----------------------------------+
+| J721E_DEV_MCU_NAVSS0_INTAGGR_0     |                              233 |
++------------------------------------+----------------------------------+
+
++--------------------------------+------------------------------+
+| Ring Accelerator Device Name   |   Ring Accelerator Device ID |
++================================+==============================+
+| J721E_DEV_NAVSS0_RINGACC_0     |                          211 |
++--------------------------------+------------------------------+
+| J721E_DEV_MCU_NAVSS0_RINGACC_0 |                          235 |
++--------------------------------+------------------------------+
+
++------------------------------+------------------+
+| UDMA Device Name             |   UDMA Device ID |
++==============================+==================+
+| J721E_DEV_NAVSS0_UDMAP_0     |              212 |
++------------------------------+------------------+
+| J721E_DEV_MCU_NAVSS0_UDMAP_0 |              236 |
++------------------------------+------------------+
+
++-------------------------------------+-----------------------------------+
+| PSI-L Proxy Navigator Device Name   |   PSI-L Proxy Navigator Device ID |
++=====================================+===================================+
+| J721E_DEV_NAVSS512L_MAIN_0          |                               199 |
++-------------------------------------+-----------------------------------+
+| J721E_DEV_NAVSS_MCU_J7_MCU_0        |                               232 |
++-------------------------------------+-----------------------------------+
+
+.. _pub_soc_j721e_navss_rings:
+
+Navigator Subsystem Ring Indices
+================================
+
+This section describes valid Navigator Subsystem Ring Accelerator ring indices
+for each Navigator ring type. The ring index and type ID are used in some Ring
+Accelerator based TISCI messages.
+
+
+.. warning::
+
+    Resources marked as reserved for use by DMSC **cannot** be assigned to a
+    host within the RM Board Configuration resource assignment array.  The RM
+    Board Configuration is rejected if an overlap with a reserved resource is
+    detected.
+
+
+**NAVSS0_RINGACC_0**
+
++--------------+--------------------+
+| Ring Type    | Ring Index Range   |
++==============+====================+
+| UDMAP_TX_UH  | 0 to 3             |
++--------------+--------------------+
+| UDMAP_TX_H   | 4 to 15            |
++--------------+--------------------+
+| UDMAP_TX     | 16 to 139          |
++--------------+--------------------+
+| UDMAP_TX_EXT | 140 to 299         |
++--------------+--------------------+
+| UDMAP_RX_UH  | 300 to 303         |
++--------------+--------------------+
+| UDMAP_RX_H   | 304 to 315         |
++--------------+--------------------+
+| UDMAP_RX     | 316 to 439         |
++--------------+--------------------+
+| GP           | 440 to 973         |
++--------------+--------------------+
+
++---------------+-----------------------+
+|               | Monitor Index Range   |
++===============+=======================+
+| Ring Monitors | 0 to 31               |
++---------------+-----------------------+
+
+
+**MCU_NAVSS0_RINGACC_0**
+
++-----------------------------------+--------------------+
+| Ring Type                         | Ring Index Range   |
++===================================+====================+
+| UDMAP_TX_H                        | 0 to 1             |
++-----------------------------------+--------------------+
+| UDMAP_TX                          | 2 to 45            |
++-----------------------------------+--------------------+
+| UDMAP_TX                          | 46 to 47           |
+| (**RESERVED BY SYSTEM FIRMWARE**) |                    |
++-----------------------------------+--------------------+
+| UDMAP_RX_H                        | 48 to 49           |
++-----------------------------------+--------------------+
+| UDMAP_RX                          | 50 to 92           |
++-----------------------------------+--------------------+
+| UDMAP_RX                          | 93 to 95           |
+| (**RESERVED BY SYSTEM FIRMWARE**) |                    |
++-----------------------------------+--------------------+
+| GP                                | 96 to 251          |
++-----------------------------------+--------------------+
+| GP                                | 252 to 255         |
+| (**RESERVED BY SYSTEM FIRMWARE**) |                    |
++-----------------------------------+--------------------+
+
++---------------+-----------------------+
+|               | Monitor Index Range   |
++===============+=======================+
+| Ring Monitors | 0 to 31               |
++---------------+-----------------------+
+
+.. _pub_soc_j721e_udmap_channel_and_flow_indices:
+
+Navigator Subsystem Channel and Flow Indices
+============================================
+
+This section describes valid Navigator Subsystem UDMA transmit channel and
+receive channel indices for each Navigator UDMA channel type. The receive flow
+index range has no type information since it's required for receive flows.
+
+
+.. warning::
+
+    Resources marked as reserved for use by DMSC **cannot** be assigned to a
+    host within the RM Board Configuration resource assignment array.  The RM
+    Board Configuration is rejected if an overlap with a reserved resource is
+    detected.
+
+
+**NAVSS0_UDMAP_0**
+
++-------------------+--------------------------+
+| Tx Channel Type   | Tx Channel Index Range   |
++===================+==========================+
+| TX_UHCHAN         | 0 to 3                   |
++-------------------+--------------------------+
+| TX_HCHAN          | 4 to 15                  |
++-------------------+--------------------------+
+| TX_CHAN           | 16 to 139                |
++-------------------+--------------------------+
+| TX_ECHAN          | 140 to 299               |
++-------------------+--------------------------+
+
++-------------------+--------------------------+
+| Rx Channel Type   | Rx Channel Index Range   |
++===================+==========================+
+| RX_UHCHAN         | 0 to 3                   |
++-------------------+--------------------------+
+| RX_HCHAN          | 4 to 15                  |
++-------------------+--------------------------+
+| RX_CHAN           | 16 to 139                |
++-------------------+--------------------------+
+
++----------------+-----------------------+
+| Rx Flow Type   | Rx Flow Index Range   |
++================+=======================+
+| DEFAULT        | 0 to 139              |
++----------------+-----------------------+
+| CONFIGURABLE   | 140 to 299            |
++----------------+-----------------------+
+
+
+**MCU_NAVSS0_UDMAP_0**
+
++-----------------------------------+--------------------------+
+| Tx Channel Type                   | Tx Channel Index Range   |
++===================================+==========================+
+| TX_HCHAN                          | 0 to 1                   |
++-----------------------------------+--------------------------+
+| TX_CHAN                           | 2 to 45                  |
++-----------------------------------+--------------------------+
+| TX_CHAN                           | 46 to 47                 |
+| (**RESERVED BY SYSTEM FIRMWARE**) |                          |
++-----------------------------------+--------------------------+
+
++-----------------------------------+--------------------------+
+| Rx Channel Type                   | Rx Channel Index Range   |
++===================================+==========================+
+| RX_HCHAN                          | 0 to 1                   |
++-----------------------------------+--------------------------+
+| RX_CHAN                           | 2 to 44                  |
++-----------------------------------+--------------------------+
+| RX_CHAN                           | 45 to 47                 |
+| (**RESERVED BY SYSTEM FIRMWARE**) |                          |
++-----------------------------------+--------------------------+
+
++-----------------------------------+-----------------------+
+| Rx Flow Type                      | Rx Flow Index Range   |
++===================================+=======================+
+| DEFAULT                           | 0 to 44               |
++-----------------------------------+-----------------------+
+| DEFAULT                           | 45 to 47              |
+| (**RESERVED BY SYSTEM FIRMWARE**) |                       |
++-----------------------------------+-----------------------+
+| CONFIGURABLE                      | 48 to 95              |
++-----------------------------------+-----------------------+
+
+.. _pub_soc_j721e_vints:
+
+Navigator Subsystem Virtual Interrupts
+======================================
+
+This section describes Navigator Subsystem virtual interrupts.  The virtual
+interrupts are used in interrupt management based TISCI messages.
+
+
+.. warning::
+
+    Resources marked as reserved for use by DMSC **cannot** be assigned to a
+    host within the RM Board Configuration resource assignment array.  The RM
+    Board Configuration is rejected if an overlap with a reserved resource is
+    detected.
+
++-----------------------------------+---------------------------+
+| Interrupt Aggregator Name         | Virtual Interrupt Range   |
++===================================+===========================+
+| J721E_DEV_NAVSS0_MODSS_INTAGGR_0  | 0 to 63                   |
++-----------------------------------+---------------------------+
+| J721E_DEV_NAVSS0_MODSS_INTAGGR_1  | 0 to 63                   |
++-----------------------------------+---------------------------+
+| J721E_DEV_NAVSS0_UDMASS_INTAGGR_0 | 0 to 37                   |
+| (**RESERVED BY SYSTEM FIRMWARE**) |                           |
++-----------------------------------+---------------------------+
+| J721E_DEV_NAVSS0_UDMASS_INTAGGR_0 | 38 to 255                 |
++-----------------------------------+---------------------------+
+| J721E_DEV_MCU_NAVSS0_INTAGGR_0    | 0 to 7                    |
+| (**RESERVED BY SYSTEM FIRMWARE**) |                           |
++-----------------------------------+---------------------------+
+| J721E_DEV_MCU_NAVSS0_INTAGGR_0    | 8 to 255                  |
++-----------------------------------+---------------------------+
+
+.. _pub_soc_j721e_global_events:
+
+Navigator Subsystem Global Events
+=================================
+
+This section describes Navigator Subsystem global events.  The global events are
+used in interrupt management based TISCI messages.
+
+
+.. warning::
+
+    Resources marked as reserved for use by DMSC **cannot** be assigned to a
+    host within the RM Board Configuration resource assignment array.  The RM
+    Board Configuration is rejected if an overlap with a reserved resource is
+    detected.
+
++-----------------------------------+----------------------+
+| Global Event Name                 | Global Event Range   |
++===================================+======================+
+| NAVSS0_UDMASS_INTAGGR_0 SEVT      | 0 to 37              |
+| (**RESERVED BY SYSTEM FIRMWARE**) |                      |
++-----------------------------------+----------------------+
+| NAVSS0_UDMASS_INTAGGR_0 SEVT      | 38 to 4607           |
++-----------------------------------+----------------------+
+| MCU_NAVSS0_INTAGGR_0 SEVT         | 16384 to 16391       |
+| (**RESERVED BY SYSTEM FIRMWARE**) |                      |
++-----------------------------------+----------------------+
+| MCU_NAVSS0_INTAGGR_0 SEVT         | 16392 to 17919       |
++-----------------------------------+----------------------+
+| NAVSS0_MODSS_INTAGGR_0 SEVT       | 20480 to 21503       |
++-----------------------------------+----------------------+
+| NAVSS0_MODSS_INTAGGR_1 SEVT       | 22528 to 23551       |
++-----------------------------------+----------------------+
+| NAVSS0_UDMASS_INTAGGR_0 MEVT      | 32768 to 33279       |
++-----------------------------------+----------------------+
+| MCU_NAVSS0_INTAGGR_0 MEVT         | 34816 to 34943       |
++-----------------------------------+----------------------+
+| NAVSS0_UDMASS_INTAGGR_0 GEVT      | 36864 to 37375       |
++-----------------------------------+----------------------+
+| MCU_NAVSS0_INTAGGR_0 GEVT         | 39936 to 40191       |
++-----------------------------------+----------------------+
+| NAVSS0_UDMAP_0 TRIGGER            | 49152 to 50175       |
++-----------------------------------+----------------------+
+| MCU_NAVSS0_UDMAP_0 TRIGGER        | 56320 to 56575       |
++-----------------------------------+----------------------+
+
+.. _pub_soc_j721e_psil_thread_ids:
+
+Navigator Subsystem PSI-L Source and Destination Thread IDs
+===========================================================
+
+This section describes valid Navigator Subsystem PSI-L source and destination
+thread IDs for each thread type. The thread IDs are used in the PSI-L based
+TISCI messages.
+
+
+.. warning::
+
+    PSI-L threads marked as reserved for use by DMSC **cannot** be assigned be
+    linked to another thread.
+
++---------------------------------------+------------------+
+| Thread Type                           | Thread Range     |
++=======================================+==================+
+| udmap0_trstrm_tx                      | 0x8 to 0x8       |
++---------------------------------------+------------------+
+| udmap0_cfgstrm_tx                     | 0x20 to 0x20     |
++---------------------------------------+------------------+
+| navss_main_udmap0_tx                  | 0x1000 to 0x108b |
++---------------------------------------+------------------+
+| navss_main_saul0_rx                   | 0x4000 to 0x4003 |
++---------------------------------------+------------------+
+| navss_main_icssg0_rx                  | 0x4100 to 0x4104 |
++---------------------------------------+------------------+
+| navss_main_icssg1_rx                  | 0x4200 to 0x4204 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_debug_ccmcu_rx   | 0x4300 to 0x4302 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_debug_mainc66_rx | 0x4304 to 0x4305 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_mcasp_g0_rx      | 0x4400 to 0x4402 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_aasrc_rx         | 0x4404 to 0x440b |
++---------------------------------------+------------------+
+| navss_main_pdma_main_mcasp_g1_rx      | 0x4500 to 0x4508 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_misc_g0_rx       | 0x4600 to 0x460a |
++---------------------------------------+------------------+
+| navss_main_pdma_main_misc_g1_rx       | 0x460c to 0x4616 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_misc_g2_rx       | 0x4618 to 0x4622 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_misc_g3_rx       | 0x4624 to 0x462e |
++---------------------------------------+------------------+
+| navss_main_pdma_main_usart_g0_rx      | 0x4700 to 0x4701 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_usart_g1_rx      | 0x4702 to 0x4703 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_usart_g2_rx      | 0x4704 to 0x4709 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_mcan_rx          | 0x470c to 0x4729 |
++---------------------------------------+------------------+
+| navss_main_msmc0_rx                   | 0x4800 to 0x481f |
++---------------------------------------+------------------+
+| navss_main_vpac_tc0_cc_rx             | 0x4820 to 0x483f |
++---------------------------------------+------------------+
+| navss_main_vpac_tc1_cc_rx             | 0x4840 to 0x487f |
++---------------------------------------+------------------+
+| navss_main_dmpac_tc0_cc_rx            | 0x4880 to 0x489f |
++---------------------------------------+------------------+
+| navss_main_csi_rx                     | 0x4900 to 0x49ff |
++---------------------------------------+------------------+
+| navss_main_cpsw9_rx                   | 0x4a00 to 0x4a00 |
++---------------------------------------+------------------+
+| navss_mcu_udmap0_tx                   | 0x6000 to 0x602d |
++---------------------------------------+------------------+
+| navss_mcu_udmap0_tx                   | 0x602e to 0x602f |
+| (**Reserved by System Firmware**)     |                  |
++---------------------------------------+------------------+
+| navss_mcu_pdma_cpsw0_rx               | 0x7000 to 0x7000 |
++---------------------------------------+------------------+
+| navss_mcu_pdma_mcu0_rx                | 0x7100 to 0x7106 |
++---------------------------------------+------------------+
+| navss_mcu_pdma_mcu1_rx                | 0x7200 to 0x7207 |
++---------------------------------------+------------------+
+| navss_mcu_pdma_mcu2_rx                | 0x7300 to 0x7303 |
++---------------------------------------+------------------+
+| navss_mcu_pdma_adc_rx                 | 0x7400 to 0x7403 |
++---------------------------------------+------------------+
+| navss_mcu_saul0_rx                    | 0x7500 to 0x7501 |
+| (**Reserved by System Firmware**)     |                  |
++---------------------------------------+------------------+
+| navss_mcu_saul0_rx                    | 0x7502 to 0x7503 |
++---------------------------------------+------------------+
+| navss_main_udmap0_rx                  | 0x9000 to 0x908b |
++---------------------------------------+------------------+
+| navss_main_saul0_tx                   | 0xc000 to 0xc001 |
++---------------------------------------+------------------+
+| navss_main_icssg0_tx                  | 0xc100 to 0xc108 |
++---------------------------------------+------------------+
+| navss_main_icssg1_tx                  | 0xc200 to 0xc208 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_mcasp_g0_tx      | 0xc400 to 0xc402 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_aasrc_tx         | 0xc404 to 0xc40b |
++---------------------------------------+------------------+
+| navss_main_pdma_main_mcasp_g1_tx      | 0xc500 to 0xc508 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_misc_g0_tx       | 0xc600 to 0xc60a |
++---------------------------------------+------------------+
+| navss_main_pdma_main_misc_g1_tx       | 0xc60c to 0xc616 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_misc_g2_tx       | 0xc618 to 0xc622 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_misc_g3_tx       | 0xc624 to 0xc62e |
++---------------------------------------+------------------+
+| navss_main_pdma_main_usart_g0_tx      | 0xc700 to 0xc701 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_usart_g1_tx      | 0xc702 to 0xc703 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_usart_g2_tx      | 0xc704 to 0xc709 |
++---------------------------------------+------------------+
+| navss_main_pdma_main_mcan_tx          | 0xc70c to 0xc729 |
++---------------------------------------+------------------+
+| navss_main_msmc0_tx                   | 0xc800 to 0xc81f |
++---------------------------------------+------------------+
+| navss_main_vpac_tc0_cc_tx             | 0xc820 to 0xc83f |
++---------------------------------------+------------------+
+| navss_main_vpac_tc1_cc_tx             | 0xc840 to 0xc87f |
++---------------------------------------+------------------+
+| navss_main_dmpac_tc0_cc_tx            | 0xc880 to 0xc89f |
++---------------------------------------+------------------+
+| navss_main_csi_tx                     | 0xc900 to 0xc9ff |
++---------------------------------------+------------------+
+| navss_main_cpsw9_tx                   | 0xca00 to 0xca07 |
++---------------------------------------+------------------+
+| navss_mcu_udmap0_rx                   | 0xe000 to 0xe02c |
++---------------------------------------+------------------+
+| navss_mcu_udmap0_rx                   | 0xe02d to 0xe02f |
+| (**Reserved by System Firmware**)     |                  |
++---------------------------------------+------------------+
+| navss_mcu_pdma_cpsw0_tx               | 0xf000 to 0xf007 |
++---------------------------------------+------------------+
+| navss_mcu_pdma_mcu0_tx                | 0xf100 to 0xf106 |
++---------------------------------------+------------------+
+| navss_mcu_pdma_mcu1_tx                | 0xf200 to 0xf207 |
++---------------------------------------+------------------+
+| navss_mcu_pdma_mcu2_tx                | 0xf300 to 0xf303 |
++---------------------------------------+------------------+
+| navss_mcu_pdma_adc_tx                 | 0xf400 to 0xf3ff |
++---------------------------------------+------------------+
+| navss_mcu_saul0_tx                    | 0xf500 to 0xf500 |
+| (**Reserved by System Firmware**)     |                  |
++---------------------------------------+------------------+
+| navss_mcu_saul0_tx                    | 0xf501 to 0xf501 |
++---------------------------------------+------------------+
+

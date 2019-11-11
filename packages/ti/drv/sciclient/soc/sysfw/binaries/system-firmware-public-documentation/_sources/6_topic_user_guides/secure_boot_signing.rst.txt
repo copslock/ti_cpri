@@ -1,0 +1,81 @@
+==================================
+ Signing binaries for Secure Boot
+==================================
+
+This document describes the various steps in signing binaries for secure boot.
+Usecases are listed in order of increasing complexity.
+
+1. :ref:`pub_sign_unencrypted_mpk`
+2. :ref:`pub_sign_encrypted_mek`
+
+.. _pub_sign_unencrypted_mpk:
+
+Signing an unencrypted binary for secure boot
+======================================================
+
+1. Calculate SHA2-512 hash of the binary. Populate the :ref:`sysfw_image_integrity_ext`
+   with the calculated hash and the length of the binary.
+
+2. Determine where the image needs to be loaded at runtime and populate the
+   :ref:`sysfw_load_ext`.
+
+3. Populate the :ref:`sysfw_swrev_ext` with the software revision value
+   for the binary. The software revision is used to enforce rollback
+   protection.
+
+4. If the binary is to be used to bring a core out of reset, populate the
+   :ref:`sysfw_boot_ext` with the appropriate values.
+
+5. Choose a private key to the sign the certificate. |sysfw| only
+   supports signing a certificate with active MPK.
+
+6. Sign the X509 certificate populated in steps (1)-(4).
+
+7. Append the binary to the signed X509 certificate.
+
+8. On the target, load the output of step (7) to a memory location. Use the memory
+   location as the payload of the :ref:`TISCI_MSG_PROC_AUTH_BOOT <proc-boot-authenticate-image-and-configure-processor>`
+   TISCI message.
+
+
+.. _pub_sign_encrypted_mek:
+
+Signing an encrypted binary for secure boot
+===========================================
+
+Using an encrypted binary for secure boot requires minor changes to the signing
+process described above. The binary needs to be encrypted first and used as an
+input to the signing process described above. Some of the values populated in
+X509 extensions are also modified. This section describes the encryption
+operation and changes in populating the X509 extensions. First, the steps to
+encrypt the binary are listed below.
+
+1. Pad the binary with zeros until the length is a multiple of 16 bytes. 
+
+2. Append a 32 byte long random string to the binary output in step (1). This
+   random string is used by |sysfw| to verify successful decryption. This string
+   needs to be populated in the X509 certificate.
+
+3. Choose 16 byte long random string as the initialization vector(IV) for CBC
+   encryption. This string also needs to be populated in the X509 certificate.
+
+4. Choose the key to encrypt the binary. |sysfw| only supports
+   encryption with the active MEK.
+
+5. Encrypt the binary output from step (2) with key chosen in step (4) in
+   AES-256-CBC mode. Use the string chosen in step (3) as the initialization
+   vector.
+
+When using encryption, the X509 encryption extension needs to be populated in
+the certificate before signing. The following changes apply to the other extensions.
+
+1. The length of binary output in step (2) above needs to be populated in the
+   X509 image integrity extension.
+
+2. The binary output of step (5) needs to be used when calculating the hash to be
+   populated in the X509 image integrity extension.
+
+3. The binary output of step (5) must be appended to the signed X509 certificate
+   instead of the unencrypted binary.
+
+Please refer to :ref:`sysfw_image_integrity_ext` and :ref:`sysfw_encryption_ext`.

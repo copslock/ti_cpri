@@ -731,11 +731,9 @@ int32_t Sciclient_pmDeviceReset(uint32_t timeout)
 
 int32_t Sciclient_pmIsModuleValid(uint32_t modId)
 {
-    int32_t retVal = CSL_EFAIL;
-    if (modId < (uint32_t) TISCI_DEV_MAX)
-    {
-        retVal = CSL_PASS;
-    }
+   int32_t retVal = CSL_PASS;
+    /* TODO: TISCI headers currently not sending the maximum number of devices
+     */
     return retVal;
 }
 

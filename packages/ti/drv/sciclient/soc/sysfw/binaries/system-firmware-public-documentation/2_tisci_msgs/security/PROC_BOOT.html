@@ -1,0 +1,1672 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Processor Boot Management TISCI Description &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../../index.html"/>
+        <link rel="up" title="Chapter 2: TISCI Message Documentation" href="../index.html"/>
+        <link rel="next" title="Firewall TISCI Description" href="firewall_api.html"/>
+        <link rel="prev" title="Security X509 Certificate Documentation" href="sec_cert_format.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.08.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapter 2: TISCI Message Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#power-management-pm">Power Management (PM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#resource-management-rm">Resource Management (RM)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#secure-management">Secure Management</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="sec_cert_format.html">Security X509 Certificate Documentation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Processor Boot Management TISCI Description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#processor-boot-api-description">Processor Boot API Description</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="firewall_api.html">Firewall TISCI Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sec_ap_data_transfer.html">Secure AP Command Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rng_api.html">Random Number Generator API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="keystore.html">Runtime Keystore TISCI Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asymmetric_key_services.html">Asymmetric Key Services TISCI Description</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../5_soc_doc/index.html">Chapter 5: SoC Family Specific Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Chapter 2: TISCI Message Documentation</a> &raquo;</li>
+      
+    <li>Processor Boot Management TISCI Description</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="processor-boot-management-tisci-description">
+<h1>Processor Boot Management TISCI Description<a class="headerlink" href="#processor-boot-management-tisci-description" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This chapter provides information about the messaging APIs for the processor
+boot control. APIs are divided into the following two sets:</p>
+<ul class="simple">
+<li>Book keeping APIs - Meant to control access to allow a reasonable usage
+scenario of processors.</li>
+<li>Processor Control APIs - Meant to be the actual Processor Core controls.</li>
+</ul>
+<p>Book Keeping APIs:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">TISCI Message ID</th>
+<th class="head">Message Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0xC000</td>
+<td><a class="reference internal" href="#proc-boot-request-processor"><span class="std std-ref">TISCI_MSG_PROC_REQUEST</span></a>.</td>
+</tr>
+<tr class="row-odd"><td>0xC001</td>
+<td><a class="reference internal" href="#proc-boot-release-processor"><span class="std std-ref">TISCI_MSG_PROC_RELEASE</span></a>.</td>
+</tr>
+<tr class="row-even"><td>0xC005</td>
+<td><a class="reference internal" href="#proc-boot-handover-processor"><span class="std std-ref">TISCI_MSG_PROC_HANDOVER</span></a>.</td>
+</tr>
+</tbody>
+</table>
+<p>Processor Control APIs:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="83%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">TISCI Message ID</th>
+<th class="head">Message Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0xC100</td>
+<td><a class="reference internal" href="#proc-boot-set-processor-configuration"><span class="std std-ref">TISCI_MSG_PROC_SET_CONFIG</span></a></td>
+</tr>
+<tr class="row-odd"><td>0xC101</td>
+<td><a class="reference internal" href="#proc-boot-set-processor-control"><span class="std std-ref">TISCI_MSG_PROC_SET_CONTROL</span></a></td>
+</tr>
+<tr class="row-even"><td>0xC120</td>
+<td><a class="reference internal" href="#proc-boot-authenticate-image-and-configure-processor"><span class="std std-ref">TISCI_MSG_PROC_AUTH_BOOT</span></a></td>
+</tr>
+<tr class="row-odd"><td>0xC400</td>
+<td><a class="reference internal" href="#proc-boot-get-processor-status"><span class="std std-ref">TISCI_MSG_PROC_GET_STATUS</span></a></td>
+</tr>
+<tr class="row-even"><td>0xC401</td>
+<td><a class="reference internal" href="#proc-boot-wait-processor-status"><span class="std std-ref">TISCI_MSG_PROC_WAIT_STATUS</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>The APIs use the overall concepts explained in the following sections.</p>
+<div class="section" id="id-definition">
+<h3>ID definition<a class="headerlink" href="#id-definition" title="Permalink to this headline">¶</a></h3>
+<p>To help identify the various entities invovled, the following IDs are involved:</p>
+<ul class="simple">
+<li>HOST_ID is the concept of identifying processing entities (SoC specific)</li>
+<li>PROC_ID is the specific hardware processor instance involved (SoC specific)</li>
+</ul>
+</div>
+<div class="section" id="access-control-definition">
+<h3>Access control definition<a class="headerlink" href="#access-control-definition" title="Permalink to this headline">¶</a></h3>
+<p>Access control is enforced via the Book keeping APIs. The basic definition of access is as follows:</p>
+<ul class="simple">
+<li>We identify a requester (just like rest of TISCI) using Host ID (or plain Host).</li>
+<li>By default, we permit all processors to be controlled by any other Host (no policing).</li>
+<li>Board configuration provides: per PROC_ID, a limited list of “permitted host IDs”
+which are permitted to control a processor. BUT with the following conditions:<ul>
+<li>Only one host can control a processor at a time</li>
+<li>A host(with control) can hand over control of a processor to another host
+in the permitted list.</li>
+<li>“recovery master” host id is identified in board cfg and this host can
+override the ownership already established.</li>
+</ul>
+</li>
+</ul>
+<p>In addition, ONLY a secure host can request for an authenticated image access.</p>
+<p>API access control will be as follows:</p>
+<ul class="simple">
+<li>request_processor: Only one host can get control from access list. However,
+“recovery master” host can override previously allocated master.</li>
+<li>handover_processor: Only the host with current control of the processor.</li>
+<li>release_processor: Only the host with current control of the processor.</li>
+<li>set_processor_config: Only the host with current control of the processor.</li>
+<li>get_processor_config: Any host within the access control list.</li>
+<li>set_processor_control: Only the host with current control of the processor.</li>
+<li>get_processor_control: Any host within the access control list.</li>
+<li>authenticate_and_start_image: Only a <em>secure</em> host with current
+control of the processor.</li>
+<li>set_processor_suspend_ready: Only the host with current control of
+processor can report that the processor is ready to suspend</li>
+<li>get_processor_wake_reason: Any host within the access control list.</li>
+</ul>
+</div>
+<div class="section" id="sequencing-of-apis">
+<h3>Sequencing of APIs<a class="headerlink" href="#sequencing-of-apis" title="Permalink to this headline">¶</a></h3>
+<p>The boot APIs must be used in correct sequence with the device and clock APIs to
+be operational. This sequence would be specific to the processor involved.</p>
+<p>Rationale: by encoding the sequence of processor boot along with boot
+configuration API will complicate management of processors, since the
+operational requirements are extremely varied. Some processors need the boot
+configuration done, clocked, and specific MMU/RAT configuration be done prior to
+be released from reset. Many of the operations may require interaction with
+specific processor internals that is hard to make generic and usecase
+independent.</p>
+</div>
+<div class="section" id="example-usage-of-apis">
+<h3>Example usage of APIs<a class="headerlink" href="#example-usage-of-apis" title="Permalink to this headline">¶</a></h3>
+<p>Example 1: Boot a processor from one core and let it self manage:</p>
+<ol class="arabic simple">
+<li>Boot host: (optionally) PM apis to control clock and hold processor in
+reset. This might be necessary for some processors to get the boot
+vector registers to be accessible in the first place.</li>
+<li>Boot host: request_processor</li>
+<li>Boot host: set_processor_config -&gt; set bootvector</li>
+<li>Alternatively call authenticate and start image API.</li>
+<li>Boot host: handover_processor -&gt; give control to ‘processor host’</li>
+<li>Boot host: PM apis to control clock and release processor from reset.
+‘processor host’ gets active. It is probably better to release the processor
+from reset after handover, in case the ‘processor host’ tries to do
+additional operations. however this depends on usecase - use a sane
+judgement as to how to sequence the APIs.</li>
+<li>Processor host: (continues to boot and do other TISCI APIs permitted)</li>
+<li>Processor host: set_processor_suspend_ready -&gt; ready to suspend</li>
+<li>Processor WFI Wakeup:</li>
+<li>Processor host: get_processor_wake_reason -&gt; get reason for wakeup.
+…. until all operations are complete…</li>
+<li>Processor host: set_processor_suspend_ready -&gt; state it is going down</li>
+<li>Processor host: release_processor -&gt; Mark no longer required</li>
+<li>Processor WFI (NOTE: a processor cannot switch off it’s own clocks -&gt; so
+in case of a self managed processor shutdown sequence, it will need
+System firmware to help do the last stages of operation - typically
+this will involve either shutdown OR reset sequence).</li>
+</ol>
+<p>Example 2: Boot a processor from one core and recover from another core:</p>
+<ol class="arabic simple">
+<li>Boot host: request_processor</li>
+<li>Boot host: set_processor_config -&gt; set bootvector</li>
+<li>Boot host: handover_processor -&gt; give control to ‘processor host’</li>
+<li>Boot host: PM apis to control clock and release processor boot host dies</li>
+<li>Recovery Host: request_processor</li>
+<li>Recovery Host: set_processor_config -&gt; force power off</li>
+<li>Recovery Host: PM apis to control clock and force power off of processor</li>
+<li>Recovery Host: Additional cleanup API calls …. Restoration sequence….</li>
+</ol>
+</div>
+</div>
+<div class="section" id="processor-boot-api-description">
+<h2>Processor Boot API Description<a class="headerlink" href="#processor-boot-api-description" title="Permalink to this headline">¶</a></h2>
+<p>This Section goes into details on the various APIs involved for processor control</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Reference <a class="reference internal" href="../../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">Chapter 5: SoC Family Specific Documentation</span></a> to see Host IDs and Processor IDs for
+your SoC.</p>
+</div>
+<div class="section" id="book-keeping-apis">
+<h3>Book Keeping APIs<a class="headerlink" href="#book-keeping-apis" title="Permalink to this headline">¶</a></h3>
+<p>These are the top level APIs that provide access control knobs for
+<a class="reference internal" href="#proc-boot-processor-control-apis"><span class="std std-ref">processor operation APIs</span></a> to be valid.</p>
+<div class="section" id="tisci-msg-proc-request-request-processor">
+<span id="proc-boot-request-processor"></span><h4>TISCI_MSG_PROC_REQUEST - Request Processor<a class="headerlink" href="#tisci-msg-proc-request-request-processor" title="Permalink to this headline">¶</a></h4>
+<p><strong>Usage</strong>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TISCI Message ID</strong></p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_PROC_REQUEST</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0xC000U)</span></code></p>
+<p>Message to get a Processor</p>
+</p>
+<p><p><strong>struct tisci_msg_proc_request_req</strong></p>
+<p>Request for physical processor control request</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="13%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Generic TISCI message header.</td>
+</tr>
+<tr class="row-odd"><td>processor_id</td>
+<td>u8</td>
+<td>Specifies a Processor ID. See the SoC Family Specific Documentation Chapter of the TISCI User Guide for accepted values.</td>
+</tr>
+</tbody>
+</table>
+<p>Provides a means for either the “recovery master” host or another host
+ in the permitted access list to request for a physical processor control.</p>
+</p>
+<p><p><strong>struct tisci_msg_proc_request_resp</strong></p>
+<p>Request for physical processor control response</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="32%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Generic TISCI message header.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.
+ ACK response: The processor access is permitted for the host if
+ processor is un-claimed AND host is permitted to control the
+ processor OR if the host is the recovery master.
+ NAK response: The processor access is not permitted.</p>
+</p>
+</div>
+<div class="section" id="tisci-msg-proc-release-release-processor">
+<span id="proc-boot-release-processor"></span><h4>TISCI_MSG_PROC_RELEASE - Release Processor<a class="headerlink" href="#tisci-msg-proc-release-release-processor" title="Permalink to this headline">¶</a></h4>
+<p><strong>Usage</strong>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TISCI Message ID</strong></p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_PROC_RELEASE</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0xC001U)</span></code></p>
+<p>Message to release a Processor</p>
+</p>
+<p><p><strong>struct tisci_msg_proc_release_req</strong></p>
+<p>Release physical processor control request</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="32%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Generic TISCI message header.</td>
+</tr>
+<tr class="row-odd"><td>processor_id</td>
+<td>u8</td>
+<td>ID of processor to release.</td>
+</tr>
+</tbody>
+</table>
+<p>Provides a means for the host with current control to relinquish a
+ physical processor control.</p>
+</p>
+<p><p><strong>struct tisci_msg_proc_release_resp</strong></p>
+<p>Release physical processor control response</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="32%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Generic TISCI message header.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.
+ ACK Response: The host had control over the processor and is
+ confirmed to be released to “free pool”.
+ NAK Response: The processor access is not permitted.</p>
+</p>
+</div>
+<div class="section" id="tisci-msg-proc-handover-handover-processor">
+<span id="proc-boot-handover-processor"></span><h4>TISCI_MSG_PROC_HANDOVER - Handover Processor<a class="headerlink" href="#tisci-msg-proc-handover-handover-processor" title="Permalink to this headline">¶</a></h4>
+<p><strong>Usage</strong>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TISCI Message ID</strong></p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_PROC_HANDOVER</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0xC005U)</span></code></p>
+<p>Message to handover a Processor</p>
+</p>
+<p><p><strong>struct tisci_msg_proc_handover_req</strong></p>
+<p>Request to handover control of a processor to another host if permitted.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="25%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Generic TISCI message header.</td>
+</tr>
+<tr class="row-odd"><td>processor_id</td>
+<td>u8</td>
+<td>Specifies a Processor ID.</td>
+</tr>
+<tr class="row-even"><td>host_id</td>
+<td>u8</td>
+<td>Specifies the new host to hand over control to.</td>
+</tr>
+</tbody>
+</table>
+<p>Provides a means for the host with current control to relinquish a
+ physical processor control to another host in the permitted list.</p>
+</p>
+<p><p><strong>struct tisci_msg_proc_handover_resp</strong></p>
+<p>Response to handover of control of a processor to another host if permitted.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="32%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Generic TISCI message header.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.
+ ACK Response: The host had control over the processor and is
+ confirmed to be released to “free pool”.
+ NAK Response: The processor access is not permitted.</p>
+</p>
+</div>
+</div>
+<div class="section" id="processor-control-apis">
+<span id="proc-boot-processor-control-apis"></span><h3>Processor Control APIs<a class="headerlink" href="#processor-control-apis" title="Permalink to this headline">¶</a></h3>
+<p>These are granular control APIs for control of the processor state themselves.
+These APIs need to be used in conjunction with standard Power Management APIs.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Not all APIs are supported for all processors. See <a class="reference internal" href="#proc-boot-flags"><span class="std std-ref">Processor Specific Flags</span></a>
+for core specific flags (implies the applicable APIs are valid for that type of
+core).</p>
+</div>
+<div class="section" id="tisci-msg-proc-set-config-set-processor-configuration">
+<span id="proc-boot-set-processor-configuration"></span><h4>TISCI_MSG_PROC_SET_CONFIG - Set Processor Configuration<a class="headerlink" href="#tisci-msg-proc-set-config-set-processor-configuration" title="Permalink to this headline">¶</a></h4>
+<p><strong>Purpose</strong>: Provides a means for the host with current control to do the base
+configuration of the processor.</p>
+<p><strong>Usage</strong>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TISCI Message ID</strong></p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_PROC_SET_CONFIG</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0xC100U)</span></code></p>
+<p>Message to Set the processor configuration</p>
+</p>
+<p><p><strong>struct tisci_msg_proc_set_config_req</strong></p>
+<p>Processor Boot Configuration</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="13%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Message header</td>
+</tr>
+<tr class="row-odd"><td>processor_id</td>
+<td>u8</td>
+<td>ID of processor</td>
+</tr>
+<tr class="row-even"><td>bootvector_lo</td>
+<td>u32</td>
+<td>Lower 32bit (Little Endian) of boot vector</td>
+</tr>
+<tr class="row-odd"><td>bootvector_hi</td>
+<td>u32</td>
+<td>Higher 32bit (Little Endian) of boot vector</td>
+</tr>
+<tr class="row-even"><td>config_flags_1_set</td>
+<td>u32</td>
+<td>Optional Processor specific Config Flags to set. Setting a bit here implies required bit has to be set to 1.</td>
+</tr>
+<tr class="row-odd"><td>config_flags_1_clear</td>
+<td>u32</td>
+<td>Optional Processor specific Config Flags to clear. Setting a bit here implies required bit has to be cleared to 0.</td>
+</tr>
+</tbody>
+</table>
+</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Boot vector address and config are processor specific configurations. This
+may be done in separate invocations as required in processor specific startup
+sequence.</p>
+</div>
+<p><p><strong>struct tisci_msg_proc_set_config_resp</strong></p>
+<p>Response to Processor Boot Configuration message.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="32%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Generic TISCI message header.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.
+ ACK Response: The host had control over the processor and requested
+ operation is successful
+ NAK Response: The processor access is not permitted or the operation failed.</p>
+</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">Reason for failure is NOT provided to prevent security attacks by
+scan. If permitted, System firmware logs shall provide relevant failure
+information.</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-proc-set-control-set-processor-control-flags">
+<span id="proc-boot-set-processor-control"></span><h4>TISCI_MSG_PROC_SET_CONTROL - Set Processor Control Flags<a class="headerlink" href="#tisci-msg-proc-set-control-set-processor-control-flags" title="Permalink to this headline">¶</a></h4>
+<p><strong>Purpose</strong>: Provides a means for the host with current control to setup limited
+control flags in specific cases.</p>
+<p><strong>Usage</strong>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TISCI Message ID</strong></p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_PROC_SET_CONTROL</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0xC101U)</span></code></p>
+<p>Message to Set the processor control</p>
+</p>
+<p><p><strong>struct tisci_msg_proc_set_control_req</strong></p>
+<p>Optional processor specific message for sequence control</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="13%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Message header</td>
+</tr>
+<tr class="row-odd"><td>processor_id</td>
+<td>u8</td>
+<td>ID of processor</td>
+</tr>
+<tr class="row-even"><td>control_flags_1_set</td>
+<td>u32</td>
+<td>Optional Processor specific Control Flags to set. Setting a bit here implies required bit has to be set to 1.</td>
+</tr>
+<tr class="row-odd"><td>control_flags_1_clear</td>
+<td>u32</td>
+<td>Optional Processor specific Control Flags to clear. Setting a bit here implies required bit has to be cleared to 0.</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p><p><strong>struct tisci_msg_proc_set_control_resp</strong></p>
+<p>Response to optional processor specific message for sequence control</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="32%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Generic TISCI message header.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.
+ ACK Response: The host had control over the processor and requested
+ operation is successful
+ NAK Response: The processor access is not permitted or the operation failed.</p>
+</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">Reason for failure is NOT provided to prevent security attacks by
+scan. If permitted, System firmware logs shall provide relevant failure
+information.</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-proc-auth-boot-authenticate-image-and-configure-processor">
+<span id="proc-boot-authenticate-image-and-configure-processor"></span><h4>TISCI_MSG_PROC_AUTH_BOOT - Authenticate Image and Configure Processor<a class="headerlink" href="#tisci-msg-proc-auth-boot-authenticate-image-and-configure-processor" title="Permalink to this headline">¶</a></h4>
+<p><strong>Purpose</strong>: Provides a means for the host with current control to do the following:</p>
+<ul class="simple">
+<li>Authenticate and load a binary using the certificate provided information</li>
+<li>Use certificate information also to setup critical processor specific
+flags which is similar to
+<a class="reference internal" href="#proc-boot-set-processor-configuration"><span class="std std-ref">Set Processor Configuration</span></a>.</li>
+</ul>
+<p><strong>Usage</strong>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TISCI Message ID</strong></p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_PROC_AUTH_BOOT</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0xC120U)</span></code></p>
+<p>Message to do authenticated boot configuration of a processor</p>
+</p>
+<p><p><strong>struct tisci_msg_proc_auth_boot_req</strong></p>
+<p>Authenticate and start image</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="23%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Message header</td>
+</tr>
+<tr class="row-odd"><td>certificate_address_lo</td>
+<td>u32</td>
+<td>Lower 32bit (Little Endian) of certificate</td>
+</tr>
+<tr class="row-even"><td>certificate_address_hi</td>
+<td>u32</td>
+<td>Higher 32bit (Little Endian) of certificate</td>
+</tr>
+</tbody>
+</table>
+</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<ul class="last simple">
+<li>The certificate itself shall contain relevant information about the
+processor flags and configuration information.</li>
+<li>ONLY secure hosts are permitted to invoke this API in addition to
+being part of the access control list.</li>
+<li>See Hosts description for the corresponding SoC to identify which hosts
+are secure and which are not.</li>
+</ul>
+</div>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">Please see <a class="reference internal" href="sec_cert_format.html"><span class="doc">Security X509 Certificate Documentation</span></a> for certificate format.</p>
+</div>
+<p><p><strong>struct tisci_msg_proc_auth_boot_resp</strong></p>
+<p>Response to authenticate and start image request</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="27%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Generic TISCI message header.</td>
+</tr>
+<tr class="row-odd"><td>image_address_lo</td>
+<td>u32</td>
+<td>Lower 32bit (Little Endian) of image</td>
+</tr>
+<tr class="row-even"><td>image_address_hi</td>
+<td>u32</td>
+<td>Higher 32bit (Little Endian) of image</td>
+</tr>
+<tr class="row-odd"><td>image_size</td>
+<td>u32</td>
+<td>Size of the binary</td>
+</tr>
+</tbody>
+</table>
+<p>ACK Response: The host had control over the processor and requested
+ operation is successful
+ NAK Response: The processor access is not permitted or the operation failed.
+ IMPORTANT: Reason for failure is NOT provided to prevent security attacks
+ by scan. If permitted, System firmware logs shall provide relevant failure
+ information.</p>
+</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">Reason for failure is NOT provided to prevent security attacks by
+scan. If permitted, System firmware logs shall provide relevant failure
+information.</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-proc-get-status-get-processor-status">
+<span id="proc-boot-get-processor-status"></span><h4>TISCI_MSG_PROC_GET_STATUS - Get Processor Status<a class="headerlink" href="#tisci-msg-proc-get-status-get-processor-status" title="Permalink to this headline">¶</a></h4>
+<p><strong>Purpose</strong>: Provides a means for hosts in the permitted list to get the status
+of a physical processor. This is required for the hosts to sequence events in
+the correct order</p>
+<p><strong>Usage</strong>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TISCI Message ID</strong></p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_PROC_GET_STATUS</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0xC400U)</span></code></p>
+<p>Message to Get the processor status</p>
+</p>
+<p><p><strong>struct tisci_msg_proc_get_status_req</strong></p>
+<p>Processor Status request</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="40%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Message header</td>
+</tr>
+<tr class="row-odd"><td>processor_id</td>
+<td>u8</td>
+<td>ID of processor</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p><p><strong>struct tisci_msg_proc_get_status_resp</strong></p>
+<p>Processor Status Response</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="25%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Message header</td>
+</tr>
+<tr class="row-odd"><td>processor_id</td>
+<td>u8</td>
+<td>ID of processor</td>
+</tr>
+<tr class="row-even"><td>bootvector_lo</td>
+<td>u32</td>
+<td>Lower 32bit (Little Endian) of boot vector</td>
+</tr>
+<tr class="row-odd"><td>bootvector_hi</td>
+<td>u32</td>
+<td>Higher 32bit (Little Endian) of boot vector</td>
+</tr>
+<tr class="row-even"><td>config_flags_1</td>
+<td>u32</td>
+<td>Optional Processor specific Config Flags set</td>
+</tr>
+<tr class="row-odd"><td>control_flags_1</td>
+<td>u32</td>
+<td>Optional Processor specific Control Flags set</td>
+</tr>
+<tr class="row-even"><td>status_flags_1</td>
+<td>u32</td>
+<td>Optional Processor specific Status Flags set</td>
+</tr>
+</tbody>
+</table>
+<p>ACK Response: The host had control over the processor and requested
+ operation is successful
+ NAK Response: The processor access is not permitted or the operation failed.
+ IMPORTANT: Reason for failure is NOT provided to prevent security attacks
+ by scan. If permitted, System firmware logs shall provide relevant failure
+ information.</p>
+</p>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">Reason for failure is NOT provided to prevent security attacks by
+scan. If permitted, System firmware logs shall provide relevant failure
+information.</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-proc-wait-status-wait-for-processor-status">
+<span id="proc-boot-wait-processor-status"></span><h4>TISCI_MSG_PROC_WAIT_STATUS - Wait for Processor Status<a class="headerlink" href="#tisci-msg-proc-wait-status-wait-for-processor-status" title="Permalink to this headline">¶</a></h4>
+<p><strong>Purpose</strong>: Provides a means for hosts in the permitted list to wait for the
+status of a physical processor.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>This API that has impact on firmware performance and is typically
+only required for the hosts to sequence events in the correct order
+when executing from the processor itself. In short, avoid if possible.</p>
+<p class="last">The worst case delay could be upto:
+(register operations and code overheads) +
+num_wait_iterations(255) * delay_per_iteration_us(255) +
+delay_before_iteration_loop_start_us (255) =
+65.280 milli seconds + (register operations and code overheads)</p>
+</div>
+<p><strong>Usage</strong>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TISCI Message ID</strong></p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_PROC_WAIT_STATUS</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0xC401U)</span></code></p>
+<p>Message to Wait for processor status</p>
+</p>
+<p><p><strong>struct tisci_msg_proc_status_wait_req</strong></p>
+<p>Processor Status Wait</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="6%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Message header</td>
+</tr>
+<tr class="row-odd"><td>processor_id</td>
+<td>u8</td>
+<td>ID of processor</td>
+</tr>
+<tr class="row-even"><td>num_wait_iterations</td>
+<td>u8</td>
+<td>1-255, Total number of iterations we will check before we will timeout and give up</td>
+</tr>
+<tr class="row-odd"><td>num_match_iterations</td>
+<td>u8</td>
+<td>1-255, How many iterations should we have continued status to account for status bits glitching. This is to make sure that match occurs for consecutive checks. This implies that the worst case should consider that the stable time should at the worst be num_wait_iterations num_match_iterations  to prevent timeout.</td>
+</tr>
+<tr class="row-even"><td>delay_per_iteration_us</td>
+<td>u8</td>
+<td>0-255, Specifies how long to wait (in micro seconds) between each status checks. This is the minimum duration, and overhead of register reads and checks are on top of this and can vary based on varied conditions.</td>
+</tr>
+<tr class="row-odd"><td>delay_before_iteration_loop_start_us</td>
+<td>u8</td>
+<td>0-255, Specifies how long to wait (in micro seconds) before the very first check in the first iteration of status check loop. This is the minimum duration, and overhead of register reads and checks are</td>
+</tr>
+<tr class="row-even"><td>status_flags_1_set_all_wait</td>
+<td>u32</td>
+<td>If non-zero, Specifies that all bits of the status matching this field requested MUST be ‘1’.</td>
+</tr>
+<tr class="row-odd"><td>status_flags_1_set_any_wait</td>
+<td>u32</td>
+<td>If non-zero, Specifies that at least one of the bits matching this field requested MUST be ‘1’.</td>
+</tr>
+<tr class="row-even"><td>status_flags_1_clr_all_wait</td>
+<td>u32</td>
+<td>If non-zero, Specifies that all bits of the status matching this field requested MUST be ‘0’.</td>
+</tr>
+<tr class="row-odd"><td>status_flags_1_clr_any_wait</td>
+<td>u32</td>
+<td>If non-zero, Specifies that at least one of the bits matching this field requested MUST be ‘0’.</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p><p><strong>struct tisci_msg_proc_status_wait_resp</strong></p>
+<p>Processor Status Wait Response</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="32%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Generic TISCI message header.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.
+ ACK Response: The status requested was achieved within the constraints provided in request.
+ NAK Response: The processor access is not permitted or operation failed or timedout.</p>
+</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>At least one of status_flags_1_set_all_wait, status_flags_1_set_any_wait,
+status_flags_1_clr_all_wait or status_flags_1_clr_any_wait must be
+requested.</p>
+<p class="last">Flags and sequences desired are very specific to processor and SoC involved. Please
+refer to appropriate documentation for accurate sequencing and status information.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>A trivial example for a hypothetical processor status wait could have the parameters as follows:</p>
+<div class="last highlight-bash"><div class="highlight"><pre><span></span><span class="c1"># No optional bits to be set</span>
+<span class="nv">status_flags_1_set_all_wait</span> <span class="o">=</span> <span class="m">0</span>
+
+<span class="c1"># Either WFI OR WFE to be set as 1</span>
+<span class="nv">status_flags_1_set_any_wait</span> <span class="o">=</span> WFI <span class="p">|</span> WFE
+
+<span class="c1"># CLK_STOP must be to be cleared</span>
+<span class="nv">status_flags_1_clr_all_wait</span> <span class="o">=</span> CLK_STOP
+
+<span class="c1"># No optional status bits to be cleared</span>
+<span class="nv">status_flags_1_clr_any_wait</span> <span class="o">=</span> <span class="m">0</span>
+
+<span class="c1"># Check status every ~2 us</span>
+<span class="nv">delay_per_iteration_us</span> <span class="o">=</span> <span class="m">2</span>
+
+<span class="c1"># Do not wait to start checks</span>
+<span class="nv">delay_before_iteration_loop_start_us</span> <span class="o">=</span> <span class="m">0</span>
+
+<span class="c1"># Check for 10 times before timing out</span>
+<span class="nv">num_wait_iterations</span> <span class="o">=</span> <span class="m">10</span>
+
+<span class="c1"># Must match at least for 2 consecutive iterations</span>
+<span class="nv">num_match_iterations</span> <span class="o">=</span> <span class="m">2</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition attention">
+<p class="first admonition-title">Attention</p>
+<p class="last">Reason for failure is NOT provided to prevent security attacks by
+scan. If permitted, System firmware logs shall provide relevant failure
+information.</p>
+</div>
+</div>
+</div>
+<div class="section" id="generic-processor-flags">
+<span id="proc-boot-flags"></span><h3>Generic Processor Flags<a class="headerlink" href="#generic-processor-flags" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>config_flags_1 Field Reserved for Generic usage</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="9%" />
+<col width="8%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag Name</th>
+<th class="head">Bit Offset</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>GEN_IGN_BOOTVECTOR</td>
+<td>28</td>
+<td>N/A</td>
+<td>Valid only for <a class="reference internal" href="#proc-boot-set-processor-configuration"><span class="std std-ref">config_flags_1_clear</span></a>
+Flag indicating that SYSFW should not use the bootvector_lo and bootvector_hi fields
+in the tisci_msg_proc_set_config_req structure.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="processor-specific-flags">
+<h3>Processor Specific Flags<a class="headerlink" href="#processor-specific-flags" title="Permalink to this headline">¶</a></h3>
+<p>This section lists the flags that are specific to each processor types. These
+flags apply to the <a class="reference internal" href="#proc-boot-processor-control-apis"><span class="std std-ref">processor control APIs</span></a>.</p>
+<div class="section" id="armv8-a53">
+<h4>ARMV8 A53<a class="headerlink" href="#armv8-a53" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>config_flags_1 Fields</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="15%" />
+<col width="12%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag Name</th>
+<th class="head">Bit Offset</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DBG_EN</td>
+<td>0</td>
+<td>Enabled</td>
+<td>invasive Debug</td>
+</tr>
+<tr class="row-odd"><td>DBG_NIDEN</td>
+<td>1</td>
+<td>Enabled</td>
+<td>Non-invasive Debug</td>
+</tr>
+<tr class="row-even"><td>DBG_SPIDEN</td>
+<td>2</td>
+<td>Enabled</td>
+<td>Secure invasive Debug</td>
+</tr>
+<tr class="row-odd"><td>DBG_SPNIDEN</td>
+<td>3</td>
+<td>Enabled</td>
+<td>Secure Non-invasive Debug</td>
+</tr>
+<tr class="row-even"><td>ARCH32</td>
+<td>8</td>
+<td>Disabled</td>
+<td>32bit mode (if disabled, implies 64 bit mode)</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>control_flags_1 Fields:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="12%" />
+<col width="9%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag Name</th>
+<th class="head">Bit Offset</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>ACINACTM</td>
+<td>0</td>
+<td>N/A</td>
+<td>ACINACTM</td>
+</tr>
+<tr class="row-odd"><td>AINACTS</td>
+<td>1</td>
+<td>N/A</td>
+<td>ACINACTM</td>
+</tr>
+<tr class="row-even"><td>L2FLUSHREQ</td>
+<td>8</td>
+<td>N/A</td>
+<td>SoC level L2 Flush Request - See L2FLUSH_DONE status for completion</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please refer to SoC Technical Reference Manual and
+<a class="reference external" href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0500e/CACJFAJC.html">ARM Technical Reference</a>
+for information on sequencing required for startup and shutdown of CPUs in a cluster.
+Applying these flags to any CPU in a cluster affects the corresponding cluster.</p>
+</div>
+<ul class="simple">
+<li>status_flags_1 Fields</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="14%" />
+<col width="11%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag Name</th>
+<th class="head">Bit Offset</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>WFE</td>
+<td>0</td>
+<td>N/A</td>
+<td>Set if the core is in WFE state</td>
+</tr>
+<tr class="row-odd"><td>WFI</td>
+<td>1</td>
+<td>N/A</td>
+<td>Set if the core is in WFI state</td>
+</tr>
+<tr class="row-even"><td>L2FLUSH_DONE</td>
+<td>4</td>
+<td>N/A</td>
+<td>Set if the cluster’s L2 flush done is complete</td>
+</tr>
+<tr class="row-odd"><td>STANDBYWFIL2</td>
+<td>5</td>
+<td>N/A</td>
+<td>Set if the cluster’s L2 WFI is achieved</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="arm-r5">
+<h4>ARM R5<a class="headerlink" href="#arm-r5" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>config_flags_1 Fields</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="8%" />
+<col width="9%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag Name</th>
+<th class="head">Bit Offset</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DBG_EN</td>
+<td>0</td>
+<td>Enabled</td>
+<td>invasive Debug</td>
+</tr>
+<tr class="row-odd"><td>DBG_NIDEN</td>
+<td>1</td>
+<td>Enabled</td>
+<td>Non-invasive Debug</td>
+</tr>
+<tr class="row-even"><td>LOCKSTEP</td>
+<td>8</td>
+<td>Efuse driven</td>
+<td>On Write - Enable Lockstep (if permitted) - (1: Lockstep enabled, 0 - Lockstep disabled).
+On Read - Core Status - (1: Core in lockstep mode, 0 - Core in split mode)</td>
+</tr>
+<tr class="row-odd"><td>TE_INIT</td>
+<td>9</td>
+<td>ARM</td>
+<td>Exception handling state at reset (0 - ARM, 1 - Thumb)</td>
+</tr>
+<tr class="row-even"><td>NMFI_EN</td>
+<td>10</td>
+<td>Disabled</td>
+<td>Enable Core Non-Maskable Fast Interrupts</td>
+</tr>
+<tr class="row-odd"><td>TCM_RSTBASE</td>
+<td>11</td>
+<td>ATCM at 0x0</td>
+<td>Core A/BTCM Reset Base address Indicator (0 - BTCM located at address 0x0, 1 - ATCM located at address 0x0)</td>
+</tr>
+<tr class="row-even"><td>BTCM_EN</td>
+<td>12</td>
+<td>Enabled</td>
+<td>Enable Core BTCM RAM at reset</td>
+</tr>
+<tr class="row-odd"><td>ATCM_EN</td>
+<td>13</td>
+<td>Disabled</td>
+<td>Enable Core ATCM RAM at reset</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>control_flags_1 Fields</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="27%" />
+<col width="20%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag Name</th>
+<th class="head">Bit Offset</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>CORE_HALT</td>
+<td>0</td>
+<td>Halted</td>
+<td>Halt Core</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>status_flags_1 Fields</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="12%" />
+<col width="14%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag Name</th>
+<th class="head">Bit Offset</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>WFE</td>
+<td>0</td>
+<td>N/A</td>
+<td>Set if the core is in WFE state</td>
+</tr>
+<tr class="row-odd"><td>WFI</td>
+<td>1</td>
+<td>N/A</td>
+<td>Set if the core is in WFI state</td>
+</tr>
+<tr class="row-even"><td>CLK_GATED</td>
+<td>2</td>
+<td>N/A</td>
+<td>Core Clock Stopped due to WFI or WFE state</td>
+</tr>
+<tr class="row-odd"><td>LOCKSTEP_PERMITTED</td>
+<td>8</td>
+<td>Efuse driven</td>
+<td>Is Lockstep configuration permitted - 1: yes, 0 - no</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="c7x-dsp">
+<h4>C7x DSP<a class="headerlink" href="#c7x-dsp" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>config_flags_1 Fields</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="10%" />
+<col width="11%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag Name</th>
+<th class="head">Bit Offset</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>L2_PIPELINE_LATENCY_VALUE</td>
+<td>0-3</td>
+<td>0x1</td>
+<td>Set C7x Corepac L2 Pipeline latency. valid values: 1 to 5</td>
+</tr>
+<tr class="row-odd"><td>L2_ACCESS_LATENCY_VALUE</td>
+<td>4-7</td>
+<td>0x2</td>
+<td>Set C7x Corepac L2 Access latency. valid values: 2 to 5</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>control_flags_1 Fields</li>
+</ul>
+<p><strong>Not supported.</strong></p>
+<ul class="simple">
+<li>status_flags_1 Fields</li>
+</ul>
+<p><strong>Not supported.</strong></p>
+</div>
+<div class="section" id="c6x-dsp">
+<h4>C6x DSP<a class="headerlink" href="#c6x-dsp" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>config_flags_1 Fields</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="10%" />
+<col width="11%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag Name</th>
+<th class="head">Bit Offset</th>
+<th class="head">Default</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SSCLK_MODE_DIV_CLK_MODE_VALUE</td>
+<td>0-2</td>
+<td>0x00</td>
+<td>Controls the C66 clock rate for cluster logic and bus interfaces.
+(See warning note below)
+0x1 - Div2 clock mode.
+0x2 - Div3 clock mode.
+0x3 - Div4 clock mode.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">NOTE: Values of SSCLK_MODE_DIV_CLK_MODE_VALUE are TRM value + 1 for
+avoiding ‘0’ as a valid value which cannot be distinguished from values
+we are not attempting to set</p>
+</div>
+<ul class="simple">
+<li>control_flags_1 Fields</li>
+</ul>
+<p><strong>Not supported.</strong></p>
+<ul class="simple">
+<li>status_flags_1 Fields</li>
+</ul>
+<p><strong>Not supported.</strong></p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="firewall_api.html" class="btn btn-neutral float-right" title="Firewall TISCI Description" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sec_cert_format.html" class="btn btn-neutral" title="Security X509 Certificate Documentation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'19.08.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

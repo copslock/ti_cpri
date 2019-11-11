@@ -1,0 +1,1855 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Trace Layer &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../index.html"/>
+        <link rel="up" title="Chapter 4: Interpreting Trace Data" href="index.html"/>
+        <link rel="next" title="Chapter 5: SoC Family Specific Documentation" href="../5_soc_doc/index.html"/>
+        <link rel="prev" title="Chapter 4: Interpreting Trace Data" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.08.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Chapter 4: Interpreting Trace Data</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Trace Layer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#trace-layer-overview">Trace Layer Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trace-configuration">Trace Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trace-memory-buffer-location">Trace Memory Buffer Location</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#trace-debug-data-format">Trace Debug Data Format</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#domain-id">Domain ID</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#action-optional-sub-action-ids">Action &amp; Optional Sub-Action IDs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../5_soc_doc/index.html">Chapter 5: SoC Family Specific Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Chapter 4: Interpreting Trace Data</a> &raquo;</li>
+      
+    <li>Trace Layer</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="trace-layer">
+<h1>Trace Layer<a class="headerlink" href="#trace-layer" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="trace-layer-overview">
+<h2>Trace Layer Overview<a class="headerlink" href="#trace-layer-overview" title="Permalink to this headline">¶</a></h2>
+<p>The ability to output human readable trace messages is necessary to be
+able to properly debug firmware operation. However, due to the potential
+for huge amounts of messages due to fast transitions in firewalls,
+clocks, etc, a compact trace format that can be easily machine parsed is
+required as well. A global ‘trace’ layer is provided so that any
+sub-system present in the firmware has the ability to output information
+in a common way over a user configured interface.</p>
+</div>
+<div class="section" id="trace-configuration">
+<h2>Trace Configuration<a class="headerlink" href="#trace-configuration" title="Permalink to this headline">¶</a></h2>
+<p>All built-in trace options can be selectively enabled during runtime
+as described in <a class="reference internal" href="../3_boardcfg/BOARDCFG.html#pub-boardcfg-debug-console"><span class="std std-ref">Design details for System Firmware Debug Console</span></a>. The trace destinations are
+configurable as build options but by default are built in and usage of
+them is left up to the aforementioned board configuration.</p>
+<p>In the interest of allowing debug of early boot within System Firmware the
+default state of all <a class="reference internal" href="../3_boardcfg/BOARDCFG.html#pub-boardcfg-debug-console"><span class="std std-ref">Board Config Debug</span></a>
+configurable trace sources and destinations is enabled. Once the
+<code class="docutils literal"><span class="pre">TISCI_MSG_BOARD_CONFIG</span></code> message is received, the values within
+<code class="docutils literal"><span class="pre">boardcfg_dbg_cfg</span></code> immediately take effect and only the configured
+trace sources and destinations will be in use until reboot. However,
+this means that the earliest boot messages before TISCI_MSG_BOARD_CONFIG
+from System Firmware will always be printed.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Keeping trace enabled will have considerable impact on performance.
+While useful for debug, there are many trace points throughout the code
+and waiting for each print to occur, especially if all trace destinations
+are enabled, can add considerable to each subsystem init and TISCI message
+response. If performance is a system requirement trace should be disabled.</p>
+</div>
+<p>All trace debug and trace print messages will be routed as strings over
+the UART or memory buffer as there is only a single resource for each of
+these. ITM has multiple channels available that will be partitioned as
+described below:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">ITM Channel Number</th>
+<th class="head">Usage</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>Trace print strings.</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>Baseport Trace debug.</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>Security Trace debug.</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>Resource Management Trace debug.</td>
+</tr>
+<tr class="row-even"><td>4</td>
+<td>Power Management Trace debug.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="trace-memory-buffer-location">
+<h3>Trace Memory Buffer Location<a class="headerlink" href="#trace-memory-buffer-location" title="Permalink to this headline">¶</a></h3>
+<p>The trace memory buffer is located within the firmware memory. Information
+about the location and size can be found below.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="45%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SoC</th>
+<th class="head">Base Address</th>
+<th class="head">Size</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>AM65x</td>
+<td>0x44083000</td>
+<td>0x1000</td>
+</tr>
+<tr class="row-odd"><td>J721e</td>
+<td>0x44083000</td>
+<td>0x1000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="trace-debug-data-format">
+<h2>Trace Debug Data Format<a class="headerlink" href="#trace-debug-data-format" title="Permalink to this headline">¶</a></h2>
+<p>The Trace Debug API supports the sending of arbitrary u32’s to the
+various Trace destinations. By defining a common convention for these
+u32’s to represent data they can be used to describe events within the
+system. The below format describes the standard meaning of each bit inside
+the u32.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="11%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Bit Index</th>
+<th class="head">Use</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Domain ID</td>
+<td>31 - 29</td>
+<td>Identifies which domain this debug code belongs to.</td>
+</tr>
+<tr class="row-odd"><td>Action ID</td>
+<td>28 - 22</td>
+<td>Identifies the action this code represents, domain specific.</td>
+</tr>
+<tr class="row-even"><td>Message Specific Data</td>
+<td>21 - 0</td>
+<td>Additional data specific to the domain and action ID.</td>
+</tr>
+</tbody>
+</table>
+<p>Optionally, a sub-action ID can be specified as part of the standard message
+data field in order to provide more granular trace data per subsystem.  The
+below format describes the meaning for each bit inside the u32 when the
+optional sub-action ID is utilized.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="11%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Bit Index</th>
+<th class="head">Use</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Domain ID</td>
+<td>31 - 29</td>
+<td>Identifies which domain this debug code belongs to.</td>
+</tr>
+<tr class="row-odd"><td>Action ID</td>
+<td>28 - 22</td>
+<td>Identifies the action this code represents, domain specific.</td>
+</tr>
+<tr class="row-even"><td>Sub-Action ID</td>
+<td>21 - 16</td>
+<td>Identifies the sub-action this code represents, domain
+specific.</td>
+</tr>
+<tr class="row-odd"><td>Message Specific Data</td>
+<td>15 - 0</td>
+<td>Additional data specific to the domain and action ID.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="domain-id">
+<span id="pub-trace-debug-data-format-domain-id"></span><h3>Domain ID<a class="headerlink" href="#domain-id" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="10%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Domain Name</th>
+<th class="head">Value</th>
+<th class="head">Use</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Baseport</td>
+<td>0</td>
+<td>Debug trace is from Baseport Domain.</td>
+</tr>
+<tr class="row-odd"><td>Security</td>
+<td>1</td>
+<td>Debug trace is from Security Domain</td>
+</tr>
+<tr class="row-even"><td>RM</td>
+<td>2</td>
+<td>Debug trace is from Resource Management Domain</td>
+</tr>
+<tr class="row-odd"><td>PM</td>
+<td>3</td>
+<td>Debug trace is from Power Management Domain.</td>
+</tr>
+<tr class="row-even"><td>Reserved</td>
+<td>4</td>
+<td>Reserved for future use.</td>
+</tr>
+<tr class="row-odd"><td>Reserved</td>
+<td>5</td>
+<td>Reserved for future use.</td>
+</tr>
+<tr class="row-even"><td>Reserved</td>
+<td>6</td>
+<td>Reserved for future use.</td>
+</tr>
+<tr class="row-odd"><td>Reserved</td>
+<td>7</td>
+<td>Reserved for future use.</td>
+</tr>
+</tbody>
+</table>
+<p>Messages sent using any reserved Domain IDs will be ignored.</p>
+</div>
+<div class="section" id="action-optional-sub-action-ids">
+<span id="pub-trace-debug-data-format-action-id"></span><h3>Action &amp; Optional Sub-Action IDs<a class="headerlink" href="#action-optional-sub-action-ids" title="Permalink to this headline">¶</a></h3>
+<p>Below is a listing of the Action IDs and Sub-Action IDs for each domain along
+with how the Message Specific Data (MSD) is to be interpreted.</p>
+<p>The Sub-Action IDs are optionally used by domain owners to provide more
+granular data for each Action ID.  Use of Sub-Action IDs restricts the action
+data per trace to 16-bits wide.</p>
+<div class="section" id="baseport-action-ids">
+<span id="pub-trace-debug-data-format-action-id-baseport"></span><h4>Baseport Action IDs<a class="headerlink" href="#baseport-action-ids" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="5%" />
+<col width="19%" />
+<col width="18%" />
+<col width="42%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Action ID</th>
+<th class="head">Value</th>
+<th class="head">Use</th>
+<th class="head">MSD Use</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>BP_INIT_COMPLETE</td>
+<td>0</td>
+<td>OSAL/Baseport init complete</td>
+<td>Unused</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>TISCI_MSG_RECEIVED</td>
+<td>1</td>
+<td>TISCI Message received</td>
+<td>(21-16) Queue ID
+(15-0) TISCI ID</td>
+<td>When TISCI_MSG_RECEIVED is followed by TISCI_MSG_SENDER_HOST_ID
+with the same Queue ID, the reported TISCI ID and HOST ID are
+guaranteed to have come from the same received TISCI message.
+Queue ID is an arbitrary value used for this purpose.</td>
+</tr>
+<tr class="row-even"><td>TISCI_MSG_SENDER_HOST_ID</td>
+<td>2</td>
+<td>Host ID of sent Message</td>
+<td>(21-16) Queue ID
+(15-0) Host ID of request</td>
+<td>See note above for TISCI_MSG_RECEIVED.</td>
+</tr>
+<tr class="row-odd"><td>RESERVED</td>
+<td>10</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>TRACE_DATA_VERSION</td>
+<td>16</td>
+<td>OSAL/Baseport trace data
+version.</td>
+<td>(19-12) Version major
+(11-0) Version minor</td>
+<td>Any System Firmware trace parsing utilities should be able to
+comprehend the trace version when decoding trace logs</td>
+</tr>
+<tr class="row-odd"><td>SYSFW_VERSION</td>
+<td>17</td>
+<td>System Firmware version</td>
+<td>(15-8) Version
+(7-4) Subversion
+(3-0) Patch</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>GENERIC_DEBUG</td>
+<td>127</td>
+<td>Generic Debug Message</td>
+<td>Any use.</td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="security-action-ids">
+<span id="pub-trace-debug-data-format-action-id-security"></span><h4>Security Action IDs<a class="headerlink" href="#security-action-ids" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="9%" />
+<col width="46%" />
+<col width="22%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Action ID</th>
+<th class="head">Value</th>
+<th class="head">Use</th>
+<th class="head">MSD Use</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>RESERVED</td>
+<td>0x1</td>
+<td>RESERVED</td>
+<td>NA</td>
+</tr>
+<tr class="row-odd"><td>Security
+Init</td>
+<td>0x2</td>
+<td>Indicates progress of
+post-boardconfig security
+initialization</td>
+<td>Bit [0] - 0 =&gt;
+start, 1 =&gt; end</td>
+</tr>
+<tr class="row-even"><td>FAIL (modifier)</td>
+<td>0x40</td>
+<td>Action failed when action bit set</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>Generic
+Debug</td>
+<td>127</td>
+<td>Generic Debug message</td>
+<td>Any use.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="resource-management-action-ids-sub-action-ids">
+<span id="pub-trace-debug-data-format-action-id-resource"></span><h4>Resource Management Action IDs &amp; Sub-Action IDs<a class="headerlink" href="#resource-management-action-ids-sub-action-ids" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="5%" />
+<col width="17%" />
+<col width="22%" />
+<col width="5%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Action ID</th>
+<th class="head">Value</th>
+<th class="head">Use</th>
+<th class="head">Sub-Action ID</th>
+<th class="head">Value</th>
+<th class="head">MSD Use</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>RM_INIT</td>
+<td>0</td>
+<td>RM init complete</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>RM_CORE_INIT</td>
+<td>1</td>
+<td>RM core init
+complete</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>RA_INIT</td>
+<td>3</td>
+<td>RA driver init
+complete</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td rowspan="12">RING_CONFIGURE</td>
+<td rowspan="12">4</td>
+<td rowspan="12">NavSS ring
+configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>Ring accelerator Device ID</td>
+</tr>
+<tr class="row-even"><td>INDEX</td>
+<td>1</td>
+<td>Ring index</td>
+</tr>
+<tr class="row-odd"><td>VALID_PARAM_HI</td>
+<td>7</td>
+<td>Upper 16-bits of valid_params</td>
+</tr>
+<tr class="row-even"><td>VALID_PARAM_LO</td>
+<td>8</td>
+<td>Lower 16-bits of valid_params</td>
+</tr>
+<tr class="row-odd"><td>RING_VIRTID</td>
+<td>10</td>
+<td>ring Virt ID</td>
+</tr>
+<tr class="row-even"><td>RING_MODE</td>
+<td>11</td>
+<td>ring mode</td>
+</tr>
+<tr class="row-odd"><td>RING_SIZE</td>
+<td>12</td>
+<td>ring size</td>
+</tr>
+<tr class="row-even"><td>RING_BA_LO_HI</td>
+<td>13</td>
+<td>Upper 16-bits of base address lo</td>
+</tr>
+<tr class="row-odd"><td>RING_BA_LO_LO</td>
+<td>14</td>
+<td>Lower 16-bits of base address lo</td>
+</tr>
+<tr class="row-even"><td>RING_COUNT_HI</td>
+<td>15</td>
+<td>Upper 4-bits of count</td>
+</tr>
+<tr class="row-odd"><td>RING_COUNT_LO</td>
+<td>16</td>
+<td>Lower 16-bits of count</td>
+</tr>
+<tr class="row-even"><td>RING_ORDERID</td>
+<td>17</td>
+<td>ring Order ID</td>
+</tr>
+<tr class="row-odd"><td rowspan="3">RING_GET_CFG</td>
+<td rowspan="3">5</td>
+<td rowspan="3">Get NavSS ring
+configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>Ring accelerator Device ID</td>
+</tr>
+<tr class="row-even"><td>INDEX</td>
+<td>1</td>
+<td>Ring index</td>
+</tr>
+<tr class="row-odd"><td>GET_RESET_CFG</td>
+<td>2</td>
+<td>Configuration retrieval type</td>
+</tr>
+<tr class="row-even"><td rowspan="2">RING_VALIDATE_INDEX</td>
+<td rowspan="2">6</td>
+<td rowspan="2">NavSS ring index
+validation</td>
+<td>INDEX</td>
+<td>1</td>
+<td>Ring index</td>
+</tr>
+<tr class="row-odd"><td>SS_DEVICE_ID</td>
+<td>5</td>
+<td>NavSS subsystem device ID</td>
+</tr>
+<tr class="row-even"><td rowspan="7">RING_MON_CFG</td>
+<td rowspan="7">7</td>
+<td rowspan="7">NavSS ring monitor
+configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>Ring accelerator Device ID</td>
+</tr>
+<tr class="row-odd"><td>INDEX</td>
+<td>1</td>
+<td>Ring monitor index</td>
+</tr>
+<tr class="row-even"><td>VALID_PARAM_HI</td>
+<td>7</td>
+<td>Upper 16-bits of valid_params</td>
+</tr>
+<tr class="row-odd"><td>VALID_PARAM_LO</td>
+<td>8</td>
+<td>Lower 16-bits of valid_params</td>
+</tr>
+<tr class="row-even"><td>RING_MONITOR_SOURCE</td>
+<td>18</td>
+<td>Monitor source</td>
+</tr>
+<tr class="row-odd"><td>RING_MONITOR_MODE</td>
+<td>19</td>
+<td>Monitor mode</td>
+</tr>
+<tr class="row-even"><td>RING_MONITOR_QUEUE</td>
+<td>20</td>
+<td>Queue, or ring, to monitor</td>
+</tr>
+<tr class="row-odd"><td rowspan="4">RING_OES_SET</td>
+<td rowspan="4">8</td>
+<td rowspan="4">Set OES register in
+NavSS ring
+accelerator</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>Ring accelerator Device ID</td>
+</tr>
+<tr class="row-even"><td>INDEX</td>
+<td>1</td>
+<td>Ring index</td>
+</tr>
+<tr class="row-odd"><td>EVENT</td>
+<td>3</td>
+<td>Global event</td>
+</tr>
+<tr class="row-even"><td>OES_REG_INDEX</td>
+<td>4</td>
+<td>OES register index</td>
+</tr>
+<tr class="row-odd"><td rowspan="4">RING_OES_GET</td>
+<td rowspan="4">9</td>
+<td rowspan="4">Get OES register in
+NavSS ring
+accelerator</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>Ring accelerator Device ID</td>
+</tr>
+<tr class="row-even"><td>INDEX</td>
+<td>1</td>
+<td>Ring index</td>
+</tr>
+<tr class="row-odd"><td>EVENT</td>
+<td>3</td>
+<td>Global event</td>
+</tr>
+<tr class="row-even"><td>OES_REG_INDEX</td>
+<td>4</td>
+<td>OES register index</td>
+</tr>
+<tr class="row-odd"><td>UDMAP_INIT</td>
+<td>12</td>
+<td>UDMAP driver init
+complete</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td rowspan="3">UDMAP_TX_CH_SET_THRD_ID</td>
+<td rowspan="3">13</td>
+<td rowspan="3">Set NavSS UDMAP
+transmit channel
+thread ID</td>
+<td>INDEX</td>
+<td>1</td>
+<td>Transmit channel index</td>
+</tr>
+<tr class="row-odd"><td>SS_DEVICE_ID</td>
+<td>5</td>
+<td>NavSS subsystem device ID</td>
+</tr>
+<tr class="row-even"><td>UDMA_CH_THREAD_ID</td>
+<td>30</td>
+<td>PSI-L thread ID</td>
+</tr>
+<tr class="row-odd"><td rowspan="20">UDMAP_TX_CH_CFG</td>
+<td rowspan="20">14</td>
+<td rowspan="20">NavSS UDMAP transmit
+channel configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-even"><td>INDEX</td>
+<td>1</td>
+<td>transmit channel index</td>
+</tr>
+<tr class="row-odd"><td>VALID_PARAM_HI</td>
+<td>7</td>
+<td>Upper 16-bits of valid_params</td>
+</tr>
+<tr class="row-even"><td>VALID_PARAM_LO</td>
+<td>8</td>
+<td>Lower 16-bits of valid_params</td>
+</tr>
+<tr class="row-odd"><td>UDMA_CH_PAUSE_ON_ERR</td>
+<td>10</td>
+<td>Pause on error</td>
+</tr>
+<tr class="row-even"><td>UDMA_CH_ATYPE</td>
+<td>11</td>
+<td>Channel atype</td>
+</tr>
+<tr class="row-odd"><td>UDMA_CH_TYPE</td>
+<td>12</td>
+<td>Channel type</td>
+</tr>
+<tr class="row-even"><td>UDMA_CH_FETCH_SIZE</td>
+<td>13</td>
+<td>Fetch size</td>
+</tr>
+<tr class="row-odd"><td>UDMA_CH_CQ_QNUM</td>
+<td>14</td>
+<td>Completion queue number</td>
+</tr>
+<tr class="row-even"><td>UDMA_CH_PRIORITY</td>
+<td>15</td>
+<td>Priority</td>
+</tr>
+<tr class="row-odd"><td>UDMA_CH_QOS</td>
+<td>16</td>
+<td>QoS</td>
+</tr>
+<tr class="row-even"><td>UDMA_CH_ORDERID</td>
+<td>17</td>
+<td>Order ID</td>
+</tr>
+<tr class="row-odd"><td>UDMA_CH_SCHED_PRIORITY</td>
+<td>18</td>
+<td>Scheduling priority</td>
+</tr>
+<tr class="row-even"><td>UDMA_CH_BURST_SIZE</td>
+<td>31</td>
+<td>Burst size</td>
+</tr>
+<tr class="row-odd"><td>UDMA_TX_CH_FILT_EINFO</td>
+<td>32</td>
+<td>Filter extended info</td>
+</tr>
+<tr class="row-even"><td>UDMA_TX_CH_FILT_PSWORDS</td>
+<td>33</td>
+<td>Filter PS words</td>
+</tr>
+<tr class="row-odd"><td>UDMA_TX_CH_SUPR_TDPKT</td>
+<td>34</td>
+<td>Teardown packet suppression</td>
+</tr>
+<tr class="row-even"><td>UDMA_TX_CH_CREDIT_COUNT</td>
+<td>35</td>
+<td>Channel credit count</td>
+</tr>
+<tr class="row-odd"><td>UDMA_TX_CH_FDEPTH</td>
+<td>36</td>
+<td>Channel fdepth</td>
+</tr>
+<tr class="row-even"><td>UDMA_TX_CH_TDTYPE</td>
+<td>37</td>
+<td>Channel teardown type</td>
+</tr>
+<tr class="row-odd"><td rowspan="3">UDMAP_TX_CH_GET_CFG</td>
+<td rowspan="3">15</td>
+<td rowspan="3">Get NavSS UDMAP
+transmit channel
+configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-even"><td>INDEX</td>
+<td>1</td>
+<td>UDMAP transmit channel index</td>
+</tr>
+<tr class="row-odd"><td>GET_RESET_CFG</td>
+<td>2</td>
+<td>Configuration retrieval type</td>
+</tr>
+<tr class="row-even"><td rowspan="3">UDMAP_GCFG_CFG</td>
+<td rowspan="3">16</td>
+<td rowspan="3">NavSS UDMAP GCFG
+region configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-odd"><td>VALID_PARAM_HI</td>
+<td>7</td>
+<td>Upper 16-bits of valid_params</td>
+</tr>
+<tr class="row-even"><td>VALID_PARAM_LO</td>
+<td>8</td>
+<td>Lower 16-bits of valid_params</td>
+</tr>
+<tr class="row-odd"><td rowspan="3">UDMAP_RX_CH_SET_THRD_ID</td>
+<td rowspan="3">20</td>
+<td rowspan="3">Set NavSS UDMAP
+receive channel
+thread ID</td>
+<td>INDEX</td>
+<td>1</td>
+<td>Receive channel index</td>
+</tr>
+<tr class="row-even"><td>SS_DEVICE_ID</td>
+<td>5</td>
+<td>NavSS subsystem device ID</td>
+</tr>
+<tr class="row-odd"><td>UDMA_CH_THREAD_ID</td>
+<td>30</td>
+<td>PSI-L thread ID</td>
+</tr>
+<tr class="row-even"><td rowspan="18">UDMAP_RX_CH_CFG</td>
+<td rowspan="18">21</td>
+<td rowspan="18">NavSS UDMAP receive
+channel configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-odd"><td>INDEX</td>
+<td>1</td>
+<td>receive channel index</td>
+</tr>
+<tr class="row-even"><td>VALID_PARAM_HI</td>
+<td>7</td>
+<td>Upper 16-bits of valid_params</td>
+</tr>
+<tr class="row-odd"><td>VALID_PARAM_LO</td>
+<td>8</td>
+<td>Lower 16-bits of valid_params</td>
+</tr>
+<tr class="row-even"><td>UDMA_CH_PAUSE_ON_ERR</td>
+<td>10</td>
+<td>Pause on error</td>
+</tr>
+<tr class="row-odd"><td>UDMA_CH_ATYPE</td>
+<td>11</td>
+<td>Channel atype</td>
+</tr>
+<tr class="row-even"><td>UDMA_CH_TYPE</td>
+<td>12</td>
+<td>Channel type</td>
+</tr>
+<tr class="row-odd"><td>UDMA_CH_FETCH_SIZE</td>
+<td>13</td>
+<td>Fetch size</td>
+</tr>
+<tr class="row-even"><td>UDMA_CH_CQ_QNUM</td>
+<td>14</td>
+<td>Completion queue number</td>
+</tr>
+<tr class="row-odd"><td>UDMA_CH_PRIORITY</td>
+<td>15</td>
+<td>Priority</td>
+</tr>
+<tr class="row-even"><td>UDMA_CH_QOS</td>
+<td>16</td>
+<td>QoS</td>
+</tr>
+<tr class="row-odd"><td>UDMA_CH_ORDERID</td>
+<td>17</td>
+<td>Order ID</td>
+</tr>
+<tr class="row-even"><td>UDMA_CH_SCHED_PRIORITY</td>
+<td>18</td>
+<td>Scheduling priority</td>
+</tr>
+<tr class="row-odd"><td>UDMA_CH_BURST_SIZE</td>
+<td>31</td>
+<td>Burst size</td>
+</tr>
+<tr class="row-even"><td>UDMA_RX_CH_FLOW_ID_START</td>
+<td>32</td>
+<td>Flow ID start</td>
+</tr>
+<tr class="row-odd"><td>UDMA_RX_CH_FLOW_ID_COUNT</td>
+<td>33</td>
+<td>Flow ID count</td>
+</tr>
+<tr class="row-even"><td>UDMA_RX_CH_IGNORE_SHORT</td>
+<td>34</td>
+<td>Ignore long</td>
+</tr>
+<tr class="row-odd"><td>UDMA_RX_CH_IGNORE_LONG</td>
+<td>35</td>
+<td>Ignore short</td>
+</tr>
+<tr class="row-even"><td rowspan="3">UDMAP_RX_CH_GET_CFG</td>
+<td rowspan="3">22</td>
+<td rowspan="3">Get NavSS UDMAP
+receive channel
+configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-odd"><td>INDEX</td>
+<td>1</td>
+<td>UDMAP receive channel index</td>
+</tr>
+<tr class="row-even"><td>GET_RESET_CFG</td>
+<td>2</td>
+<td>Configuration retrieval type</td>
+</tr>
+<tr class="row-odd"><td rowspan="2">UDMAP_GCFG_GET_CFG</td>
+<td rowspan="2">23</td>
+<td rowspan="2">Get NavSS UDMAP
+GCFG region
+configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-even"><td>GET_RESET_CFG</td>
+<td>2</td>
+<td>Configuration retrieval type</td>
+</tr>
+<tr class="row-odd"><td rowspan="17">UDMAP_FLOW_CFG</td>
+<td rowspan="17">29</td>
+<td rowspan="17">NavSS UDMAP receive
+flow configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-even"><td>INDEX</td>
+<td>1</td>
+<td>receive flow index</td>
+</tr>
+<tr class="row-odd"><td>VALID_PARAM_HI</td>
+<td>7</td>
+<td>Upper 16-bits of valid_params</td>
+</tr>
+<tr class="row-even"><td>VALID_PARAM_LO</td>
+<td>8</td>
+<td>Lower 16-bits of valid_params</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_EINFO_PRESENT</td>
+<td>10</td>
+<td>extended info present</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_RX_PSINFO_PRESENT</td>
+<td>11</td>
+<td>psinfo present</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_ERROR_HANDLING</td>
+<td>12</td>
+<td>error handling</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_DESC_TYPE</td>
+<td>13</td>
+<td>descriptor type</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_SOP_OFFSET</td>
+<td>14</td>
+<td>SOP offset</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_RX_PS_LOCATION</td>
+<td>15</td>
+<td>PS location</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_SRC_TAG_SEL</td>
+<td>16</td>
+<td>Source tag selector</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_DEST_TAG_SEL</td>
+<td>17</td>
+<td>Destination tag selector</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_DEST_QNUM</td>
+<td>18</td>
+<td>Destination queue number</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_RX_FDQ0_SZ0_QNUM</td>
+<td>19</td>
+<td>FDQ0 SZ0 queue number</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_FDQ1_QNUM</td>
+<td>20</td>
+<td>FDQ1 queue number</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_RX_FDQ2_QNUM</td>
+<td>21</td>
+<td>FDQ2 queue number</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_FDQ3_QNUM</td>
+<td>22</td>
+<td>FDQ3 queue number</td>
+</tr>
+<tr class="row-even"><td rowspan="8">UDMAP_FLOW_SZ_CFG</td>
+<td rowspan="8">30</td>
+<td rowspan="8">NavSS UDMAP receive
+flow size threshold
+configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-odd"><td>INDEX</td>
+<td>1</td>
+<td>receive flow index</td>
+</tr>
+<tr class="row-even"><td>VALID_PARAM_HI</td>
+<td>7</td>
+<td>Upper 16-bits of valid_params</td>
+</tr>
+<tr class="row-odd"><td>VALID_PARAM_LO</td>
+<td>8</td>
+<td>Lower 16-bits of valid_params</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_RX_FDQ0_SZ1_QNUM</td>
+<td>23</td>
+<td>FDQ0 SZ1 queue number</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_FDQ0_SZ2_QNUM</td>
+<td>24</td>
+<td>FDQ0 SZ2 queue number</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_RX_FDQ0_SZ3_QNUM</td>
+<td>25</td>
+<td>FDQ0 SZ3 queue number</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_SIZE_THRESH_EN</td>
+<td>26</td>
+<td>size threshold routing enable</td>
+</tr>
+<tr class="row-even"><td rowspan="4">UDMAP_OES_SET</td>
+<td rowspan="4">31</td>
+<td rowspan="4">Set OES register in
+NavSS UDMAP</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-odd"><td>INDEX</td>
+<td>1</td>
+<td>Channel index</td>
+</tr>
+<tr class="row-even"><td>EVENT</td>
+<td>3</td>
+<td>Global event</td>
+</tr>
+<tr class="row-odd"><td>OES_REG_INDEX</td>
+<td>4</td>
+<td>OES register index</td>
+</tr>
+<tr class="row-even"><td rowspan="4">UDMAP_OES_GET</td>
+<td rowspan="4">32</td>
+<td rowspan="4">Get OES register in
+NavSS UDMAP</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-odd"><td>INDEX</td>
+<td>1</td>
+<td>Channel index</td>
+</tr>
+<tr class="row-even"><td>EVENT</td>
+<td>3</td>
+<td>Global event</td>
+</tr>
+<tr class="row-odd"><td>OES_REG_INDEX</td>
+<td>4</td>
+<td>OES register index</td>
+</tr>
+<tr class="row-even"><td rowspan="3">UDMAP_FLOW_GET_CFG</td>
+<td rowspan="3">33</td>
+<td rowspan="3">Get NavSS UDMAP
+receive flow
+configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-odd"><td>INDEX</td>
+<td>1</td>
+<td>UDMAP receive flow index</td>
+</tr>
+<tr class="row-even"><td>GET_RESET_CFG</td>
+<td>2</td>
+<td>Configuration retrieval type</td>
+</tr>
+<tr class="row-odd"><td rowspan="3">UDMAP_FLOW_SZ_GET_CFG</td>
+<td rowspan="3">34</td>
+<td rowspan="3">Get NavSS UDMAP
+receive flow size
+threshold
+configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-even"><td>INDEX</td>
+<td>1</td>
+<td>UDMAP receive flow index</td>
+</tr>
+<tr class="row-odd"><td>GET_RESET_CFG</td>
+<td>2</td>
+<td>Configuration retrieval type</td>
+</tr>
+<tr class="row-even"><td>PSIL_INIT</td>
+<td>35</td>
+<td>PSI-L driver init
+complete</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td rowspan="4">PSIL_PAIR</td>
+<td rowspan="4">36</td>
+<td rowspan="4">Pair NavSS PSI-L
+threads</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>PSI-L proxy device ID</td>
+</tr>
+<tr class="row-even"><td>PSIL_SRC_THREAD</td>
+<td>10</td>
+<td>PSI-L source thread</td>
+</tr>
+<tr class="row-odd"><td>PSIL_DST_THREAD</td>
+<td>11</td>
+<td>PSI-L destination thread</td>
+</tr>
+<tr class="row-even"><td>PSIL_THREAD_ENABLED</td>
+<td>12</td>
+<td>PSI-L thread enabled prior to
+pairing</td>
+</tr>
+<tr class="row-odd"><td rowspan="5">PSIL_READ</td>
+<td rowspan="5">38</td>
+<td rowspan="5">Read NavSS PSI-L
+thread configuration
+register</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>PSI-L proxy device ID</td>
+</tr>
+<tr class="row-even"><td>PSIL_THREAD</td>
+<td>15</td>
+<td>PSI-L thread</td>
+</tr>
+<tr class="row-odd"><td>PSIL_THREAD_CFG_REG_ADDR</td>
+<td>16</td>
+<td>Thread configuration register addr</td>
+</tr>
+<tr class="row-even"><td>PSIL_THREAD_CFG_REG_VAL_HI</td>
+<td>17</td>
+<td>Upper 16-bits of register value</td>
+</tr>
+<tr class="row-odd"><td>PSIL_THREAD_CFG_REG_VAL_LO</td>
+<td>18</td>
+<td>Lower 16-bits of register value</td>
+</tr>
+<tr class="row-even"><td rowspan="5">PSIL_WRITE</td>
+<td rowspan="5">39</td>
+<td rowspan="5">Write NavSS PSI-L
+thread configuration
+register</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>PSI-L proxy device ID</td>
+</tr>
+<tr class="row-odd"><td>PSIL_THREAD</td>
+<td>15</td>
+<td>PSI-L thread</td>
+</tr>
+<tr class="row-even"><td>PSIL_THREAD_CFG_REG_ADDR</td>
+<td>16</td>
+<td>Thread configuration register addr</td>
+</tr>
+<tr class="row-odd"><td>PSIL_THREAD_CFG_REG_VAL_HI</td>
+<td>17</td>
+<td>Upper 16-bits of written value</td>
+</tr>
+<tr class="row-even"><td>PSIL_THREAD_CFG_REG_VAL_LO</td>
+<td>18</td>
+<td>Lower 16-bits of written value</td>
+</tr>
+<tr class="row-odd"><td rowspan="5">PSIL_UNPAIR</td>
+<td rowspan="5">40</td>
+<td rowspan="5">Unpair NavSS PSI-L
+threads</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>PSI-L proxy device ID</td>
+</tr>
+<tr class="row-even"><td>PSIL_SRC_THREAD</td>
+<td>10</td>
+<td>PSI-L source thread</td>
+</tr>
+<tr class="row-odd"><td>PSIL_DST_THREAD</td>
+<td>11</td>
+<td>PSI-L destination thread</td>
+</tr>
+<tr class="row-even"><td>PSIL_THREAD_DISABLED</td>
+<td>13</td>
+<td>PSI-L thread disabled prior to
+unpairing</td>
+</tr>
+<tr class="row-odd"><td>PSIL_SRC_THREAD_PEER</td>
+<td>14</td>
+<td>Source thread peer register thread
+value</td>
+</tr>
+<tr class="row-even"><td rowspan="2">PSIL_DRU_DST_OFFSET</td>
+<td rowspan="2">41</td>
+<td rowspan="2">DRU thread offset for
+UTC control
+programming</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>PSI-L proxy device ID</td>
+</tr>
+<tr class="row-odd"><td>PSIL_THREAD</td>
+<td>15</td>
+<td>PSI-L thread</td>
+</tr>
+<tr class="row-even"><td>IRQ_INIT</td>
+<td>43</td>
+<td>IRQ driver init
+complete</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td rowspan="11">IRQ_SET</td>
+<td rowspan="11">44</td>
+<td rowspan="11">Program interrupt
+route</td>
+<td>VALID_PARAM_HI</td>
+<td>7</td>
+<td>Upper 16-bits of valid_params</td>
+</tr>
+<tr class="row-even"><td>VALID_PARAM_LO</td>
+<td>8</td>
+<td>Lower 16-bits of valid_params</td>
+</tr>
+<tr class="row-odd"><td>IRQ_IA_ID</td>
+<td>10</td>
+<td>IA device ID</td>
+</tr>
+<tr class="row-even"><td>IRQ_GLOBAL_EVENT</td>
+<td>11</td>
+<td>Global event</td>
+</tr>
+<tr class="row-odd"><td>IRQ_DST_HOST_IRQ</td>
+<td>12</td>
+<td>Destination host IRQ input index</td>
+</tr>
+<tr class="row-even"><td>IRQ_SECONDARY_HOST</td>
+<td>13</td>
+<td>Secondary host ID</td>
+</tr>
+<tr class="row-odd"><td>IRQ_SRC_ID</td>
+<td>14</td>
+<td>Interrupt source device ID</td>
+</tr>
+<tr class="row-even"><td>IRQ_SRC_INDEX</td>
+<td>15</td>
+<td>Interrupt source index</td>
+</tr>
+<tr class="row-odd"><td>IRQ_DST_ID</td>
+<td>16</td>
+<td>Interrupt destination device ID</td>
+</tr>
+<tr class="row-even"><td>IRQ_VINT</td>
+<td>17</td>
+<td>Virtual interrupt</td>
+</tr>
+<tr class="row-odd"><td>IRQ_VINT_STATUS_BIT_INDEX</td>
+<td>18</td>
+<td>Virtual interrupt status bit</td>
+</tr>
+<tr class="row-even"><td rowspan="11">IRQ_RELEASE</td>
+<td rowspan="11">45</td>
+<td rowspan="11">Clear interrupt
+route</td>
+<td>VALID_PARAM_HI</td>
+<td>7</td>
+<td>Upper 16-bits of valid_params</td>
+</tr>
+<tr class="row-odd"><td>VALID_PARAM_LO</td>
+<td>8</td>
+<td>Lower 16-bits of valid_params</td>
+</tr>
+<tr class="row-even"><td>IRQ_IA_ID</td>
+<td>10</td>
+<td>IA device ID</td>
+</tr>
+<tr class="row-odd"><td>IRQ_GLOBAL_EVENT</td>
+<td>11</td>
+<td>Global event</td>
+</tr>
+<tr class="row-even"><td>IRQ_DST_HOST_IRQ</td>
+<td>12</td>
+<td>Destination host IRQ input index</td>
+</tr>
+<tr class="row-odd"><td>IRQ_SECONDARY_HOST</td>
+<td>13</td>
+<td>Secondary host ID</td>
+</tr>
+<tr class="row-even"><td>IRQ_SRC_ID</td>
+<td>14</td>
+<td>Interrupt source device ID</td>
+</tr>
+<tr class="row-odd"><td>IRQ_SRC_INDEX</td>
+<td>15</td>
+<td>Interrupt source index</td>
+</tr>
+<tr class="row-even"><td>IRQ_DST_ID</td>
+<td>16</td>
+<td>Interrupt destination device ID</td>
+</tr>
+<tr class="row-odd"><td>IRQ_VINT</td>
+<td>17</td>
+<td>Virtual interrupt</td>
+</tr>
+<tr class="row-even"><td>IRQ_VINT_STATUS_BIT_INDEX</td>
+<td>18</td>
+<td>Virtual interrupt status bit</td>
+</tr>
+<tr class="row-odd"><td>IRQ_IA_INIT</td>
+<td>48</td>
+<td>IA driver init
+complete</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td rowspan="4">IRQ_IA_MAP_VINT</td>
+<td rowspan="4">49</td>
+<td rowspan="4">Map an event to an IA
+virtual interrupt</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>IA device ID</td>
+</tr>
+<tr class="row-odd"><td>IA_VINT</td>
+<td>10</td>
+<td>Virtual interrupt</td>
+</tr>
+<tr class="row-even"><td>IA_GLOBAL_EVENT</td>
+<td>11</td>
+<td>Global event</td>
+</tr>
+<tr class="row-odd"><td>IA_VINT_STATUS_BIT</td>
+<td>12</td>
+<td>Virtual interrupt status bit</td>
+</tr>
+<tr class="row-even"><td rowspan="4">IRQ_IA_UNMAP_VINT</td>
+<td rowspan="4">50</td>
+<td rowspan="4">Unmap an event from
+an IA virtual
+interrupt</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>IA device ID</td>
+</tr>
+<tr class="row-odd"><td>IA_VINT</td>
+<td>10</td>
+<td>Virtual interrupt</td>
+</tr>
+<tr class="row-even"><td>IA_GLOBAL_EVENT</td>
+<td>11</td>
+<td>Global event</td>
+</tr>
+<tr class="row-odd"><td>IA_VINT_STATUS_BIT</td>
+<td>12</td>
+<td>Virtual interrupt status bit</td>
+</tr>
+<tr class="row-even"><td>IRQ_IR_INIT</td>
+<td>52</td>
+<td>IR driver init
+complete</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td rowspan="3">IRQ_IR_CFG</td>
+<td rowspan="3">53</td>
+<td rowspan="3">Configured IR input
+to output mapping</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>IR device ID</td>
+</tr>
+<tr class="row-even"><td>IR_INPUT</td>
+<td>10</td>
+<td>IR input index</td>
+</tr>
+<tr class="row-odd"><td>IR_OUTPUT</td>
+<td>11</td>
+<td>IR output index</td>
+</tr>
+<tr class="row-even"><td rowspan="3">IRQ_IR_CLR</td>
+<td rowspan="3">54</td>
+<td rowspan="3">Cleared IR input
+to output mapping</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>IR device ID</td>
+</tr>
+<tr class="row-odd"><td>IR_INPUT</td>
+<td>10</td>
+<td>IR input index</td>
+</tr>
+<tr class="row-even"><td>IR_OUTPUT</td>
+<td>11</td>
+<td>IR output index</td>
+</tr>
+<tr class="row-odd"><td rowspan="4">RESASG_VALIDATE_BRDCFG_LIST</td>
+<td rowspan="4">58</td>
+<td rowspan="4">RM board
+configuration
+resource
+assignment
+validation</td>
+<td>RESASG_UTYPE</td>
+<td>6</td>
+<td>Resource assignment unique type</td>
+</tr>
+<tr class="row-even"><td>RESASG_VALIDATE_HOST</td>
+<td>10</td>
+<td>host ID</td>
+</tr>
+<tr class="row-odd"><td>RESASG_VALIDATE_RES_START</td>
+<td>11</td>
+<td>Resource range start</td>
+</tr>
+<tr class="row-even"><td>RESASG_VALIDATE_RES_NUM</td>
+<td>12</td>
+<td>Resource range number</td>
+</tr>
+<tr class="row-odd"><td rowspan="4">RESASG_FIREWALL_CFG</td>
+<td rowspan="4">59</td>
+<td rowspan="4">RM resource
+assignment firewall
+configuration</td>
+<td>INDEX</td>
+<td>1</td>
+<td>Resource index</td>
+</tr>
+<tr class="row-even"><td>RESASG_UTYPE</td>
+<td>6</td>
+<td>Resource assignment unique type</td>
+</tr>
+<tr class="row-odd"><td>RESASG_FWL_ID</td>
+<td>13</td>
+<td>Channelized firewall ID</td>
+</tr>
+<tr class="row-even"><td>RESASG_FWL_CH</td>
+<td>14</td>
+<td>Channelized firewall channel</td>
+</tr>
+<tr class="row-odd"><td rowspan="3">RESASG_VALIDATE_RESOURCE</td>
+<td rowspan="3">60</td>
+<td rowspan="3">RM validate
+resource against
+board configuration</td>
+<td>INDEX</td>
+<td>1</td>
+<td>Resource index</td>
+</tr>
+<tr class="row-even"><td>RESASG_UTYPE</td>
+<td>6</td>
+<td>Resource assignment unique type</td>
+</tr>
+<tr class="row-odd"><td>RESASG_VALIDATE_HOST</td>
+<td>10</td>
+<td>host ID</td>
+</tr>
+<tr class="row-even"><td rowspan="5">RESOURCE_GET</td>
+<td rowspan="5">61</td>
+<td rowspan="5">Retrieve a resource
+range for a host</td>
+<td>RESASG_UTYPE</td>
+<td>6</td>
+<td>Resource assignment unique type</td>
+</tr>
+<tr class="row-odd"><td>RESOURCE_GET_TYPE</td>
+<td>10</td>
+<td>Resource type</td>
+</tr>
+<tr class="row-even"><td>RESOURCE_GET_SUBTYPE</td>
+<td>11</td>
+<td>Resource subtype</td>
+</tr>
+<tr class="row-odd"><td>RESOURCE_GET_RANGE_START</td>
+<td>12</td>
+<td>Resource range start</td>
+</tr>
+<tr class="row-even"><td>RESOURCE_GET_RANGE_NUM</td>
+<td>13</td>
+<td>Resource range number</td>
+</tr>
+<tr class="row-odd"><td>FAIL (modifier)</td>
+<td>0x40</td>
+<td>Action failed when
+action bit set</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>GENERIC_DEBUG</td>
+<td>127</td>
+<td>Generic Debug Message</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>Any use.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="power-management-action-ids">
+<span id="pub-trace-debug-data-format-action-id-power"></span><h4>Power Management Action IDs<a class="headerlink" href="#power-management-action-ids" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="6%" />
+<col width="37%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Action ID</th>
+<th class="head">Value</th>
+<th class="head">Use</th>
+<th class="head">MSD Use</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DEVICE_ON</td>
+<td>0</td>
+<td>Device has been turned on           .</td>
+<td>Device ID</td>
+</tr>
+<tr class="row-odd"><td>DEVICE_OFF</td>
+<td>1</td>
+<td>Device has been turned off.</td>
+<td>Device ID</td>
+</tr>
+<tr class="row-even"><td>CLOCK_ENABLE</td>
+<td>2</td>
+<td>Clock has been enabled.</td>
+<td>Clock ID</td>
+</tr>
+<tr class="row-odd"><td>CLOCK_DISABLE</td>
+<td>3</td>
+<td>Clock has been disabled.</td>
+<td>Clock ID</td>
+</tr>
+<tr class="row-even"><td>CLOCK_SET_RATE</td>
+<td>4</td>
+<td>Clock frequency has been changed.</td>
+<td>[9:0]   - Clock ID
+[16:10] - Clock frequency, significand
+[21:17] - Clock frequency, exponent</td>
+</tr>
+<tr class="row-odd"><td>CLOCK_SET_PARENT</td>
+<td>5</td>
+<td>Clock parent has been changed.</td>
+<td>[9:0]   - Clock ID
+[21:10] - New parent ID</td>
+</tr>
+<tr class="row-even"><td>MSG_RECEIVED</td>
+<td>6</td>
+<td>TI-SCI message received</td>
+<td>Message ID</td>
+</tr>
+<tr class="row-odd"><td>MSG_PARAM_DEV_CLK_ID</td>
+<td>7</td>
+<td>TI-SCI message content: dev/clk-ids</td>
+<td>[9:0]   - Device ID
+[10:21] - Clock ID</td>
+</tr>
+<tr class="row-even"><td>MSG_PARAM_VAL</td>
+<td>8</td>
+<td>TI-SCI message content: value</td>
+<td>Target value</td>
+</tr>
+<tr class="row-odd"><td>WAKE_ARM</td>
+<td>9</td>
+<td>ARM wakeup event received</td>
+<td>Host ID</td>
+</tr>
+<tr class="row-even"><td>WAKE_HANDLER</td>
+<td>10</td>
+<td>Wakeup handler executed</td>
+<td>Interrupt ID</td>
+</tr>
+<tr class="row-odd"><td>PD_GET</td>
+<td>11</td>
+<td>Powerdomain get</td>
+<td>[19:14]   - Powerdomain ID
+[21:20]   - PSC ID
+[13:0]    - PD Use count</td>
+</tr>
+<tr class="row-even"><td>PD_PUT</td>
+<td>12</td>
+<td>Powerdomain put</td>
+<td>[19:14]   - Powerdomain ID
+[21:20]   - PSC ID
+[13:0]    - PD Use count</td>
+</tr>
+<tr class="row-odd"><td>SET_LOCAL_RESET</td>
+<td>13</td>
+<td>Set local reset</td>
+<td>[19:14]   - Powerdomain ID
+[21:20]   - PSC ID
+[0]       - Enable (1) / Disable (0)</td>
+</tr>
+<tr class="row-even"><td>MODULE_GET</td>
+<td>14</td>
+<td>Module get</td>
+<td>[19:14]   - LPSC ID
+[21:20]   - PSC ID
+[13:0]    - Module Use count</td>
+</tr>
+<tr class="row-odd"><td>MODULE_PUT</td>
+<td>15</td>
+<td>Module put</td>
+<td>[19:14]   - LPSC ID
+[21:20]   - PSC ID
+[13:0]    - Module Use count</td>
+</tr>
+<tr class="row-even"><td>RETENTION_GET</td>
+<td>16</td>
+<td>Retention put</td>
+<td>[19:14]   - Powerdomain ID
+[21:20]   - LPSC ID
+[13:0]    - Module Retention count</td>
+</tr>
+<tr class="row-odd"><td>RETENTION_PUT</td>
+<td>17</td>
+<td>Retention put</td>
+<td>[19:14]   - Powerdomain ID
+[21:20]   - LPSC ID
+[13:0]    - Module Retention count</td>
+</tr>
+<tr class="row-even"><td>PD_INIT</td>
+<td>18</td>
+<td>Powerdomain init</td>
+<td>[19:14]   - Powerdomain ID
+[21:20]   - PSC ID</td>
+</tr>
+<tr class="row-odd"><td>FAIL (modifier)</td>
+<td>0x40</td>
+<td>Action failed when action bit set</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>EXCLUSIVE_BUSY</td>
+<td>123</td>
+<td>Other hosts have enabled the device
+which exclusive access has been
+requested</td>
+<td>[21:12]   - Device ID
+[11:6]    - Requesting host ID
+[5:0]     - One of other host IDs</td>
+</tr>
+<tr class="row-odd"><td>EXCLUSIVE_DEVICE</td>
+<td>124</td>
+<td>Another host has exclusive access
+to the requested device</td>
+<td>[21:8]    - Device ID
+[7:0]     - Requesting host ID</td>
+</tr>
+<tr class="row-even"><td>INVALID_STATE</td>
+<td>125</td>
+<td>API attempted to set invalid state</td>
+<td>Target state</td>
+</tr>
+<tr class="row-odd"><td>BAD_DEVICE</td>
+<td>126</td>
+<td>API received bad device ID</td>
+<td>Device ID</td>
+</tr>
+<tr class="row-even"><td>GENERIC_DEBUG</td>
+<td>127</td>
+<td>Generic Debug Message</td>
+<td>Any use.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../5_soc_doc/index.html" class="btn btn-neutral float-right" title="Chapter 5: SoC Family Specific Documentation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Chapter 4: Interpreting Trace Data" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'19.08.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

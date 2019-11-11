@@ -30,7 +30,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- *  \file sciclient_defaultBoardcfg.c
+ *  \file V0/sciclient_defaultBoardcfg.c
  *
  *  \brief File containing the boardcfg default data structure to
  *      send TISCI_MSG_BOARD_CONFIG message.
@@ -51,8 +51,8 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
 {
     /* tisci_boardcfg_abi_rev */
     .rev = {
-        .boardcfg_abi_maj = TISCI_BOARDCFG_ABI_MAJ_VALUE,
-        .boardcfg_abi_min = TISCI_BOARDCFG_ABI_MIN_VALUE,
+        .tisci_boardcfg_abi_maj = TISCI_BOARDCFG_ABI_MAJ_VALUE,
+        .tisci_boardcfg_abi_min = TISCI_BOARDCFG_ABI_MIN_VALUE,
     },
 
     /* tisci_boardcfg_control */
@@ -143,8 +143,8 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
     .rm_boardcfg = {
         /* tisci_boardcfg_abi_rev */
         .rev = {
-            .boardcfg_abi_maj = TISCI_BOARDCFG_RM_ABI_MAJ_VALUE,
-            .boardcfg_abi_min = TISCI_BOARDCFG_RM_ABI_MIN_VALUE,
+            .tisci_boardcfg_abi_maj = TISCI_BOARDCFG_RM_ABI_MAJ_VALUE,
+            .tisci_boardcfg_abi_min = TISCI_BOARDCFG_RM_ABI_MIN_VALUE,
         },
         .host_cfg = {
             .subhdr = {
@@ -895,8 +895,8 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
 {
     /* boardcfg_abi_rev */
     .rev = {
-        .boardcfg_abi_maj = TISCI_BOARDCFG_SEC_ABI_MAJ_VALUE,
-        .boardcfg_abi_min = TISCI_BOARDCFG_SEC_ABI_MIN_VALUE,
+        .tisci_boardcfg_abi_maj = TISCI_BOARDCFG_SEC_ABI_MAJ_VALUE,
+        .tisci_boardcfg_abi_min = TISCI_BOARDCFG_SEC_ABI_MIN_VALUE,
     },
 
     /* boardcfg_proc_acl */

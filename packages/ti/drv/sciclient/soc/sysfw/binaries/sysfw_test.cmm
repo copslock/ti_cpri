@@ -1,0 +1,69 @@
+PARAMETERS &elf_dir &terminal_log_file
+GLOBAL &load_image
+
+;Default location
+&sysfwt="~/Src/TI_Prop/KS3/sysfw/system-firmware-test"
+
+if "&elf_dir"!=""
+(
+	&sysfwt="&elf_dir"
+)
+&elft="dmsc_r5_test.elf"
+
+; To use elf locally.. use the following
+&verify=""
+; To use sideloading.. use the following
+;&verify="/nocode"
+; To check... use the following
+;&verify="/compare"
+
+Data.LOAD.Elf &sysfwt/&elft &verify /register
+
+B::
+
+TOOLBAR ON
+STATUSBAR ON
+FramePOS 31.667 15.667 240. 75.
+WinPAGE.RESet
+
+WinPAGE.Create P000
+WinCLEAR
+
+WinPOS 0.0 0.0 61. 22. 0. 0. W001
+ws.register.view /sl
+
+WinPOS 0.16667 32.417 155. 25. 0. 0. W000
+ws.per , "System Control"
+
+WinPOS 64.167 0.25 104. 25. 16. 1. W002
+WinTABS 10. 10. 25. 62.
+ws.LIST
+
+WinPAGE.select P000
+Print "Opening DCC terminal"
+TERM.RESet
+TERM.Mode String
+TERM.METHOD DCC
+;Size format is: columns. rows.
+TERM.SIZE 100. 1024.
+TERM.SCROLL ON
+; This will finally open the window
+WinPOS 103.33 22.167 100. 25. 0. 0. W005
+TERM.view
+
+if "&terminal_log_file"!=""
+(
+	term.write &terminal_log_file
+	ws.AREA.view
+	print "Terminal Log enabled to &terminal_log_file"
+	print "Please note:"
+	print "A) Once test case is complete:"
+	print "1. Type 'break' to stop execution and any further data inputs to term."
+	print "2. Type 'term.close'."
+	print
+	print "B) Log file &terminal_log_file will be truncated now"
+	print "C) The file is written only after 'term.close' is completed -log may be partial or non-existent in file till this step is completed"
+	print "D) no additional logging takes place after 'term.close'."
+)
+
+ENDDO
