@@ -66,11 +66,13 @@ READ_RGMII_CFG	.macro rtmp, speed_flags
 if_ipg_not_expired	.macro then_go
 	; TODO check IPG
 	; if not expired jmp then_go
+	qbbc	$1, GRegs.speed_f, f_wait_ipg
 	ldi32	r2, FW_CONFIG
 	lbbo	&r3, r2, TX_IPG, 4 ;
-	lbco	&r4, c11, 0x0c, 4  ; read cycle counte
+	lbco	&r4, c11, 0x0c, 4  ; read cycle count
 	qbgt	then_go, r4, r3	   ; not expired yet
 	clr	GRegs.speed_f, GRegs.speed_f, f_wait_ipg
+$1:	
 	.endm
 
 ; touch r2, r3, r4
