@@ -226,6 +226,27 @@ $2:	set	r31, r31, 29		;tx.eof
 	ldi	GRegs.tx.b.state, TX_S_W_EOF
 	.endm
 
+restart_transmission .macro
+; OK we need to restart transmition of the same packet
+; use the same dma, which was used for the packet
+; !!!! we come here with TM disabled
+	qbbc	retr_1, GRegs.tx.b.flags, f_next_dma
+	read_bd_from_smem  r2, BD_OFS_0
+	XFR2VBUS_ISSUE_READ_AUTO_64_CMD	XFR2VBUS_XID_READ0, r2, ADDR_HI
+	TM_ENABLE
+	XFR2VBUS_WAIT4READY	XFR2VBUS_XID_READ0
+	qba	retr_2
+retr_1:
+	read_bd_from_smem  r2, BD_OFS_1
+	XFR2VBUS_ISSUE_READ_AUTO_64_CMD	XFR2VBUS_XID_READ1, r2, ADDR_HI
+	TM_ENABLE
+	XFR2VBUS_WAIT4READY	XFR2VBUS_XID_READ1
+
+retr_2:	TM_DISABLE
+	TX_TASK_INIT2_shell	r3
+	TM_ENABLE
+	.endm
+
 ; Code starts {{{1
  .retain     ; Required forbuilding	.out with assembly file
  .retainrefs ; Required forbuilding	.out with assembly file
@@ -400,23 +421,7 @@ bg_half_duplex:
 	qbne	sched_done, GRegs.rx.b.state, RX_STATE_IDLE ; we have active RX,don't start TX
 	qbeq	bg_schedule1, GRegs.ret_cnt, 0	; just new packet
 	if_ipg_not_expired sched_done
-; OK we need to restart transmition of the same packet
-; use the same dma, which was used for the packet
-	qbbc	retr_1, GRegs.tx.b.flags, f_next_dma
-	read_bd_from_smem  r2, BD_OFS_0
-	XFR2VBUS_ISSUE_READ_AUTO_64_CMD	XFR2VBUS_XID_READ0, r2, ADDR_HI
-	TM_ENABLE
-	XFR2VBUS_WAIT4READY	XFR2VBUS_XID_READ0
-	qba	retr_2
-retr_1:
-	read_bd_from_smem  r2, BD_OFS_1
-	XFR2VBUS_ISSUE_READ_AUTO_64_CMD	XFR2VBUS_XID_READ1, r2, ADDR_HI
-	TM_ENABLE
-	XFR2VBUS_WAIT4READY	XFR2VBUS_XID_READ1
-
-retr_2:	TM_DISABLE
-	TX_TASK_INIT2_shell	r3
-	TM_ENABLE
+	restart_transmission
 	jmp	bg_loop
 
 bg_new_pkt:
