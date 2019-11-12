@@ -91,17 +91,17 @@ CL_FLAGS = --endian=little \
 	   --diag_wrap=off \
 	   --diag_warning=225 \
 	   --display_error_number \
+	   --hardware_mac=on \
            --code_address_listing_unit=word \
-	   --hardware_mac=on
 
 FLAGS = -al \
 	--preproc_with_compile \
 	-eo.opru \
 
-EF_PRU0 = -DMAC  -DSLICE0 
-EF_PRU1 = -DMAC  -DSLICE1
-EF_RTU0 = -DMAC  -DSLICE0 -DDO_PSI_ABORT
-EF_RTU1 = -DMAC  -DSLICE1 -DDO_PSI_ABORT
+EF_PRU0 = -DMAC  -DSLICE0 -DPRU0
+EF_PRU1 = -DMAC  -DSLICE1 -DPRU1
+EF_RTU0 = -DMAC  -DSLICE0 -DRTU0 -DDO_PSI_ABORT
+EF_RTU1 = -DMAC  -DSLICE1 -DRTU1 -DDO_PSI_ABORT
 
 APP_DEFS = --define=RGMII \
 	   -z \

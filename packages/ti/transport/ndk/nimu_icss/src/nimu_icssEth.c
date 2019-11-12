@@ -41,7 +41,6 @@
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
-#include <stdio.h>
 #include "ti/transport/ndk/nimu_icss/nimu_icssEth.h"
 #include "ti/transport/ndk/nimu_icss/src/nimu_icssEthDriver.h"
 #include "ti/drv/icss_emac/icss_emacFwInit.h"

@@ -89,6 +89,14 @@ CFG_FLAGS	.set CFG_MGR_FLOW + 4
 CFG_N_BURST	.set CFG_FLAGS + 4 ;just for debug
 CFG_RTU_STATUS	.set CFG_N_BURST + 4 ; only RTU can write here
 CFG_OUT		.set CFG_RTU_STATUS + 4
+CFG_RES		.set CFG_OUT + 4
+
+CFG_SEED	.set CFG_RES + 4 ; seed to calculate random value
+BD_OFS_0	.set CFG_SEED + 4;
+BD_OFS_1	.set BD_OFS_0 + 8
+TX_IPG		.set BD_OFS_1 + 8
+BD_FREE		.set TX_IPG + 4
+
 
 TX_TS_BASE	.set 0x300
 

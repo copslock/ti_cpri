@@ -119,21 +119,10 @@ $3:	; non_empty00
 	clr	r8.t20
 	mov	r20, r0
 	mov	r2, r8
-	RTU_IPC_TX_CH0_PPKT
-
-;PSILOOPBACK ..
- .if $isdefed("PSILOOP")
-;read iep for 'rx timestamp' (raw iep counter)
-	GET_FW_TS r2
-	clr	GRrtu.flags, GRrtu.flags, f_dmau  ;!! in PSI loopback we use just 1 dma !!
- .endif
+	qbbs	$5, GRrtu.speed_f, f_half_d
+	write_bd_to_smem  r7, BD_OFS_0
+$5:	RTU_IPC_TX_CH0_PPKT
 	PAGE_SAVE2 SCHED_MAIN
- .if $isdefed("PSILOOP")
-	PAGE_RESTORE2_REG RTU_GSTATE, 32
-	mov r11.w0, GS_DEF_FLOW
-	PSI_GET_INFO2 PSI_INFO_SLOT, r11.w0
-	PSI_WRITEG
- .endif
 	jmp	done?
 
 use_dma1?:
@@ -144,7 +133,9 @@ use_dma1?:
 	set	GRrtu.flags, GRrtu.flags, f_dma1
 	mov	r20, r0
 	mov	r3, r8
-	RTU_IPC_TX_CH0_EPKT
+	qbbs	$6, GRrtu.speed_f, f_half_d
+	write_bd_to_smem  r7, BD_OFS_1
+$6:	RTU_IPC_TX_CH0_EPKT
 	PAGE_SAVE2 SCHED_MAIN2
 	jmp	done?
 

@@ -60,9 +60,6 @@
 ;for TX_Q
 ; see bsram_pru.h for slot/size
 
-;need_to_preempt
-;(f_tx_hold || f_tx_efq ) && f_pp_active && TX_S_ACTIVE && f_frame_preemptible && (PP_afs_tx> PP_afs_rem) &&(tx_len>64)
-
 ;macros to end tx
 
 ;end w/ CRC
@@ -152,7 +149,6 @@ TX_TASK_INIT2_shell	.macro	r_d
 ;main macro to initialize TX from s&f IPC 'queue'
 ; r_d  holds descriptor
 TX_TASK_INIT2	.macro	r_d
-
 ;temporary
 	mov	TxRegs.ds_flags, r_d.w2 ;descriptor2(flags, etc)
 	mov	GRegs.tx.b.len, r_d.w0  ;save length we are expecting to transmit
@@ -160,30 +156,29 @@ TX_TASK_INIT2	.macro	r_d
 ;start things off
 ;set TX fifo mode according to TX_D1 flags..  todo
  .if $isdefed("VLAN_ENABLED")
-	qbbc no_pa0?, TxRegs.pp_ppok, f_pp_active
-	qbbs no_pa0?, TxRegs.ds_flags, 4;f_desc_express
-	ldi	TxRegs.pp_afs_tx, 0  ;clear bytes sent so far
-	set	TxRegs.pp_ppok, TxRegs.pp_ppok, f_pp_enufleft  ;enuf bytes left to preempt
-	clr	TxRegs.pp_ppok, TxRegs.pp_ppok, f_pp_enufsent  ;NOT enuf bytes sent to preempt yet
-	SOP_TAG_STUFF_PP load_fifo?
-	jmp load_fifo?
-no_pa0?:
 	SOP_TAG_STUFF load_fifo?
- .else
-;P-pkt
-	qbbc	no_pa?, TxRegs.pp_ppok, f_pp_active
-	qbbs	no_pa?, TxRegs.ds_flags, 4 ;f_desc_express
-	ldi	TxRegs.pp_afs_tx, 0;clear bytes sent so far
-	set	TxRegs.pp_ppok, TxRegs.pp_ppok, f_pp_enufleft ;enuf bytes left to preempt
-	clr	TxRegs.pp_ppok, TxRegs.pp_ppok, f_pp_enufsent ;NOT enuf bytes sent to preempt yet
-	TX_START_PRE
-no_pa?:
  .endif
 load_fifo?:
 	ldi	GRegs.tx.b.state, TX_S_ACTIVE
 	TX_FILL_FIFO XFR2VBUS_XID_READ0
  .endm
 
+
+FROM_DMA_TO_TXL2 .macro runit
+	XFR2VBUS_WAIT4READY runit
+	XFR2VBUS_READ64_RESULT runit
+$1:	xin	TXL2, &r19, 4
+	qbne	$1, r19.b2, 0
+	xout	TXL2, &r2, 64
+	.endm
+
+LAST_DMA_TO_TXL2 .macro runit
+	XFR2VBUS_WAIT4READY runit
+	XFR2VBUS_CANCEL_READ_AUTO_64_CMD (runit)
+	nop
+	XFR2VBUS_READ64_RESULT (runit)
+	BN_TX_N	GRegs.tx.b.len
+	.endm
 ;------------------------------------
 ;basic macro for TX fifo filling from MSMC
 ; portQ
@@ -194,47 +189,23 @@ TX_FILL_FIFO	.macro	runit
 ;read in data (now in r2 -r17)  [note: on eop some of this may be garbage]
 	qbbs	$2, TxRegs.ds_flags, 4	 ; TxRegs.ds_flags.f_desc_read_unit
 	qbge	$4, GRegs.tx.b.len, 64
-	XFR2VBUS_WAIT4READY runit
-	XFR2VBUS_READ64_RESULT runit
-wait1?: xin	TXL2, &r19, 4
-	qbne	wait1?, r19.b2, 0
-	xout	TXL2, &r2, 64
+	FROM_DMA_TO_TXL2 runit
 	jmp	$3
-$2:
-	qbge	$5, GRegs.tx.b.len, 64
-	XFR2VBUS_WAIT4READY (runit + 1)
-	XFR2VBUS_READ64_RESULT (runit+1)
-wait2?: xin	TXL2, &r19, 4
-	qbne	wait2?, r19.b2, 0
-	xout	TXL2, &r2, 64
-$3:
-;output data
-	sub	GRegs.tx.b.len, GRegs.tx.b.len, 64
-	qblt	$9, GRegs.tx.b.len, 64
-	clr	TxRegs.pp_ppok, TxRegs.pp_ppok, f_pp_enufleft
+$2:	qbge	$5, GRegs.tx.b.len, 64
+	FROM_DMA_TO_TXL2 (runit + 1)
+$3:	sub	GRegs.tx.b.len, GRegs.tx.b.len, 64
 	jmp	$9
 
-$4:   ;eop, unit a
-	XFR2VBUS_WAIT4READY runit
-	XFR2VBUS_CANCEL_READ_AUTO_64_CMD (runit)
-	nop
-	XFR2VBUS_READ64_RESULT (runit)
-	BN_TX_N	GRegs.tx.b.len
-	SPIN_SET_LOCK_LOC PRU_RTU_EOD_P_FLAG
-	SPIN_CLR_LOCK_LOC PRU_RTU_EOD_P_FLAG
+$4:	LAST_DMA_TO_TXL2 runit
+	qbbc	$6, GRegs.speed_f, f_half_d ; don't tell RTU yet 
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_P_FLAG
 	jmp	$6
-$5:   ;eop, unit b
-	XFR2VBUS_WAIT4READY (runit + 1)
-	XFR2VBUS_CANCEL_READ_AUTO_64_CMD (runit+1)
-	nop
-	XFR2VBUS_READ64_RESULT (runit+1)
-	BN_TX_N	GRegs.tx.b.len
-	SPIN_SET_LOCK_LOC PRU_RTU_EOD_E_FLAG
-	SPIN_CLR_LOCK_LOC PRU_RTU_EOD_E_FLAG
-$6:
-;close out tx
-	qbbs	$7, TxRegs.ds_flags, 0	 ;TxRegs.ds_flags.f_desc_do_crc
-	set	r31, r31, 29 ;tx.eof
+$5:	LAST_DMA_TO_TXL2 (runit + 1)
+	qbbc	$6, GRegs.speed_f, f_half_d ; don't tell RTU yet 
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_E_FLAG
+$6:	;close out tx
+	qbbs	$7, TxRegs.ds_flags, 0	;f_desc_do_crc
+	set	r31, r31, 29		;tx.eof
 	jmp	$8
 
 $7:	or	r31.b3, r31.b3, 0x2c

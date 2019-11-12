@@ -41,7 +41,6 @@
 
 #include <stdint.h>
 #include "ti/ndk/inc/stkmain.h"
-#include "ti/ndk/inc/os/osif.h"
 #include "ti/drv/icss_emac/icss_emacDrv.h"
 
 #ifdef __cplusplus
@@ -91,7 +90,7 @@ typedef struct NIMU_IcssPdInfo_s
 
     uint32_t            PhysIdx;      /**< Physical index of this device (0 to n-1) */
     void*          hEther;       /**< Handle to logical driver */
-    STKEVENT_Handle hEvent;            /**< Semaphore handle used by NDK stack and driver to communicate any
+    void* hEvent;            /**< Semaphore handle used by NDK stack and driver to communicate any
                                          pending Rx events that need to be serviced by NDK ethernet stack */
     uint8_t           bMacAddr[6U];    /**< MAC Address*/
     uint32_t            Filter;            /**< Current RX filter */

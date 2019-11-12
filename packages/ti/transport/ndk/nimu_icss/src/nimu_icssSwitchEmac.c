@@ -53,10 +53,6 @@
 #include "ti/drv/icss_emac/icss_emacStormControl.h"
 #include "ti/transport/ndk/nimu_icss/nimu_icssEth.h"
 
-#include <ti/ndk/inc/stkmain.h>
-#include <ti/ndk/inc/os/osif.h>
-
-
 /* ========================================================================== */
 /*                            Global Variables                                */
 /* ========================================================================== */

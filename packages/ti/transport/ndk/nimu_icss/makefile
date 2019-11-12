@@ -38,9 +38,6 @@ endif
 
 COMP = drvnimu_icss
 
-override TREAT_WARNINGS_AS_ERROR=no
-export TREAT_WARNINGS_AS_ERROR
-
 lib_$(COMP)_BUILD_DEPENDENCY = soc
 
 $(COMP)_DOXYGEN_SUPPORT = no

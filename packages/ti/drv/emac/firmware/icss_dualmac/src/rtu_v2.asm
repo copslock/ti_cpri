@@ -75,6 +75,7 @@ RX_RAW	.set	1
  .include "portq.h"
  .include "lebe.h"
  .include "bpool.h"
+ .include "hd_helper.h"
  .include "scheduler.h"
  .include "ipc.h"
  .include "filter.h"
@@ -82,7 +83,6 @@ RX_RAW	.set	1
  .include "txrate.h"
  .include "rtu_psi.h"
  .include "iep.h"
- .include "psiloop.h"
 
 loop_here .macro
 here?:	jmp	here?
@@ -270,6 +270,7 @@ $3:	qbbc	no_psi, r1, 3
 
 no_psi: jmp psi_idle2
 psi_idle3:
+	READ_RGMII_CFG	r1, GRrtu.speed_f
 	CALL_SUB	sstate_00, psi_idle
 	jmp	psi_idle
 

@@ -1,7 +1,7 @@
 ;
 ;  TEXAS INSTRUMENTS TEXT FILE LICENSE
 ;
-;   Copyright (c) 2018-2019 Texas Instruments Incorporated
+;   Copyright (c) 2019 Texas Instruments Incorporated
 ;
 ;  All rights reserved not granted herein.
 ;
@@ -52,84 +52,25 @@
 ;  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 ;  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-;-------------------------------------------------
-;---file: rtu_psi_loopback.h
-;---purpose:  loopback macros for rtu_psi 
-;---------------------------------------------------
+TX_COL_RETRIES	.set	80
+TX_COL_DROPPED	.set	81
 
-;#define LOOPBACK_TEST  ;direct attach between pru/rtu loopback
-;LOOPBACK_TEST2	.set	1 ;direct attach to host loopback
-
-;if loopback, define one of these 4
-SL_P0	.set	1 ;this port
-;#define SL_P1   ;other port
-;#define SL_P01  ;both
-;#define SL_DROP ;no port
-
-loopback_test_forward .macro
- .if $isdefed("LOOPBACK_TEST")
-
-;force drop
- .if $isdefed("SL_DROP")
-	clr	r_pix0.b1.t1 ;f_port0
-	clr	r_pix0.b1.t2 ;f_port1
+; index is just a number but not an offset.
+m_inc_stat .macro reg, index
+ .if $defined("PRU0")
+	ldi	reg, index
+	sbco	&reg, c9, 0x40, 1
  .endif
-
-;force it to stay local
- .if $isdefed("SL_P0")
- .if $isdefed("SLICE0")
-	clr	r_pix0.b1.t1 ;f_port0
- .else
-	clr	r_pix0.b1.t2 ;f_port1
+ .if $defined("PRU1")
+	ldi	reg, (index + 128)
+	sbco	&reg, c9, 0x44, 1
  .endif
-
+ .if $defined("RTU0")
+	ldi	reg, index
+	sbco	&reg, c9, 0x48, 1
  .endif
-
-;force it to other slice
- .if $isdefed("SL_P1")
- .if $isdefed("SLICE0")
-	clr	r_pix0.b1.t2 ;f_port1
- .else
-	clr	r_pix0.b1.t1 ;f_port0
+ .if $defined("RTU1")
+	ldi	reg, (index + 128)
+	sbco	&reg, c9, 0x4c, 1
  .endif
- .endif
-
-;leave it set for both
- .if $isdefed("SL_P01")
- .endif
- .endif
- .endm
-
-loopback_test2_forward .macro
- .if $isdefed("LOOPBACK_TEST2")
-
-;force drop
- .if $isdefed("SL_DROP")
-	clr	r_pix0.b1.t1 ;f_port0
-	clr	r_pix0.b1.t2 ;f_port1
- .endif
-
-;force it to stay local
- .if $isdefed("SL_P0")
- .if $isdefed("SLICE0")
-	clr	r_pix0.b1.t1 ;f_port0
- .else
-	clr	r_pix0.b1.t2 ;f_port1
- .endif
- .endif
-
-;force it to other slice
- .if $isdefed("SL_P1")
- .if $isdefed("SLICE0")
-	clr	r_pix0.b1.t2 ;f_port1
- .else
-	clr	r_pix0.b1.t1 ;f_port0
- .endif
- .endif
-
-;leave it set for both
- .if $isdefed("SL_P01")
- .endif
- .endif
- .endm
-
+	.endm

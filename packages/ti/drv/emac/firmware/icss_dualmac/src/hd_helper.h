@@ -52,108 +52,114 @@
 ;  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 ;  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-;---------------------
-; File:psiloop.h
-;PSI LOOPBACK ROUTINES
-;  (diagnostics)
-; PSI LOOPBACK runs on
-; BG on PRU, but looks
-;  like a tx task
-;   (e.g. will use
-;    tx task registers)
-; if this runs, no TX Will run
-; and no RX should run since this is
-;  grabing PSI widget for its use
-;   always uses unit 0
-;---------------------
+READ_RGMII_CFG	.macro rtmp, speed_flags
+	TM_DISABLE
+	lbco	&rtmp, c9, 0x4, 4
+	and	rtmp.b0, rtmp.b0, f_mask_o ; takes only speed/duplex related bits
+	and	speed_flags, speed_flags, f_mask_a ; clean old status
+	or	speed_flags, speed_flags, rtmp.b0
+	TM_ENABLE
+	.endm
 
-;'tx' init for psi loopback
-PSILOOP_TX_INIT	.macro 	 r_d, runit
-	flip_tx_r10_r23
-	mov	TxRegs.ds_flags, r_d.w2 ;descriptor2(flags, etc)
-	mov	GRegs.tx.b.len, r_d.w0  ;save length we are expecting to transmit
-	ldi	GRegs.tx.b.state, TX_S_LOOP
-	PSILOOP_TX_POLL	runit, nd_lab?, eop_lab?
-nd_lab?:
-eop_lab?:
-	flip_tx_r10_r23
- .endm
+; most likely IPG and backoff is the same timer
+; so, we will need only one macro 
+if_ipg_not_expired	.macro then_go
+	; TODO check IPG
+	; if not expired jmp then_go
+	ldi32	r2, FW_CONFIG
+	lbbo	&r3, r2, TX_IPG, 4 ;
+	lbco	&r4, c11, 0x0c, 4  ; read cycle counte
+	qbgt	then_go, r4, r3	   ; not expired yet
+	clr	GRegs.speed_f, GRegs.speed_f, f_wait_ipg
+	.endm
 
-;poll routine for bg.  If dma present, it will process it
-PSILOOP_TX_POLL	.macro 	 runit, no_data_label,eop_label
-	XFR2VBUS_POLL_READ runit
-	qbbc	no_data_label, r18, 2
+; touch r2, r3, r4
+reset_cycle_cnt .macro
+	lbco	&r2, c11, 0x0, 4 ; disable cycle counter
+	clr	r2.t3
+	sbco	&r2, c11, 0x0, 4
+	zero	&r3, 4		 ; reset cycle counter
+	sbco	&r3, c11, 0xc, 4
+	set	r2.t3		 ; enable cycle counter
+	sbco	&r2, c11, 0x0, 4
+	.endm
 
-;have data ready
-	qbge	tx_cont1a?, GRegs.tx.b.len, 64
-;read the 64 bytes & write to PSI in 4 transactions
-	XFR2VBUS_READ64_RESULT runit
-	ldi32	r1, MD_DATA0
-	PSI_WRITE
-	LEBE2_5_swap_6_9
-	PSI_WRITE
-	LEBE2_9_swap_10_17
-	LEBE2_5_swap_6_9
-	PSI_WRITE
-	LEBE2_5_swap_6_9
-	PSI_WRITE
-	sub	GRegs.tx.b.len, GRegs.tx.b.len, 64
-	jmp	tx_done?
+IPG_10MBPS	.set 2400 ; (12 * 8 * 100) nsec / 4
+IPG_10MBPS7	.set 3800 ; ((12 + 7) * 8 * 100) nsec / 4
+IPG_10MBPS_ADJ	.set 600  ; (3 * 8 * 100) / 4
+IPG_100MBPS_ADJ	.set 60   ; (3 * 8 * 10) / 4
 
-tx_cont1a?:   ;eop, (again always using unit a)
-	XFR2VBUS_CANCEL_READ_AUTO_64_CMD (runit)
-	XFR2VBUS_READ64_RESULT (runit)
-	qble	mt16?, GRegs.tx.b.len, 16
-;just have 16bytes or less
-	ldi32	r1, MD_DATA1
-	add	r0.b0, GRegs.tx.b.len, 4
-	PSI_WRITE_N
-	jmp	tx_done2?
-mt16?:
-	qble	mt32?, GRegs.tx.b.len, 32
-;just have 32bytes or less
-	ldi32	r0, MD_DATA0
-	PSI_WRITE
-	LEBE2_5_swap_6_9
-	ldi32	r1, MD_DATA1
-	sub	GRegs.tx.b.len, GRegs.tx.b.len,16
-	add	r0.b0, GRegs.tx.b.len, 4
-	PSI_WRITE_N
-	jmp	tx_done2?
-mt32?:
-	qble	mt48?, GRegs.tx.b.len, 48
-;just have 48bytes or less
-	ldi32	r0, MD_DATA0
-	PSI_WRITE
-	LEBE2_5_swap_6_9
-	PSI_WRITE
-	LEBE2_9_swap_10_17
-	LEBE2_5_swap_6_9
-	ldi32	r1, MD_DATA1
-	sub	GRegs.tx.b.len, GRegs.tx.b.len,32
-	add	r0.b0, GRegs.tx.b.len, 4
-	PSI_WRITE_N
-	jmp	tx_done2?
-mt48?:
-;have more than 48
-	ldi32	r0, MD_DATA0
-	PSI_WRITE
-	LEBE2_5_swap_6_9
-	PSI_WRITE
-	LEBE2_9_swap_10_17
-	LEBE2_5_swap_6_9
-	PSI_WRITE
-	LEBE2_5_swap_6_9
-	ldi32	r1, MD_DATA1
-	sub	GRegs.tx.b.len, GRegs.tx.b.len,48
-	add	r0.b0, GRegs.tx.b.len, 4
-	PSI_WRITE_N
-tx_done2?:
-;say we are done
-	SPIN_SET_LOCK_LOC PRU_RTU_EOD_P_FLAG
-	SPIN_CLR_LOCK_LOC PRU_RTU_EOD_P_FLAG
-;set tx state
-	ldi	GRegs.tx.b.state, TX_S_IDLE
-	jmp eop_label
-tx_done?:
- .endm
+start_backoff_timer .macro num
+	reset_cycle_cnt
+	mov	r2, num
+	qbge	$3, r2, 9
+	ldi	r2, 9
+$3:	ldi	r3, 1		; create mask
+	not	r3, r3		;
+	lsl	r3, r3, r2	;
+	not	r3, r3		;
+	GET_IEP_CNT	r4	;
+	xor	r4.w0, r4.w0, r4.w2
+	ldi32	r2, FW_CONFIG	   ; read value from SEED
+	lbbo	&r5, r2, CFG_SEED, 4	; get seed
+	xor	r4, r4, r5	; xor time with seed 
+	and	r4, r4, r3	; mask with backoff interval
+	qbbc	$1, GRegs.speed_f, f_100mbps
+	; for 100 mbps multiply on 5.12 usec (r4 << 7) 
+	lsl	r3, r4, 7
+	ldi	r5, IPG_100MBPS_ADJ ;
+	qba	$2
+$1:	; for 10 mbps multiply on 51.2 usec (r4 << 10) + (r4 << 8)
+	lsl	r3, r4, 10
+	lsl	r4, r4, 8
+	add	r3, r3, r4
+	; for 10 MBPS we need to maintain IPG manually
+	; so if r3 is 0 then set it to 9.6 usec
+	qbne	$2, r3, 0
+	ldi	r3, IPG_10MBPS
+	ldi	r5, IPG_10MBPS_ADJ ;
+$2:	add	r3, r3, r5
+	sbbo	&r3, r2, TX_IPG, 4 ; store it to TX_IPG
+	set	GRegs.speed_f, GRegs.speed_f, f_wait_ipg
+	.endm
+
+start_ipg_timer .macro
+	reset_cycle_cnt
+	ldi32	r2, FW_CONFIG	   ;
+	ldi	r4, IPG_10MBPS7
+	sbbo	&r4, r2, TX_IPG, 4 ; store it to TX_IPG
+	set	GRegs.speed_f, GRegs.speed_f, f_wait_ipg
+	.endm
+
+
+; read 8bytes from smem offset to reg and reg+1
+; we use r0
+read_bd_from_smem .macro reg, offset
+	ldi32	r0, FW_CONFIG + offset
+	lbbo	&reg, r0, 0, 8
+	.endm
+
+write_bd_to_smem .macro reg, offset
+	ldi32	r0, FW_CONFIG + offset
+	sbbo	&reg, r0, 0, 8
+	.endm
+
+update_col_status .macro
+ .if $defined("SLICE0")
+	lbco	&r2, c27, 0x38, 4
+ .else
+	lbco	&r2, c27, 0x3c, 4
+ .endif
+	qbbc	$1, r2, 1
+	set	GRegs.speed_f, GRegs.speed_f, f_col_detected
+$1:
+	.endm
+
+read_col_status .macro	reg
+ .if $defined("SLICE0")
+	lbco	&reg, c27, 0x38, 4
+ .else
+	lbco	&reg, c27, 0x3c, 4
+ .endif
+	.endm
+

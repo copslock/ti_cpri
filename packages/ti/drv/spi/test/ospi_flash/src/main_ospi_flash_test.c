@@ -72,7 +72,7 @@
 #endif
 
 #if defined(SOC_AM65XX) || defined(SOC_J721E)
-#include <ti/csl/src/ip/fss/V0/cslr_fss.h>
+#include <ti/csl/src/ip/fss/V0/V0_1/cslr_fss.h>
 #include <ti/csl/src/ip/rat/V0/csl_rat.h>
 #include <ti/csl/arch/csl_arch.h>
 #include <ti/drv/sciclient/sciclient.h>

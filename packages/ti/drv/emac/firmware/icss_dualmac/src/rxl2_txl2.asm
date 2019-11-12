@@ -62,7 +62,6 @@
 ; SLICE0 or SLICE1 must be defined  (but not both)
 ; WAIT_FOR_DEBUGGER:  wait for debugger to attach
 ; VLAN_ENABLED
-; PSILOOP
 DATA_ONLY	.set	1 ;control path moved to RTU
 
 ; sanity check ;{{{1
@@ -89,9 +88,10 @@ DATA_ONLY	.set	1 ;control path moved to RTU
  .include "filter.h"
  .include "lebe.h"
  .include "ipc.h"
- .include "psiloop.h"
  .include "iep.h"
  .include "psisandf.h"
+ .include "hd_helper.h"
+ .include "pa_stat.h"
 
 loop_here	.macro
 here?:	jmp	here?
@@ -203,6 +203,29 @@ $1:	qbeq	$1, r11, 0
  .endif
  .endm
 
+; we need to read DMA back only if there is ongoing transfer
+; assume when we read DMA status it shouldn't be 0,
+; otherwise let's think it is already stopped 	
+flush_dma .macro unit
+	XFR2VBUS_CANCEL_READ_AUTO_64_CMD unit
+	nop
+$1:	xin	unit, &r18, 4
+	qbeq	$2, r18.w0, 0
+	qbne	$1, r18.w0, 0x5
+	XFR2VBUS_READ64_RESULT unit
+$2:
+	.endm
+
+stop_tx_due_colission .macro
+	qbbc	$1, GRegs.tx.b.flags, f_next_dma
+	flush_dma	XFR2VBUS_XID_READ0
+	qba	$2 ;
+$1:	flush_dma	XFR2VBUS_XID_READ1
+$2:	set	r31, r31, 29		;tx.eof
+	set	GRegs.speed_f, GRegs.speed_f, f_stopped_due_col
+	ldi	GRegs.tx.b.state, TX_S_W_EOF
+	.endm
+
 ; Code starts {{{1
  .retain     ; Required forbuilding	.out with assembly file
  .retainrefs ; Required forbuilding	.out with assembly file
@@ -211,6 +234,10 @@ $1:	qbeq	$1, r11, 0
 
 Start:
 	TM_DISABLE
+	ldi32	r0, 0x80000000	;TODO: driver has to enable PA_STAT
+	ldi32	r1, 0x3c000
+	sbbo	&r0, r1, 8, 4
+
 	zero	&r0, 124
 	P2P_IPC_ZAP	;zap IPC area
 	xout	XFR2VBUS_XID_READ0, &r18, 4 ;disable xfr2vbus autoread mode
@@ -262,7 +289,6 @@ RX:
 	ldi	GRegs.snf.b.rd_cur, MINPS
 	ldi	r30, 1522  ;todo - make a parameter
 	ldi32	r10, FW_CONFIG
-	lbbo	&r2, r10, CFG_N_BURST, 4
 
 ; set pru ready status
 	ldi32	r0, PRU_READY
@@ -278,19 +304,13 @@ wait_rtu_ready:
 ;BG TASK:     r24-r29  are global ;{{{1
 ;-------------------------------------------------------------------------
 	zero	&r18, 24
-	mov	BgRegs.borg_limit, r2 ; GS_NBURST ;
 
+	ldi	GRegs.ret_cnt, 0
 ;================================
-; BG LOOP:  stay here until we see
-;            GRegs.pkt_cnt.w.tx == BgRegs.borg_limit if in borg mode
-;            until cmd cancel seen
-;=================================
+; BG LOOP:  until cmd cancel seen
+;================================
 bg_loop:
 	add	BgRegs.bg_cnt, BgRegs.bg_cnt, 1 ;loop count
-;can we exit?
-	qbeq	skip_chk, BgRegs.borg_limit, 0
-	qbeq	bg_done, GRegs.pkt_cnt.w.tx, BgRegs.borg_limit ; done
-skip_chk:
 ; if RTU started shutdown process - disable TM and loop forever
 	ldi32	r0, FW_CONFIG
 	ldi32	r1, RTU_STARTED_SHUTDOWN
@@ -336,57 +356,84 @@ th_schedule0:
 ;schedule TX2WIRE ?
 ;----------------------
 scheduler:
+	READ_RGMII_CFG	r2, GRegs.speed_f		; update speed/duplex fields
+	sbco	&r25, c28, 0x20, 4
+	qbbs	sch_10, GRegs.speed_f, f_half_d ; don't check col if full duplex
+; if TX is idle and colission is set, probably it is from the
+; previouse packet. Just wait
+	read_col_status	r2
+	qbne	sch_05, GRegs.tx.b.state, TX_S_IDLE ; TODO: check error case
+	qbbs	bg_loop, r2, 1	; still active
+sch_05: qbbc	sch_10,  r2, 1  ;
+; we came here if TX is active and collission is detected
+; we need to cancel the current TX and schedule retransmission
+	qbbs	sch_10, GRegs.speed_f, f_stopped_due_col ; don't stop twice
 	TM_DISABLE
-	qbeq	bg_schedule0, GRegs.tx.b.state, TX_S_IDLE ;if tx state is idle, check IPC for new descriptor
-	qbeq	bg_schedule1, GRegs.tx.b.state, TX_S_ERR ;if tx state is idle, check IPC for new descriptor
- .if $isdefed("PSILOOP")
-	qbeq	bg_schedulePL, GRegs.tx.b.state, TX_S_LOOP ;if psi loopback
- .endif
-
-;TX ACTIVE.
+	set	GRegs.speed_f, GRegs.speed_f, f_col_detected
+	flip_tx_r0_r23
+	stop_tx_due_colission
+	flip_tx_r0_r23
+	TM_ENABLE
+sch_10:
+	TM_DISABLE
+	;if tx state is idle, check IPC for new descriptor
+	qbeq	bg_schedule0, GRegs.tx.b.state, TX_S_IDLE
+	qbne	sched_done, GRegs.tx.b.state, TX_S_ERR
+;error case (underflow)
+;todo
+	ldi	GRegs.tx.b.state, TX_S_IDLE
 sched_done:
 	TM_ENABLE
 	jmp	bg_loop
 
 bg_schedule0:
-;non PSA case only check expected next dma
+	ldi	GRegs.tx_blk, 0
+	clr	GRegs.speed_f, GRegs.speed_f, f_col_detected
+	clr	GRegs.speed_f, GRegs.speed_f, f_stopped_due_col
+	qbbs	bg_new_pkt, GRegs.speed_f, f_1gbps	; process as usual
+	qbbc	bg_half_duplex, GRegs.speed_f, f_half_d ;
+bg_schedule1:
+	qbbs	bg_new_pkt, GRegs.speed_f, f_100mbps	;
+	if_ipg_not_expired	sched_done
+	qba	bg_new_pkt
+
+bg_half_duplex:
+	qbne	sched_done, GRegs.rx.b.state, RX_STATE_IDLE ; we have active RX,don't start TX
+	qbeq	bg_schedule1, GRegs.ret_cnt, 0	; just new packet
+	if_ipg_not_expired sched_done
+; OK we need to restart transmition of the same packet
+; use the same dma, which was used for the packet
+	qbbc	retr_1, GRegs.tx.b.flags, f_next_dma
+	read_bd_from_smem  r2, BD_OFS_0
+	XFR2VBUS_ISSUE_READ_AUTO_64_CMD	XFR2VBUS_XID_READ0, r2, ADDR_HI
+	TM_ENABLE
+	XFR2VBUS_WAIT4READY	XFR2VBUS_XID_READ0
+	qba	retr_2
+retr_1:
+	read_bd_from_smem  r2, BD_OFS_1
+	XFR2VBUS_ISSUE_READ_AUTO_64_CMD	XFR2VBUS_XID_READ1, r2, ADDR_HI
+	TM_ENABLE
+	XFR2VBUS_WAIT4READY	XFR2VBUS_XID_READ1
+
+retr_2:	TM_DISABLE
+	TX_TASK_INIT2_shell	r3
+	TM_ENABLE
+	jmp	bg_loop
+
+bg_new_pkt:
+	ldi	GRegs.ret_cnt, 0
 	qbbs	bg_chk1, GRegs.tx.b.flags, f_next_dma
-;check dma0
 	PRU_IPC_RX_CH0Q	sched_done, r2, XFR2VBUS_XID_READ0
-; have new packet in r2= len-flags
- .if $isdefed("PSILOOP")
-	PSILOOP_TX_INIT	r2, XFR2VBUS_XID_READ0
-;don't pingpong with PSILOOP!
- .else
 	TX_TASK_INIT2_shell	r2
 	set	GRegs.tx.b.flags, GRegs.tx.b.flags, f_next_dma
- .endif
 	TM_ENABLE
 	jmp	bg_loop
 bg_chk1:
-;check 2nd dma
 	PRU_IPC_RX_CH0Q	sched_done, r3, XFR2VBUS_XID_READ1
 	TX_TASK_INIT2_shell	r3
 	clr	GRegs.tx.b.flags, GRegs.tx.b.flags, f_next_dma
 	TM_ENABLE
 	jmp	bg_loop
-
-bg_schedule1:
-;error case (underflow)
-;todo
-	ldi	GRegs.tx.b.state, TX_S_IDLE
-	TM_ENABLE
-	jmp	bg_loop
- .if $isdefed("PSILOOP")
-bg_schedulePL:
-;psi loopback
-	flip_tx_r10_r23
-	PSILOOP_TX_POLL	XFR2VBUS_XID_READ0, psi_poll_done, psi_poll_done
-psi_poll_done:
-	flip_tx_r10_r23
-	TM_ENABLE
-	jmp	bg_loop
- .endif
 
 ;-------------------------------------
 ; done with packets.
@@ -414,57 +461,87 @@ bg_done:
 
 ;---------------------------------------------------------------------
 ; TX_EOF  EvENT {{{1
-;----------------------------------------------------------------------
+;---------------------------------------------------------------------
 TX_EOF:
 	qbne	tx_underflow, GRegs.tx.b.state, TX_S_W_EOF
-; TX TS processing
 	flip_tx_r0_r23
+	m_inc_stat	r0.b0, 82
+	qbbs	tx_proc_col, GRegs.speed_f, f_stopped_due_col
+; TX TS processing
 	qbbc	no_tx_ts, TxRegs.ds_flags, 5 ; we don't need tx_ts
 	GET_PKT_TX_TS	r2
 	ldi32	r10, FW_CONFIG + TX_TS_BASE
 	sbbo	&r2, r10, 0, 8
 	SPIN_TOG_LOCK_LOC	PRU_RTU_TX_TS_READY
 no_tx_ts:
-	flip_tx_r0_r23
+;	if half duplex IPC to RTU
+	qbbs	tx_eof_0, GRegs.speed_f, f_half_d
+	qbbs	tx_eof_ipc1, GRegs.tx.b.flags, f_next_dma	
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_P_FLAG
+	qba	tx_eof_0
+tx_eof_ipc1:
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_E_FLAG
+; we don't check if the next packet scheduled for 10Mbps 
+tx_eof_0:
+	qbbs	tx_eof_1, GRegs.speed_f, f_1gbps
+	qbbc	no_new_tx_10mbps, GRegs.speed_f, f_100mbps
+tx_eof_1:	
+	ldi	GRegs.tx_blk, 0
+	clr	GRegs.speed_f, GRegs.speed_f, f_col_detected
+	clr	GRegs.speed_f, GRegs.speed_f, f_stopped_due_col
+	ldi	GRegs.ret_cnt, 0
 
-;-----------------------------
-;Legit EOF. Restore registers
-;-----------------------------
-legit_tx_eof:
-	flip_tx_r0_r23
 	qbbs	teof_chk1, GRegs.tx.b.flags, f_next_dma
-;check dma0
 	PRU_IPC_RX_CH0Q	no_new_tx, r2, XFR2VBUS_XID_READ0
-; have new packet in r2= len-flags
 	TX_TASK_INIT2	r2
 	set	GRegs.tx.b.flags, GRegs.tx.b.flags, f_next_dma 
 	jmp	tx_eof_on_deck_done
 teof_chk1:
-;check 2nd dma
 	PRU_IPC_RX_CH0Q	no_new_tx, r3, XFR2VBUS_XID_READ1
 	TX_TASK_INIT2	r3
 	clr	GRegs.tx.b.flags, GRegs.tx.b.flags, f_next_dma
 
-;started next pkt, terminate task
 tx_eof_on_deck_done:
 	TM_YIELD
-;these next 2 instructions are done in delayed branch fashion
 	flip_tx_r0_r23
 	add	GRegs.pkt_cnt.w.tx, GRegs.pkt_cnt.w.tx, 1
 	loop_here
 
-;---------------------------------------------
-;eof w/ no new packet to TX
-;---------------------------------------------
+no_new_tx_10mbps:
+	ldi	GRegs.tx_blk, 0
+	clr	GRegs.speed_f, GRegs.speed_f, f_col_detected
+	clr	GRegs.speed_f, GRegs.speed_f, f_stopped_due_col
+	ldi	GRegs.ret_cnt, 0
+	start_ipg_timer	
+
 no_new_tx:
 	ldi	GRegs.tx.b.state, TX_S_IDLE
-	TM_YIELD
-	add	GRegs.pkt_cnt.w.tx, GRegs.pkt_cnt.w.tx, 1
-	flip_tx_r0_r23
-	loop_here
-
+	qba	tx_eof_on_deck_done
+;
+; we came here due to collision, so we are in half duplex mode.
+; We either retranssmit or drop the packet
+;  
+tx_proc_col:
+	m_inc_stat	r1.b0, TX_COL_RETRIES
+	qble	txp_max_retry, GRegs.ret_cnt, 16 ; todo: define
+	qblt	txp_max_retry, GRegs.tx_blk, 2	 ; TODO: update for late col
+	start_backoff_timer GRegs.ret_cnt
+	add	GRegs.ret_cnt, GRegs.ret_cnt, 1
+	qba	no_new_tx 
+txp_max_retry:
+	m_inc_stat	r1.b0, TX_COL_DROPPED
+	qbbs	txp_max_01, GRegs.tx.b.flags, f_next_dma	
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_P_FLAG
+	qba	txp_max_02
+txp_max_01:
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_E_FLAG
+txp_max_02:
+	start_ipg_timer
+	ldi	GRegs.ret_cnt, 0
+	qbbc	no_new_tx_10mbps, GRegs.speed_f, f_100mbps
+	qba	no_new_tx
+	
 ;------exception cases------
-;underflow case:
 tx_underflow:
 	ldi	GRegs.tx.b.state, TX_S_ERR
 	TM_YIELD
@@ -480,48 +557,26 @@ tx_underflow:
 ;----------------------------------------------------------------------
 TX_FIFO:
 	qbeq	handle_portq, GRegs.tx.b.state, TX_S_ACTIVE
-;ignore rest
 	TM_YIELD
 	loop_here
 
-;----------------------
-; FROM PORTQ CASE
-;----------------------
 handle_portq:
 	flip_tx_r0_r23
-;
-;check to see if need to preempt!
-; conditions:  preempt enabled on port and pkt is preemptible
-;              and enuf bytes sent and  enuf bytes left and
-;              (hold set or Express Frame waiting )
-;if not preemptible pkt skip all
-	qbbs	skip_preempt, TxRegs.ds_flags, 4 ; R_TX_D1.f_desc_express
-	qbne	skip_preempt, TxRegs.pp_ppok, PPOK
-	qbbs	do_preempt, GRegs.tx.b.flags, f_tx_hold
-	qbbs	do_preempt, GRegs.tx.b.flags, f_tx_efq
-	qbbc	skip_preempt, GRegs.tx.b.flags, f_tx_efqd
-do_preempt:
-	END_TX_MCRC	;send MCRC
-	mov	TxRegs.stash_ds_flags, TxRegs.ds_flags
-	mov	TxRegs.stash_tx_len, GRegs.tx.b.len
+	add	GRegs.tx_blk, GRegs.tx_blk, 1
+	qbbs	tx_fifo1, GRegs.speed_f, f_half_d
+	qbbs	txf_90, GRegs.speed_f, f_stopped_due_col ; don't stop twice
+	
+	update_col_status
+	qbbc	tx_fifo1, GRegs.speed_f, f_col_detected
+	; collision was detected, we need to stop pushing to TXL2
+	stop_tx_due_colission
+	qba	txf_90
 
-	set	GRegs.tx.b.flags, GRegs.tx.b.flags, f_tx_stash ;so we know
-	ldi	GRegs.tx.b.state, TX_S_W_PEOF
-	TM_YIELD
-	flip_tx_r0_r23
-	add	TxRegs.pp_count, TxRegs.pp_count, 1
-	loop_here
-
-skip_preempt:
-;assume data is here
+tx_fifo1:
 	TX_FILL_FIFO	XFR2VBUS_XID_READ0
-	TM_YIELD
+txf_90:	TM_YIELD
 	flip_tx_r0_r23
 	loop_here
-
-;-------------------------------------------------------------------------
-; End TX_FIFO  EVENT
-;-------------------------------------------------------------------------
 
 ;-------------------------------------------------------------------------
 ;RXTX_ERR EVENT  ; {{{1

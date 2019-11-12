@@ -280,7 +280,7 @@ ifeq ($(BUILD_OS_TYPE),baremetal)
         CONFIG_BLD_LNK_r5f   = $(pdk_PATH)/ti/build/$(SOC)/linker_r5.lds
     endif
   endif
-  ifeq ($(SOC),am65xx am64x)
+  ifeq ($(SOC),$(filter $(SOC), am65xx am64x))
     ifeq ($(CONFIG_BLD_XDC_a53),)
         CONFIG_BLD_LNK_a53   = $(pdk_PATH)/ti/build/$(SOC)/linker_a53.lds
     endif
@@ -444,7 +444,7 @@ ifeq ($(BUILD_OS_TYPE),tirtos)
         CONFIG_BLD_LNK_r5f   = $(pdk_PATH)/ti/build/$(SOC)/linker_r5_sysbios.lds
     endif
   endif
-  ifeq ($(SOC),am65xx am64x)
+  ifeq ($(SOC),$(filter $(SOC), am65xx am64x))
     ifeq ($(CONFIG_BLD_XDC_a53),)
         CONFIG_BLD_XDC_a53   = $(pdk_PATH)/ti/build/am65xx/config_$(SOC)_a53.bld
         CONFIG_BLD_LNK_a53   = $(pdk_PATH)/ti/build/am65xx/linker_a53.lds
