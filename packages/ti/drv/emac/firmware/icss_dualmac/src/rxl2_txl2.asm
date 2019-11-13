@@ -301,7 +301,6 @@ skip_chk:
 	xout	XFR2VBUS_XID_READ0, &r18, 4
 	xout	XFR2VBUS_XID_READ1, &r18, 4
 
-	PSI_ABORT
 ;	if we are here, we can place debug error code somewere in the SMEM
 	TM_DISABLE
 	ldi32	r1, PRU_STOPPED
