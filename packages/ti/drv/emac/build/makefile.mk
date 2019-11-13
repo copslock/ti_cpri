@@ -60,7 +60,7 @@ ifeq ($(MAKERULEDIR), )
 endif
 include $(MAKERULEDIR)/common.mk
 
-ifeq ($(SOC), $(filter $(SOC), am65xx j721e))
+ifeq ($(SOC), $(filter $(SOC), am65xx))
 ifeq ($(CORE), $(filter $(CORE), mpu1_0))
 .PHONY: dualmac_fw
 

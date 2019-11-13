@@ -58,8 +58,6 @@
 
 #include <ti/drv/emac/src/emac_osal.h>
 #include <ti/drv/emac/emac_ioctl.h>
-#include <ti/drv/emac/firmware/icss_dualmac/config/emac_fw_config_dual_mac.h>
-#include <ti/drv/emac/firmware/icss_switch/config/emac_fw_config_switch.h>
 /* SOC Include Files. */
 #include <ti/drv/emac/soc/emac_soc_v5.h>
 
@@ -76,6 +74,8 @@
 #endif
 
 #ifdef EMAC_TEST_APP_ICSSG
+#include <ti/drv/emac/firmware/icss_dualmac/config/emac_fw_config_dual_mac.h>
+#include <ti/drv/emac/firmware/icss_switch/config/emac_fw_config_switch.h>
 /* PRUSS Driver Header File. */
 #include <ti/drv/pruss/pruicss.h>
 #include <ti/drv/pruss/soc/pruicss_v1.h>
@@ -1208,6 +1208,7 @@ int32_t app_test_send_receive(uint32_t startP, uint32_t endP, uint32_t displayRe
     return status;
 }
 
+#ifdef EMAC_TEST_APP_ICSSG
 #define TX_BUFF_POOL_SIZE 0X1800u
 #define TX_BUFF_POOL_TOTAL_DUAL_MAC (TX_BUFF_POOL_SIZE + 0x80) * 8U /* //50176 per PORT, total of 100352 */
 void app_test_setup_fw_dualmac(uint32_t port_num, EMAC_HwAttrs_V5 *pEmacCfg)
@@ -1231,6 +1232,7 @@ void app_test_setup_fw_dualmac(uint32_t port_num, EMAC_HwAttrs_V5 *pEmacCfg)
     pEmacCfg->portCfg[port_num].getFwCfg = &emacGetDualMacFwConfig;
 
 }
+#endif
 
 int32_t app_test_emac_open(uint32_t mode)
 {

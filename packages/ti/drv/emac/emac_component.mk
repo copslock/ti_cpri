@@ -220,26 +220,19 @@ Emac_Icssg_TestApp_PATH = $(PDK_EMAC_COMP_PATH)/test/EmacLoopbackTest
 Emac_Icssg_TestApp_BOARD_DEPENDENCY = yes
 Emac_Icssg_TestApp_CORE_DEPENDENCY = no
 Emac_Icssg_TestApp_XDC_CONFIGURO = yes
-ifeq ($(SOC),$(filter $(SOC), j721e))
-Emac_Icssg_TestApp_MAKEFILE = -f j721e/icssg/makefile_dualmac
-else
 Emac_Icssg_TestApp_MAKEFILE = -f am65xx/icssg/makefile_dualmac
-endif
 export Emac_Icssg_TestApp_MAKEFILE
 export Emac_Icssg_TestApp_board_dependency
 export Emac_Icssg_TestApp_core_dependency
 export Emac_Icssg_TestApp_xdc_configuro
 Emac_Icssg_TestApp_PKG_LIST = Emac_Icssg_TestApp
 Emac_Icssg_TestApp_INCLUDE = $(Emac_Icssg_TestApp_PATH)
-Emac_Icssg_TestApp_BOARDLIST = am65xx_evm am65xx_idk j721e_sim j721e_evm
+Emac_Icssg_TestApp_BOARDLIST = am65xx_evm am65xx_idk
 export Emac_Icssg_TestApp_BOARDLIST
 Emac_Icssg_TestApp_$(SOC)_CORELIST = $(drvemac_$(SOC)_CORELIST)
 export Emac_Icssg_TestApp_$(SOC)_CORELIST
 
 Emac_Icssg_TestApp_SBL_APPIMAGEGEN = yes
-ifeq ($(SOC),$(filter $(SOC), j721e))
-Emac_Icssg_TestApp_SBL_APPIMAGEGEN = no
-endif
 export Emac_Icssg_TestApp_SBL_APPIMAGEGEN
 
 # EMAC unit test app CPSW
