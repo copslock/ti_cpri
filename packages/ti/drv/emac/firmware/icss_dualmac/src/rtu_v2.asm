@@ -297,6 +297,8 @@ mgr_pkt:
 	PSI_READ	GRrtu.ActThrdNum, 20
 	ldi32	r0, MD_CONTROL0
 	qbeq	mgr_pkt, r1, r0
+	ldi32	r0, MD_PROINFO
+	qbeq	mgr_pkt, r1, r0
 	qbne	mgr_pkt01, r1.b2, 0x14;
 	; we have 16 bytes of packet now
 	; process mgr data
