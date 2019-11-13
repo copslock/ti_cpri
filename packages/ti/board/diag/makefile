@@ -82,7 +82,8 @@ else
 export SPISCRIPT=./create_spi.sh
 endif
 
-ALL_BOARDS = idkAM571x idkAM572x idkAM574x evmAM572x evmK2G iceK2G evmAM335x evmAM437x idkAM437x skAM437x bbbAM335x icev2AM335x skAM335x evmOMAPL137 iceAMIC110 am65xx_evm am65xx_idk j721e_evm
+ALL_BOARDS ?= idkAM571x idkAM572x idkAM574x evmAM572x evmK2G iceK2G evmAM335x evmAM437x idkAM437x skAM437x bbbAM335x icev2AM335x skAM335x evmOMAPL137 iceAMIC110 am65xx_evm am65xx_idk j721e_evm
+
 
 idkAM571x_DIAG = dcan eeprom emmc framework framework_loader gmac haptics icss_emac lcd_touchscreen led led_industrial mcspi mem mmcsd pmic qspi timer uart
 idkAM572x_DIAG = dcan eeprom emmc framework framework_loader gmac haptics icss_emac lcd_touchscreen led led_industrial mcspi mem mmcsd pmic qspi uart

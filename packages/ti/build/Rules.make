@@ -40,6 +40,62 @@ TOOLS_INSTALL_PATH ?= $(SDK_INSTALL_PATH)
 #Default BUILD_OS_TYPE (tirtos/baremetal/qnx)
 export BUILD_OS_TYPE ?= tirtos
 
+#if PDK_SOC is specified , derive LIMIT_SOCS from there (if LIMIT_SOCS not defined)
+ifneq ($(PDK_SOC),)
+
+LIMIT_CORES_am335x    = $(CORE_LIST_am335x)
+LIMIT_CORES_am437x    = $(CORE_LIST_am437x)
+LIMIT_CORES_am57xx    = $(sort $(CORE_LIST_am571x) $(CORE_LIST_am572x) $(CORE_LIST_am574x))
+LIMIT_CORES_omapl137  = $(CORE_LIST_omapl137)
+LIMIT_CORES_omapl138  = $(CORE_LIST_omapl138)
+LIMIT_CORES_k2hk      = $(sort $(CORE_LIST_k2h) $(CORE_LIST_k2k))
+LIMIT_CORES_k2e       = $(CORE_LIST_k2e)
+LIMIT_CORES_k2l       = $(CORE_LIST_k2l)
+LIMIT_CORES_k2g       = $(CORE_LIST_k2g)
+LIMIT_CORES_k2g-hs    = $(CORE_LIST_k2g)
+LIMIT_CORES_c665x     = $(CORE_LIST_c6657)
+LIMIT_CORES_c667x     = $(CORE_LIST_c6678)
+LIMIT_CORES_am65xx    = $(CORE_LIST_am65xx)
+LIMIT_CORES_am65xx-hs = $(CORE_LIST_am65xx)
+# Filter out c7x-hostemu as Processor SDK does not build use it
+LIMIT_CORES_j7        = $(filter-out c7x-hostemu,$(sort $(CORE_LIST_j721e) $(CORE_LIST_j7200)))
+
+export LIMIT_CORES ?= $(LIMIT_CORES_$(PDK_SOC))
+
+LIMIT_SOCS_k2g       = k2g
+LIMIT_SOCS_k2g-hs    = k2g
+LIMIT_SOCS_k2hk      = k2hk
+LIMIT_SOCS_k2e       = k2e
+LIMIT_SOCS_k2l       = k2l
+LIMIT_SOCS_am57xx    = am571x am572x am574x
+LIMIT_SOCS_am437x    = am437x
+LIMIT_SOCS_am335x    = am335x
+LIMIT_SOCS_am65xx    = am65xx
+LIMIT_SOCS_am65xx-hs = am65xx
+LIMIT_SOCS_j7        = j721e j7200
+
+export LIMIT_SOCS ?= $(LIMIT_SOCS_$(PDK_SOC))
+
+LIMIT_BOARDS_j7        = $(BOARD_LIST_j721e) $(BOARD_LIST_j7200)
+LIMIT_BOARDS_am335x    = $(BOARD_LIST_am335x)
+LIMIT_BOARDS_omapl137  = $(BOARD_LIST_omapl137)
+LIMIT_BOARDS_k2l       = $(BOARD_LIST_k2l)
+LIMIT_BOARDS_am437x    = $(BOARD_LIST_am437x)
+LIMIT_BOARDS_am437x-hs = $(BOARD_LIST_am437x)
+LIMIT_BOARDS_k2hk      = $(BOARD_LIST_k2h) $(BOARD_LIST_k2k)
+LIMIT_BOARDS_k2g       = $(BOARD_LIST_k2g)
+LIMIT_BOARDS_k2g-hs    = $(BOARD_LIST_k2g)
+LIMIT_BOARDS_k2e       = $(BOARD_LIST_k2e)
+LIMIT_BOARDS_am65xx    = $(BOARD_LIST_am65xx)
+LIMIT_BOARDS_am65xx-hs = $(BOARD_LIST_am65xx)
+LIMIT_BOARDS_c665x     = $(BOARD_LIST_c6657)
+LIMIT_BOARDS_c667x     = $(BOARD_LIST_c6678)
+LIMIT_BOARDS_omapl138  = $(BOARD_LIST_omapl138)
+LIMIT_BOARDS_am57xx    = $(BOARD_LIST_am571x) $(BOARD_LIST_am572x) $(BOARD_LIST_am574x)
+
+export LIMIT_BOARDS ?= $(LIMIT_BOARDS_$(PDK_SOC))
+
+endif
 # Default board
 # Supported values are printed in "make -s help" option. Below are the list for reference.
 #                   evmDRA72x, evmDRA75x, evmDRA78x,
@@ -47,31 +103,19 @@ export BUILD_OS_TYPE ?= tirtos
 #                   evmK2H, evmK2K, evmK2E, evmK2L, evmK2G, evmC6678, evmC6657,
 #                   evmAM335x, icev2AM335x, iceAMIC110, skAM335x, bbbAM335x,
 #                   evmAM437x idkAM437x skAM437x evmOMAPL137 lcdkOMAPL138
-#                   And also refer $(BOARD_LIST_J6_TDA) below
-#
-ifeq ($(LIMIT_BOARDS),)
-  # TDA parts do not define this environment variable, default board and soc for TDA parts
-  export BOARD ?= j721e_evm
-  export SOC ?= j721e
-else
-ifeq ($(LIMIT_BOARDS), j721e_evm)
-  export BOARD = j721e_evm
-  export SOC = j721e
-else
-ifeq ($(LIMIT_BOARDS), j721e_sim)
-  export BOARD = j721e_sim
-  export SOC = j721e
-else
-  # default board and soc for Catalog parts
-  export BOARD ?= idkAM572x
-  export SOC   ?= am572x
-endif
-endif
-endif
+
 ################################################################################
 # Other user configurable variables
 ################################################################################
 
+#if LIMIT_BOARDS if it is defined
+ifneq ($(LIMIT_BOARDS),)
+BOARD ?= $(firstword $(LIMIT_BOARDS))
+else
+#if LIMIT_BOARDS is not defined, default BOARD and SOC to the below
+export BOARD ?= j721e_evm
+export SOC ?= j721e
+endif
 # Default to m4 build depending on BOARD selected!!
 ifeq ($(BOARD),$(filter $(BOARD), evmAM572x idkAM572x idkAM571x idkAM574x))
   CORE ?= a15_0
@@ -96,192 +140,11 @@ export BUILD_PROFILE ?= release
 # Supported Values: yes | no
 export TREAT_WARNINGS_AS_ERROR ?= yes
 
-#Various boards support for J6 TDA family of devices
-BOARD_LIST_J6_TDA = tda2xx-evm tda2ex-evm tda3xx-evm tda2px-evm
-BOARD_LIST_J6_TDA += tda2xx-evm-radar tda2px-evm-radar tda3xx-evm-radar
-BOARD_LIST_J6_TDA += tda3xx-ar12-booster tda3xx-ar12-alps tda3xx-ar12-rvp
-BOARD_LIST_J6_TDA += tda2ex-eth-srv tda2xx-rvp tda3xx-rvp
-BOARD_LIST_J6_TDA += tda2xx-cascade-radar
-export BOARD_LIST_J6_TDA
-
 #Various boards support for J7 TDA family of devices
 BOARD_LIST_J7_TDA = j721e_sim j721e_hostemu j721e_ccqt j721e_loki j721e_qt j721e_vhwazebu j721e_evm
 BOARD_LIST_J7_TDA += j7200_sim j7200_hostemu j7200_evm am64x_evm
 export BOARD_LIST_J7_TDA
 
-################################################################################
-# Configure toolchain paths
-################################################################################
-ifeq ($(BOARD),$(filter $(BOARD), $(BOARD_LIST_J6_TDA)))
-  # This section applies to J6 TDA SOCs in Processor SDK VISION release.
-  # For remaining SOC/BOARDS skip to the else part.
-  # SoC & Version of PDK for TDA builds
-  PDK_SOC=
-  PDK_VERSION=01_09_00_00
-
-  #Tool versions for TDA builds
-  GCC_CROSS_TOOL_PREFIX=arm-none-eabi-
-  GCC_CROSS_TOOL_TAG=4_9-2015q3
-  CGT_VERSION=7.4.2
-  GCC_VERSION_FPULIB=4.9.3
-  CGT_ARM_VERSION=16.9.2.LTS
-  CGT_ARP32_VERSION=1.0.7
-
-  #Component versions for TDA builds
-  BIOS_VERSION=6_46_04_53
-  EDMA_VERSION=02_12_00_20
-  XDC_VERSION=3_32_01_22_core
-  MSHIELD_VERSION=4_5_3
-  export mmwavelink_version=mmwave_dfp_01_01_00_00
-
-  export GCC_FLOAT_PATH ?= FPU
-else
-  # This section applies to all broader set of boards with SOCs beyond TDA class
-  # in Processor SDK RTOS release
-  PDK_VERSION_STR=_$(PDK_SOC)_$(PDK_VERSION)
-ifeq ($(PDK_VERSION),)
-  PDK_VERSION_STR=
-endif
-
-  #Tool versions for non-TDA builds
-  GCC_CROSS_TOOL_PREFIX=arm-none-eabi-
-  GCC_CROSS_TOOL_TAG=7-2018-q2-update
-  GCC_ARCH64_VERSION=7.2.1-2017.11
-  CGT_VERSION=8.3.2
-
-  CGT_C7X_VERSION=1.2.0.STS
-  CGT_ARM_VERSION=18.12.1.LTS
-  GCC_VERSION_HARDLIB=7.3.1
-
-  CGT_ARP32_VERSION=1.0.8
-  CG_XML_VERSION=2.61.00
-
-  #Component versions for non-TDA builds
-  BIOS_VERSION=6_76_03_01
-  XDC_VERSION=3_55_02_22_core
-
-  EDMA_VERSION=2_12_05_30E
-  SECDEV_VERSION=01_06_00_05
-  CGT_PRU_VERSION=2.3.2
-
-  #Hardcode IPC version if it is not set already
-  IPC_VERSION ?= 3_47_01_00
-  NDK_VERSION=3_61_01_01
-  NS_VERSION=2_60_01_06
-
-  UIA_VERSION=2_30_01_02
-  XDAIS_VERSION=7_24_00_04
-  AER_VERSION=17_0_0_0
-
-  # C674x DSP libraries sould be used for OMAPL13x platform
-ifeq ($(SOC),$(filter $(SOC), omapl137 omapl138))
-  DSPLIB_VERSION ?= c674x_3_4_0_3
-  IMGLIB_VERSION ?= c674x_3_1_1_0
-  MATHLIB_VERSION ?= c674x_3_1_2_3
-else
-  DSPLIB_VERSION ?= c66x_3_4_0_3
-  IMGLIB_VERSION ?= c66x_3_1_1_0
-  MATHLIB_VERSION ?= c66x_3_1_2_3
-endif
-
-  export GCC_FLOAT_PATH ?= HARD
-endif
-
-################################################################################
-# Dependent toolchain paths variables
-################################################################################
-# Version of GCC
-GCC_VERSION=$(GCC_CROSS_TOOL_PREFIX)$(GCC_CROSS_TOOL_TAG)
-GCC_VERSION_ARM_A15=$(GCC_CROSS_TOOL_PREFIX)$(GCC_CROSS_TOOL_TAG)
-ifeq ($(BOARD),$(filter $(BOARD), $(BOARD_LIST_J6_TDA)))
-  # This section applies to J6 TDA SOCs in Processor SDK VISION release.
-  # For remaining SOC/BOARDS skip to the else part.
-  ifeq ($(OS),Windows_NT)
-    OS_FOLDER=windows
-  else
-    OS_FOLDER=linux
-  endif
-  export TOOLCHAIN_PATH_GCC        ?= $(SDK_INSTALL_PATH)/ti_components/cg_tools/$(OS_FOLDER)/gcc-$(GCC_VERSION)
-  export TOOLCHAIN_PATH_A15        ?= $(SDK_INSTALL_PATH)/ti_components/cg_tools/$(OS_FOLDER)/gcc-$(GCC_VERSION_ARM_A15)
-  export TOOLCHAIN_PATH_M4         ?= $(SDK_INSTALL_PATH)/ti_components/cg_tools/$(OS_FOLDER)/ti-cgt-arm_$(CGT_ARM_VERSION)
-  export C6X_GEN_INSTALL_PATH      ?= $(SDK_INSTALL_PATH)/ti_components/cg_tools/$(OS_FOLDER)/C6000_$(CGT_VERSION)
-  export TOOLCHAIN_PATH_EVE        ?= $(SDK_INSTALL_PATH)/ti_components/cg_tools/$(OS_FOLDER)/arp32_$(CGT_ARP32_VERSION)
-  export PDK_INSTALL_PATH          ?= $(SDK_INSTALL_PATH)/ti_components/drivers/pdk_$(PDK_VERSION)/packages
-  export EDMA3LLD_BIOS6_INSTALLDIR ?= $(SDK_INSTALL_PATH)/ti_components/drivers/edma3_lld_$(EDMA_VERSION)
-  export BIOS_INSTALL_PATH         ?= $(SDK_INSTALL_PATH)/ti_components/os_tools/bios_$(BIOS_VERSION)
-  export XDC_INSTALL_PATH          ?= $(SDK_INSTALL_PATH)/ti_components/os_tools/$(OS_FOLDER)/xdctools_$(XDC_VERSION)
-  export RADARLINK_INSTALL_PATH    ?= $(SDK_INSTALL_PATH)/ti_components/radar/$(mmwavelink_version)
-  export MSHIELD_DK_DIR            ?= $(SDK_INSTALL_PATH)/ti_components/mshield-dk_std_$(MSHIELD_VERSION)
-  export TI_SECURE_DEV_PKG         := $(MSHIELD_DK_DIR)
-else
-  export GCC_VERSION_ARM_A8=$(GCC_CROSS_TOOL_PREFIX)$(GCC_CROSS_TOOL_TAG)
-  export GCC_VERSION_ARM_A9=$(GCC_CROSS_TOOL_PREFIX)$(GCC_CROSS_TOOL_TAG)
-  export CROSS_TOOL_PRFX           ?= $(GCC_CROSS_TOOL_PREFIX)
-  export C6X_GEN_INSTALL_PATH      ?= $(TOOLS_INSTALL_PATH)/ti-cgt-c6000_$(CGT_VERSION)
-  export C7X_GEN_INSTALL_PATH      ?= $(TOOLS_INSTALL_PATH)/ti-cgt-c7000_$(CGT_C7X_VERSION)
-  export CL_PRU_INSTALL_PATH       ?= $(TOOLS_INSTALL_PATH)/ti-cgt-pru_$(CGT_PRU_VERSION)
-  export TOOLCHAIN_PATH_A8         ?= $(TOOLS_INSTALL_PATH)/gcc-$(GCC_VERSION_ARM_A8)
-  export TOOLCHAIN_PATH_A9         ?= $(TOOLS_INSTALL_PATH)/gcc-$(GCC_VERSION_ARM_A9)
-  export TOOLCHAIN_PATH_Arm9       ?= $(TOOLS_INSTALL_PATH)/ti-cgt-arm_$(CGT_ARM_VERSION)
-  export TOOLCHAIN_PATH_A15        ?= $(TOOLS_INSTALL_PATH)/gcc-$(GCC_VERSION_ARM_A15)
-ifeq ($(OS),Windows_NT)
-  #Paths for windows machine
-  export TOOLCHAIN_PATH_GCC_ARCH64 ?= $(TOOLS_INSTALL_PATH)/gcc-linaro-$(GCC_ARCH64_VERSION)-i686-mingw32_aarch64-elf
-else
-  #Paths for linux machine
-  export TOOLCHAIN_PATH_GCC_ARCH64 ?= $(TOOLS_INSTALL_PATH)/gcc-linaro-$(GCC_ARCH64_VERSION)-x86_64_aarch64-elf
-endif
-
-  export TOOLCHAIN_PATH_QNX_A72    ?= $(QNX_HOST)/usr/bin
-  export TOOLCHAIN_PATH_A53        ?= $(TOOLCHAIN_PATH_GCC_ARCH64)
-  export TOOLCHAIN_PATH_A72        ?= $(TOOLCHAIN_PATH_GCC_ARCH64)
-  export TOOLCHAIN_PATH_EVE        ?= $(TOOLS_INSTALL_PATH)/arp32_$(CGT_ARP32_VERSION)
-  export TOOLCHAIN_PATH_M4         ?= $(TOOLS_INSTALL_PATH)/ti-cgt-arm_$(CGT_ARM_VERSION)
-  export TOOLCHAIN_PATH_R5         ?= $(TOOLS_INSTALL_PATH)/ti-cgt-arm_$(CGT_ARM_VERSION)
-  export BIOS_INSTALL_PATH         ?= $(SDK_INSTALL_PATH)/bios_$(BIOS_VERSION)
-  export DSPLIB_INSTALL_PATH       ?= $(SDK_INSTALL_PATH)/dsplib_$(DSPLIB_VERSION)
-  export EDMA3LLD_BIOS6_INSTALLDIR ?= $(SDK_INSTALL_PATH)/edma3_lld_$(EDMA_VERSION)
-  export IMGLIB_INSTALL_PATH       ?= $(SDK_INSTALL_PATH)/imglib_$(IMGLIB_VERSION)
-  export IPC_INSTALL_PATH          ?= $(SDK_INSTALL_PATH)/ipc_$(IPC_VERSION)
-  export MATHLIB_INSTALL_PATH      ?= $(SDK_INSTALL_PATH)/mathlib_$(MATHLIB_VERSION)
-  export NDK_INSTALL_PATH          ?= $(SDK_INSTALL_PATH)/ndk_$(NDK_VERSION)
-  export NS_INSTALL_PATH           ?= $(SDK_INSTALL_PATH)/ns_$(NS_VERSION)
-  export PDK_INSTALL_PATH          ?= $(SDK_INSTALL_PATH)/pdk$(PDK_VERSION_STR)/packages
-  export UIA_INSTALL_PATH          ?= $(SDK_INSTALL_PATH)/uia_$(UIA_VERSION)
-  export XDC_INSTALL_PATH          ?= $(SDK_INSTALL_PATH)/xdctools_$(XDC_VERSION)
-  export UTILS_INSTALL_DIR         ?= $(XDC_INSTALL_PATH)/bin
-  export RADARLINK_INSTALL_PATH    ?= $(SDK_INSTALL_PATH)/$(mmwavelink_version)
-  export CG_XML_BIN_INSTALL_PATH   ?= $(SDK_INSTALL_PATH)/cg_xml_$(CG_XML_VERSION)/bin
-  export TI_SECURE_DEV_PKG         ?= $(SDK_INSTALL_PATH)/proc-sdk-secdev_$(SECDEV_VERSION)
-  export XDAIS_INSTALL_PATH        ?= $(SDK_INSTALL_PATH)/xdais_$(XDAIS_VERSION)
-  export AER_INSTALL_PATH          ?= $(SDK_INSTALL_PATH)/aer_c64Px_obj_$(AER_VERSION)
-  export GCC_ARM_NONE_TOOLCHAIN    ?= $(SDK_INSTALL_PATH)/gcc-$(GCC_CROSS_TOOL_PREFIX)$(GCC_CROSS_TOOL_TAG)
-  export TI_CGT6x_INSTALL_DIR      ?= $(SDK_INSTALL_PATH)/c6000_7.4.16
-  export M4_TOOLCHAIN_INSTALL_DIR  ?= $(TOOLCHAIN_PATH_M4)
-endif
-
-ifeq ($(SOC),$(filter $(SOC), am335x))
-  export HARDLIB_PATH ?= $(TOOLCHAIN_PATH_A8)/lib/gcc/arm-none-eabi/$(GCC_VERSION_HARDLIB)/hard
-  export FPULIB_PATH ?= $(TOOLCHAIN_PATH_A8)/lib/gcc/arm-none-eabi/$(GCC_VERSION_FPULIB)/fpu
-else ifeq  ($(SOC),$(filter $(SOC), am437x))
-  export HARDLIB_PATH ?= $(TOOLCHAIN_PATH_A9)/lib/gcc/arm-none-eabi/$(GCC_VERSION_HARDLIB)/hard
-  export FPULIB_PATH ?= $(TOOLCHAIN_PATH_A9)/lib/gcc/arm-none-eabi/$(GCC_VERSION_FPULIB)/fpu
-else
-  export HARDLIB_PATH ?= $(TOOLCHAIN_PATH_A15)/lib/gcc/arm-none-eabi/$(GCC_VERSION_HARDLIB)/hard
-  export FPULIB_PATH ?= $(TOOLCHAIN_PATH_A15)/lib/gcc/arm-none-eabi/$(GCC_VERSION_FPULIB)/fpu
-endif
-
-export CGTOOLS=$(C6X_GEN_INSTALL_PATH)
-export XDCCGROOT=$(C6X_GEN_INSTALL_PATH)
-
-# Utilities directory. This is required only if the build machine is Windows.
-#   - specify the installation directory of utility which supports POSIX commands
-#     (eg: Cygwin installation or MSYS installation).
-# This could be in CCS install directory as in c:/ti/ccsv<ver>/utils/cygwin or
-# the XDC install bin folder represented by  $(UTILS_INSTALL_DIR)
-ifeq ($(OS),Windows_NT)
-  export utils_PATH ?= $(UTILS_INSTALL_DIR)
-endif
 
 ################################################################################
 # Other advanced configurable variables
@@ -307,11 +170,13 @@ export xdc_PATH := $(XDC_INSTALL_PATH)
 export edma3_lld_PATH := $(EDMA3LLD_BIOS6_INSTALLDIR)
 export ndk_PATH := $(NDK_INSTALL_PATH)
 export radarLink_PATH := $(RADARLINK_INSTALL_PATH)
+export ipc_PATH := $(IPC_INSTALL_PATH)
+export uia_PATH := $(UIA_INSTALL_PATH)
 
 export ROOTDIR := $(pdk_PATH)
-XDCPATH =
+XDCPATH = 
 ifeq ($(BUILD_OS_TYPE),tirtos)
-  XDCPATH = $(bios_PATH)/packages;$(xdc_PATH)/packages;$(edma3_lld_PATH)/packages;$(ndk_PATH)/packages;$(pdk_PATH);
+  XDCPATH = $(bios_PATH)/packages;$(xdc_PATH)/packages;$(edma3_lld_PATH)/packages;$(ndk_PATH)/packages;$(pdk_PATH);$(ipc_PATH)/packages;$(uia_PATH)/packages;
 endif
 export XDCPATH
 
@@ -334,4 +199,32 @@ ifeq ($(MAKERULEDIR), )
 endif
 include $(MAKERULEDIR)/build_config.mk
 include $(MAKERULEDIR)/platform.mk
+include $(PDK_INSTALL_PATH)/ti/build/pdk_tools_path.mk
 include $(MAKERULEDIR)/env.mk
+
+export PRUCORE_LIST = $(CORE_LIST_PRU)
+
+################################################################################
+# Build Tools Configuration
+################################################################################
+
+ifeq ($(OS),Windows_NT)
+  PATH := $(PATH)
+endif
+
+# Compiler Tools:
+# PATH := $(C6X_GEN_INSTALL_PATH)/bin;$(PATH)
+
+# XDC Tools location:
+PATH := $(XDC_INSTALL_PATH);$(XDC_INSTALL_PATH)/bin;$(XDC_INSTALL_PATH)/packages/xdc/services/io/release;$(PATH)
+
+ifeq ($(OS),Windows_NT)
+  PATH := $(subst /,\,$(PATH))
+else
+  PATH := $(subst ;,:,$(PATH))
+endif
+
+export PATH
+
+LIBDIR ?= ./lib
+export LIBDIR

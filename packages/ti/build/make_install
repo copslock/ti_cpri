@@ -72,6 +72,7 @@ loc-install-pdk-build-common:
 	install -m 0755 Rules.make $(PDK_INSTALL_DIR)/packages/ti/build
 	install -m 0755 comp_top.mk $(PDK_INSTALL_DIR)/packages/ti/build
 	install -m 0755 comp_paths.mk $(PDK_INSTALL_DIR)/packages/ti/build
+	install -m 0755 pdk_tools_path.mk $(PDK_INSTALL_DIR)/packages/ti/build
 	install -m 0644 pdk_build_ver.h $(PDK_INSTALL_DIR)/packages/ti/build
 	install -m 0755 makerules/build_config.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
 	install -m 0755 makerules/common.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
@@ -79,6 +80,7 @@ loc-install-pdk-build-common:
 	install -m 0755 makerules/env.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
 	install -m 0755 makerules/platform.mk $(PDK_INSTALL_DIR)/packages/ti/build/makerules
 	install -m 0755 makefile $(PDK_INSTALL_DIR)/packages/ti/build/
+	install -m 0755 makefile_non-buildinfra $(PDK_INSTALL_DIR)/packages/ti/build/
 	install -m 0755 unit-test/README.txt $(PDK_INSTALL_DIR)/packages/ti/build/unit-test
 	install -m 0755 unit-test/config/unity_config.c $(PDK_INSTALL_DIR)/packages/ti/build/unit-test/config
 	install -m 0755 unit-test/config/unity_config.h $(PDK_INSTALL_DIR)/packages/ti/build/unit-test/config

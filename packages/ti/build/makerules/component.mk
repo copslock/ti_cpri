@@ -71,37 +71,11 @@
 #
 ifeq ($(pdk_component_make_include), )
 
-DEFAULT_tda2xx_CORELIST = a15_0 ipu1_0 c66x arp32_1
-DEFAULT_tda2px_CORELIST = a15_0 ipu1_0 c66x arp32_1
-DEFAULT_am572x_CORELIST = a15_0 ipu1_0 c66x
-DEFAULT_am574x_CORELIST = a15_0 ipu1_0 c66x
-DEFAULT_dra72x_CORELIST = a15_0 ipu1_0 c66x
-DEFAULT_dra75x_CORELIST = a15_0 ipu1_0 c66x arp32_1
-DEFAULT_tda2ex_CORELIST = a15_0 ipu1_0 c66x
-DEFAULT_am571x_CORELIST = a15_0 ipu1_0 c66x
-DEFAULT_tda3xx_CORELIST = ipu1_0 c66x arp32_1
-DEFAULT_dra78x_CORELIST = ipu1_0 c66x arp32_1
-DEFAULT_k2h_CORELIST    = a15_0 c66x
-DEFAULT_k2k_CORELIST    = a15_0 c66x
-DEFAULT_k2l_CORELIST    = a15_0 c66x
-DEFAULT_k2e_CORELIST    = a15_0 c66x
-DEFAULT_k2g_CORELIST    = a15_0 c66x
-DEFAULT_c6678_CORELIST  = c66x
-DEFAULT_c6657_CORELIST  = c66x
-DEFAULT_am335x_CORELIST = a8host
-DEFAULT_am437x_CORELIST = a9host
-DEFAULT_omapl137_CORELIST = arm9_0 c674x
-DEFAULT_omapl138_CORELIST = arm9_0 c674x
-DEFAULT_am65xx_CORELIST   = mcu1_0 mpu1_0
-DEFAULT_j721e_CORELIST    = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1 mcu3_0 mcu3_1 c66xdsp_1 c66xdsp_2 c7x_1 c7x-hostemu
-DEFAULT_j7200_CORELIST    = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1
-DEFAULT_am64x_CORELIST    = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1 ipu1_0
-DEFAULT_k3_CORELIST = m3
+# Filter out PRU cores for building components 
+DEFAULT_$(SOC)_CORELIST = $(filter-out $(CORE_LIST_PRU),$(CORE_LIST_$(SOC)))
 
 # Core types (without the core IDs). This will be used to parse and order the establish the order of cores
 # in the case of building libraries for multiple cores
-
-DEFAULT_CORE_TYPES = a15 ipu c66x arp32 a8host a9host c674x arm9 c7x c7x-hostemu mpu mcu
 
 # Component specific CFLAGS
 PDK_CFLAGS =
@@ -495,6 +469,9 @@ ifneq ($(i2c_EXAMPLE_LIST),)
   pdk_EXAMPLE_LIST += $(i2c_EXAMPLE_LIST)
 endif
 
+ifneq ($(i2c_FIRM_LIST),)
+  pdk_FIRM_LIST += $(i2c_FIRM_LIST)
+endif
 # - used to ignore include if component not present
 -include $(PDK_UART_COMP_PATH)/uart_component.mk
 ifneq ($(uart_LIB_LIST),)
@@ -674,6 +651,9 @@ endif
 ifneq ($(icss_emac_EXAMPLE_LIST),)
   pdk_EXAMPLE_LIST += $(icss_emac_EXAMPLE_LIST)
 endif
+ifneq ($(icss_emac_FIRM_LIST),)
+  pdk_FIRM_LIST += $(icss_emac_FIRM_LIST)
+endif
 
 # - used to ignore include if component not present
 -include $(PDK_EMAC_COMP_PATH)/emac_component.mk
@@ -779,8 +759,32 @@ ifneq ($(board_diag_EXAMPLE_LIST),)
   pdk_EXAMPLE_LIST += $(board_diag_EXAMPLE_LIST)
 endif
 
-pdk_PKG_LIST_ALL = $(pdk_EXAMPLE_LIST) $(pdk_LIB_LIST) $(pdk_APP_LIB_LIST) $(pdk_FIRM_LIST)
+# Adding new component to the packages/ti/build which is not part of the PDK.
+# An example would be some demo which is not built from packages/ti/build but 
+# would still like to use the ti/build/ infrastructure 
 
+ifeq ($($(COMP)_USE_PDK_BUILD),yes)
+include $($(COMP)_COMPONENT_MK_PATH)/$(COMP)_component.mk
+
+ifneq ($($(COMP)_LIB_LIST),)
+  pdk_LIB_LIST += $($(COMP)_LIB_LIST)
+endif
+
+ifneq ($($(COMP)_APP_LIB_LIST),)
+  pdk_APP_LIB_LIST += $($(COMP)_APP_LIB_LIST)
+endif
+
+ifneq ($($(COMP)_FIRM_LIST),)
+  pdk_FIRM_LIST += $($(COMP)_FIRM_LIST)
+endif
+
+ifneq ( $($(COMP)_EXAMPLE_LIST),)
+  pdk_EXAMPLE_LIST += $($(COMP)_EXAMPLE_LIST)
+endif
+
+endif
+
+pdk_PKG_LIST_ALL = $(pdk_EXAMPLE_LIST) $(pdk_LIB_LIST) $(pdk_APP_LIB_LIST) $(pdk_FIRM_LIST)
 
 ifneq ($(CORE),$(filter $(CORE), pru_0 pru_1))
 # By default it is little endian for non pru cores

@@ -219,7 +219,12 @@ cpsw_board_diag_BOARDLIST = $(board_diag_$(SOC)_BOARDLIST)
 cpsw_board_diag_$(SOC)_CORELIST = mcu2_0
 export cpsw_board_diag_$(SOC)_CORELIST
 export cpsw_board_diag_SBL_APPIMAGEGEN = $(board_diag_APPIMAGEGEN_CTRL)
+
+# Add CPSW example only if the CPSW component path exists
+ifneq ($(wildcard $(PDK_CPSW_COMP_PATH)),)
 board_diag_EXAMPLE_LIST += cpsw_board_diag
+endif
+
 
 # CURRENT MONITOR
 currentMonitor_board_diag_COMP_LIST = currentMonitor_board_diag

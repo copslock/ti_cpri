@@ -168,6 +168,10 @@ nimu_icssg_OBJPATH = $(nimu_RELPATH)/nimu_icssg
 export nimu_icssg_OBJPATH
 nimu_icssg_MAKEFILE = -f build/makefile_icssg.mk
 export nimu_icssg_MAKEFILE
+# NIMU ICSSG depends on emac/icssg_dualmac firmware to be built. The below ensures emac as a dependency
+nimu_icssg_DEPENDS_ON=emac
+export nimu_icssg_DEPENDS_ON
+
 nimu_icssg_BOARD_DEPENDENCY = no
 nimu_icssg_CORE_DEPENDENCY = no
 nimu_icssg_SOC_DEPENDENCY = yes
@@ -195,6 +199,9 @@ nimu_icssg_profile_OBJPATH = $(nimu_RELPATH)/nimu_icssg_profile
 export nimu_icssg_profile_OBJPATH
 nimu_icssg_profile_MAKEFILE = -f build/makefile_icssg_profile.mk
 export nimu_icssg_profile_MAKEFILE
+# NIMU ICSSG depends on emac/icssg_dualmac firmware to be built. The below ensures emac as a dependency
+nimu_icssg_profile_DEPENDS_ON=emac
+export nimu_icssg_profile_DEPENDS_ON
 nimu_icssg_profile_BOARD_DEPENDENCY = no
 nimu_icssg_profile_CORE_DEPENDENCY = no
 nimu_icssg_profile_SOC_DEPENDENCY = yes

@@ -1,6 +1,7 @@
 SRCDIR += src src/v7
 INCDIR += src src/v7
 
+
 ifeq ($(CORE),$(filter $(CORE), mcu1_0 mcu1_1 mcu2_0 mcu2_1))
 INCDIR += $(bios_PATH)/packages/ti/posix/ccs
 endif 

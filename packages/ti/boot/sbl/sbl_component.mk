@@ -332,6 +332,9 @@ sbl_multicore_amp_BINPATH = $(PDK_SBL_COMP_PATH)/example/k3MulticoreApp/binary
 sbl_multicore_amp_PATH = $(PDK_SBL_COMP_PATH)/example/k3MulticoreApp
 sbl_multicore_amp_MAKEFILE = -f$(PDK_SBL_COMP_PATH)/build/sbl_multicore_amp.mk
 export sbl_multicore_amp_MAKEFILE
+# SBL multicore amp depends on sbl_boot_test for all the cores
+sbl_multicore_amp_DEPENDS_ON=sbl_boot_test
+export sbl_multicore_amp_DEPENDS_ON
 sbl_multicore_amp_BOARD_DEPENDENCY = no
 sbl_multicore_amp_SOC_DEPENDENCY = no
 sbl_multicore_amp_CORE_DEPENDENCY = no
@@ -380,6 +383,9 @@ sbl_multicore_smp_BINPATH = $(PDK_SBL_COMP_PATH)/example/k3MulticoreApp/binary
 sbl_multicore_smp_PATH = $(PDK_SBL_COMP_PATH)/example/k3MulticoreApp
 sbl_multicore_smp_MAKEFILE = -f$(PDK_SBL_COMP_PATH)/build/sbl_multicore_smp.mk
 export sbl_multicore_smp_MAKEFILE
+# SBL multicore smp depends on sbl_smp_test for all the cores
+sbl_multicore_smp_DEPENDS_ON=sbl_smp_test
+export sbl_multicore_smp_DEPENDS_ON
 sbl_multicore_smp_BOARD_DEPENDENCY = no
 sbl_multicore_smp_SOC_DEPENDENCY = no
 sbl_multicore_smp_CORE_DEPENDENCY = no
