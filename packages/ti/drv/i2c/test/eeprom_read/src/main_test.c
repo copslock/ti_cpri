@@ -59,10 +59,7 @@
 #include "I2C_log.h"
 #include "I2C_board.h"
 #ifdef SOC_AM65XX
-#include <ti/csl/soc/am65xx/src/cslr_soc_baseaddress.h>
-#include <ti/csl/soc/am65xx/src/cslr_mcu_ctrl_mmr.h>
-#include <ti/csl/soc/am65xx/src/cslr_mcu_pll_mmr.h>
-#include <ti/csl/soc/am65xx/src/cslr_wkup_ctrl_mmr.h>
+#include <ti/csl/soc.h>
 #include <ti/drv/sciclient/sciclient.h>
 #endif
 
