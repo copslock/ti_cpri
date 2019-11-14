@@ -161,12 +161,19 @@ GPTP_CHECK_EXIT:
 ;---------------------------------------------------------------------------------------------------------
 M_GPTP_CHECK_AND_SET_FLAGS_L4    .macro
     ; If UDP PTP bit already set then frame is PTP msg bc of MC PTP MAC
-    QBBS    GPTP_CHECK_EXIT_L4?, R22, RX_IS_UDP_PTP_BIT 
-
-    ; Check if protocol is IPv4/UDP (PTP message may be unicast)
+    QBBS    GPTP_CHECK_EXIT_L4?, R22, RX_IS_UDP_PTP_BIT
+    CLR     R22, R22, RX_IS_VLAN_BIT
     LDI     RCV_TEMP_REG_2.w0, IPV4_EtherType
+    QBNE    NO_VLAN_RX_CHECK?, R5.w0, VLAN_EtherType
+    SET     R22, R22, RX_IS_VLAN_BIT
+    ; Check if protocol is IPv4/UDP (PTP message may be unicast)
+    QBNE    GPTP_CHECK_EXIT_L4?, R6.w0, RCV_TEMP_REG_2.w0
+    QBNE    GPTP_CHECK_EXIT_L4?, IP_PROT_VLAN_REG, UDP_PROTOCOL_TYPE
+    QBA     SET_RX_UDP_PTP_BIT?
+NO_VLAN_RX_CHECK?:
     QBNE    GPTP_CHECK_EXIT_L4?, R5.w0, RCV_TEMP_REG_2.w0
     QBNE    GPTP_CHECK_EXIT_L4?, IP_PROT_REG, UDP_PROTOCOL_TYPE
+SET_RX_UDP_PTP_BIT?:
     ; set UDP PTP bit here, but not guaranteed PTP message yet. UDP Port
     ; will be checked in second block if this bit is set, and bit cleared if not
     ; PTP message UDP port (319/320)
@@ -251,10 +258,18 @@ CHECK_UDP_PTP_TX:
     QBA     CONTINUE_PRE_PROC
 
 CHECK_UDP_TX:
+    CLR     R22, R22, TX_IS_VLAN_BIT
     ; Check if protocol is IPv4/UDP (PTP message may be unicast)
     LDI     R10.w0, IPV4_EtherType
+    QBNE    NO_VLAN_TX_CHECK, R5.w0, VLAN_EtherType
+    SET     R22, R22, TX_IS_VLAN_BIT
+    QBNE    EXIT_PTP_TX_PRE_PROC, R6.w0, R10.w0
+    QBNE    EXIT_PTP_TX_PRE_PROC, IP_PROT_VLAN_REG, UDP_PROTOCOL_TYPE
+    QBA     SET_TX_UDP_PTP_BIT
+NO_VLAN_TX_CHECK:
     QBNE    EXIT_PTP_TX_PRE_PROC, R5.w0, R10.w0
     QBNE    EXIT_PTP_TX_PRE_PROC, IP_PROT_REG, UDP_PROTOCOL_TYPE
+SET_TX_UDP_PTP_BIT:
     ; set UDP PTP bit here, but not guaranteed PTP message yet. UDP Port
     ; will be checked in second block if this bit is set, and bit cleared if not
     ; PTP message UDP port (319/320)
