@@ -120,18 +120,60 @@ M_GPTP_CHECK_AND_SET_FLAGS    .macro
     
 CHECK_PTP_LINK_LOCAL_RX:
     LDI     RCV_TEMP_REG_2.w0, PTP_HSR_PRP_LL_MAC_ID_L
-    QBNE    GPTP_CHECK_EXIT, R3.w0, RCV_TEMP_REG_2.w0
+    QBNE    CHECK_UDP_PTP, R3.w0, RCV_TEMP_REG_2.w0
     LDI32   RCV_TEMP_REG_2, PTP_HSR_PRP_LL_MAC_ID_H
-    QBNE    GPTP_CHECK_EXIT, R2, RCV_TEMP_REG_2
+    QBNE    CHECK_UDP_PTP, R2, RCV_TEMP_REG_2
     ;check for LLD frame since it has the same MAC ID
     LDI     RCV_TEMP_REG_2.w0, LLDP_EtherType
-    QBEQ    GPTP_CHECK_EXIT, R5.w0, RCV_TEMP_REG_2.w0
+    QBEQ    CHECK_UDP_PTP, R5.w0, RCV_TEMP_REG_2.w0
 SET_PTP_TAG_RX:
     SET     R22, R22, RX_IS_PTP_BIT
     SET     MII_RCV.rx_flags, MII_RCV.rx_flags, host_rcv_flag_shift     ; set flag that host queue will receive data
+    QBA     CHECK_IF_FROM_MASTER
+CHECK_UDP_PTP:
+    LDI     RCV_TEMP_REG_2.w0, PTP_E2E_UDP_MAC_ID_H & 0xFFFF
+    LDI     RCV_TEMP_REG_2.w2, PTP_E2E_UDP_MAC_ID_H >> 16
+    QBNE    GPTP_CHECK_EXIT, R2, RCV_TEMP_REG_2    
+    LDI     RCV_TEMP_REG_2.w0, PTP_E2E_UDP_MAC_ID_L    
+    QBNE    GPTP_CHECK_EXIT, R3.w0, RCV_TEMP_REG_2.w0
+    SET     R22, R22, RX_IS_UDP_PTP_BIT
+    SET     MII_RCV.rx_flags, MII_RCV.rx_flags, host_rcv_flag_shift
+
    
+CHECK_IF_FROM_MASTER:
+    ;check if frame is from master and set flag
+    ;this is used later in a segment of packet where MAC ID is not present
+    ;load 6 bytes into RCV_TEMP_REG_1 and RCV_TEMP_REG_2
+    LBCO    &RCV_TEMP_REG_1.w2, ICSS_SHARED_CONST, SYNC_MASTER_MAC_OFFSET, 6    
+    QBNE    GPTP_CHECK_EXIT, RCV_TEMP_REG_1.w2, R3.w2    
+    QBNE    GPTP_CHECK_EXIT, RCV_TEMP_REG_2, R4    
+    SET     R22, R22, PTP_PKT_FROM_MASTER_RX
+
 GPTP_CHECK_EXIT:
     .endm     
+
+;---------------------------------------------------------------------------------------------------------
+; Macro Name: M_GPTP_CHECK_AND_SET_FLAGS_L4
+; Description: Checks for PTP UDP flag and if not set checks if frame is IPv4/UDP
+; Peak cycles : 5
+; Input Parameters: R22
+; Output Parameters: none
+;---------------------------------------------------------------------------------------------------------
+M_GPTP_CHECK_AND_SET_FLAGS_L4    .macro
+    ; If UDP PTP bit already set then frame is PTP msg bc of MC PTP MAC
+    QBBS    GPTP_CHECK_EXIT_L4?, R22, RX_IS_UDP_PTP_BIT 
+
+    ; Check if protocol is IPv4/UDP (PTP message may be unicast)
+    LDI     RCV_TEMP_REG_2.w0, IPV4_EtherType
+    QBNE    GPTP_CHECK_EXIT_L4?, R5.w0, RCV_TEMP_REG_2.w0
+    QBNE    GPTP_CHECK_EXIT_L4?, IP_PROT_REG, UDP_PROTOCOL_TYPE
+    ; set UDP PTP bit here, but not guaranteed PTP message yet. UDP Port
+    ; will be checked in second block if this bit is set, and bit cleared if not
+    ; PTP message UDP port (319/320)
+    SET     R22, R22, RX_IS_UDP_PTP_BIT
+
+GPTP_CHECK_EXIT_L4?:
+    .endm   
     
 ;---------------------------------------------------------------------------------------------------------
 ; Macro Name: M_GPTP_SET_CALLBACK_INTERRUPT
@@ -141,6 +183,7 @@ GPTP_CHECK_EXIT:
 ;---------------------------------------------------------------------------------------------------------
 M_GPTP_SET_CALLBACK_INTERRUPT    .macro
     QBBC    NOT_A_PTP_FRAME_3, R22, TX_CALLBACK_INTERRUPT_BIT
+    CLR R22 , R22 , TX_CALLBACK_INTERRUPT_BIT
 
     .if $defined("ICSS_SWITCH_BUILD")
     .if $isdefed("PRU0")
@@ -187,15 +230,37 @@ M_GPTP_TX_PRE_PROC  .macro
         
 CHECK_PTP_LINK_LOCAL_TX:
     LDI     R10.w0, PTP_HSR_PRP_LL_MAC_ID_L
-    QBNE    EXIT_PTP_TX_PRE_PROC, R3.w0, R10.w0
+    QBNE    CHECK_UDP_PTP_TX, R3.w0, R10.w0
     LDI32   R10, PTP_HSR_PRP_LL_MAC_ID_H
-    QBNE    EXIT_PTP_TX_PRE_PROC, R2, R10 
+    QBNE    CHECK_UDP_PTP_TX, R2, R10 
     ;make sure we don't tag LLDP frames
     LDI     R10.w0, LLDP_EtherType
-    QBEQ    EXIT_PTP_TX_PRE_PROC, R5.w0, R10.w0
+    QBEQ    CHECK_UDP_PTP_TX, R5.w0, R10.w0
 SET_PTP_TAG_TX:
     SET     R22, R22, TX_IS_PTP_BIT
+    QBA     CONTINUE_PRE_PROC
+    
+CHECK_UDP_PTP_TX:
+    ; Check for UDP PTP multicast MAC
+    LDI     R10.w0, PTP_E2E_UDP_MAC_ID_L
+    QBNE    CHECK_UDP_TX, R3.w0, R10.w0
+    LDI32   R10, PTP_E2E_UDP_MAC_ID_H
+    QBNE    CHECK_UDP_TX, R2, R10 
 
+    SET     R22, R22, TX_IS_UDP_PTP_BIT
+    QBA     CONTINUE_PRE_PROC
+
+CHECK_UDP_TX:
+    ; Check if protocol is IPv4/UDP (PTP message may be unicast)
+    LDI     R10.w0, IPV4_EtherType
+    QBNE    EXIT_PTP_TX_PRE_PROC, R5.w0, R10.w0
+    QBNE    EXIT_PTP_TX_PRE_PROC, IP_PROT_REG, UDP_PROTOCOL_TYPE
+    ; set UDP PTP bit here, but not guaranteed PTP message yet. UDP Port
+    ; will be checked in second block if this bit is set, and bit cleared if not
+    ; PTP message UDP port (319/320)
+    SET     R22, R22, TX_IS_UDP_PTP_BIT
+
+CONTINUE_PRE_PROC:
     .if !$defined(ICSS_REV1)
     ;Just before pushing to FIFO store the current Tx SOF TS
     ;This is used for comparison later to make sure SOF has actually

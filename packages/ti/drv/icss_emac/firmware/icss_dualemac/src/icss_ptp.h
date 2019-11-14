@@ -89,20 +89,35 @@ PTP_HSR_PRP_NON_LL_MAC_ID_L    .set                        0x0000
 PTP_HSR_PRP_NON_LL_MAC_ID_H    .set                        0x00191b01
 PTP_HSR_PRP_LL_MAC_ID_L        .set                        0x0e00
 PTP_HSR_PRP_LL_MAC_ID_H        .set                        0x00c28001
+
+PTP_E2E_UDP_MAC_ID_H           .set                        0x005E0001
+PTP_E2E_UDP_MAC_ID_L           .set                        0x8101
+PTP_E2E_UDP_PDELAY_MAC_ID_L    .set                        0x6B00
+
 GPTP_EtherType                 .set                        0xf788
 LLDP_EtherType                 .set                        0xcc88
 HSR_EtherType                  .set                        0x2f89
 VLAN_EtherType                 .set                        0x0081
+IPV4_EtherType                 .set                        0x0008
 GPTP_messageType_Sync          .set                        0x0210
 GPTP_messageType_Pdelay_Req    .set                        0x0212
 GPTP_messageType_Pdelay_Resp   .set                        0x0213
 GPTP_QOS                       .set                        0
+UDP_PROTOCOL_TYPE              .set                        0x11
+UDP_PTP_PORT_319               .set                        0x3F01
+UDP_PTP_PORT_320               .set                        0x4001
 
    
 GPTP_802_3_two_step_bit        .set                        1
         .asg    R7,       two_step_reg
         .asg    R5.b2,    PTP_802_3_msg_id_reg
         .asg    R8,       two_step_reg_vlan
+        .asg    R6,       IF_TWO_STEP_CLK_UDP
+        .asg    R4.b2,    PTP_MSG_ID_REG_UDP
+        .asg    R7,       IF_TWO_STEP_CLK_UDP_VLAN
+        .asg    R5.b2,    PTP_MSG_ID_REG_UDP_VLAN
+        .asg    R7.b3,    IP_PROT_REG
+        .asg    R2.w2,    UDP_SRC_PORT_REG
 
 ;-----------R22 flags------------
     ;This flag is used to indicate a PTP frame on Rx 
@@ -124,6 +139,16 @@ PTP_RELEASE_HOST_QUEUE_BIT .set   8
 PTP_RELEASE_PORT_QUEUE_BIT .set   7
 ; Not used for RTOS as it is specific to PRP
 ;PTP_FORCED_2_STEP_BIT      .set   6
+
+
+    ;This flag is used to indicate a UDP PTP frame on Rx 
+RX_IS_UDP_PTP_BIT .set   3
+    ;This flag is used to indicate a UDP PTP frame on Tx 
+TX_IS_UDP_PTP_BIT  .set   2 
+    ;This is set when delay response is received. Run source port id check when this is set 
+PTP_CHECK_PDELAY_RESP .set   1
+    ;Set if packet is from Master. Rx context
+PTP_PKT_FROM_MASTER_RX  .set   0
 
 
 GPTP_NUM_DOMAINS                       .set                2
