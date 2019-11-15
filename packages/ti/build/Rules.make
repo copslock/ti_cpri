@@ -157,12 +157,8 @@ endif
   CG_XML_VERSION=2.61.00
 
   #Component versions for non-TDA builds
-  BIOS_VERSION=6_76_02_02
-  XDC_VERSION=3_55_02_22_core
-
-ifeq ($(BOARD),$(filter $(BOARD), $(BOARD_LIST_J7_TDA)))
   BIOS_VERSION=6_76_03_01
-endif
+  XDC_VERSION=3_55_02_22_core
 
   EDMA_VERSION=2_12_05_30E
   SECDEV_VERSION=01_06_00_05
