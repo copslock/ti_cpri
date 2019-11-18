@@ -112,6 +112,10 @@ char *DNSServer   = "0.0.0.0";          // Used when set to anything but zero
 
 Uint8 clientMACAddress [6] = {0xd4, 0xbe, 0xd9, 0x3d, 0xb6, 0xb8}; /* MAC address for my PC */
 
+void System_flush(void)
+{
+    fflush(stdout);
+}
 
 //---------------------------------------------------------------------
 // Main Entry Point
