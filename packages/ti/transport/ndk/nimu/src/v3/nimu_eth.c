@@ -48,13 +48,6 @@
  *
  */
 
-#include <stdio.h> /* to use printf */
-#include <stdint.h>
-
-
-
-
-
 #include <ti/csl/csl_chip.h>
 #include <ti/csl/csl_semAux.h>
 #include <ti/csl/csl_bootcfgAux.h>
@@ -145,10 +138,6 @@ void CycleDelay (int32_t iCount)
 #endif
 }
 
-void System_flush(void)
-{
-    fflush(stdout);
-}
 int32_t  NIMU_getEmacInfo(uint32_t port_num, NIMU_EMAC_EXT_info * emac_info)
 {
     uint32_t mac_addr2, mac_addr1;
@@ -2211,9 +2200,13 @@ void Init_SGMII (uint32_t macPortNum)
 
     /* Reset the port before configuring it */
     CSL_SGMII_doSoftReset (macPortNum);
-    while (CSL_SGMII_getSoftResetStatus (macPortNum) != 0);
+    while (CSL_SGMII_getSoftResetStatus (macPortNum) != 0)
+    {
+        CycleDelay(1);
+    }
 
-     if (macPortNum < 2) {
+     if (macPortNum < 2) 
+     {
         /* Hold the port in soft reset and set up
          * the SGMII control register:
          *      (1) Enable Master Mode
@@ -2230,6 +2223,7 @@ void Init_SGMII (uint32_t macPortNum)
          */
         sgmiiCfg.linkSpeed      =   CSL_SGMII_1000_MBPS;
         sgmiiCfg.duplexMode     =   CSL_SGMII_FULL_DUPLEX;
+        sgmiiCfg.bLinkUp        =   1;
         CSL_SGMII_setAdvAbility (macPortNum, &sgmiiCfg);
 
         CSL_SGMII_enableAutoNegotiation (macPortNum);
