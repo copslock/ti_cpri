@@ -46,6 +46,13 @@ drvcal_am65xx_CORELIST  = mpu1_0
 cal_LIB_LIST = cal
 
 ############################
+# cal app package
+# List of components included under cal app lib
+# The components included here are built and will be part of cal app lib
+############################
+cal_APP_LIB_LIST =
+
+############################
 # cal examples
 # List of examples under cal (+= is used at each example definition)
 # All the tests mentioned in list are built when test target is called
@@ -97,11 +104,11 @@ export cal_app_utils_BOARD_DEPENDENCY
 export cal_app_utils_CORE_DEPENDENCY
 cal_app_utils_PKG_LIST = cal_app_utils
 cal_app_utils_INCLUDE = $(cal_app_utils_PATH)
-cal_app_utils_SOCLIST = $(drvcal_SOCLIST)
-export cal_app_utils_SOCLIST
+cal_app_utils_BOARDLIST = $(drvcal_BOARDLIST)
+export cal_app_utils_BOARDLIST
 cal_app_utils_$(SOC)_CORELIST = $(drvcal_$(SOC)_CORELIST)
 export cal_app_utils_$(SOC)_CORELIST
-cal_LIB_LIST += cal_app_utils
+cal_APP_LIB_LIST += cal_app_utils
 
 cal_app_utils_baremetal_COMP_LIST = cal_app_utils_baremetal
 cal_app_utils_baremetal_RELPATH = ti/drv/cal/examples/utils
@@ -121,11 +128,11 @@ export cal_app_utils_baremetal_BOARD_DEPENDENCY
 export cal_app_utils_baremetal_CORE_DEPENDENCY
 cal_app_utils_baremetal_PKG_LIST = cal_app_utils_baremetal
 cal_app_utils_baremetal_INCLUDE = $(cal_app_utils_baremetal_PATH)
-cal_app_utils_baremetal_SOCLIST = $(drvcal_SOCLIST)
-export cal_app_utils_baremetal_SOCLIST
 cal_app_utils_baremetal_$(SOC)_CORELIST = $(drvcal_$(SOC)_CORELIST)
+cal_app_utils_baremetal_BOARDLIST = $(drvcal_BOARDLIST)
+export cal_app_utils_baremetal_BOARDLIST
 export cal_app_utils_baremetal_$(SOC)_CORELIST
-cal_LIB_LIST += cal_app_utils_baremetal
+cal_APP_LIB_LIST += cal_app_utils_baremetal
 
 #
 # CAL Examples
@@ -204,8 +211,10 @@ export cal_baremetal_loopback_testapp_$(SOC)_CORELIST
 cal_EXAMPLE_LIST += cal_baremetal_loopback_testapp
 
 export cal_LIB_LIST
+export cal_APP_LIB_LIST
 export cal_EXAMPLE_LIST
 export drvcal_LIB_LIST = $(cal_LIB_LIST)
+export drvcal_APP_LIB_LIST = $(cal_APP_LIB_LIST)
 export drvcal_EXAMPLE_LIST = $(cal_EXAMPLE_LIST)
 
 CAL_CFLAGS =
