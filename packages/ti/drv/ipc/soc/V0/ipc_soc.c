@@ -399,3 +399,20 @@ int32_t Ipc_sciclientIrqSet(uint16_t coreId, uint32_t clusterId,
 }
 
 #endif
+
+uint32_t Ipc_getCoreId(void)
+{
+    uint32_t selfId =  IPC_INVALID_PROCID;
+
+#if defined(BUILD_MPU1_0)
+    selfId = IPC_MPU1_0;
+#elif defined(BUILD_MCU1_0)
+    selfId = IPC_MCU1_0;
+#elif defined(BUILD_MCU1_1)
+    selfId = IPC_MCU1_1;
+#else
+#error "Unsupported core Id"
+#endif
+
+    return (selfId);
+}
