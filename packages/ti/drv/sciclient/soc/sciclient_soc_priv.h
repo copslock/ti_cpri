@@ -47,7 +47,7 @@
 #include <ti/drv/sciclient/soc/V0/sciclient_soc_priv.h>
 #endif
 
-#if defined (SOC_J721E)
+#if defined (SOC_J721E) || defined (SOC_J7200)
 #include <ti/drv/sciclient/soc/V1/sciclient_soc_priv.h>
 #endif
 

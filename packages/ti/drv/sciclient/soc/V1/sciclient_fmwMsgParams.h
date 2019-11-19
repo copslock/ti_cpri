@@ -121,6 +121,8 @@ extern "C" {
 /** MAIN_0_R5_3(Secure): Cortex R5_0 context 3 on MCU island */
 #define SCICLIENT_CONTEXT_MAIN_0_R5_SEC_1 (19U)
 /** MAIN_1_R5_0(Non Secure): Cortex R5_1 context 0 on Main island */
+
+#ifdef SOC_J721E
 #define SCICLIENT_CONTEXT_MAIN_1_R5_NONSEC_0 (20U)
 /** MAIN_1_R5_1(Secure): Cortex R5_1 context 1 on Main island */
 #define SCICLIENT_CONTEXT_MAIN_1_R5_SEC_0 (21U)
@@ -132,6 +134,9 @@ extern "C" {
 #define SCICLIENT_CONTEXT_ICSSG_NONSEC_0 (24U)
 /** Total number of possible contexts for application. */
 #define SCICLIENT_CONTEXT_MAX_NUM                        (25U)
+#else
+#define SCICLIENT_CONTEXT_MAX_NUM                        (20U)
+#endif
 /* @} */
 
 /**

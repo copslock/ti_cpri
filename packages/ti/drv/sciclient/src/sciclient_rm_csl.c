@@ -481,7 +481,7 @@ int32_t Sciclient_rmIrqSet(const struct tisci_msg_rm_irq_set_req *req,
             rmObj = &gSciUdmaRmObjMcu;
         }
 
-#if defined (SOC_J721E)
+#if defined (SOC_J721E) || defined (SOC_J7200)
         /* Program GIC IR */
         if(TISCI_DEV_COMPUTE_CLUSTER0_GIC500SS == req->dst_id)
         {

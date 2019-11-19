@@ -126,7 +126,7 @@ void HwiP_enableInterrupt(int32_t interruptNum)
 
 int32_t HwiP_post(uint32_t interruptNum)
 {
-#if defined (SOC_AM65XX) || defined(SOC_J721E)
+#if defined (SOC_AM65XX) || defined(SOC_J721E) || defined(SOC_J7200)
    return(OsalArch_postInterrupt(interruptNum));
 #else
    return (osal_UNSUPPORTED);

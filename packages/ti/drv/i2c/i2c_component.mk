@@ -66,9 +66,9 @@
 #
 ifeq ($(i2c_component_make_include), )
 
-drvi2c_BOARDLIST       = am65xx_evm am65xx_idk j721e_sim j721e_evm
+drvi2c_BOARDLIST       = am65xx_evm am65xx_idk j721e_sim j721e_evm j7200_evm
 drvi2c_BOARDLISTLIM    = am65xx_evm am65xx_idk
-drvi2c_SOCLIST         = am574x am572x am571x tda2xx tda2px tda2ex tda3xx dra78x dra72x dra75x k2h k2k k2l k2e k2g c6678 c6657 am437x am335x omapl137 omapl138 am65xx j721e
+drvi2c_SOCLIST         = am574x am572x am571x tda2xx tda2px tda2ex tda3xx dra78x dra72x dra75x k2h k2k k2l k2e k2g c6678 c6657 am437x am335x omapl137 omapl138 am65xx j721e j7200
 drvi2c_SOCLISTLIM      = am574x am572x am571x tda2xx tda2px tda2ex tda3xx dra78x dra72x dra75x k2h k2k k2l k2e k2g c6678 c6657 am437x am335x omapl137 omapl138 am65xx
 drvi2c_tda2xx_CORELIST = ipu1_0
 drvi2c_tda2px_CORELIST = ipu1_0
@@ -94,6 +94,8 @@ drvi2c_am335x_CORELIST = a8host pru_0 pru_1
 drvi2c_am65xx_CORELIST   = mpu1_0 mcu1_0
 drvi2c_j721e_CORELIST   = $(DEFAULT_j721e_CORELIST)
 drvi2c_j721e_CORELISTARM = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1 mcu3_0 mcu3_1
+drvi2c_j7200_CORELIST   = $(DEFAULT_j7200_CORELIST)
+drvi2c_j7200_CORELISTARM = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1
 ############################
 # i2c package
 # List of components included under i2c lib

@@ -7,7 +7,7 @@ APP_NAME = OSAL_TestApp
 # Name of the binary if different from the default (APP_NAME)_$(BOARD_$(CORE)_<build_profile>
 LOCAL_APP_NAME =  OSAL_$(BOARD)_$(CORE)TestApp
 
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 SRCDIR = . ../src ../
 INCDIR = . ../src ../
 # Common source files across all platforms and cores
@@ -21,7 +21,7 @@ INCLUDE_EXTERNAL_INTERFACES = bios xdc pdk
 # List all the components required by the application
 COMP_LIST_COMMON = csl osal_tirtos uart board i2c
 
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
   COMP_LIST_COMMON += sciclient
 endif
 
@@ -67,7 +67,25 @@ ifeq ($(CORE),$(filter $(CORE), c7x_1))
 XDC_CFG_FILE_$(CORE) = $(PDK_INSTALL_PATH)/ti/build/j721e/sysbios_c7x.cfg
 EXTERNAL_LNKCMD_FILE = $(PDK_INSTALL_PATH)/ti/build/j721e/linker_c7x.lds
 endif
+endif
 
+ifeq ($(SOC),$(filter $(SOC), j7200))
+ifeq ($(CORE),$(filter $(CORE), mpu1_0))
+# Enable XDC build for application by providing XDC CFG File per core
+XDC_CFG_FILE_$(CORE) = $(PDK_INSTALL_PATH)/ti/build/j7200/sysbios_a72.cfg
+endif
+
+ifeq ($(CORE),$(filter $(CORE), mcu1_0 mcu2_0 mcu2_1 mcu1_1))
+# Enable XDC build for application by providing XDC CFG File per core
+XDC_CFG_FILE_$(CORE) = $(PDK_INSTALL_PATH)/ti/build/j7200/sysbios_r5f.cfg
+EXTERNAL_LNKCMD_FILE = $(PDK_INSTALL_PATH)/ti/build/j7200/linker_r5.lds
+endif
+
+ifeq ($(CORE),$(filter $(CORE), c7x_1))
+# Enable XDC build for application by providing XDC CFG File per core
+XDC_CFG_FILE_$(CORE) = $(PDK_INSTALL_PATH)/ti/build/j7200/sysbios_c7x.cfg
+EXTERNAL_LNKCMD_FILE = $(PDK_INSTALL_PATH)/ti/build/j7200/linker_c7x.lds
+endif
 endif
 
 PACKAGE_SRCS_COMMON = . ../src

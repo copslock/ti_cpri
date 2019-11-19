@@ -13,7 +13,7 @@ SRCDIR = src
 ifeq ($(SOC),$(filter $(SOC), am65xx))
   SRCDIR += soc/V0
 endif
-ifeq ($(SOC),$(filter $(SOC), j721e))
+ifeq ($(SOC),$(filter $(SOC), j721e j7200))
   SRCDIR += soc/V1
 endif
 INCDIR =

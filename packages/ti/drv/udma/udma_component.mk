@@ -34,10 +34,11 @@
 #
 ifeq ($(udma_component_make_include), )
 
-drvudma_SOCLIST         = am65xx j721e
-drvudma_BOARDLIST       = am65xx_evm am65xx_idk j721e_sim j721e_evm
+drvudma_SOCLIST         = am65xx j721e j7200
+drvudma_BOARDLIST       = am65xx_evm am65xx_idk j721e_sim j721e_evm j7200_evm
 drvudma_am65xx_CORELIST = mpu1_0 mcu1_0 mcu1_1
 drvudma_j721e_CORELIST  = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1 mcu3_0 mcu3_1 c66xdsp_1 c66xdsp_2 c7x_1 c7x-hostemu
+drvudma_j7200_CORELIST  = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1
 
 ############################
 # udma package

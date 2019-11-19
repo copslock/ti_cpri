@@ -45,7 +45,7 @@ PACKAGE_SRCS_COMMON = makefile I2C.h i2c_component.mk \
   PACKAGE_SRCS_COMMON += src/v1 soc/I2C_v1.h
 
 # For all non-TDA devices, component contains all source files in library and package
-ifneq ($(SOC),$(filter $(SOC), tda2xx tda2px dra75x tda2ex tda3xx dra78x j721e))
+ifneq ($(SOC),$(filter $(SOC), tda2xx tda2px dra75x tda2ex tda3xx dra78x j721e j7200))
   SRCDIR += src/v0
   INCDIR += src/v0
   SRCS_COMMON += I2C_v0.c

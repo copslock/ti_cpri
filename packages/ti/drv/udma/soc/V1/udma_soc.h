@@ -53,6 +53,51 @@ extern "C" {
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
 
+/* NO DRU DMA, VPAC, DMPAC, CSI on J7VCL, temporary adding define to get driver to compile, needs to be resolved with PRSDK-6132*/
+#ifdef SOC_J7200
+#define CSL_COMPUTE_CLUSTER0_DRU_BASE                                           (0x6d000000UL)
+#define CSL_VPAC0_DRU_UTC_VPAC0_DRU_MMR_CFG_DRU_DRU_BASE                        (0xf200000UL)
+#define CSL_VPAC0_DRU_UTC_VPAC0_DRU_MMR_CFG_DRU_DRU_SIZE                        (0x4000UL)
+#define CSL_VPAC0_DRU_UTC_VPAC1_DRU_MMR_CFG_DRU_DRU_BASE                        (0xf300000UL)
+#define CSL_VPAC0_DRU_UTC_VPAC1_DRU_MMR_CFG_DRU_DRU_SIZE                        (0x4000UL)
+#define CSL_DMPAC0_DRU_UTC_DMPAC0_DRU_MMR_CFG_DRU_DRU_BASE                      (0xf600000UL)
+#define CSL_DMPAC0_DRU_UTC_DMPAC0_DRU_MMR_CFG_DRU_DRU_SIZE                      (0x4000UL)
+
+/*-----------------------------------------------------------------------------
+ * VPAC_TC0_CC PSIL Map
+ *---------------------------------------------------------------------------*/
+#define CSL_PSILCFG_NAVSS_MAIN_VPAC_TC0_CC_PSILS_THREAD_OFFSET                  (0x4820U)
+#define CSL_PSILCFG_NAVSS_MAIN_VPAC_TC0_CC_PSILS_THREAD_CNT                     (32U)
+#define CSL_PSILCFG_NAVSS_MAIN_VPAC_TC0_CC_PSILD_THREAD_OFFSET                  (CSL_PSILCFG_DEST_THREAD_OFFSET | CSL_PSILCFG_NAVSS_MAIN_VPAC_TC0_CC_PSILS_THREAD_OFFSET)
+#define CSL_PSILCFG_NAVSS_MAIN_VPAC_TC0_CC_PSILD_THREAD_CNT                     (32U)
+/*-----------------------------------------------------------------------------
+ * VPAC_TC1_CC PSIL Map
+ *---------------------------------------------------------------------------*/
+#define CSL_PSILCFG_NAVSS_MAIN_VPAC_TC1_CC_PSILS_THREAD_OFFSET                  (0x4840U)
+#define CSL_PSILCFG_NAVSS_MAIN_VPAC_TC1_CC_PSILS_THREAD_CNT                     (64U)
+#define CSL_PSILCFG_NAVSS_MAIN_VPAC_TC1_CC_PSILD_THREAD_OFFSET                  (CSL_PSILCFG_DEST_THREAD_OFFSET | CSL_PSILCFG_NAVSS_MAIN_VPAC_TC1_CC_PSILS_THREAD_OFFSET)
+#define CSL_PSILCFG_NAVSS_MAIN_VPAC_TC1_CC_PSILD_THREAD_CNT                     (64U)
+/*-----------------------------------------------------------------------------
+ * DMPAC_TC0_CC PSIL Map
+ *---------------------------------------------------------------------------*/
+#define CSL_PSILCFG_NAVSS_MAIN_DMPAC_TC0_CC_PSILS_THREAD_OFFSET                 (0x4880U)
+#define CSL_PSILCFG_NAVSS_MAIN_DMPAC_TC0_CC_PSILS_THREAD_CNT                    (32U)
+#define CSL_PSILCFG_NAVSS_MAIN_DMPAC_TC0_CC_PSILD_THREAD_OFFSET                 (CSL_PSILCFG_DEST_THREAD_OFFSET | CSL_PSILCFG_NAVSS_MAIN_DMPAC_TC0_CC_PSILS_THREAD_OFFSET)
+#define CSL_PSILCFG_NAVSS_MAIN_DMPAC_TC0_CC_PSILD_THREAD_CNT                    (32U)
+/*-----------------------------------------------------------------------------
+ * CSI PSIL Map
+ *---------------------------------------------------------------------------*/
+#define CSL_PSILCFG_NAVSS_MAIN_CSI_PSILS_THREAD_OFFSET                          (0x4900U)
+#define CSL_PSILCFG_NAVSS_MAIN_CSI_PSILS_THREAD_CNT                             (256U)
+#define CSL_PSILCFG_NAVSS_MAIN_CSI_PSILD_THREAD_OFFSET                          (CSL_PSILCFG_DEST_THREAD_OFFSET | CSL_PSILCFG_NAVSS_MAIN_CSI_PSILS_THREAD_OFFSET)
+#define CSL_PSILCFG_NAVSS_MAIN_CSI_PSILD_THREAD_CNT                             (256U)
+
+
+#define CSL_COMPUTE_CLUSTER0_CLEC_REGS_BASE                                                        (0x78000000UL)
+#define CSL_COMPUTE_CLUSTER0_CLEC_REGS_SIZE                                                        (0x8000000UL)
+
+#endif
+
 /**
  *  \anchor Udma_InstanceId
  *  \name UDMA Instance ID
@@ -69,8 +114,15 @@ extern "C" {
 #define UDMA_INST_ID_MAX                (2U)
 /* @} */
 
+
+/* CSL defines this to 0 which is correct, over-riding to get past compilation for udma lld, needs to be resolved with PRSDK-6132*/
+#ifdef SOC_J7200
 /** \brief Number of UTC instance */
+#define UDMA_NUM_UTC_INSTANCE           (4U)
+#else
 #define UDMA_NUM_UTC_INSTANCE           (CSL_NAVSS_UTC_CNT)
+#endif
+
 
 /** \brief Flag to indicate the SOC needs ring reset workaround */
 #define UDMA_APPLY_RING_WORKAROUND      (0)

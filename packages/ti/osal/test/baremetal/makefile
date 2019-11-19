@@ -37,7 +37,7 @@ COMP_LIST_mcu2_1  = csl_init
 COMP_LIST_mcu3_0  = csl_init
 COMP_LIST_mcu3_1  = csl_init
 
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
   COMP_LIST_COMMON += sciclient
 endif
 
@@ -49,7 +49,7 @@ ifeq ($(MANUAL_CACHE_TEST),YES)
   CFLAGS_LOCAL_COMMON += -DMANUAL_CACHE_TEST
 endif
 
-ifeq ($(SOC),$(filter $(SOC), k2h k2k k2l k2e k2g c6678 c6657 am571x am572x am574x am437x am335x omapl137 omapl138 am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), k2h k2k k2l k2e k2g c6678 c6657 am571x am572x am574x am437x am335x omapl137 omapl138 am65xx j721e j7200))
   CFLAGS_LOCAL_COMMON += -DENABLE_TIMER_TEST
 endif
 

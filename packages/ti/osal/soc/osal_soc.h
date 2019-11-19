@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2015-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -82,6 +82,8 @@
 #include <ti/osal/soc/am65xx/osal_soc.h>
 #elif defined (SOC_J721E)
 #include <ti/osal/soc/j721e/osal_soc.h>
+#elif defined (SOC_J7200)
+#include <ti/osal/soc/j7200/osal_soc.h>
 #else
 /* No known Soc is defined, have below defaults */
 /* Max number of semaphores for NonOs */

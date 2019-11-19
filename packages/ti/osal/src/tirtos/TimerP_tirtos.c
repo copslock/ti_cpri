@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@
 #include <xdc/runtime/Types.h>
 #include <xdc/runtime/Timestamp.h>
 
-#if defined (SOC_AM437x) || defined (SOC_AM335x) || defined (SOC_AM574x) || defined (SOC_AM572x) || defined(SOC_AM571x) || defined(SOC_AM65XX) || defined(SOC_J721E)
+#if defined (SOC_AM437x) || defined (SOC_AM335x) || defined (SOC_AM574x) || defined (SOC_AM572x) || defined(SOC_AM571x) || defined(SOC_AM65XX) || defined(SOC_J721E) || defined(SOC_J7200)
 #if defined(TIMER64_SUPPORT)
 #undef   TIMER64_SUPPORT
 #endif

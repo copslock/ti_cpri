@@ -18,7 +18,7 @@ ifeq ($(SOC),$(filter $(SOC), am65xx))
   SRCDIR += soc/V0
   INCDIR += soc/V0
 endif
-ifeq ($(SOC),$(filter $(SOC), j721e))
+ifeq ($(SOC),$(filter $(SOC), j721e j7200))
   SRCDIR += soc/V1
   INCDIR += soc/V1
 endif
@@ -28,7 +28,7 @@ endif
 INCLUDE_EXTERNAL_INTERFACES = pdk osal
 
 # Common source files and CFLAGS across all platforms and cores
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 SRCS_COMMON = sciclient_rm.c sciclient.c
 SRCS_COMMON += sciclient_fmwSecureProxyMap.c
 SRCS_COMMON += sciclient_pm.c
@@ -39,7 +39,7 @@ SRCS_COMMON += sciclient_genericMsgs.c
 endif
 
 #Use CSL implementation to bypass DMSC
-# ifeq ($(SOC),$(filter $(SOC), j721e))
+# ifeq ($(SOC),$(filter $(SOC), j721e j7200))
 # SRCS_COMMON = sciclient_rm_csl.c sciclient_dummy.c
 # endif
 

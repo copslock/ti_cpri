@@ -62,7 +62,7 @@
 #include <ti/drv/sciclient/soc/V0/tisci_hosts.h>
 #include <ti/drv/sciclient/soc/V0/tisci_sec_proxy.h>
 #endif
-#if defined (SOC_J721E)
+#if defined (SOC_J721E) || defined (SOC_J7200)
 #include <ti/drv/sciclient/soc/V1/tisci_resasg_types.h>
 #include <ti/drv/sciclient/soc/V1/tisci_hosts.h>
 #include <ti/drv/sciclient/soc/V1/tisci_sec_proxy.h>
