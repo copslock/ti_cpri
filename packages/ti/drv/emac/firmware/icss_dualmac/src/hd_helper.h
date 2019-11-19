@@ -119,8 +119,8 @@ $1:	; for 10 mbps multiply on 51.2 usec (r4 << 10) + (r4 << 8)
 	; so if r3 is 0 then set it to 9.6 usec
 	qbne	$2, r3, 0
 	ldi	r3, IPG_10MBPS
-	ldi	r5, IPG_10MBPS_ADJ ;
-$2:	add	r3, r3, r5
+$2:	ldi	r5, IPG_10MBPS_ADJ ;
+	add	r3, r3, r5
 	sbbo	&r3, r2, TX_IPG, 4 ; store it to TX_IPG
 	set	GRegs.speed_f, GRegs.speed_f, f_wait_ipg
 	.endm

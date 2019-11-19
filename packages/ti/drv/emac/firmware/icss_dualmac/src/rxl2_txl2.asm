@@ -377,7 +377,6 @@ th_schedule0:
 ;----------------------
 scheduler:
 	READ_RGMII_CFG	r2, GRegs.speed_f		; update speed/duplex fields
-	sbco	&r25, c28, 0x20, 4
 	qbbs	sch_10, GRegs.speed_f, f_half_d ; don't check col if full duplex
 ; if TX is idle and colission is set, probably it is from the
 ; previouse packet. Just wait
@@ -469,7 +468,6 @@ bg_done:
 TX_EOF:
 	qbne	tx_underflow, GRegs.tx.b.state, TX_S_W_EOF
 	flip_tx_r0_r23
-	m_inc_stat	r0.b0, 82
 	qbbs	tx_proc_col, GRegs.speed_f, f_stopped_due_col
 ; TX TS processing
 	qbbc	no_tx_ts, TxRegs.ds_flags, 5 ; we don't need tx_ts
