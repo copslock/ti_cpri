@@ -66,11 +66,13 @@ READ_RGMII_CFG	.macro rtmp, speed_flags
 if_ipg_not_expired	.macro then_go
 	; TODO check IPG
 	; if not expired jmp then_go
+	qbbc	$1, GRegs.speed_f, f_wait_ipg
 	ldi32	r2, FW_CONFIG
 	lbbo	&r3, r2, TX_IPG, 4 ;
-	lbco	&r4, c11, 0x0c, 4  ; read cycle counte
+	lbco	&r4, c11, 0x0c, 4  ; read cycle count
 	qbgt	then_go, r4, r3	   ; not expired yet
 	clr	GRegs.speed_f, GRegs.speed_f, f_wait_ipg
+$1:	
 	.endm
 
 ; touch r2, r3, r4
@@ -117,8 +119,8 @@ $1:	; for 10 mbps multiply on 51.2 usec (r4 << 10) + (r4 << 8)
 	; so if r3 is 0 then set it to 9.6 usec
 	qbne	$2, r3, 0
 	ldi	r3, IPG_10MBPS
-	ldi	r5, IPG_10MBPS_ADJ ;
-$2:	add	r3, r3, r5
+$2:	ldi	r5, IPG_10MBPS_ADJ ;
+	add	r3, r3, r5
 	sbbo	&r3, r2, TX_IPG, 4 ; store it to TX_IPG
 	set	GRegs.speed_f, GRegs.speed_f, f_wait_ipg
 	.endm
