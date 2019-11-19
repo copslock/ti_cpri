@@ -70,9 +70,9 @@ MEMORY
 -heap   0x8000                              /* HEAP AREA SIZE                */
 
 /* Set L1D, L1P and L2 Cache Sizes */
-ti_sysbios_family_c66_Cache_l1dSize = 0;
-ti_sysbios_family_c66_Cache_l1pSize = 0;
-ti_sysbios_family_c66_Cache_l2Size = 0;
+ti_sysbios_family_c66_Cache_l1dSize = 32768;
+ti_sysbios_family_c66_Cache_l1pSize = 32768;
+ti_sysbios_family_c66_Cache_l2Size = 32768;
 
 SECTIONS
 {

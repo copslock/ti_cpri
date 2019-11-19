@@ -358,7 +358,7 @@ static int32_t RPMessage_enqueMsg(RPMessage_EndptPool *pool, RPMessage_MsgHeader
                 payload->src = msg->srcAddr;
                 payload->procId = msg->srcProcId;
 
-                IpcUtils_Qput(&obj->queue, &payload->elem, (void *)payload);
+                IpcUtils_Qput(&obj->queue, &payload->elem);
 
                 pOsalPrms->restoreAllIntr(key);
 
@@ -564,7 +564,7 @@ static void RPMessage_processAnnounceMsg(RPMessage_Announcement *amsg, uint32_t 
 
             /* No interrupt / SWI protection, required here again.
                We are already in SWI protected region */
-            IpcUtils_Qput(&module.announcedEndpts, &p->elem, (void *)p);
+            IpcUtils_Qput(&module.announcedEndpts, &p->elem);
 
             /* Wakeup all the tasks that are waiting on the */
             /* announced name.                              */
@@ -691,8 +691,7 @@ int32_t RPMessage_getRemoteEndPt(uint32_t selfProcId, const char* name, uint32_t
                                             remoteProcId, remoteEndPt);
         if(FALSE == lookupStatus)
         {
-            IpcUtils_Qput(&module.waitingTasks, &taskWaiter.elem,
-                            (void *)&taskWaiter);
+            IpcUtils_Qput(&module.waitingTasks, &taskWaiter.elem);
         }
         pOsalPrms->restoreAllIntr(key);
 
@@ -1280,7 +1279,7 @@ int32_t RPMessage_recvNb(RPMessage_Handle handle, void* data, uint16_t *len,
             key = gIpcObject.initPrms.osalPrms.disableAllIntr();
 
             payload = (RPMessage_MsgElem *)IpcUtils_QgetHead(&obj->queue);
-            if (payload != (RPMessage_MsgElem *)&obj->queue)
+            if ((NULL != payload) && (payload != (RPMessage_MsgElem *)&obj->queue))
             {
                 /* Now, copy payload to client and free our internal msg */
                 memcpy(data, payload->data, payload->len);

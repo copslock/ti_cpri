@@ -87,6 +87,10 @@ MEMORY
 --cinit_compression=off
 --retain="*(xdc.meta)"
 
+ti_sysbios_family_c7x_Cache_l1dSize = 32768;
+ti_sysbios_family_c7x_Cache_l2Size = 32768;
+
+
 SECTIONS
 {
     xdc.meta (COPY):    { } > C7X_DDR_SPACE

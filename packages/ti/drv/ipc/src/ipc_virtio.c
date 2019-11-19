@@ -157,7 +157,6 @@ typedef struct Vring_Params_s
 } Vring_Params;
 
 static Virtio_Object *queueRegistry[MAX_VIRTQUEUES];
-static uint32_t queueCnt;
 
 /* Application provides the memory for storing local Virtio */
 static void*    vqBaseAddr = NULL;
@@ -256,7 +255,6 @@ int32_t Ipc_initVirtIO(Ipc_VirtIoParams *vqParam)
     {
         /* Initialize the global queue registry */
         memset(queueRegistry, 0, sizeof(queueRegistry));
-        queueCnt = 0;
 
         vqBaseAddr = (void*)vqParam->vqObjBaseAddr;
         vqSizeLeft = vqParam->vqBufSize;
@@ -449,20 +447,11 @@ uint8_t Virtio_enableCallback(Virtio_Handle vq)
 void Virtio_isr(uint32_t* msg, uint32_t priv)
 {
     Virtio_Object *vq;
-    uint32_t i;
 
-#if DEBUG_PRINT
-    SystemP_printf("Virtio_isr : Msg : %d, arg : %d\n",
-       *msg, priv);
-#endif
-    for(i = 0; i < queueCnt; i++)
+    vq = queueRegistry[2*priv+1];
+    if(vq && vq->procId == priv && vq->callback)
     {
-        vq = queueRegistry[i];
-        if(vq && vq->procId == priv && vq->callback)
-        {
-            vq->callback(vq->callback_priv);
-            break;
-        }
+        vq->callback(vq->callback_priv);
     }
 }
 
@@ -495,14 +484,13 @@ void Virtio_isr(uint32_t* msg, uint32_t priv)
             /* Don't trigger a mailbox message every time remote rpoc */
             /* makes another buffer available.                        */
             vq->vring.used->flags |= VRING_USED_F_NO_NOTIFY;
+            queueRegistry[2*procId] = vq;
         }
-
-        queueRegistry[queueCnt] = vq;
-        queueCnt++;
 
         if (direction == VIRTIO_RX)
         {
             uint32_t selfId = Ipc_mpGetSelfId();
+            queueRegistry[2*procId+1] = vq;
             retVal = Ipc_mailboxRegister(selfId, procId, Virtio_isr, procId);
             if (retVal != IPC_SOK)
             {
@@ -520,20 +508,8 @@ void Virtio_isr(uint32_t* msg, uint32_t priv)
  */
 Virtio_Handle Virtio_getHandle(uint32_t procId, VIRTIO_DIR dir)
 {
-    Virtio_Object *vq = NULL;
-    uint32_t i;
-
-    for(i = 0; i < queueCnt; i++)
-    {
-        if(queueRegistry[i] &&
-           queueRegistry[i]->procId == procId &&
-           queueRegistry[i]->direction == dir)
-        {
-            vq = queueRegistry[i];
-            break;
-        }
-    }
-    return vq;
+    uint32_t  vqIndex = 2*procId + (uint32_t)dir;
+    return queueRegistry[vqIndex];
 }
 
 /**

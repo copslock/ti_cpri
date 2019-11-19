@@ -641,3 +641,16 @@ uint32_t Ipc_getCoreId(void)
 
     return (selfId);
 }
+
+uint32_t Ipc_isCacheCoherent(void)
+{
+    uint32_t isCacheCoherent;
+
+#if defined (BUILD_MPU1_0) || defined (BUILD_C7X_1)
+    isCacheCoherent = TRUE;
+#else
+    isCacheCoherent = FALSE;
+#endif
+
+    return (isCacheCoherent);
+}

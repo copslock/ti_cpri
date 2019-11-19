@@ -79,11 +79,9 @@ extern "C" {
 #define  IPC_TASK_STACKSIZE  0x2000U
 #endif
 
-#ifdef IPC_SUPPORT_SCICLIENT
 /** \brief SCICLIENT API timeout */
 #define IPC_SCICLIENT_TIMEOUT              (SCICLIENT_SERVICE_WAIT_FOREVER)
 
-#endif
 
 #ifdef __cplusplus
 }

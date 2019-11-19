@@ -62,8 +62,6 @@ typedef struct IpcUtils_QElem_s
     /**< Next Node */
     struct  IpcUtils_QElem_s *prev;
     /**< Next Node */
-    void    *pData;
-    /**< Pointer to data */
 } IpcUtils_QElem;
 
 /** \brief Queue Handle */
@@ -151,16 +149,15 @@ uint8_t IpcUtils_QisEmpty(IpcUtils_QHandle *handle);
  *
  *          Insert the node into queue
  *
- *  \param IpcUtils_QHandle     [IN]
- *  \param IpcUtils_QElem       [IN]    Node to be inserted
- *  \param void *               [IN]    Data associated with this node
+ *  \param handle     [IN]
+ *  \param elem       [IN]    Node to be inserted
  *
  *  \note Taking additional argument of void *data is done to ensure
  *          MISRA C 2012, Rule 11.5 can be honored
  *
  *  \return None
  */
-void IpcUtils_Qput(IpcUtils_QHandle *handle, IpcUtils_QElem *elem, void *data);
+void IpcUtils_Qput(IpcUtils_QHandle *handle, IpcUtils_QElem *elem);
 
 /**
  *  \brief  IpcUtils_Qhead

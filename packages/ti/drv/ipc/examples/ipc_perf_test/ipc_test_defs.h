@@ -1,6 +1,5 @@
 /*
- *  Copyright (c) Texas Instruments Incorporated 2018
- *  All rights reserved.
+ *  Copyright (c) Texas Instruments Incorporated 2019
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -32,80 +31,105 @@
  */
 
 /**
- *  \file ipc_soc.h
+ *  \file ipc_test_defs.h
  *
- *  \brief IPC Low Level Driver SOC specific file.
+ *  \brief This file defines the testsetup
+ *
+ *
  */
-
-#ifndef IPC_SOC_TOP_H_
-#define IPC_SOC_TOP_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#define    IPC_INVALID_PROCID (0XFFU)   /**< Invalid Proc ID */
+#ifndef IPC_TEST_DEFS_H_
+#define IPC_TEST_DEFS_H_
 
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-/*
- * These functions and structure is for internal use use and
- * are not expected to be called from app
- */
+/* ========================================================================== */
+/*                           Macros & Typedefs                                */
+/* ========================================================================== */
+ 
+ /* None */
 
 /* ========================================================================== */
 /*                         Structure Declarations                             */
 /* ========================================================================== */
 
+typedef enum Ipc_TestNames_e
+{
+    IPC_PERF_TEST = 0x80,
+    IPC_TESTTYPE_COUNT
+}Ipc_TestNames;
+
+typedef enum Ipc_FC_PerfTest_e
+{
+    IPC_FC_PERFTEST_TESTINDEX,
+    IPC_FC_PERFTEST_COMPLETED,
+    IPC_FC_PERFTEST_TESTRESULT,
+
+    IPC_FC_TEST_CNT
+}Ipc_FC_PerfTest;
+
+typedef struct Ipc_TestDef_s
+{
+    uint32_t    testId;
+    uint32_t    testType;
+    uint32_t    hostCore;
+    uint32_t    slaveCore;
+    uint32_t    param1;
+    uint32_t    param2;
+}Ipc_Testcase;
+
+typedef struct Ipc_TestPerfResult_s
+{
+    uint32_t    testId;
+    uint32_t    testTime;
+}Ipc_TestPerfResult;
+
 /* ========================================================================== */
 /*                          Function Declarations                             */
 /* ========================================================================== */
-int32_t Ipc_getMailboxInfoTx(uint32_t selfId, uint32_t remoteId, 
-                 uint32_t *clusterId, uint32_t *userId, uint32_t *queueId);
-int32_t Ipc_getMailboxInfoRx(uint32_t selfId, uint32_t remoteId, 
-                 uint32_t *clusterId, uint32_t *userId, uint32_t *queueId);
-int32_t Ipc_getMailboxIntrRouterCfg(uint32_t selfId, uint32_t clusterId,
-                 uint32_t userId, Ipc_MbConfig* cfg, uint32_t cnt);
-uint32_t Ipc_getMailboxBaseAddr(uint32_t custerId);
 
 /**
- * \brief Returns the core name for get core id
- *
- * \param procId [IN] Id of desired core.
- *
- * \return name of the given core id
+ * \brief Returns Testcase info
  * */
-const char* Ipc_getCoreName(uint32_t procId);
+Ipc_Testcase* Ipc_getTestcase(uint32_t testIndex);
 
 /**
- * \brief Returns Core ID based on core build flag
- *
- * \return Code ID of the current core
- **/
-uint32_t Ipc_getCoreId(void);
+ * Add Performance Test Results to the table
+ * */
+void Ipc_addPerfTestResult(uint32_t testId, uint32_t testTime);
 
 /**
- *  \brief Returns TRUE if the memory is cache coherent
- *
- *  \return TRUE/FALSE
- */
-uint32_t Ipc_isCacheCoherent(void);
+ * Add Performance Test Results to the table from buffer
+ * */
+void Ipc_addPerfTestResults(uint8_t *buf, uint32_t bufSize);
 
-/* For Maxwell Device */
-#if defined (SOC_AM65XX)
-#include <ti/drv/ipc/soc/V0/ipc_soc.h>
-#endif
+/**
+ * Copy the test results to the given buffer
+ * */
+uint32_t Ipc_copyRestResult(uint8_t *buf, uint32_t bufSize);
 
-/* For J7ES device */
-#if defined (SOC_J721E) || defined (SOC_AM77X)
-#include <ti/drv/ipc/soc/V1/ipc_soc.h>
-#endif
+/**
+ * Return TRUE/FALSE if it has test  result to send
+ * */
+uint32_t Ipc_hasPerfTestResult(void);
+
+/**
+ * Print the Performance Test Report
+ * */
+void Ipc_printPerfTestReport();
+
+/**
+ * Return Host core and Slave Core ID for given TestCaseId
+ * */
+void Ipc_getCoreIdForTestcase(uint32_t testId, uint32_t *hostCore, uint32_t *remCore);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* #ifndef IPC_SOC_TOP_H_ */
+#endif  /* #define IPC_TEST_DEFS_H_ */

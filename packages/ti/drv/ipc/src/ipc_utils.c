@@ -95,18 +95,18 @@ int32_t IpcUtils_DeInit(void)
 /* Queue Related */
 void* IpcUtils_QgetHead(IpcUtils_QHandle *handle)
 {
-    IpcUtils_QElem *elem, *rtnVal = NULL;
+    IpcUtils_QElem *elem = NULL;
+    IpcUtils_QElem *next = NULL;
 
     if (IPC_UTILS_INITIALIZED == gIpcUtilsObj.state)
     {
         elem = handle->next;
-
-        handle->next = elem->next;
-        elem->next->prev = handle;
-        rtnVal = (IpcUtils_QElem *) elem->pData;
+        next = elem->next;
+        handle->next = next;
+        next->prev = handle;
     }
 
-    return (rtnVal);
+    return (elem);
 }
 
 uint8_t IpcUtils_QisEmpty(IpcUtils_QHandle *handle)
@@ -119,12 +119,12 @@ uint8_t IpcUtils_QisEmpty(IpcUtils_QHandle *handle)
     return (rtnVal);
 }
 
-void IpcUtils_Qput(IpcUtils_QHandle *handle, IpcUtils_QElem *elem, void *data)
+void IpcUtils_Qput(IpcUtils_QHandle *handle, IpcUtils_QElem *elem)
 {
     if ((IPC_UTILS_INITIALIZED == gIpcUtilsObj.state) &&
-        ((NULL != elem) && (NULL != data)))
+        (NULL != elem))
     {
-        elem->pData = data;
+
         elem->next = handle;
         elem->prev = handle->prev;
         handle->prev->next = elem;
@@ -133,6 +133,38 @@ void IpcUtils_Qput(IpcUtils_QHandle *handle, IpcUtils_QElem *elem, void *data)
     return;
 }
 
+void IpcUtils_Qenqueue(IpcUtils_QHandle *handle, IpcUtils_QElem *elem)
+{
+    if ((IPC_UTILS_INITIALIZED == gIpcUtilsObj.state) &&
+        ((NULL != elem) ))
+    {
+        IpcUtils_QElem *prev = NULL;
+
+        prev = handle->prev;
+        elem->next = handle;
+        elem->prev = prev;
+        prev->next = elem;
+        handle->prev = elem;
+    }
+    return;
+}
+
+void* IpcUtils_Qdequeue(IpcUtils_QHandle *handle)
+{
+    IpcUtils_QElem *elem = NULL;
+    IpcUtils_QElem *next = NULL;
+
+    if (IPC_UTILS_INITIALIZED == gIpcUtilsObj.state)
+    {
+        elem = handle->next;
+        next = elem->next;
+        handle->next = next;
+        next->prev = handle;
+    }
+    return (elem);
+}
+
+
 void* IpcUtils_QgetHeadNode(IpcUtils_QHandle *handle)
 {
     void *rtnVal = NULL;
@@ -140,7 +172,7 @@ void* IpcUtils_QgetHeadNode(IpcUtils_QHandle *handle)
     if ((IPC_UTILS_INITIALIZED == gIpcUtilsObj.state) &&
         (NULL != handle))
     {
-        rtnVal = handle->next->pData;
+        rtnVal = handle->next;
     }
 
     return (rtnVal);
@@ -151,7 +183,7 @@ void* IpcUtils_Qnext(IpcUtils_QElem *qelem)
     void *rtnVal = NULL;
     if (NULL != qelem)
     {
-        rtnVal = qelem->next->pData;
+        rtnVal = qelem->next;
     }
 
     return rtnVal;
@@ -174,7 +206,6 @@ void IpcUtils_Qdelete(IpcUtils_QHandle *handle)
     {
         handle->next = NULL;
         handle->prev = NULL;
-        handle->pData = NULL;
     }
 
     return;
@@ -187,7 +218,6 @@ int32_t IpcUtils_Qcreate(IpcUtils_QHandle *handle)
     {
         handle->next = handle;
         handle->prev = handle;
-        handle->pData = handle;
         rtnVal = IPC_SOK;
     }
 
@@ -223,14 +253,14 @@ int32_t IpcUtils_HeapCreate(IpcUtils_HeapHandle *pHndl,
         rtnVal = IpcUtils_Qcreate(&pHndl->qHandle);
         if (IPC_SOK == rtnVal)
         {
+            tempBufPtr = param->buf;
             for (idx = 0U; idx < param->numBlocks; idx++)
             {
-                tempBufPtr = (uint8_t *) param->buf + (idx * param->blockSize);
+                tempBufPtr += param->blockSize;
 
                 /* Will flag MISRA C Violation for tempBufPtr casting,
                     no fix? */
-                IpcUtils_Qput(&pHndl->qHandle, (IpcUtils_QElem *) tempBufPtr,
-                                (void *) tempBufPtr);
+                IpcUtils_Qput(&pHndl->qHandle, (IpcUtils_QElem *) tempBufPtr);
 
                 pHndl->numFreeBlocks++;
             }
@@ -268,7 +298,7 @@ void IpcUtils_HeapFree(IpcUtils_HeapHandle *pHndl, void* block, uint32_t size)
     {
         /* Will flag MISRA C Violation for tempBufPtr casting,
             no fix? */
-        IpcUtils_Qput(&pHndl->qHandle, (IpcUtils_QElem *) block, block);
+        IpcUtils_Qenqueue(&pHndl->qHandle, (IpcUtils_QElem *) block);
         pHndl->numFreeBlocks++;
     }
 

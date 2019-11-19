@@ -45,21 +45,7 @@ extern "C" {
 #endif
 
 void SetManualBreak();
-
-#ifdef BUILD_C7X_1
 void sysIdleLoop(void);
-void Ipc_appC7xPreInit(void);
-void C7x_ConfigureTimerOutput();
-#endif
-
-#if defined(BUILD_C66X_1) || defined(BUILD_C66X_2)
-void sysIdleLoop(void);
-void C66xTimerInterruptInit(void);
-#endif
-
-#if defined (__aarch64__)
-void InitMmu(void);
-#endif
 
 #ifdef __cplusplus
 }

@@ -1,6 +1,5 @@
 /*
- *  Copyright (c) Texas Instruments Incorporated 2018
- *  All rights reserved.
+ *  Copyright (c) Texas Instruments Incorporated 2019
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions
@@ -32,80 +31,68 @@
  */
 
 /**
- *  \file ipc_soc.h
+ *  \file ipc_perf_test.h
  *
- *  \brief IPC Low Level Driver SOC specific file.
+ *  \brief This file defines the prototype for perfTest
+ *
+ *
  */
-
-#ifndef IPC_SOC_TOP_H_
-#define IPC_SOC_TOP_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#define    IPC_INVALID_PROCID (0XFFU)   /**< Invalid Proc ID */
+#ifndef IPC_PERF_TEST_H_
+#define IPC_PERF_TEST_H_
 
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-/*
- * These functions and structure is for internal use use and
- * are not expected to be called from app
- */
+#include <ti/drv/ipc/ipc.h>
+
+/* ========================================================================== */
+/*                           Macros & Typedefs                                */
+/* ========================================================================== */
+ 
+ /* None */
 
 /* ========================================================================== */
 /*                         Structure Declarations                             */
 /* ========================================================================== */
 
+
+
+
 /* ========================================================================== */
 /*                          Function Declarations                             */
 /* ========================================================================== */
-int32_t Ipc_getMailboxInfoTx(uint32_t selfId, uint32_t remoteId, 
-                 uint32_t *clusterId, uint32_t *userId, uint32_t *queueId);
-int32_t Ipc_getMailboxInfoRx(uint32_t selfId, uint32_t remoteId, 
-                 uint32_t *clusterId, uint32_t *userId, uint32_t *queueId);
-int32_t Ipc_getMailboxIntrRouterCfg(uint32_t selfId, uint32_t clusterId,
-                 uint32_t userId, Ipc_MbConfig* cfg, uint32_t cnt);
-uint32_t Ipc_getMailboxBaseAddr(uint32_t custerId);
 
-/**
- * \brief Returns the core name for get core id
- *
- * \param procId [IN] Id of desired core.
- *
- * \return name of the given core id
- * */
-const char* Ipc_getCoreName(uint32_t procId);
+void Ipc_perf_test_setup(void);
 
-/**
- * \brief Returns Core ID based on core build flag
- *
- * \return Code ID of the current core
- **/
-uint32_t Ipc_getCoreId(void);
+RPMessage_Handle Ipc_createRpmsg(uint8_t *buf, uint32_t bufSize, uint32_t *myEndPt);
 
-/**
- *  \brief Returns TRUE if the memory is cache coherent
- *
- *  \return TRUE/FALSE
- */
-uint32_t Ipc_isCacheCoherent(void);
+void Ipc_recvTaskFxn(uint32_t *arg0, uint32_t *arg1);
 
-/* For Maxwell Device */
-#if defined (SOC_AM65XX)
-#include <ti/drv/ipc/soc/V0/ipc_soc.h>
-#endif
+TaskP_Handle Ipc_createRcvThread(uint32_t *arg0, uint32_t *arg1);
 
-/* For J7ES device */
-#if defined (SOC_J721E) || defined (SOC_AM77X)
-#include <ti/drv/ipc/soc/V1/ipc_soc.h>
-#endif
+void Ipc_runPerfTest(uint32_t coreId, uint32_t numCount, uint32_t testId);
+
+void Ipc_sendNewTestIndex(RPMessage_Handle handle, uint32_t srcEndPt, uint32_t testIndex, 
+        uint32_t dstCoreId);
+
+void Ipc_sendTestCompletedMsgCore(RPMessage_Handle handle, uint32_t srcEndPt, uint32_t dstCoreId);
+
+void Ipc_sendTestCompletedMsg(RPMessage_Handle handle, uint32_t srcEndPt);
+
+uint32_t Ipc_processPerfCmd(RPMessage_Handle handle, uint32_t dstEndPt, uint32_t dstCoreId, 
+                uint32_t srcEndPt, uint8_t *buf, uint32_t bufSize);
+
+void Ipc_sendTestResult(RPMessage_Handle handle, uint32_t srcEndPt);
+
+void Ipc_printTestReport();
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* #ifndef IPC_SOC_TOP_H_ */
+#endif  /* #define IPC_PERF_TEST_H_ */
