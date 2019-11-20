@@ -220,7 +220,7 @@ Mcasp_ChanParams mcasp_chanparam[2] = {
 #elif defined(AUDIO_DC_DIGITAL_TEST)
         {Mcasp_SerializerNum_0}, /* serialiser index           */
 #else
-        {Mcasp_SerializerNum_0, Mcasp_SerializerNum_1, Mcasp_SerializerNum_2}, /* serialiser index */
+        {Mcasp_SerializerNum_4, Mcasp_SerializerNum_5, Mcasp_SerializerNum_6}, /* serialiser index */
 #endif
         &mcasp0RcvSetup,
         TRUE,
@@ -251,7 +251,7 @@ Mcasp_ChanParams mcasp_chanparam[2] = {
 #elif defined(AUDIO_DC_DIGITAL_TEST)
         {Mcasp_SerializerNum_0}, /* serialiser index           */
 #else
-        {Mcasp_SerializerNum_3, Mcasp_SerializerNum_4, Mcasp_SerializerNum_5}, /* serialiser index */
+        {Mcasp_SerializerNum_0, Mcasp_SerializerNum_1, Mcasp_SerializerNum_2}, /* serialiser index */
 #endif
         &mcasp0XmtSetup,
         TRUE,
