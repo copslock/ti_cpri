@@ -104,7 +104,7 @@ ENTRY_SRC = diag_entry.S
 DIAG_SRC = diag_common_cfg.c
 
 # FLAGS for the SourceFiles
-CFLAGS += -DDIAG_$(TESTMODE)-Wall -DDIAG_$(MODE)
+CFLAGS += -DDIAG_$(TESTMODE) -Wall -DDIAG_$(MODE)
 SRC_CFLAGS = -I. $(CFLAGS) -g -gdwarf-3 -gstrict-dwarf -Wall 
 
 # Make Rule for the SRC Files
