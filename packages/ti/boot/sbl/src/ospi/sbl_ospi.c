@@ -222,9 +222,11 @@ int32_t SBL_ReadSysfwImage(void **pBuffer, uint32_t num_bytes)
 
     ospi_cfg.funcClk = OSPI_MODULE_CLK_133M;
 
-    /* false = SDR mode, sysfw read by rom using DMA */
-    /* true  = DDR mode, sysfw read by SBL using CPU */
-    ospi_cfg.dtrEnable = true;
+    /* false: unstable, cpu read @ 120Mbytes per sec          */
+    /*        can work with direct ROM load once it is stable */
+    /* true:  stable, CPU read @60Mbytes per sec, will not    */
+    /*        work with ROM, as ROM needs byte accesses       */
+    ospi_cfg.dtrEnable = false;
 
     /* Set the default SPI init configurations */
     OSPI_socSetInitCfg(BOARD_OSPI_NOR_INSTANCE, &ospi_cfg);
@@ -236,23 +238,14 @@ int32_t SBL_ReadSysfwImage(void **pBuffer, uint32_t num_bytes)
     {
         SBL_ADD_PROFILE_POINT;
 
-        if (ospi_cfg.dtrEnable == true)
-        {   
-            /* Enable PHY pipeline mode  */
-            CSL_ospiPipelinePhyEnable((const CSL_ospi_flash_cfgRegs *)(OSPI_CTLR_BASE_ADDR), TRUE);
+        /* Enable PHY pipeline mode  even though DMA is not used */
+        CSL_ospiPipelinePhyEnable((const CSL_ospi_flash_cfgRegs *)(OSPI_CTLR_BASE_ADDR), TRUE);
 
-            /* Optimized CPU copy loop SDR */
-            SBL_SysFwLoad((void *)(*pBuffer), (void *)(OSPI_FLASH_BASE_ADDR + OSPI_OFFSET_SYSFW), num_bytes);
-        }
-        else
-        {
-            /* Point ROM to system firmware in OSPI flash, if SDR*/
-            *pBuffer = (void *)(OSPI_FLASH_BASE_ADDR + OSPI_OFFSET_SYSFW);
-        }
+        /* Optimized CPU copy loop - can be removed once ROM load is working */
+        SBL_SysFwLoad((void *)(*pBuffer), (void *)(OSPI_FLASH_BASE_ADDR + OSPI_OFFSET_SYSFW), num_bytes);
 
         /* Update handle for later use*/
         boardHandle = (void *)h;
-
     }
     else
     {
