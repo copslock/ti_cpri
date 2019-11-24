@@ -120,6 +120,7 @@ extern "C" {
 
 #define UDMA_TEST_RF_SOC_AM65XX         ((uint64_t) 0x00000001U)
 #define UDMA_TEST_RF_SOC_J721E          ((uint64_t) 0x00000002U)
+#define UDMA_TEST_RF_SOC_J7200          ((uint64_t) 0x00000004U)
 #define UDMA_TEST_RF_SOC_ALL            ((uint64_t) 0xFFFFFFFFU)
 
 #define UDMA_TEST_RF_CORE_MPU1_0        ((uint64_t)(((uint64_t) 0x0001U) << 32U))

@@ -329,8 +329,10 @@ struct Udma_DrvObj
     /**< RA register configuration */
     CSL_IntaggrCfg          iaRegs;
     /**< Interrupt Aggregator configuration */
+#if (UDMA_NUM_UTC_INSTANCE > 0)
     Udma_UtcInstInfo        utcInfo[UDMA_NUM_UTC_INSTANCE];
     /**< UTC instance information */
+#endif
     uint32_t                udmapSrcThreadOffset;
     /**< UDMAP Source/TX thread offset */
     uint32_t                udmapDestThreadOffset;
@@ -429,8 +431,10 @@ struct Udma_DrvObj
     /**< UDMA high capacity RX channel allocation flag */
     uint32_t                rxUhcChFlag[UDMA_RM_RX_UHC_CH_ARR_SIZE];
 
+#if (UDMA_NUM_UTC_INSTANCE > 0)
     /**< UDMA ultra high capacity RX channel allocation flag */
     uint32_t                utcChFlag[UDMA_NUM_UTC_INSTANCE][UDMA_RM_UTC_CH_ARR_SIZE];
+#endif
     /**< UDMA external UTC channel allocation flag */
     uint32_t                freeRingFlag[UDMA_RM_FREE_RING_ARR_SIZE];
     /**< UDMA free ring allocation flag */

@@ -135,12 +135,14 @@ typedef struct
     /**< Number of RX channel to be managed.
      *   Note: This cannot exceed #UDMA_RM_MAX_RX_CH */
 
+#if (UDMA_NUM_UTC_INSTANCE > 0)
     uint32_t                startUtcCh[UDMA_NUM_UTC_INSTANCE];
     /**< Start External UTC channel from which this UDMA driver instance
      *   manages */
     uint32_t                numUtcCh[UDMA_NUM_UTC_INSTANCE];
     /**< Number of External UTC channel to be managed.
      *   Note: This cannot exceed #UDMA_RM_MAX_UTC_CH_PER_INST */
+#endif
 
     uint32_t                startFreeFlow;
     /**< Start free flow from which this UDMA driver instance manages */
