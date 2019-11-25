@@ -62,7 +62,7 @@ uint32_t gBoardClkModuleMcuID[] = {
     TISCI_DEV_MCU_I2C1,
     TISCI_DEV_WKUP_I2C0,
     TISCI_DEV_WKUP_UART0,
-    TISCI_DEV_SA2_UL0,
+    TISCI_DEV_MCU_SA2_UL0,
 };
 
 uint32_t gBoardClkModuleMainID[] = {
