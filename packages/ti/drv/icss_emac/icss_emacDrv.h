@@ -54,6 +54,7 @@ extern "C" {
 
 #include <ti/drv/icss_emac/icss_emacCommon.h>
 #include <ti/drv/icss_emac/icss_emacLearning.h>
+#include <ti/drv/icss_emac/icss_emacFwLearning.h>
 #include <ti/drv/icss_emac/icss_emacFwInit.h>
 #include <ti/drv/icss_emac/icss_emacStatistics.h>
 #include <ti/drv/icss_emac/icss_emacStormControl.h>
@@ -157,6 +158,13 @@ extern "C" {
 #define ICSS_EMAC_MODE_MAC1      (1U)
 /**Single EMAC Mode. Port 2 Enabled  */
 #define ICSS_EMAC_MODE_MAC2      (2U)
+
+/**Driver-based Learning Mode Disabled  */
+#define ICSS_EMAC_LEARNING_DIS   (0U)
+/**Driver-based Learning Mode Enabled  */
+#define ICSS_EMAC_LEARNING_EN    (1U)
+/**Firmware-based Learning Mode Enabled  */
+#define ICSS_EMAC_FW_LEARNING_EN (2U)
 
 /** Number of Ports in a single ICSS  */
 #define ICSS_EMAC_MAX_PORTS_PER_INSTANCE     2
@@ -392,6 +400,8 @@ typedef struct ICSS_EmacObject_s {
     ICSS_EmacInitConfig       *emacInitcfg;
     /*! Mac Table Pointer for Learning module. Not applicable for Emac mode */
     HashTable_t               *macTablePtr;
+    /*! FDB pointer for firmware-based Learning module. Not applicable for Emac mode */
+    Fdb                       *fdb;
     /*! Pointer All Driver specific Callback  structure                     */
     ICSS_EmacCallBackObject   *callBackHandle;
     /*! Pointer to  Emac driver Firmware statistics structure               */
@@ -559,10 +569,14 @@ typedef struct ICSS_EmacTTSQuery_s {
 typedef struct ICSS_EmacPktInfo_s {
     /*!  port number where frame was received */
     uint32_t portNumber;
-   /*! host queue where the received frame is queued*/
+    /*! host queue where the received frame is queued*/
     uint32_t queueNumber;
     /*! address of read buffer in L3 address space*/
     uint32_t rdBufferL3Addr;
+    /*! FDB lookup was succssful in firmware. FW Learning Only. */
+    uint32_t fdbLookupSuccess;
+    /*! Packet was flooded. FW Learning Only. */
+    uint32_t flooded;
 } ICSS_EmacPktInfo;
 
 

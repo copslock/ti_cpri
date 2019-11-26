@@ -5,7 +5,7 @@
  *      Contains Include file for PRU Initialization routines
  */
  
-/* Copyright (C) {2016-2018} Texas Instruments Incorporated - http://www.ti.com/ 
+/* Copyright (C) {2016-2019} Texas Instruments Incorporated - http://www.ti.com/ 
 *
 *   Redistribution and use in source and binary forms, with or without 
 *   modification, are permitted provided that the following conditions 
@@ -97,6 +97,29 @@ typedef struct ICSSEMAC_IoctlCmd_s {
 /**IOCTL Learning Table set port state command */
 #define ICSS_EMAC_LEARN_CTRL_SET_PORTSTATE                  (7u)
 
+/** @brief ICSS_EMAC_IOCTL_FW_LEARNING_CTRL options */
+
+/**IOCTL firmware-based Learning Table update command (may be aged out) */
+#define ICSS_EMAC_FW_LEARN_CTRL_UPDATE_TABLE                   (0u)
+/**IOCTL firmware-based Learning Table insert a static MAC ID from table command (not aged) */
+#define ICSS_EMAC_FW_LEARN_CTRL_INSERT_STATIC_MAC              (1u)
+/**IOCTL firmware-based Learning Table clear table command */
+#define ICSS_EMAC_FW_LEARN_CTRL_CLR_TABLE                      (2u)
+/**IOCTL firmware-based Learning Table age out entry command */
+#define ICSS_EMAC_FW_LEARN_CTRL_AGEING                         (3u)
+/**IOCTL firmware-based Learning Table find port from MAC ID command */
+#define ICSS_EMAC_FW_LEARN_CTRL_FIND_MAC                       (4u)
+/**IOCTL firmware-based Learning Table remove a MAC ID from table command */
+#define ICSS_EMAC_FW_LEARN_CTRL_REMOVE_MAC                     (5u)
+/**IOCTL firmware-based Learning Table increment counters (for ageing) command */
+#define ICSS_EMAC_FW_LEARN_CTRL_INC_COUNTER                    (6u)
+/**IOCTL firmware-based Learning Table initialize command */
+#define ICSS_EMAC_FW_LEARN_CTRL_INIT_TABLE                     (7u)
+/**IOCTL firmware-based Learning Table set port state command */
+#define ICSS_EMAC_FW_LEARN_CTRL_SET_PORTSTATE                  (8u)
+/**IOCTL firmware-based Learning Table set RSTP per-port state command */
+#define ICSS_EMAC_FW_LEARN_CTRL_SET_RSTP_PORTSTATE             (9u)
+
 /** @brief ICSS_EMAC_IOCTL_PORT_CTRL options */
 
 /**IOCTL Statistics get from PRU command */
@@ -124,6 +147,8 @@ typedef struct ICSSEMAC_IoctlCmd_s {
 #define ICSS_EMAC_IOCTL_MULTICAST_FILTER_CTRL               (7u)
 /**IOCTL select Vlan filtering API's command */
 #define ICSS_EMAC_IOCTL_VLAN_FILTER_CTRL                    (8u)
+/**IOCTL select firmware-based learning Table API's command */
+#define ICSS_EMAC_IOCTL_FW_LEARNING_CTRL                       (9u)
 
 /** @brief ICSS_EMAC_IOCTL_MULTICAST_FILTER_CTRL options */
 

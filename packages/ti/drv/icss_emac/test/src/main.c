@@ -214,7 +214,11 @@ int32_t ICSS_EMAC_testPruIcssInstance1Setup(void)
     icss_emacTestInitCfg0->enableIntrPacing = ICSS_EMAC_DISABLE_PACING;
     icss_emacTestInitCfg0->ICSS_EmacIntrPacingMode = ICSS_EMAC_INTR_PACING_MODE1;
     icss_emacTestInitCfg0->pacingThreshold = 100;
-    icss_emacTestInitCfg0->learningEn = 1;
+#ifdef STP_SWITCH
+    icss_emacTestInitCfg0->learningEn = ICSS_EMAC_FW_LEARNING_EN;
+#else
+    icss_emacTestInitCfg0->learningEn = ICSS_EMAC_LEARNING_EN;
+#endif
     icss_emacTestInitCfg0->macId = ICSS_EMAC_testLclMac;
 #else
 	icss_emacTestInitCfg0->phyAddr[0]=BOARD_ICSS_EMAC_PORT0_PHY_ADDR;
@@ -224,7 +228,7 @@ int32_t ICSS_EMAC_testPruIcssInstance1Setup(void)
     icss_emacTestInitCfg0->enableIntrPacing = ICSS_EMAC_ENABLE_PACING;
     icss_emacTestInitCfg0->ICSS_EmacIntrPacingMode = ICSS_EMAC_INTR_PACING_MODE1;
     icss_emacTestInitCfg0->pacingThreshold = 100;
-    icss_emacTestInitCfg0->learningEn = 0;
+    icss_emacTestInitCfg0->learningEn = ICSS_EMAC_LEARNING_DIS;
     icss_emacTestInitCfg0->macId = ICSS_EMAC_testLclMac;
 #endif
     ICSS_EMAC_testDrvInit(ICSS_EMAC_testHandle,1);
@@ -300,7 +304,7 @@ int32_t ICSS_EMAC_testPruIcssInstance1Setup(void)
     icss_emacTestInitCfg1->ethPrioQueue = ICSS_EMAC_QUEUE3;
     icss_emacTestInitCfg1->enableIntrPacing = ICSS_EMAC_DISABLE_PACING;
     icss_emacTestInitCfg1->pacingThreshold = 100;
-    icss_emacTestInitCfg1->learningEn = 0;
+    icss_emacTestInitCfg1->learningEn = ICSS_EMAC_LEARNING_DIS;
     icss_emacTestInitCfg1->macId = ICSS_EMAC_testLclMac1;
 
     ICSS_EMAC_testDrvInit(ICSS_EMAC_testHandle1, 1);
@@ -588,7 +592,11 @@ int32_t ICSS_EMAC_testPruIcssInstance2Setup(void)
     icss_emacTestInitCfg0->enableIntrPacing = ICSS_EMAC_DISABLE_PACING;
     icss_emacTestInitCfg0->ICSS_EmacIntrPacingMode = ICSS_EMAC_INTR_PACING_MODE2;
     icss_emacTestInitCfg0->pacingThreshold = 100;
-    icss_emacTestInitCfg0->learningEn = 1;
+#ifdef STP_SWITCH
+    icss_emacTestInitCfg0->learningEn = ICSS_EMAC_FW_LEARNING_EN;
+#else
+    icss_emacTestInitCfg0->learningEn = ICSS_EMAC_LEARNING_EN;
+#endif
     icss_emacTestInitCfg0->macId = ICSS_EMAC_testLclMac2;
 #else
     icss_emacTestInitCfg0->phyAddr[0]=BOARD_ICSS_EMAC_PORT0_PHY_ADDR;
@@ -598,7 +606,7 @@ int32_t ICSS_EMAC_testPruIcssInstance2Setup(void)
     icss_emacTestInitCfg0->enableIntrPacing = ICSS_EMAC_ENABLE_PACING;//ICSS_EMAC_ENABLE_PACING;
     icss_emacTestInitCfg0->ICSS_EmacIntrPacingMode = ICSS_EMAC_INTR_PACING_MODE2;
     icss_emacTestInitCfg0->pacingThreshold = 0;
-    icss_emacTestInitCfg0->learningEn = 0;
+    icss_emacTestInitCfg0->learningEn = ICSS_EMAC_LEARNING_DIS;
     icss_emacTestInitCfg0->macId = ICSS_EMAC_testLclMac2;
 #endif
 
@@ -677,7 +685,7 @@ int32_t ICSS_EMAC_testPruIcssInstance2Setup(void)
         icss_emacTestInitCfg1->enableIntrPacing = ICSS_EMAC_DISABLE_PACING;
         icss_emacTestInitCfg1->pacingThreshold = 100;
     
-        icss_emacTestInitCfg1->learningEn = 0;
+        icss_emacTestInitCfg1->learningEn = ICSS_EMAC_LEARNING_DIS;
     
     
         icss_emacTestInitCfg1->macId = ICSS_EMAC_testLclMac3;
