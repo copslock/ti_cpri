@@ -479,10 +479,10 @@ no_tx_ts:
 ;	if half duplex IPC to RTU
 	qbbs	tx_eof_0, GRegs.speed_f, f_half_d
 	qbbs	tx_eof_ipc1, GRegs.tx.b.flags, f_next_dma	
-	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_P_FLAG
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_E_FLAG
 	qba	tx_eof_0
 tx_eof_ipc1:
-	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_E_FLAG
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_P_FLAG
 ; we don't check if the next packet scheduled for 10Mbps 
 tx_eof_0:
 	qbbs	tx_eof_1, GRegs.speed_f, f_1gbps
@@ -533,10 +533,10 @@ tx_proc_col:
 txp_max_retry:
 	m_inc_stat	r1.b0, TX_COL_DROPPED
 	qbbs	txp_max_01, GRegs.tx.b.flags, f_next_dma	
-	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_P_FLAG
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_E_FLAG
 	qba	txp_max_02
 txp_max_01:
-	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_E_FLAG
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_P_FLAG
 txp_max_02:
 	start_ipg_timer
 	ldi	GRegs.ret_cnt, 0
