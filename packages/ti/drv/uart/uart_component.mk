@@ -67,9 +67,9 @@
 ifeq ($(uart_component_make_include), )
 
 # under other list
-drvuart_BOARDLIST       = am65xx_evm am65xx_idk j721e_sim j721e_evm
-drvuart_dma_SOCLIST     = tda2xx tda2px dra72x dra75x tda2ex tda3xx dra78x am574x am572x am571x k2h k2k k2l k2e k2g c6678 c6657 omapl137 omapl138 am437x am65xx j721e
-drvuart_SOCLIST         = tda2xx tda2px dra72x dra75x tda2ex tda3xx dra78x am574x am572x am571x k2h k2k k2l k2e k2g c6678 c6657 am437x am335x omapl137 omapl138 am65xx j721e
+drvuart_BOARDLIST       = am65xx_evm am65xx_idk j721e_sim j721e_evm j7200_evm
+drvuart_dma_SOCLIST     = tda2xx tda2px dra72x dra75x tda2ex tda3xx dra78x am574x am572x am571x k2h k2k k2l k2e k2g c6678 c6657 omapl137 omapl138 am437x am65xx j721e j7200
+drvuart_SOCLIST         = tda2xx tda2px dra72x dra75x tda2ex tda3xx dra78x am574x am572x am571x k2h k2k k2l k2e k2g c6678 c6657 am437x am335x omapl137 omapl138 am65xx j721e j7200
 drvuart_tda2xx_CORELIST = ipu1_0
 drvuart_tda2px_CORELIST = ipu1_0
 drvuart_tda2ex_CORELIST = ipu1_0
@@ -94,6 +94,8 @@ drvuart_am335x_CORELIST = a8host pru_0 pru_1
 drvuart_am65xx_CORELIST = mpu1_0 mcu1_0
 drvuart_j721e_CORELIST = $(DEFAULT_j721e_CORELIST)
 drvuart_j721e_CORELISTARM = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1 mcu3_0 mcu3_1
+drvuart_j7200_CORELIST = $(DEFAULT_j7200_CORELIST)
+drvuart_j7200_CORELISTARM = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1
 
 ############################
 # uart package
@@ -146,9 +148,9 @@ export uart_CORE_DEPENDENCY
 export uart_SOC_DEPENDENCY
 uart_PKG_LIST = uart
 uart_INCLUDE = $(uart_PATH)
-uart_SOCLIST = tda2xx tda2px tda2ex tda3xx dra78x am574x am572x am571x dra72x dra75x k2h k2k k2l k2e k2g c6678 c6657 am437x am335x omapl137 omapl138 am65xx j721e
+uart_SOCLIST = tda2xx tda2px tda2ex tda3xx dra78x am574x am572x am571x dra72x dra75x k2h k2k k2l k2e k2g c6678 c6657 am437x am335x omapl137 omapl138 am65xx j721e j7200
 export uart_SOCLIST
-ifeq ($(SOC),$(filter $(SOC), j721e))
+ifeq ($(SOC),$(filter $(SOC), j721e j7200))
 uart_$(SOC)_CORELIST = $(drvuart_$(SOC)_CORELIST) c7x_1
 else
 uart_$(SOC)_CORELIST = $(drvuart_$(SOC)_CORELIST)
@@ -202,7 +204,7 @@ export uart_dma_CORE_DEPENDENCY
 export uart_dma_SOC_DEPENDENCY
 uart_dma_PKG_LIST = uart_dma
 uart_dma_INCLUDE = $(uart_dma_PATH)
-uart_dma_SOCLIST = am574x am572x am571x dra72x dra75x dra78x k2h k2k k2l k2e k2g c6678 c6657 omapl137 omapl138 am437x am65xx j721e
+uart_dma_SOCLIST = am574x am572x am571x dra72x dra75x dra78x k2h k2k k2l k2e k2g c6678 c6657 omapl137 omapl138 am437x am65xx j721e j7200
 export uart_dma_SOCLIST
 uart_dma_$(SOC)_CORELIST = $(drvuart_$(SOC)_CORELIST)
 export uart_dma_$(SOC)_CORELIST
@@ -362,14 +364,14 @@ UART_Baremetal_TestApp_PKG_LIST = UART_Baremetal_TestApp
 UART_Baremetal_TestApp_INCLUDE = $(UART_Baremetal_TestApp_PATH)
 UART_Baremetal_TestApp_BOARDLIST = $(drvuart_BOARDLIST)
 export UART_Baremetal_TestApp_BOARDLIST
-ifeq ($(SOC),$(filter $(SOC), j721e))
+ifeq ($(SOC),$(filter $(SOC), j721e j7200))
 UART_Baremetal_TestApp_$(SOC)_CORELIST = $(drvuart_$(SOC)_CORELISTARM)
 else
 UART_Baremetal_TestApp_$(SOC)_CORELIST = $(drvuart_$(SOC)_CORELIST)
 endif
 
 export UART_Baremetal_TestApp_$(SOC)_CORELIST
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 UART_Baremetal_TestApp_SBL_APPIMAGEGEN = yes
 export UART_Baremetal_TestApp_SBL_APPIMAGEGEN
 endif
@@ -389,13 +391,13 @@ UART_Baremetal_DMA_TestApp_PKG_LIST = UART_Baremetal_DMA_TestApp
 UART_Baremetal_DMA_TestApp_INCLUDE = $(UART_Baremetal_DMA_TestApp_PATH)
 UART_Baremetal_DMA_TestApp_BOARDLIST = $(drvuart_BOARDLIST)
 export UART_Baremetal_DMA_TestApp_BOARDLIST
-ifeq ($(SOC),$(filter $(SOC), j721e))
+ifeq ($(SOC),$(filter $(SOC), j721e j7200))
 UART_Baremetal_DMA_TestApp_$(SOC)_CORELIST = $(drvuart_$(SOC)_CORELISTARM)
 else
 UART_Baremetal_DMA_TestApp_$(SOC)_CORELIST = $(drvuart_$(SOC)_CORELIST)
 endif
 export UART_Baremetal_DMA_TestApp_$(SOC)_CORELIST
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 UART_Baremetal_DMA_TestApp_SBL_APPIMAGEGEN = yes
 export UART_Baremetal_DMA_TestApp_SBL_APPIMAGEGEN
 endif
@@ -419,7 +421,7 @@ UART_TestApp_BOARDLIST = $(drvuart_BOARDLIST)
 export UART_TestApp_BOARDLIST
 UART_TestApp_$(SOC)_CORELIST = $(drvuart_$(SOC)_CORELIST)
 export UART_TestApp_$(SOC)_CORELIST
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 UART_TestApp_SBL_APPIMAGEGEN = yes
 export UART_TestApp_SBL_APPIMAGEGEN
 endif
@@ -443,7 +445,7 @@ UART_SMP_TestApp_BOARDLIST = $(drvuart_BOARDLIST)
 export UART_SMP_TestApp_BOARDLIST
 UART_SMP_TestApp_$(SOC)_CORELIST = mpu1_0
 export UART_SMP_TestApp_$(SOC)_CORELIST
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 UART_SMP_TestApp_SBL_APPIMAGEGEN = yes
 export UART_SMP_TestApp_SBL_APPIMAGEGEN
 endif
@@ -467,7 +469,7 @@ UART_DMA_TestApp_BOARDLIST = $(drvuart_BOARDLIST)
 export UART_DMA_TestApp_BOARDLIST
 UART_DMA_TestApp_$(SOC)_CORELIST = $(drvuart_$(SOC)_CORELIST)
 export UART_DMA_TestApp_$(SOC)_CORELIST
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 UART_DMA_TestApp_SBL_APPIMAGEGEN = yes
 export UART_DMA_TestApp_SBL_APPIMAGEGEN
 endif
@@ -491,7 +493,7 @@ UART_DMA_SMP_TestApp_BOARDLIST = $(drvuart_BOARDLIST)
 export UART_DMA_SMP_TestApp_BOARDLIST
 UART_DMA_SMP_TestApp_$(SOC)_CORELIST = mpu1_0
 export UART_DMA_SMP_TestApp_$(SOC)_CORELIST
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 UART_DMA_SMP_TestApp_SBL_APPIMAGEGEN = yes
 export UART_DMA_SMP_TestApp_SBL_APPIMAGEGEN
 endif
@@ -513,7 +515,7 @@ UART_BasicExample_Polling_ExampleProject_BOARDLIST = tda2xx-evm tda2px-evm tda2e
 export UART_BasicExample_Polling_ExampleProject_BOARDLIST
 UART_BasicExample_Polling_ExampleProject_$(SOC)_CORELIST = $(drvuart_$(SOC)_CORELIST)
 export UART_BasicExample_Polling_ExampleProject_$(SOC)_CORELIST
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 UART_BasicExample_Polling_ExampleProject_SBL_APPIMAGEGEN = yes
 export UART_BasicExample_Polling_ExampleProject_SBL_APPIMAGEGEN
 endif
@@ -535,7 +537,7 @@ UART_BasicExample_Intr_ExampleProject_BOARDLIST = tda2xx-evm tda2px-evm tda2ex-e
 export UART_BasicExample_Intr_ExampleProject_BOARDLIST
 UART_BasicExample_Intr_ExampleProject_$(SOC)_CORELIST = $(drvuart_$(SOC)_CORELIST)
 export UART_BasicExample_Intr_ExampleProject_$(SOC)_CORELIST
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 UART_BasicExample_Intr_ExampleProject_SBL_APPIMAGEGEN = yes
 export UART_BasicExample_Intr_ExampleProject_SBL_APPIMAGEGEN
 endif

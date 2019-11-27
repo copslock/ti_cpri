@@ -79,8 +79,10 @@ int32_t Udma_rmInit(Udma_DrvHandle drvHandle)
 {
     int32_t             retVal = UDMA_SOK;
     uint32_t            i, offset, bitPos, bitMask;
-    uint32_t            utcId;
     Udma_RmInitPrms    *rmInitPrms = &drvHandle->initPrms.rmInitPrms;
+#if (UDMA_NUM_UTC_INSTANCE > 0)
+    uint32_t            utcId;
+#endif
 
     /* Check if the default config has any overlap */
     if(FALSE == drvHandle->initPrms.skipRmOverlapCheck)
@@ -163,6 +165,7 @@ int32_t Udma_rmInit(Udma_DrvHandle drvHandle)
             bitMask = (uint32_t) 1U << bitPos;
             drvHandle->rxUhcChFlag[offset] |= bitMask;
         }
+#if (UDMA_NUM_UTC_INSTANCE > 0)
         for(utcId = 0U; utcId < UDMA_NUM_UTC_INSTANCE; utcId++)
         {
             for(i = 0U; i < rmInitPrms->numUtcCh[utcId]; i++)
@@ -174,6 +177,7 @@ int32_t Udma_rmInit(Udma_DrvHandle drvHandle)
                 drvHandle->utcChFlag[utcId][offset] |= bitMask;
             }
         }
+#endif
         for(i = 0U; i < rmInitPrms->numFreeRing; i++)
         {
             offset = i >> 5U;
@@ -238,8 +242,10 @@ int32_t Udma_rmInit(Udma_DrvHandle drvHandle)
 int32_t Udma_rmDeinit(Udma_DrvHandle drvHandle)
 {
     int32_t             retVal = UDMA_SOK;
-    uint32_t            utcId;
     Udma_RmInitPrms    *rmInitPrms = &drvHandle->initPrms.rmInitPrms;
+#if (UDMA_NUM_UTC_INSTANCE > 0)
+    uint32_t            utcId;
+#endif
 
     retVal += Udma_rmCheckResLeak(
                   drvHandle,
@@ -286,6 +292,7 @@ int32_t Udma_rmDeinit(Udma_DrvHandle drvHandle)
                   &drvHandle->rxUhcChFlag[0U],
                   rmInitPrms->numRxUhcCh,
                   UDMA_RM_RX_UHC_CH_ARR_SIZE);
+#if (UDMA_NUM_UTC_INSTANCE > 0)
     for(utcId = 0U; utcId < UDMA_NUM_UTC_INSTANCE; utcId++)
     {
         retVal += Udma_rmCheckResLeak(
@@ -294,6 +301,7 @@ int32_t Udma_rmDeinit(Udma_DrvHandle drvHandle)
                       rmInitPrms->numUtcCh[utcId],
                       UDMA_RM_UTC_CH_ARR_SIZE);
     }
+#endif
     retVal += Udma_rmCheckResLeak(
                   drvHandle,
                   &drvHandle->freeRingFlag[0U],
@@ -1040,6 +1048,7 @@ uint32_t Udma_rmAllocExtCh(uint32_t preferredChNum,
                            const Udma_UtcInstInfo *utcInfo)
 {
     uint32_t            chNum = UDMA_DMA_CH_INVALID;
+#if (UDMA_NUM_UTC_INSTANCE > 0)
     uint32_t            i, offset, bitPos, bitMask;
     uint32_t            utcId;
     Udma_RmInitPrms    *rmInitPrms = &drvHandle->initPrms.rmInitPrms;
@@ -1094,6 +1103,7 @@ uint32_t Udma_rmAllocExtCh(uint32_t preferredChNum,
 
     Udma_assert(drvHandle, drvHandle->initPrms.osalPrms.unlockMutex != (Udma_OsalMutexUnlockFxn) NULL_PTR);
     drvHandle->initPrms.osalPrms.unlockMutex(drvHandle->rmLock);
+#endif
 
     return (chNum);
 }
@@ -1102,6 +1112,7 @@ void Udma_rmFreeExtCh(uint32_t chNum,
                       Udma_DrvHandle drvHandle,
                       const Udma_UtcInstInfo *utcInfo)
 {
+#if (UDMA_NUM_UTC_INSTANCE > 0)
     uint32_t            i, offset, bitPos, bitMask;
     uint32_t            utcId;
     Udma_RmInitPrms    *rmInitPrms = &drvHandle->initPrms.rmInitPrms;
@@ -1125,6 +1136,7 @@ void Udma_rmFreeExtCh(uint32_t chNum,
 
     Udma_assert(drvHandle, drvHandle->initPrms.osalPrms.unlockMutex != (Udma_OsalMutexUnlockFxn) NULL_PTR);
     drvHandle->initPrms.osalPrms.unlockMutex(drvHandle->rmLock);
+#endif
 
     return;
 }

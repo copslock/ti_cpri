@@ -51,6 +51,10 @@
 #include <ti/drv/udma/soc/V1/udma_soc.h>
 #endif
 
+#if defined (SOC_J7200)
+#include <ti/drv/udma/soc/V2/udma_soc.h>
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

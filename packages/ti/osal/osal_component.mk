@@ -66,8 +66,8 @@
 #
 ifeq ($(osal_component_make_include), )
 
-libosal_BOARDLIST       = evmAM572x evmAM335x evmAM437x iceK2G idkAM574x idkAM572x idkAM571x idkAM437x am65xx_evm am65xx_idk evmOMAPL137 lcdkOMAPL138 evmK2E evmK2H evmK2K evmK2L j721e_sim j721e_evm
-libosal_SOCLIST         = tda2xx tda2px tda2ex tda3xx dra78x dra72x dra75x am574x am572x am571x k2h k2k k2l k2e k2g c6678 c6657 am437x am335x omapl137 omapl138 am65xx j721e am64x
+libosal_BOARDLIST       = evmAM572x evmAM335x evmAM437x iceK2G idkAM574x idkAM572x idkAM571x idkAM437x am65xx_evm am65xx_idk evmOMAPL137 lcdkOMAPL138 evmK2E evmK2H evmK2K evmK2L j721e_evm j7200_evm
+libosal_SOCLIST         = tda2xx tda2px tda2ex tda3xx dra78x dra72x dra75x am574x am572x am571x k2h k2k k2l k2e k2g c6678 c6657 am437x am335x omapl137 omapl138 am65xx j721e j7200 am64x 
 libosal_tda2xx_CORELIST = a15_0 ipu1_0
 libosal_tda2px_CORELIST = a15_0 ipu1_0
 libosal_tda2ex_CORELIST = a15_0 ipu1_0
@@ -91,6 +91,7 @@ libosal_am437x_CORELIST = a9host
 libosal_am335x_CORELIST = a8host
 libosal_am65xx_CORELIST = mpu1_0 mcu1_0
 libosal_j721e_CORELIST = $(DEFAULT_j721e_CORELIST)
+libosal_j7200_CORELIST = $(DEFAULT_j7200_CORELIST)
 libosal_am64x_CORELIST = $(DEFAULT_am64x_CORELIST)
 
 ############################
@@ -239,7 +240,7 @@ OSAL_Baremetal_TestApp_PKG_LIST = OSAL_Baremetal_TestApp
 OSAL_Baremetal_TestApp_INCLUDE = $(OSAL_Baremetal_TestApp_PATH)
 OSAL_Baremetal_TestApp_BOARDLIST = $(libosal_BOARDLIST)
 export OSAL_Baremetal_TestApp_BOARDLIST
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 OSAL_Baremetal_TestApp_SBL_APPIMAGEGEN = yes
 export OSAL_Baremetal_TestApp_SBL_APPIMAGEGEN
 endif
@@ -261,7 +262,7 @@ OSAL_TestApp_BOARDLIST = $(libosal_BOARDLIST)
 export OSAL_TestApp_BOARDLIST
 OSAL_TestApp_$(SOC)_CORELIST = $(osal_$(SOC)_CORELIST)
 export OSAL_TestApp_$(SOC)_CORELIST
-ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
 OSAL_TestApp_SBL_APPIMAGEGEN = yes
 export OSAL_TestApp_SBL_APPIMAGEGEN
 endif
@@ -340,6 +341,11 @@ endif
 ifeq ($(SOC),$(filter $(SOC), j721e))
 	OSAL_TestApp_$(SOC)_CORELIST = mpu1_0 mcu1_0 mcu2_0 mcu3_0 c66xdsp_1 c7x_1
  OSAL_Baremetal_TestApp_$(SOC)_CORELIST = mpu1_0 mcu1_0 mcu2_0 mcu3_0
+endif
+
+ifeq ($(SOC),$(filter $(SOC), j7200))
+ OSAL_TestApp_$(SOC)_CORELIST = mpu1_0 mcu1_0 mcu2_0
+ OSAL_Baremetal_TestApp_$(SOC)_CORELIST = mpu1_0 mcu1_0 mcu2_0
 endif
 
 export OSAL_Baremetal_TestApp_$(SOC)_CORELIST

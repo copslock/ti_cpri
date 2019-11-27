@@ -94,7 +94,7 @@ DEFAULT_omapl137_CORELIST = arm9_0 c674x
 DEFAULT_omapl138_CORELIST = arm9_0 c674x
 DEFAULT_am65xx_CORELIST   = mcu1_0 mpu1_0
 DEFAULT_j721e_CORELIST    = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1 mcu3_0 mcu3_1 c66xdsp_1 c66xdsp_2 c7x_1 c7x-hostemu
-DEFAULT_j7200_CORELIST    = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1 mcu3_0 mcu3_1 c7x_1
+DEFAULT_j7200_CORELIST    = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1
 DEFAULT_am64x_CORELIST    = mpu1_0 mcu1_0 mcu1_1 mcu2_0 mcu2_1 ipu1_0
 DEFAULT_k3_CORELIST = m3
 

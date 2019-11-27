@@ -22,7 +22,7 @@ EXTERNAL_INTERFACES = bios xdc
 COMP_LIST_COMMON    = osal_tirtos
 XDC_CFG_FILE_mpu1_0 = ./$(SOC)/uartUnitTest_$(ISA).cfg
 XDC_CFG_FILE_mcu1_0 = ./$(SOC)/uartUnitTest_r5.cfg
-ifeq ($(SOC), j721e)
+ifeq ($(SOC),$(filter $(SOC), j721e j7200))
   XDC_CFG_FILE_$(CORE) = $(PDK_INSTALL_PATH)/ti/build/$(SOC)/sysbios_$(ISA).cfg
 endif
 endif
@@ -73,7 +73,7 @@ else
     endif
     COMP_LIST_COMMON   += uart
 
-    ifeq ($(SOC),$(filter $(SOC), am65xx j721e))
+    ifeq ($(SOC),$(filter $(SOC), am65xx j721e j7200))
     COMP_LIST_COMMON += sciclient i2c
     endif
 

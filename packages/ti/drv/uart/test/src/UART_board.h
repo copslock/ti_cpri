@@ -50,7 +50,7 @@ extern "C" {
 #include <ti/board/board.h>
 
 #ifdef UART_DMA_ENABLE
-#if defined (SOC_AM65XX) || defined(SOC_J721E)
+#if defined (SOC_AM65XX) || defined(SOC_J721E) || defined(SOC_J7200)
 #include <ti/drv/udma/udma.h>
 #else
 /* EDMA3 Header files */

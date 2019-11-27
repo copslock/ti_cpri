@@ -16,6 +16,9 @@ endif
 ifeq ($(SOC),$(filter $(SOC), j721e))
   SRCDIR += soc/V1
 endif
+ifeq ($(SOC),$(filter $(SOC), j7200))
+  SRCDIR += soc/V2
+endif
 INCDIR =
 
 # List all the external components/interfaces, whose interface header files

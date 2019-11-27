@@ -77,7 +77,7 @@ extern "C" {
 #elif defined(SOC_AM65XX)
 #define I2C_HWIP_MAX_CNT         (4U)
 
-#elif defined(SOC_J721E)
+#elif defined(SOC_J721E) || defined(SOC_J7200)
 #define I2C_HWIP_MAX_CNT         (7U)
 
 #endif

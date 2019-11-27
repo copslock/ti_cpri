@@ -34,6 +34,7 @@ function getLibs(prog)
     var socTypes = [
                      'am65xx',
                      'j721e',
+                     'j7200',
                    ];
     var libNames = [
                      'sciclient'

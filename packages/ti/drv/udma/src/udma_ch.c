@@ -1530,6 +1530,7 @@ const Udma_UtcInstInfo *Udma_chGetUtcInst(Udma_DrvHandle drvHandle,
 
 {
     const Udma_UtcInstInfo *utcInfo = (const Udma_UtcInstInfo *) NULL_PTR;
+#if (UDMA_NUM_UTC_INSTANCE > 0)
     uint32_t                i;
 
     for(i = 0U; i < UDMA_NUM_UTC_INSTANCE; i++)
@@ -1540,6 +1541,7 @@ const Udma_UtcInstInfo *Udma_chGetUtcInst(Udma_DrvHandle drvHandle,
             break;
         }
     }
+#endif
 
     return (utcInfo);
 }

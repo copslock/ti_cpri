@@ -4,7 +4,7 @@ INCDIR = . src/nonos
 
 SRCS_COMMON += HwiP_nonos.c SwiP_nonos.c Utils_nonos.c SemaphoreP_nonos.c RegisterIntr_nonos.c
 
-ifeq ($(SOC),$(filter $(SOC),am571x am572x am574x am335x am437x k2h k2k k2e k2l k2g c6678 c6657 omapl137 omapl138 am65xx j721e))
+ifeq ($(SOC),$(filter $(SOC),am571x am572x am574x am335x am437x k2h k2k k2e k2l k2g c6678 c6657 omapl137 omapl138 am65xx j721e j7200))
   SRCDIR      += soc/$(SOC)
   SRCS_COMMON += TimerP_default.c
 endif
