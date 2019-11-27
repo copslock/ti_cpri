@@ -97,8 +97,10 @@ static uint32_t udmaTestGetTestId(UdmaTestObj *testObj, uint32_t tcType);
 /*                            Global Variables                                */
 /* ========================================================================== */
 
+#if !defined (UDMA_UT_BAREMETAL)
 /* Task stack */
 static uint8_t  gUdmaParserTskStack[UDMA_TEST_MAX_TASKS][APP_TSK_STACK_MAIN] __attribute__((aligned(32)));;
+#endif
 
 /* UDMA UT object. */
 UdmaTestObj gUdmaTestUtObj =
@@ -494,7 +496,33 @@ static int32_t udmaTestRunTc(UdmaTestObj *testObj, UdmaTestParams *testPrms)
 
     return (retVal);
 }
+#if defined (UDMA_UT_BAREMETAL)
+int32_t udmaTestCreateTestTasks(UdmaTestObj *testObj, UdmaTestParams *testPrms)
+{
+    int32_t             retVal = UDMA_SOK;
+    uint32_t            taskCnt;
+    UdmaTestTaskObj    *taskObj;
 
+    for(taskCnt = 0U; taskCnt < testPrms->numTasks; taskCnt++)
+    {
+        taskObj = &testObj->taskObj[taskCnt];
+        udmaTestTask(taskObj, NULL);
+    }
+
+    for(taskCnt = 0u; taskCnt < testPrms->numTasks; taskCnt++)
+    {
+        retVal += testObj->taskObj[taskCnt].testResult;
+    }
+
+    return (retVal);
+}
+
+static int32_t udmaTestDeleteTestTasks(UdmaTestObj *testObj)
+{
+    return UDMA_SOK;
+}
+
+#else
 int32_t udmaTestCreateTestTasks(UdmaTestObj *testObj, UdmaTestParams *testPrms)
 {
     int32_t             retVal = UDMA_SOK;
@@ -582,6 +610,7 @@ static int32_t udmaTestDeleteTestTasks(UdmaTestObj *testObj)
 
     return (retVal);
 }
+#endif
 
 static void udmaTestTask(void *arg0, void *arg1)
 {
@@ -599,8 +628,10 @@ static void udmaTestTask(void *arg0, void *arg1)
 
     taskObj->testResult = retVal;
 
+#if !defined (UDMA_UT_BAREMETAL)
     /* Test complete. Signal it */
     SemaphoreP_post(testObj->taskCompleteSem);
+#endif
 
     return;
 }
@@ -1279,12 +1310,20 @@ static void udmaTestSetDefaultCfg(UdmaTestObj *testObj)
     testObj->traceMask             = (GT_INFO1 | GT_TraceState_Enable);
     testObj->sysCtrl.loopCnt       = UDMA_TEST_DEF_LOOP_CNT;
     testObj->sysCtrl.qdepth        = UDMA_TEST_DEF_QDEPTH;
+#if defined (UDMA_UT_DYNAMIC_ANALYSIS)
+    testObj->sysCtrl.loopCnt       = 1U;
+    testObj->sysCtrl.qdepth        = 1U;
+#endif
     testObj->sysCtrl.rtPrintEnable = FALSE;
 
     /* Set run flag */
     testObj->runFlag = 0U;
     testObj->runFlag |= UDMA_TEST_RF_SOC;
     testObj->runFlag |= UDMA_TEST_RF_CORE;
+    testObj->runFlag |= UDMA_TEST_RF_CFG_DEF;
+#if defined (UDMA_UT_DYNAMIC_ANALYSIS)
+    testObj->runFlag |= UDMA_TEST_RF_CFG_DYN;
+#endif
 
     /* Mark all test cases as not run and set result to PASS */
     for(testCnt = 0U; testCnt < UDMA_TEST_NUM_TESTCASES; testCnt++)

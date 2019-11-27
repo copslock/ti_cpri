@@ -60,7 +60,11 @@
 
 #include "utils_mem.h"
 #include "utils_prf.h"
-#include "udma_test_soc.h"
+#if defined (SOC_AM65XX)
+#include "soc/am65xx/udma_test_soc.h"
+#else
+#include "soc/j721e/udma_test_soc.h"
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -139,7 +143,8 @@ extern "C" {
                                          UDMA_TEST_RF_CORE_MCU3_0 | UDMA_TEST_RF_CORE_MCU3_1)
 
 /* For future when we have dynamic coverage testcases */
-#define UDMA_TEST_RF_CFG_ALL            ((uint64_t)(((uint64_t) 0xFFFFU) << 48U))
+#define UDMA_TEST_RF_CFG_DEF            ((uint64_t)(((uint64_t) 0x00001U) << 48U))
+#define UDMA_TEST_RF_CFG_DYN            ((uint64_t)(((uint64_t) 0x00002U) << 48U))
 
 /**
  *  \brief Test types - based on this the different application flow will be

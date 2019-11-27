@@ -809,7 +809,9 @@ static int32_t udmaTestRingEventTestLoop(UdmaTestTaskObj *taskObj)
                                 CSL_REG64_WR(eventPrms.intrClearReg, eventPrms.intrMask);
                                 break;
                             }
+                        #if !defined (UDMA_UT_BAREMETAL)
                             TaskP_yield();
+                        #endif
                         }
                     }
                 }

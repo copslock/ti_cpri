@@ -39,24 +39,12 @@
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
-
 #include <stdio.h>
-/* XDCtools Header files */
-#include <xdc/std.h>
-#include <xdc/runtime/Error.h>
-#include <xdc/runtime/System.h>
-/* BIOS Header files */
-#include <ti/sysbios/BIOS.h>
-#include <ti/sysbios/knl/Task.h>
-#include <ti/board/board.h>
 #include <udma_test.h>
 
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
-
-/* Test application stack size */
-#define APP_TSK_STACK_MAIN              (16U * 1024U)
 
 /* ========================================================================== */
 /*                         Structure Declarations                             */
@@ -74,44 +62,12 @@ void taskFxn(void *a0, void *a1);
 /*                            Global Variables                                */
 /* ========================================================================== */
 
-/* Test application stack */
-static uint8_t  gAppTskStackMain[APP_TSK_STACK_MAIN] __attribute__((aligned(32)));;
-
 /* ========================================================================== */
 /*                          Function Definitions                              */
 /* ========================================================================== */
 
 int main(void)
 {
-    Task_Handle task;
-    Error_Block eb;
-    Task_Params taskParams;
-
-    Error_init(&eb);
-
-    Udma_appC7xPreInit();
-
-    /* Initialize the task params */
-    Task_Params_init(&taskParams);
-    /* Set the task priority higher than the default priority (1) */
-    taskParams.priority = 2;
-    taskParams.stack        = gAppTskStackMain;
-    taskParams.stackSize    = sizeof (gAppTskStackMain);
-
-    task = Task_create((Task_FuncPtr) taskFxn, &taskParams, &eb);
-    if(NULL == task)
-    {
-        BIOS_exit(0);
-    }
-    BIOS_start();    /* does not return */
-
+    taskFxn(NULL, NULL);
     return(0);
 }
-
-#if defined(BUILD_MPU) || defined (__C7100__)
-extern void Osal_initMmuDefault(void);
-void InitMmu(void)
-{
-    Osal_initMmuDefault();
-}
-#endif

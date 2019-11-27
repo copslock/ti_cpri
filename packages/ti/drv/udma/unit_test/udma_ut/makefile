@@ -3,17 +3,24 @@
 #
 include $(PDK_INSTALL_PATH)/ti/build/Rules.make
 
+APP_NAME = udma_unit_testapp
 ifeq ($(UDMA_UT_MANUAL_ENTRY), yes)
 APP_NAME = udma_user_input_unit_testapp
-else
-APP_NAME = udma_unit_testapp
+endif
+ifeq ($(UDMA_UT_BAREMETAL), yes)
+APP_NAME = udma_baremetal_unit_testapp
+BUILD_OS_TYPE=baremetal
+endif
+ifeq ($(UDMA_UT_DYNAMIC_ANALYSIS), yes)
+APP_NAME = udma_dynamic_unit_testapp
+BUILD_OS_TYPE=baremetal
 endif
 
 #
 # This file is common makefile for building UDMA unit test app for both TI-RTOS/baremetal
 #
-SRCDIR = . ../src ../src/soc/$(SOC)
-INCDIR = . ../src ../src/soc/$(SOC)
+SRCDIR = . ./src ./src/soc/$(SOC) ./rtos ./baremetal
+INCDIR = . ./src ./src/soc/$(SOC) ./rtos ./baremetal
 
 # List all the external components/interfaces, whose interface header files
 #  need to be included for this component
@@ -45,19 +52,38 @@ endif
 XDC_CFG_UPDATE_$(CORE) = udma_ut.cfg
 
 # Common source files and CFLAGS across all platforms and cores
-PACKAGE_SRCS_COMMON = . ../src ../../udma_ut_component.mk
+PACKAGE_SRCS_COMMON = . ./src ../udma_ut_component.mk
+SRCS_COMMON += main_common.c
 SRCS_COMMON += udma_test_parser.c udma_test_blkcpy.c udma_test_common.c
 SRCS_COMMON += udma_test_ring.c udma_test_proxy.c udma_test_ring_monitor.c
 SRCS_COMMON += udma_test_event.c udma_test_flow.c
 SRCS_COMMON += udma_test_bug.c udma_test_misc.c
-SRCS_COMMON += utils_mem.c utils_prf.c
 SRCS_COMMON += udma_test_soc.c
+ifeq ($(BUILD_OS_TYPE), baremetal)
+SRCS_COMMON += utils_prf_baremetal.c utils_mem_baremetal.c
+else
+SRCS_COMMON += utils_prf.c utils_mem.c
+endif
 
 CFLAGS_LOCAL_COMMON = $(PDK_CFLAGS) $(UDMA_CFLAGS) $(FVID2_CFLAGS)
 ifeq ($(UDMA_UT_MANUAL_ENTRY), yes)
   CFLAGS_LOCAL_COMMON += -DUDMA_UT_ENABLE_MANUAL_ENTRY
 endif
-EXTERNAL_LNKCMD_FILE_LOCAL = $(SOC)/linker_$(CORE).lds
+ifeq ($(UDMA_UT_BAREMETAL), yes)
+  CFLAGS_LOCAL_COMMON += -DUDMA_UT_BAREMETAL
+endif
+ifeq ($(UDMA_UT_DYNAMIC_ANALYSIS), yes)
+  CFLAGS_LOCAL_COMMON += -DUDMA_UT_DYNAMIC_ANALYSIS -DUDMA_UT_BAREMETAL
+endif
+ifeq ($(BUILD_OS_TYPE), baremetal)
+  ifeq ($(ISA), c66)
+    EXTERNAL_LNKCMD_FILE_LOCAL = baremetal/$(SOC)/linker_$(ISA).cmd
+  else
+    EXTERNAL_LNKCMD_FILE_LOCAL = baremetal/$(SOC)/linker_$(ISA).lds
+  endif
+else
+EXTERNAL_LNKCMD_FILE_LOCAL = rtos/$(SOC)/linker_$(CORE).lds
+endif
 
 # Core/SoC/platform specific source files and CFLAGS
 # Example:

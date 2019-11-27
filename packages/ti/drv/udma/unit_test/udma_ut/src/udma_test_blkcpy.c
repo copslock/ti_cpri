@@ -193,7 +193,11 @@ static int32_t udmaTestBlkcpyTestLoop(UdmaTestTaskObj *taskObj, uint32_t pauseTe
                 {
                     break;
                 }
+            #if defined (UDMA_UT_BAREMETAL)
+                Osal_delay(expectedTime - elapsedTime);
+            #else
                 TaskP_sleep(expectedTime - elapsedTime);
+            #endif
             }
         }
     }
@@ -308,7 +312,9 @@ static int32_t udmaTestBlkcpyTest(UdmaTestTaskObj *taskObj, uint32_t pauseTest)
                                 CSL_REG64_WR(chObj->trEventPrms.intrClearReg, chObj->trEventPrms.intrMask);
                                 break;
                             }
+                        #if !defined (UDMA_UT_BAREMETAL)
                             TaskP_yield();
+                        #endif
                         }
                     }
                 }
@@ -330,7 +336,11 @@ static int32_t udmaTestBlkcpyTest(UdmaTestTaskObj *taskObj, uint32_t pauseTest)
         {
             /* Sleep for sometime and check if the transfer has completed;
              * if so then it is an error */
+        #if defined (UDMA_UT_BAREMETAL)
+            Osal_delay(1);
+        #else
             TaskP_sleep(1000); /* 1 sec sleep */
+        #endif
             for(chCnt = 0U ; chCnt < taskObj->numCh; chCnt++)
             {
                 chObj = taskObj->chObj[chCnt];
@@ -416,7 +426,9 @@ static int32_t udmaTestBlkcpyTest(UdmaTestTaskObj *taskObj, uint32_t pauseTest)
                             break;
                         }
 
+                    #if !defined (UDMA_UT_BAREMETAL)
                         TaskP_yield();
+                    #endif
                     }
                 }
 
@@ -737,7 +749,9 @@ static int32_t udmaTestBlkcpyDelete(UdmaTestTaskObj *taskObj)
                 break;
             }
 
+        #if !defined (UDMA_UT_BAREMETAL)
             TaskP_yield();
+        #endif
         }
 
         /* Unregister master event at the end - CQ is the master event */
