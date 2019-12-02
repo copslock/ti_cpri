@@ -406,6 +406,8 @@ no_tx_ts?:
 	add	r2, Ctx.ippc_res, MQ_SLOT0_RTU ;queue
 	TM_DISABLE
 	MQ_PUSH	r2, r7, fail?
+	add	r2, Ctx.ippc_res, TX_QUEUE_CNT
+	sbco	&r2, c9, PA_STAT_R, 1
 	set	GRrtu.pqmap, GRrtu.pqmap, Ctx.ippc_res
 	TM_ENABLE
 	jmp	done?
