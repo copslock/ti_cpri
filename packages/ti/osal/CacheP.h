@@ -58,6 +58,16 @@ extern "C" {
 #include <stdbool.h>
 #include <stddef.h>
 
+/** 
+ * @brief This enumerator defines the cache coherent or not
+ *
+ * 
+ */
+typedef uint32_t Osal_CacheP_isCoherent;
+    /** Cache is coherent on this CPU */
+#define OSAL_CACHEP_COHERENT                            ((uint32_t) 0U)
+    /**Cache is not coherent on this CPU */
+#define OSAL_CACHEP_NOT_COHERENT                        ((uint32_t) 1U)
 
 /*!
  *  @brief  Function to write back cache lines
@@ -90,6 +100,30 @@ extern void CacheP_Inv(const void * addr, int32_t size);
  *
  */
 extern void CacheP_wbInv(const void * addr, int32_t size);
+
+/*!
+ *  @brief  Function to call before handing over the memory buffer to DMA from CPU
+ *
+ *  @param  addr  Start address of the cache line/s
+ *
+ *  @param  size  size (in bytes) of the memory to be written back and invalidate
+ *
+ *  @param  isCoherent  if the cache is coherent on that CPU or not
+ *
+ */
+void CacheP_fenceCpu2Dma(uintptr_t addr, uint32_t size, Osal_CacheP_isCoherent isCoherent);
+
+/*!
+ *  @brief  Function to call before reading the memory to CPU after DMA operations 
+ *
+ *  @param  addr  Start address of the cache line/s
+ *
+ *  @param  size  size (in bytes) of the memory to be written back and invalidate
+ *
+ *  @param  isCoherent  if the cache is coherent on that CPU or not @ref Osal_CacheP_isCoherent
+ *
+ */
+void CacheP_fenceDma2Cpu(uintptr_t addr, uint32_t size, Osal_CacheP_isCoherent isCoherent);
 
 #ifdef __cplusplus
 }
