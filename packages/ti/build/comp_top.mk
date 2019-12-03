@@ -127,6 +127,9 @@ comp_FIRM_LIST_CLEAN = $(addsuffix _clean, $($(COMP)_FIRM_LIST))
 comp_PKG_LIST_ALL_CLEAN = $(addsuffix _clean, $(comp_PKG_LIST_ALL))
 comp_PKG_LIST_PACKAGE = $(addsuffix _package, $(comp_PKG_LIST_ALL))
 
+
+package_BOARD_LIST_ALL = $(addsuffix _package_board, $(BOARD))
+
 # If the component enables doxygen, this will evaluate to "yesyes" and doxygen
 # will be built. If this value is overridden by the user to any other value, or
 # $(COMP)_DOXYGEN_SUPPORT is not "yes", doxygen is not built.
@@ -235,6 +238,10 @@ $(app_BOARD_LIST_ALL_CLEAN):
 	
 $(app_CORE_LIST_ALL_CLEAN):
 	$(MAKE) examples_clean CORE=$(subst _aclean,,$@) BUILD_PROFILE_$(subst _aclean,,$@)=$(BUILD_PROFILE)
+
+$(package_BOARD_LIST_ALL):
+	$(MAKE) $(comp_PKG_LIST_PACKAGE) BOARD=$(subst _package_board,,$@)
+
 
 xdc_meta:
 	$(XDC) XDCBUILDCFG=config_mk.bld
@@ -370,7 +377,7 @@ examples: $($(COMP)_EXAMPLE_LIST)
 
 examples_clean: $(comp_EXAMPLE_LIST_CLEAN)
 
-package: $(comp_PKG_LIST_PACKAGE)
+package: $(package_BOARD_LIST_ALL)
 
 release: lib tar firm
 
