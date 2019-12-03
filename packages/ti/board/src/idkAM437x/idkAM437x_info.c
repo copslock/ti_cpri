@@ -134,7 +134,7 @@ Board_STATUS Board_writeIDInfo(Board_IDInfo *info) {
     I2C_Transaction i2cTransaction;
     I2C_Handle handle = NULL;
     char txBuf[2+BOARD_EEPROM_HEADER_LENGTH+BOARD_EEPROM_BOARD_NAME_LENGTH
-        +BOARD_EEPROM_VERSION_ADDR+BOARD_EEPROM_SERIAL_NO_LENGTH];
+        +BOARD_EEPROM_VERSION_LENGTH+BOARD_EEPROM_SERIAL_NO_LENGTH];
     bool status;
     int i, idx;
 
@@ -152,7 +152,7 @@ Board_STATUS Board_writeIDInfo(Board_IDInfo *info) {
 
     i2cTransaction.slaveAddress = BOARD_I2C_EEPROM_ADDR;
     i2cTransaction.writeBuf = (uint8_t *)&txBuf[0];
-    i2cTransaction.writeCount = 2;
+    i2cTransaction.writeCount = 2+BOARD_EEPROM_HEADER_LENGTH+BOARD_EEPROM_BOARD_NAME_LENGTH+BOARD_EEPROM_VERSION_LENGTH+BOARD_EEPROM_SERIAL_NO_LENGTH;
 
     /* write header info */
     txBuf[0] = (char)(((uint32_t) 0xFF00 & BOARD_EEPROM_HEADER_ADDR)>>8);
@@ -161,7 +161,7 @@ Board_STATUS Board_writeIDInfo(Board_IDInfo *info) {
     idx = 2;
     for (i = 0; i<BOARD_EEPROM_HEADER_LENGTH; i++) txBuf[idx++] = info->header[i];
     for (i = 0; i<BOARD_EEPROM_BOARD_NAME_LENGTH; i++) txBuf[idx++] = info->boardName[i];
-    for (i = 0; i<BOARD_EEPROM_VERSION_ADDR; i++) txBuf[idx++] = info->version[i];
+    for (i = 0; i<BOARD_EEPROM_VERSION_LENGTH; i++) txBuf[idx++] = info->version[i];
     for (i = 0; i<BOARD_EEPROM_SERIAL_NO_LENGTH; i++) txBuf[idx++] = info->serialNum[i];
     status = I2C_transfer(handle, &i2cTransaction);
     if (status == false)
