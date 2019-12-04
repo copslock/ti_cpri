@@ -150,20 +150,20 @@ void C66x_intrConfig(void)
 void configureAudio(void)
 {
 	Board_STATUS stat = BOARD_SOK;
-	Board_initCfg arg = BOARD_INIT_PINMUX_CONFIG | BOARD_INIT_UNLOCK_MMR | BOARD_INIT_UART_STDIO;
+	Board_initCfg arg = BOARD_INIT_PINMUX_CONFIG | BOARD_INIT_UART_STDIO;
     Sciclient_ConfigPrms_t sciClientCfg;
-
-#if defined (SOC_J721E)
-#if defined (_TMS320C6X)
-    C66x_intrConfig();
-#endif
-#endif
 
 	stat = Board_init(arg);
 	if(stat != BOARD_SOK)
     {
 	    MCASP_log("Board init failed!!");
 	}
+
+#if defined (SOC_J721E)
+#if defined (_TMS320C6X)
+    C66x_intrConfig();
+#endif
+#endif
 
 #if !defined (DEVICE_LOOPBACK)
     IoExpanderConfig();
