@@ -4,7 +4,7 @@
  *
 */
 
-/* Copyright (C) {2016} Texas Instruments Incorporated - http://www.ti.com/ 
+/* Copyright (C) {2016-2019} Texas Instruments Incorporated - http://www.ti.com/ 
 *
 *   Redistribution and use in source and binary forms, with or without 
 *   modification, are permitted provided that the following conditions 
@@ -54,6 +54,9 @@
 #include <ti/drv/icss_emac/icss_emacDrv.h>
 #include <ti/drv/icss_emac/firmware/icss_dualemac/src/icss_vlan_mcast_filter_mmap.h>
 #include <ti/drv/icss_emac/firmware/icss_dualemac/src/icss_rx_int_pacing_mmap.h>
+
+#include <ti/drv/icss_emac/icss_emacFwLearning.h>
+#include <ti/drv/icss_emac/firmware/icss_switch/src/icss_stp_switch.h>
 
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
@@ -1598,6 +1601,46 @@ int8_t ICSS_EmacIoctl(ICSS_EmacHandle icssEmacHandle, uint32_t ioctlCommand, uin
                     break;
                 case ICSS_EMAC_LEARN_CTRL_SET_PORTSTATE:
                     changePortState((portState)(*((uint8_t *)ioctlData)),((ICSS_EmacObject*)icssEmacHandle->object)->macTablePtr);
+                    break;
+                default:
+                    retVal = -((int8_t)1);
+                    break;
+            }
+            break;
+        case ICSS_EMAC_IOCTL_FW_LEARNING_CTRL:
+            switch(ioctlCmd->command) {
+                case ICSS_EMAC_FW_LEARN_CTRL_UPDATE_TABLE:
+                    fdbInsert(((ICSS_EmacObject*)icssEmacHandle->object)->fdb,
+			      *(MAC*)ioctlData, portNo, false);
+                    break;
+                case ICSS_EMAC_FW_LEARN_CTRL_INSERT_STATIC_MAC:
+                    fdbInsert(((ICSS_EmacObject*)icssEmacHandle->object)->fdb,
+			      *(MAC*)ioctlData, portNo, true);
+                    break;
+                case ICSS_EMAC_FW_LEARN_CTRL_CLR_TABLE:
+                    fdbPurge(((ICSS_EmacObject*)icssEmacHandle->object)->fdb);
+                    break;
+                case ICSS_EMAC_FW_LEARN_CTRL_AGEING:
+                    fdbAgeingRoutine(((ICSS_EmacObject*)icssEmacHandle->object)->fdb);
+                    break;
+                case ICSS_EMAC_FW_LEARN_CTRL_FIND_MAC:/*/RETURN */
+                    // Search FDB
+                    break;
+                case ICSS_EMAC_FW_LEARN_CTRL_REMOVE_MAC:
+                    fdbDelete(((ICSS_EmacObject*)icssEmacHandle->object)->fdb,
+			      *(MAC*)ioctlData);
+                    break;
+                case ICSS_EMAC_FW_LEARN_CTRL_INC_COUNTER:		  		  
+                    fdbIncrementAgeingCounter(((ICSS_EmacObject*)icssEmacHandle->object)->fdb);
+                    break;
+                case ICSS_EMAC_FW_LEARN_CTRL_INIT_TABLE:		  
+                    temp_addr = ((((ICSS_EmacHwAttrs const *)icssEmacHandle->hwAttrs)->emacBaseAddrCfg)->sharedDataRamBaseAddr + ICSS_EMAC_FW_FDB__BASE_OFFSET);
+                    fdbInit(((ICSS_EmacObject*)icssEmacHandle->object)->fdb, temp_addr);
+                    break;
+                case ICSS_EMAC_FW_LEARN_CTRL_SET_PORTSTATE:
+                    fdbUpdateStpState(((ICSS_EmacObject*)icssEmacHandle->object)->fdb,
+				      portNo,
+				      (*((uint8_t *)ioctlData)));
                     break;
                 default:
                     retVal = -((int8_t)1);

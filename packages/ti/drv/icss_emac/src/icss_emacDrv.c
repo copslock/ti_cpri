@@ -75,6 +75,7 @@ uint32_t icssEmacIepCountOffset = CSL_ICSSIEP_COUNT_REG0;
 #include <ti/drv/icss_emac/icss_emacStatistics.h>
 #include <ti/drv/icss_emac/icss_emacStormControl.h>
 #include <ti/drv/icss_emac/icss_emacLearning.h>
+#include <ti/drv/icss_emac/icss_emacFwLearning.h>
 #include <ti/drv/icss_emac/icss_emacFwInit.h>
 #include <ti/drv/icss_emac/src/icss_emacLoc.h>
 
@@ -1507,6 +1508,17 @@ int32_t ICSS_EmacRxPktInfo2(ICSS_EmacHandle icssEmacHandle,
             /* Take out the port number */
             temp_addr = ((0x00030000U & rd_buf_desc) >> 16U);
             pRxPktInfo->portNumber = (int32_t)(temp_addr);
+
+	    if(ICSS_EMAC_FW_LEARNING_EN ==
+	       (((ICSS_EmacObject*)icssEmacHandle->object)->emacInitcfg)->learningEn) {
+	      /* Check firmware FDB lookup success */
+	      temp_addr = ((0x00000040U & rd_buf_desc) >> 6U);
+	      pRxPktInfo->fdbLookupSuccess = (uint32_t)(temp_addr);
+	      /* Check firmware flood status */
+	      temp_addr = ((0x00000080U & rd_buf_desc) >> 7U);
+	      pRxPktInfo->flooded = (uint32_t)(temp_addr);
+	    }
+
             /* Get the length */
             rd_packet_length = ((uint16_t)((0x1ffc0000U & rd_buf_desc) >> 18U));
             packet_found = 1;
@@ -1572,6 +1584,8 @@ int32_t ICSS_EmacRxPktGet(ICSS_EmacRxArgument *rxArg, void* userArg)
 
     uint8_t* srcMacId;
     uint8_t* destMacId;
+
+    uint32_t fdbLookupSuccess;
 
     uint16_t *typeProt;
     uint16_t  typeProt1;
@@ -1682,14 +1696,27 @@ int32_t ICSS_EmacRxPktGet(ICSS_EmacRxArgument *rxArg, void* userArg)
     }
     if(rd_packet_length <= ICSS_EMAC_MAXMTU)        /* make sure we do not have too big packets */
     {
-
-        if((((ICSS_EmacObject*)icssEmacHandle->object)->emacInitcfg)->learningEn) { /*Switch Mode*/
+        /* Switch Mode */
+        if(ICSS_EMAC_LEARNING_EN ==
+	   (((ICSS_EmacObject*)icssEmacHandle->object)->emacInitcfg)->learningEn) {
 
             learningExcCallback = (((ICSS_EmacObject*)icssEmacHandle->object)->callBackHandle)->learningExCallBack;
             macTablePtr = (HashTable_t*)(((ICSS_EmacObject*)icssEmacHandle->object)->macTablePtr);
             updateHashTable(srcMacId, rxArg->port, macTablePtr,learningExcCallback);
 
         }
+        /* Switch FW Mode */
+	else if(ICSS_EMAC_FW_LEARNING_EN
+		== (((ICSS_EmacObject*)icssEmacHandle->object)->emacInitcfg)->learningEn) {
+	    /* Read source lookup success result from fw */
+	    temp_addr = ((0x00000040U & rd_buf_desc) >> 6U);
+	    fdbLookupSuccess = (uint32_t)(temp_addr);
+
+	    /* Insert SRC addr to FDB when the firmware FDB lookup was unsuccessful */
+	    if(0 == fdbLookupSuccess) {
+	      fdbInsert(((ICSS_EmacObject*)icssEmacHandle->object)->fdb, *(MAC*)srcMacId, rxArg->port, false);
+	    }	    
+	}
 
         /* Copy the data from switch buffers to DDR */
         if( (update_rd_ptr < queue_rd_ptr) && (update_rd_ptr != rxQueue->buffer_desc_offset))

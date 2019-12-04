@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016-2017, Texas Instruments Incorporated
+# Copyright (c) 2016-2019, Texas Instruments Incorporated
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -83,7 +83,7 @@ drvicss_emac_k2g_CORELIST    = c66x a15_0 pru_0 pru_1
 icss_emac_LIB_LIST = icss_emac icss_emac_indp icss_emac_profile icss_emac_profile_indp
 drvicss_emac_LIB_LIST = $(icss_emac_LIB_LIST)
 
-icss_emac_FIRM_LIST = icss_dualemac icss_switch
+icss_emac_FIRM_LIST = icss_dualemac icss_switch icss_stp_switch
 drvicss_emac_FIRM_LIST = $(icss_emac_FIRM_LIST)
 
 icss_emac_EXAMPLE_LIST =
@@ -258,6 +258,35 @@ icss_switch_SOCLIST = am571x am572x am335x am437x k2g am574x
 export icss_switch_SOCLIST
 icss_switch_$(SOC)_CORELIST = $(drvicss_emac_$(SOC)_CORELIST)
 export icss_switch_$(SOC)_CORELIST
+
+# ICCS FW SWITCH FIRMWARE
+icss_switch_COMP_LIST = icss_stp_switch
+# temporary fix for nightly build
+# icss_stp_switch_RELPATH = ti/drv/icss_emac/firmware/icss_switch
+icss_stp_switch_RELPATH = icss_stp_switch
+icss_stp_switch_PATH = $(PDK_ICSS_EMAC_COMP_PATH)/firmware/icss_switch
+icss_stp_switch_HEADERNAME = icss_stp_switch
+export icss_stp_switch_HEADERNAME
+icss_stp_switch_HEADERPATH = $(icss_stp_switch_PATH)/bin
+export icss_stp_switch_HEADERPATH
+icss_stp_switch_OBJPATH = $(icss_stp_switch_RELPATH)
+export icss_stp_switch_OBJPATH
+icss_stp_switch_MAKEFILE = -f ../../build/makefile_icss_stp_switch.mk
+export icss_stp_switch_MAKEFILE
+icss_stp_switch_BOARD_DEPENDENCY = no
+icss_stp_switch_CORE_DEPENDENCY = yes
+icss_stp_switch_SOC_DEPENDENCY = yes
+export icss_stp_switch_COMP_LIST
+export icss_stp_switch_BOARD_DEPENDENCY
+export icss_stp_switch_CORE_DEPENDENCY
+export icss_stp_switch_SOC_DEPENDENCY
+icss_stp_switch_PKG_LIST = icss_stp_switch
+export icss_stp_switch_PKG_LIST
+icss_stp_switch_INCLUDE = $(icss_stp_switch_PATH)
+icss_stp_switch_SOCLIST = am571x am572x am574x
+export icss_stp_switch_SOCLIST
+icss_stp_switch_$(SOC)_CORELIST = $(drvicss_emac_$(SOC)_CORELIST)
+export icss_stp_switch_$(SOC)_CORELIST
 
 
 export drvicss_emac_LIB_LIST

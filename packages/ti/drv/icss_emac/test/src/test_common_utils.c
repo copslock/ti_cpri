@@ -107,6 +107,12 @@ uint32_t ICSS_EMAC_testIepCounterOffset = CSL_ICSSIEP_COUNT_REG0;
 #include <ti/drv/pruss/pruicss.h>
 #include <ti/drv/pruss/soc/pruicss_v1.h>
 
+#if defined (STP_SWITCH)
+#include <ti/drv/icss_emac/icss_emacFwLearning.h>
+#include <ti/drv/icss_emac/firmware/icss_switch/src/icss_stp_switch.h>
+#include "stp_switch_test_utils.h"
+#endif /* STP_SWITCH */
+
 /* PG version of EVM */
 uint32_t ICSS_EMAC_testPgVersion = 0;
 
@@ -392,7 +398,6 @@ uint8_t ICSS_EMAC_testPkt1VlanPriority[] = {
     0x00, 0x00, 0x00, 0x00
 };
 
-
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
@@ -527,6 +532,9 @@ void ICSS_EMAC_testDrvInit(ICSS_EmacHandle handle, uint8_t instance)
 
     /*Allocate memory for learning*/
     ((ICSS_EmacObject*)handle->object)->macTablePtr = (HashTable_t*)malloc(NUM_PORTS * sizeof(HashTable_t));
+
+    /*Allocate memory for firmware-based learning*/
+    ((ICSS_EmacObject*)handle->object)->fdb = (Fdb*)malloc(NUM_PORTS * sizeof(Fdb));
 
     /*Allocate memory for PRU Statistics*/
     ((ICSS_EmacObject*)handle->object)->pruStat = (ICSS_EmacPruStatistics_t*)malloc(NUM_PORTS * sizeof(ICSS_EmacPruStatistics_t));
@@ -917,8 +925,10 @@ int32_t ICSS_EMAC_testCallbackRxPacket2(void* queueNum, void* ICSS_EmacSubSysHan
                 {
                     if (validEtherType != TRUE)
                     {
+#if !defined (STP_SWITCH)
                         PRINT("parser returned incorect values: rdBufferL3Addr 0x%x, port: 0x%x, queue: 0x%x\n",rxPktInfo.rdBufferL3Addr, rxPktInfo.portNumber, rxPktInfo.queueNumber);
                         return 0;
+#endif /* STP_SWITCH */
                     }
                     packetLength = ICSS_EmacRxPktGet(&rxArgs, NULL);
                     
@@ -931,6 +941,9 @@ int32_t ICSS_EMAC_testCallbackRxPacket2(void* queueNum, void* ICSS_EmacSubSysHan
                 }
                 if(packetLength)
                 {
+#if defined (STP_SWITCH)		  		  
+		  stp_switch_test(icssEmacHandle, rxPktInfo);
+#else
                     if(!(memcmp(&ICSS_EMAC_testPacketArrayInstance2[0], &ICSS_EMAC_testPkt2[0],ICSS_EMAC_TEST_PKT_SIZE)))
                     {
                         PRINT("ICSS_EMAC_testTaskPruss2(PRU2 ETH0): received pkt: %d\n", ICSS_EMAC_testTotalPktRcvd);
@@ -949,6 +962,7 @@ int32_t ICSS_EMAC_testCallbackRxPacket2(void* queueNum, void* ICSS_EmacSubSysHan
                             PRINT("Unit Test Failure, packet mismatch occured\n");
                         }
                     }
+#endif /* STP_SWITCH */
                 }
                 if(rxArgs.more== 0)
                     tmp = 0;    // exit if there are no more packets
@@ -4440,6 +4454,9 @@ Void ICSS_EMAC_testTaskPruss2(UArg a0, UArg a1)
     {
             PRINT("IOCTL test for SWITCH passed\n");
     }
+#if defined (STP_SWITCH)
+    stp_switch_init();
+#endif /* STP_SWITCH */
 #endif
 
 #ifdef SWITCH_EMAC
@@ -4473,6 +4490,11 @@ Void ICSS_EMAC_testTaskPruss2(UArg a0, UArg a1)
 #endif
         
         txArgs.srcAddress = &ICSS_EMAC_testPkt2[0];
+	
+#if defined (STP_SWITCH)
+	/* Firmware Switch main testing loop. Should NOT return. */
+	stp_switch_main_loop(txArgs);
+#endif /* STP_SWITCH */
         
         for (count=0;count < ICSS_EMAC_TEST_PKT_TX_COUNT;count++)
         {

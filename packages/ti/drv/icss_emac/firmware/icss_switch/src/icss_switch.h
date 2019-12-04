@@ -1,7 +1,7 @@
 ;
 ;  TEXAS INSTRUMENTS TEXT FILE LICENSE
 ; 
-;   Copyright (c) 2017 Texas Instruments Incorporated
+;   Copyright (c) 2017-2019 Texas Instruments Incorporated
 ; 
 ;  All rights reserved not granted herein.
 ;  
@@ -261,7 +261,7 @@ Q_OVERFLOW_CNT_OFFSET    .set       7
 ;          DRAM0                                                        DRAM1                                             Shared RAM
 ;***********0x2000**************                         ************0x2000***************                 *************0x3000**************
 ;**         Reserved           *                         **          Reserved            *                 **     Available for Protocol   *
-;***********0x1FA8**************                         ***********0x1FA8****************                 **             Usage            *
+;***********0x1FAC**************                         ***********0x1FAC****************                 **             Usage            *
 ;**    Used for statistics     *                         **      Used for statistics     *                 *                               *
 ;**        and misc            *                         **         and misc             *                 ** ***********0x2290*************
 ;***********0x1F00**************                         ************0x1F00***************                 **   Multicast Filtering Table  *
@@ -458,6 +458,13 @@ RX_PKT_SIZE_OFFSET    .set            STATISTICS_OFFSET + STAT_SIZE + 10        
 PORT_CONTROL_ADDR    .set             STATISTICS_OFFSET + STAT_SIZE + 14        ;4 bytes
 PORT_MAC_ADDR    .set                 STATISTICS_OFFSET + STAT_SIZE + 18        ;6 bytes 
 RX_INT_STATUS_OFFSET    .set          STATISTICS_OFFSET + STAT_SIZE + 24        ;1 byte
+
+    
+;****************************************************************************
+;                          Protocol-specific Stats                          *
+;****************************************************************************
+; Placing these AFTER cfg offsets so as to not interfere with icss_emac
+STP_INVALID_STATE_OFFSET    .set              RX_INT_STATUS_OFFSET + 4 ; number of invalid STP state errors
 
 ;***********************************************************************************************************
 ;                                                                                                          *

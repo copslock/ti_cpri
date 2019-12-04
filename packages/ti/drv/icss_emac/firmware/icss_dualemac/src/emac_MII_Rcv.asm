@@ -57,7 +57,7 @@
 ; brief:  Receive Task
 ;
 ;
-;  (C) Copyright 2017, Texas Instruments, Inc
+;  (C) Copyright 2017-2019, Texas Instruments, Inc
 ;
 ;
     
@@ -72,6 +72,15 @@ __mii_rcv_p	.set	1
 ;	.include "icss_regs.h"
     .if $defined("ICSS_SWITCH_BUILD")
     .include "icss_switch_macros.h"
+
+    .if $defined("ICSS_STP_SWITCH")
+    .include "icss_stp_switch_macros.h"
+    .cdecls C,NOLIST
+%{
+#include "icss_stp_switch.h"
+%}
+    .endif ; ICSS_STP_SWITCH
+    
     .endif
     .include "micro_scheduler.h"
     .include "emac_MII_Xmt.h"
@@ -119,9 +128,41 @@ FN_RCV_FB:
     ; OPT: Port can be disabled directly in the MII Hardware
     ; Is port enabled?
     QBBC	EXIT_FB, R10, 0
-    
-    
+
+    .if $defined("ICSS_STP_SWITCH")
+CHECK_STP_DISABLE:
+    ; Prepare STP State register address
+    .if $defined("PRU0")
+    ; Read Port 1 STP state
+    LDI32 RCV_TEMP_REG_3, ICSS_EMAC_FW_FDB__STP_P1_STP_STATE_ADDR    
+    .else    
+    ; Read Port 2 STP state
+    LDI32 RCV_TEMP_REG_3, ICSS_EMAC_FW_FDB__STP_P2_STP_STATE_ADDR
+    .endif ; $defined("PRU0")
+    LBBO  &RCV_TEMP_REG_1.b0, RCV_TEMP_REG_3, 0, 1 ; read state from memory
+    AND   STP_STATE__R22_BYTE, STP_STATE__R22_BYTE, STP_STATE__R22_INV_MASK ; clear relevant bits in R22
+    OR    STP_STATE__R22_BYTE, STP_STATE__R22_BYTE, RCV_TEMP_REG_1.b0 ; set the relevant bits in R22
+
+    ; If Port disabled, disable directly in MII Hardware
+    AND   RCV_TEMP_REG_1.b0, STP_STATE__R22_BYTE, STP_STATE__R22_MASK ; read STP state in R22
+    QBEQ  EXIT_FB, RCV_TEMP_REG_1.b0, STP_STATE_DISABLED
+
+    ; If STP state is invalid, log error statistics and drop packet
+    QBGE  CONTINUE_PROCESSING, RCV_TEMP_REG_1.b0, STP_STATE_BLOCKING
+    LDI   RCV_TEMP_REG_3 , STP_INVALID_STATE_OFFSET       ; else drop frame and increase the stats
+    QBA   COUNT_RX_STATS
+    .endif ; ICSS_STP_SWITCH
+        
 CONTINUE_PROCESSING:
+    .if $defined("ICSS_STP_SWITCH")
+    .if $defined("ICSS_SWITCH_BUILD")
+    ; We are in a valid STP state, thus there is a chance packets get to the host
+    ; By default, both of these flags should be cleared
+    CLR   R22, R22, FDB_LOOKUP_SUCCESS__R22_BIT
+    CLR   R22, R22, PKT_FLOODED__R22_BIT
+    .endif
+    .endif ; ICSS_STP_SWITCH
+    
     ; set Rcv_active flag to indicate an ongoing reception
     SET	R23 , R23 , Rcv_active 
     
@@ -171,10 +212,66 @@ CHECK_FOR_SHORT_SFD:
     .endif  ;HALF_DUPLEX_ENABLED
     .endif  ;ICSS_DUAL_EMAC_BUILD
 CONTINUE_PROCESSING_PKT:
-    
+
+    .if $defined("ICSS_STP_SWITCH")
+CHECK_STP_DISCARDING:
+    ; Listening and Blocking states all resolve to the same action:
+    ; .. only allow BPDU frames to pass. Aka DISCARDING in RSTP.
+
+    ; STP State for current port is stored in R22
+    AND   RCV_TEMP_REG_1.b0, STP_STATE__R22_BYTE, STP_STATE__R22_MASK ; read STP state in R22
+    QBEQ  STP_DISCARD, RCV_TEMP_REG_1.b0, STP_STATE_BLOCKING
+    QBEQ  STP_DISCARD, RCV_TEMP_REG_1.b0, STP_STATE_LISTENING
+
+    ; Not discarding, continue processing
+    QBA CHECK_RSVD_ADDR
+
+STP_DISCARD:
+    ; Only allow BPDU packets
+CHECK_MC_BPDU:  
+    ; Check Multicast BPDU Address (allow all 01:80:c2:xx:xx:xx traffic)
+    LDI   RCV_TEMP_REG_3.w0, 0x8001
+    QBNE  CHECK_VLAN_BPDU, EthWord.DstWord_01, RCV_TEMP_REG_3.w0
+    LDI   RCV_TEMP_REG_3.b0, 0xC2
+    MOV   RCV_TEMP_REG_3.b2, EthByte.DstByte_2
+    QBNE  CHECK_VLAN_BPDU, RCV_TEMP_REG_3.b0, RCV_TEMP_REG_3.b2
+
+    ; Address is Multicast BPDU
+    QBA   CHECK_RSVD_ADDR
+
+CHECK_VLAN_BPDU:
+    ; Check VLAN BPDU Address
+    LDI   RCV_TEMP_REG_3.w0, 0x0001
+    LDI   RCV_TEMP_REG_3.w2, 0xCC0C
+    QBNE  DROP_PKT, Ethernet.DstAddr_0123, RCV_TEMP_REG_3
+    LDI   RCV_TEMP_REG_3.w0, 0xCDCC
+    QBNE  DROP_PKT, Ethernet.DstAddr_45, RCV_TEMP_REG_3.w0
+
+CHECK_RSVD_ADDR:
+    ; Reserved addresses are 01:80:c2:00:00:00 - 01:80:c2:00:00:10
+    LDI   RCV_TEMP_REG_3.w0, 0x8001
+    LDI   RCV_TEMP_REG_3.w2, 0x00C2
+    QBNE  CHECK_PKT_SOURCE, Ethernet.DstAddr_0123, RCV_TEMP_REG_3
+    MOV   RCV_TEMP_REG_3.w2, Ethernet.DstAddr_45
+    QBNE  CHECK_PKT_SOURCE, RCV_TEMP_REG_3.b2, 0x00
+    QBLT  CHECK_PKT_SOURCE, RCV_TEMP_REG_3.b3, 0x10
+
+    ; Packets for reserved addresses are not to be forwarded
+    ; .. so set the local STP state to "Learning"
+    AND   STP_STATE__R22_BYTE, STP_STATE__R22_BYTE, STP_STATE__R22_INV_MASK ; clr STP state in R22
+    OR    STP_STATE__R22_BYTE, STP_STATE__R22_BYTE, STP_STATE_LEARNING
+
+    ; Address is VLAN BPDU, continue
+    .endif ; ICSS_STP_SWITCH
+        
+CHECK_PKT_SOURCE:             
     QBNE	FB_SA_NO_MATCH_INTERFACE_MAC, Ethernet.SrcAddr_01, R11.w0	;Check if Source Address matches with own address
     QBNE	FB_SA_NO_MATCH_INTERFACE_MAC, Ethernet.SrcAddr_23, R11.w2	;Source Address is stored into 3 words (16 bits)
     QBNE	FB_SA_NO_MATCH_INTERFACE_MAC, Ethernet.SrcAddr_45, R12.w0	
+
+    .if $defined("ICSS_STP_SWITCH")
+DROP_PKT:
+    .endif ; ICSS_STP_SWITCH
     LDI	RCV_TEMP_REG_3 , RX_DROPPED_FRAMES_OFFSET       ; else drop frame and increase the stats
     QBA     COUNT_RX_STATS
     ;QBA     EXIT_FB
@@ -205,7 +302,11 @@ FB_SA_NO_MATCH_INTERFACE_MAC:
         LBCO	&RCV_TEMP_REG_2, ICSS_SHARED_CONST, RCV_TEMP_REG_3.w0, 4
     .endif
     ; check for multi-cast
+    .if $defined("ICSS_STP_SWITCH")
+    QBBS	SKIP_SELF_CHECK, EthByte.DstByte_0, 0 ; if packet is destined for multi/broadcast, skip the self-reference check and DST FDB lookup
+    .else
     QBBS	FB_MULTI_OR_BROADCAST, EthByte.DstByte_0, 0         ; check if packet is Multi/Broad cast type
+    .endif ; ICSS_STP_SWITCH
     
 ;*********************************
 ; uni-cast handling
@@ -230,9 +331,103 @@ FB_PROMISCUOUS_MODE_ENABLE:
     .endif
     
 FB_UNICAST_DA_NO_MATCH:
-         ; else drop frame and increase the stats
     .if    $defined("TWO_PORT_CFG")
-    QBA        FB_UNICAST_CHECK_CT
+
+    .if $defined("ICSS_STP_SWITCH")
+SKIP_SELF_CHECK:      
+FDB_LOCK: 
+    ; Take the lock and check for timeout
+    LDI RCV_TEMP_REG_1.w0, 0x8F
+    M_SPIN_LOCK RCV_TEMP_REG_4.b2, RCV_TEMP_REG_1.w0    
+    QBNE  FDB_DST_LOOKUP, RCV_TEMP_REG_4.b2, 0 ; continue if no timeout
+    
+    ; Flood/insert upon timeout
+    SET   MII_RCV.rx_flags , MII_RCV.rx_flags , host_rcv_flag_shift
+    SET   R22, R22, PKT_FLOODED__R22_BIT
+    QBA   FDB_UNLOCK
+
+FDB_DST_LOOKUP:
+    ; If the packet is multi/broadcast, then skip DST lookup
+    QBBS  FDB_DST_LOOKUP_END, EthByte.DstByte_0, 0
+    
+    ; Look up the destination in the FDB to determine if it needs to be flooded or directly forwarded
+    M_UNICAST_FDB_HASH_LOOKUP     EthWord.DstWord_01, EthWord.DstWord_23, Ethernet.DstAddr_45, RCV_TEMP_REG_1.b2
+
+    ; Check lookup success
+    QBEQ  FDB_DST_LOOKUP_SUCCESS, RCV_TEMP_REG_1.b2, 1
+
+    ; Not found in FDB, flood the packet
+FLOOD_UNICAST_PACKET:
+    ; Unicast address not found in FDB, flood it by forwarding the packet
+    ; to the host as well as the other port
+    SET   MII_RCV.rx_flags , MII_RCV.rx_flags , host_rcv_flag_shift
+    SET   R22, R22, PKT_FLOODED__R22_BIT
+    QBA   FDB_DST_LOOKUP_END
+
+FDB_DST_LOOKUP_SUCCESS:
+    ; Check destination port is not current port
+    LBBO  &RCV_TEMP_REG_1.b0, RCV_TEMP_REG_3, FDB_MAC_INFO__PORT_NO__OFFSET, FDB_MAC_INFO__PORT_NO__SIZE ; TEMP_REG_3 still has the table pointer from lookup
+
+    ; If the destination port is the current port, set the local STP state
+    ; .. to "Learning" so we don't forward the packet
+    .if $defined("PRU0")	
+    QBNE  FDB_DST_LOOKUP_END, RCV_TEMP_REG_1.b0, 0x0 ; Port 1
+    .else
+    QBNE  FDB_DST_LOOKUP_END, RCV_TEMP_REG_1.b0, 0x1 ; Port 2
+    .endif
+
+    ; Set the local STP state to "Learning" as a way to ensure we can learn the
+    ; .. SRC address but not forward the packet. This will not affect the global
+    ; .. STP state.
+    AND   STP_STATE__R22_BYTE, STP_STATE__R22_BYTE, STP_STATE__R22_INV_MASK ; clr STP state in R22
+    OR    STP_STATE__R22_BYTE, STP_STATE__R22_BYTE, STP_STATE_LEARNING
+    
+FDB_DST_LOOKUP_END:   
+FDB_SRC_LOOKUP:
+    ; If the src addr is multi/broadcast, then skip the SRC lookup
+    QBBS  FDB_SRC_LOOKUP_END, EthByte.SrcByte_0, 0
+    
+    ; Now we must look up the source address in the FDB for learning purposes
+    M_UNICAST_FDB_HASH_LOOKUP     Ethernet.SrcAddr_01, Ethernet.SrcAddr_23, Ethernet.SrcAddr_45, RCV_TEMP_REG_1.b3
+
+    ; Check lookup success
+    QBEQ  FDB_SRC_LOOKUP_FAIL, RCV_TEMP_REG_1.b3, 0
+
+FDB_SRC_LOOKUP_SUCCESS:
+    ; The source address was found in the FDB, alert the host and proceed to reset the ageing timer
+    SET   R22, R22, FDB_LOOKUP_SUCCESS__R22_BIT
+    
+FDB_TOUCH_ENTRY:
+    ; Reset FDB entry age and update port number information
+
+    ; Reset ageing timer
+    LDI   RCV_TEMP_REG_1.w0, 0x0000
+
+    ; Set port information
+    .if $defined("PRU0")	
+    LDI   RCV_TEMP_REG_1.b2, 0x0 ; Port 1
+    .else
+    LDI   RCV_TEMP_REG_1.b2, 0x1 ; Port 2
+    .endif
+    
+    SBBO  &RCV_TEMP_REG_1, RCV_TEMP_REG_3, FDB_MAC_INFO__AGE__OFFSET, (FDB_MAC_INFO__AGE__SIZE + FDB_MAC_INFO__PORT_NO__SIZE) ; TEMP_REG_3 still has the table pointer from lookup
+    QBA   FDB_SRC_LOOKUP_END
+
+FDB_SRC_LOOKUP_FAIL:
+    ; The source MAC isn't found in the FDB, send to the host for insertion
+    SET   MII_RCV.rx_flags , MII_RCV.rx_flags , host_rcv_flag_shift
+
+FDB_SRC_LOOKUP_END:
+FDB_UNLOCK:
+    ; Release the lock
+    M_SPIN_UNLOCK
+
+    ; If the packet is multi/broadcast, process it as such
+    QBBS  FB_MULTI_OR_BROADCAST, EthByte.DstByte_0, 0    
+    .endif ; ICSS_STP_SWITCH
+    ; Begin process of forwarding unicast packet, cut-through if possible
+    QBA   FB_UNICAST_CHECK_CT
+    
     .else
     LDI	RCV_TEMP_REG_3 , RX_DROPPED_FRAMES_OFFSET
     QBA     COUNT_RX_STATS
@@ -267,8 +462,9 @@ FB_DISCARD:
     QBA	COUNT_RX_STATS
     
 FB_CONTINUE:
+    ; Check if destination is broadcast
     FILL	&RCV_TEMP_REG_1, 4   ; Fill with 0xffffffff
-    QBNE	FB_MULTICAST, Ethernet.DstAddr_0123, RCV_TEMP_REG_1	; compare if Dest_addr_0123 match with boardcast
+    QBNE	FB_MULTICAST, Ethernet.DstAddr_0123, RCV_TEMP_REG_1
     QBNE	FB_MULTICAST, Ethernet.DstAddr_45, RCV_TEMP_REG_1.w0	
     
 FB_BROADCAST:
@@ -280,7 +476,7 @@ FB_MULTICAST:
     SET	MII_RCV.rx_flags , MII_RCV.rx_flags , host_rcv_flag_shift
     SET	R22 , R22 , RX_MC_FRAME      ; set multi-cast bit to indicate the multicast frame 
 
-    .if $defined("ICSS_DUAL_EMAC_BUILD")
+    .if $defined("ICSS_DUAL_EMAC_BUILD") | $defined("ICSS_STP_SWITCH")
         ; check if multicast filtering is enabled or not i.e. check MULTICAST_CONTROL_BIT in PRU1 data memory
         LDI     RCV_TEMP_REG_3.w0, ICSS_EMAC_FW_MULTICAST_FILTER_CTRL_OFFSET
         LBCO    &RCV_TEMP_REG_3.b0, PRU_DMEM_ADDR, RCV_TEMP_REG_3.w0, 1
@@ -294,7 +490,7 @@ FB_MULTICAST:
 FB_MULTICAST_CONTINUE:
 FB_UNICAST_CHECK_CT:
 FB_BROADCAST_CHECK_CT:
-    .if $defined("ICSS_DUAL_EMAC_BUILD")
+    .if $defined("ICSS_DUAL_EMAC_BUILD") | $defined("ICSS_STP_SWITCH")
         ; check if VLAN filtering is enabled or not i.e. check VLAN_FLTR_CTRL_SHIFT in VLAN_FLTR_CTRL_BYTE stored in data memory
         LDI     RCV_TEMP_REG_3.w0, ICSS_EMAC_FW_VLAN_FILTER_CTRL_BITMAP_OFFSET
         LBCO    &RCV_TEMP_REG_3.b0, PRU_DMEM_ADDR, RCV_TEMP_REG_3.w0, 1
@@ -310,6 +506,27 @@ FB_SKIP_VLAN_FLTR:
     .endif
 
     .if    $defined("TWO_PORT_CFG")
+
+    .if $defined("ICSS_STP_SWITCH")
+CHECK_STP_LEARNING:
+    ; Only forward packet if STP state is FORWARDING
+    AND   RCV_TEMP_REG_1.b0, STP_STATE__R22_BYTE, STP_STATE__R22_MASK ; read STP state in R22
+    QBNE  SKIP_FORWARDING, RCV_TEMP_REG_1.b0, STP_STATE_FORWARDING ; STP State for current port is stored in R22
+
+    ; Only forward packet if the OTHER port state is FORWARDING    
+    .if $defined("PRU0")
+    ; Read Port 2 STP state
+    LDI32 RCV_TEMP_REG_3, ICSS_EMAC_FW_FDB__STP_P2_STP_STATE_ADDR    
+    .else    
+    ; Read Port 1 STP state
+    LDI32 RCV_TEMP_REG_3, ICSS_EMAC_FW_FDB__STP_P1_STP_STATE_ADDR    
+    .endif ; $defined("PRU0")
+    LBBO  &RCV_TEMP_REG_1.b0, RCV_TEMP_REG_3, 0, 1
+    
+    QBNE  SKIP_FORWARDING, RCV_TEMP_REG_1.b0, STP_STATE_FORWARDING
+
+SET_FORWARDING:
+    .endif ; ICSS_STP_SWITCH
     QBBS    FB_NO_CT, R23, 0 ;Xmt_active            ; check if we can set cut-through
     QBBC    FB_NO_CT, R22, 31 ;PACKET_TX_ALLOWED
     QBA        FB_CT_HANDLING
@@ -319,6 +536,10 @@ FB_NO_CT:
     JMP        FB_LT_VT
 FB_CT_HANDLING:
   SET        MII_RCV.tx_flags, MII_RCV.tx_flags, cut_through_flag_shift    ;MII_RCV.tx_flags.cut_through_flag
+
+    .if $defined("ICSS_STP_SWITCH")
+SKIP_FORWARDING:
+    .endif ; ICSS_STP_SWITCH
 FB_LT_VT:
     
 ;check link on other port
@@ -1434,7 +1655,19 @@ LB_SKIP_CRC_SUBTRACT:
     .else
     SET	RCV_TEMP_REG_2 , RCV_TEMP_REG_2 , 17 ;Port 2	
     .endif
-    
+
+    .if $defined("ICSS_STP_SWITCH")
+    ; Set FDB Lookup Success bit if the FDB lookup was successful
+    QBBC  FDB_LOOKUP_FAIL, R22, FDB_LOOKUP_SUCCESS__R22_BIT
+    SET   RCV_TEMP_REG_2, RCV_TEMP_REG_2, FDB_LOOKUP_SUCCESS__BD_BIT
+FDB_LOOKUP_FAIL:
+
+    ; Set Packet Flooded bit if the packet was indeed flooded
+    QBBC  PKT_NOT_FLOODED, R22, PKT_FLOODED__R22_BIT
+    SET   RCV_TEMP_REG_2, RCV_TEMP_REG_2, PKT_FLOODED__BD_BIT
+PKT_NOT_FLOODED:
+    .endif ; ICSS_STP_SWITCH
+        
     ; the first buffer descriptor of the frame has been updated with length and port information
     SBCO	&RCV_TEMP_REG_2, ICSS_SHARED_CONST, RCV_TEMP_REG_1.w2, 4	
 

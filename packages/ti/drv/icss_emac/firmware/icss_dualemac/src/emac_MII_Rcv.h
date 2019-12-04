@@ -1,7 +1,7 @@
 ;
 ;  TEXAS INSTRUMENTS TEXT FILE LICENSE
 ; 
-;   Copyright (c) 2017-2018 Texas Instruments Incorporated
+;   Copyright (c) 2017-2019 Texas Instruments Incorporated
 ; 
 ;  All rights reserved not granted herein.
 ;  
@@ -57,7 +57,7 @@
 ; brief:	Defines and macros to be used in receive task.
 ;
 ;
-;  (C) Copyright 2017-2018, Texas Instruments, Inc
+;  (C) Copyright 2017-2019, Texas Instruments, Inc
 ;
 ;
 	
@@ -73,6 +73,14 @@ __mii_rcv_hp	.set	1
 	.endif ; MULTICAST Filtering
 	.if $defined("ICSS_SWITCH_BUILD")	
         .include "icss_switch.h"
+
+	.if $defined("ICSS_STP_SWITCH")
+        .cdecls C,NOLIST
+%{
+#include "icss_vlan_mcast_filter_mmap.h"
+%}
+	.endif ; include vlan/multicast filtering
+
 	.endif
 	.include "icss_defines.h"
     .cdecls C,NOLIST
@@ -323,12 +331,28 @@ SrcByte_3	.ubyte
 SrcByte_4	.ubyte	
 SrcByte_5	.ubyte	
 	.endstruct
+
+    .if $defined("ICSS_STP_SWITCH")
+struct_EthWord	.struct
+DstWord_01	.ushort	;R2
+DstWord_23	.ushort
+DstWord_45	.ushort	;R3
+SrcWord_01	.ushort	
+SrcWord_23	.ushort	;R4
+SrcWord_45	.ushort	
+        .endstruct
+    .endif ; ICSS_STP_SWITCH    
 	
 	.asg	R25, RCV_REGISTER_1	
 	.asg	R29, RCV_REGISTER_2	
 	
 Ethernet			.sassign	 R2	,	struct_Ethernet	
 EthByte	        	.sassign	 R2	,	struct_EthByte	
+    
+    .if $defined("ICSS_STP_SWITCH")
+EthWord   .sassign    R2, struct_EthWord
+    .endif ; ICSS_STP_SWITCH
+    
 MII_RCV	        	.sassign	 RCV_REGISTER_1	,	MII_RCV_DESC	; This context is for Host Receive
 MII_RCV_PORT		.sassign	 R14 ,	MII_RCV_PORT_DESC	; This context is for Port Receive
 RCV_CONTEXT			.sassign	 R2 ,	MII_RCV_PORT_DESC	
