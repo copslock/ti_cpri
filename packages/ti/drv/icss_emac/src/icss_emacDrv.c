@@ -249,14 +249,7 @@ extern uint32_t index_port1, index_port2;
 extern ICSS_EmacHandle ICSS_EMAC_testHandle2;
 extern ICSS_EmacHandle ICSS_EMAC_testHandle3;
 #endif
-#ifdef __LINUX_USER_SPACE
-static inline void linux_sleep_ns(int ns) {
-    struct timespec ts;
-    ts.tv_sec = 0; \
-    ts.tv_nsec = ns; \
-    nanosleep(&ts, NULL);
-}
-#endif
+
 static inline void ICSS_EMAC_Pend(void *handle, int32_t interrupt_type); /* misra-c */
 static inline void ICSS_EMAC_Pend(void *handle, int32_t interrupt_type) {
     ICSS_EmacHandle icssEmacHandle = (ICSS_EmacHandle)handle;

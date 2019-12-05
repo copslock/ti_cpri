@@ -45,6 +45,10 @@
 /*                             Include Files                                  */
 /* ========================================================================== */
 
+#ifdef __LINUX_USER_SPACE
+#include <time.h>   /* for nanosleep() */
+#endif
+
 #include <stdint.h>
 
 #ifdef __cplusplus
@@ -107,6 +111,19 @@ typedef struct
  *  @brief Generic typedef to typecast to any pointer
  */
 typedef void*       Handle;
+
+/* ========================================================================== */
+/*                           Static Inline Fxns                               */
+/* ========================================================================== */
+
+#ifdef __LINUX_USER_SPACE
+static inline void linux_sleep_ns(int ns) {
+    struct timespec ts;
+    ts.tv_sec = 0; \
+    ts.tv_nsec = ns; \
+    nanosleep(&ts, NULL);
+}
+#endif
 
 
 #ifdef __cplusplus

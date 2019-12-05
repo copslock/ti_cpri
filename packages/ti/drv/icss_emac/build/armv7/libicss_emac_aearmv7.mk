@@ -46,6 +46,7 @@ COMMONSRCC = \
     icss_emacDrv.c \
     icss_emacFwInit.c \
     icss_emacLearning.c \
+    icss_emacFwLearning.c \
     icss_emacStatistics.c \
     icss_emacStormControl.c \
     icss_emacLoc.c \

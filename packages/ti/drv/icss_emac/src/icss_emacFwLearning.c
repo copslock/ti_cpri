@@ -41,6 +41,7 @@
 /* ========================================================================== */
 /*                             Include Files                                  */
 /* ========================================================================== */
+#include <ti/drv/icss_emac/icss_emacCommon.h>
 #include <ti/drv/icss_emac/icss_emacFwLearning.h>
 #include <ti/osal/osal.h>
 
@@ -529,7 +530,11 @@ static void fdbSpinLock(Fdb *fdb) {
   
   /* Wait for the PRUs to release their locks */
   while (0 != fdb->locks->pruLocks) {
+#ifdef __LINUX_USER_SPACE
+    linux_sleep_ns(10000);
+#else
     Osal_delay(10);
+#endif
   }
 }
 
