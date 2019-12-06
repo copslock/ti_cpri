@@ -101,7 +101,7 @@ extern "C"
 #define MPU_DSP2_L1P_CACHE              (0x41600000)
 #define MPU_DSP2_L1D_CACHE              (0x41700000)
 
-#if !defined(SOC_AM574x)
+#if !defined(SOC_AM574x) && !defined (SOC_J721E)
 #define SOC_DSP_L2_BASE                 (0x800000)
 #define SOC_DSP_L1P_BASE                (0xe00000)
 #define SOC_DSP_L1D_BASE                (0xf00000)
