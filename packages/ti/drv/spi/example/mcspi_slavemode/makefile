@@ -1,4 +1,4 @@
-# Makefile for SPI unit test app
+# Makefile for SPI master/slave test app
 include $(PDK_INSTALL_PATH)/ti/build/Rules.make
 
 ifeq ($(IS_BAREMETAL),yes)
@@ -67,11 +67,24 @@ CFLAGS_SPI_DMA    =
 
 endif
 
-# Master/Slave build
-ifeq ($(SLAVE), 1)
+ifeq ($(CORE), mpu1_0)
+# Slave running on mpu1_0 core 
 CFLAGS_SPI_MS     = -DMCSPI_SLAVE_TASK
+ifeq ($(SOC),$(filter $(SOC), am65xx))
+# Slave uses local linker command file to avoid code/data memory conflict with master application
+EXTERNAL_LNKCMD_FILE_LOCAL =  $(PDK_INSTALL_PATH)/ti/drv/spi/example/mcspi_slavemode/am65xx/linker_mpu.lds
+endif
 else
+# Master running on mcu1_0 core, use the common linker command file in build
 CFLAGS_SPI_MS     = -DMCSPI_MASTER_TASK
+ifeq ($(SOC),$(filter $(SOC), j721e))
+# Slave uses local linker command file to avoid code/data memory conflict with master application
+ifeq ($(IS_BAREMETAL),yes)
+EXTERNAL_LNKCMD_FILE_LOCAL =  $(PDK_INSTALL_PATH)/ti/drv/spi/example/mcspi_slavemode/j721e/linker_mcu.lds
+else
+EXTERNAL_LNKCMD_FILE_LOCAL =  $(PDK_INSTALL_PATH)/ti/drv/spi/example/mcspi_slavemode/j721e/linker_mcu_sysbios.lds
+endif
+endif
 endif
 
 # List all the components required by the application
