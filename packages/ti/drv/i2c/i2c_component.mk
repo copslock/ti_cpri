@@ -66,7 +66,7 @@
 #
 ifeq ($(i2c_component_make_include), )
 
-drvi2c_BOARDLIST       = am65xx_evm am65xx_idk j721e_sim j721e_evm j7200_evm
+drvi2c_BOARDLIST       = am65xx_evm am65xx_idk j721e_sim j721e_evm
 drvi2c_BOARDLISTLIM    = am65xx_evm am65xx_idk
 drvi2c_SOCLIST         = am574x am572x am571x tda2xx tda2px tda2ex tda3xx dra78x dra72x dra75x k2h k2k k2l k2e k2g c6678 c6657 am437x am335x omapl137 omapl138 am65xx j721e j7200
 drvi2c_SOCLISTLIM      = am574x am572x am571x tda2xx tda2px tda2ex tda3xx dra78x dra72x dra75x k2h k2k k2l k2e k2g c6678 c6657 am437x am335x omapl137 omapl138 am65xx
