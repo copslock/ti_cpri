@@ -6,8 +6,8 @@
  *          same instance data from slave will be transferred to master.
  *
  *  \details
- *          To demonstrate the example two boards are needed one board
- *          acts as master and another as slave.
+ *          For K2x and AM3/AM4/AM5 devices, to demonstrate the example two
+ *          boards are needed one board acts as master and another as slave.
  *
  *          Following is the Pin connection information:
  *          MasterSPI_SCLK----SlaveSPI_SCLK
@@ -15,10 +15,26 @@
  *          MasterSPI_D1------SlaveSPI_D0
  *          MasterSPI_CS------SlaveSPI_CS
  *
- *  \Running the example
+ *          To run the example:
  *          1) Connect the master and slave boards as per above pin connections.
  *          2) Two consoles. One for master and another for slave.
  *          3) Run slave application binary and then master application binary.
+ *
+ *          For AM65xx and J721e devices, to demonstrate the example two cores
+ *          on the same SoC are needed, mcu1_0 uses McSPI instance 2 on the MCU
+ *          domain as the master and mpu1_0 uses  McSPI instance 4 on the Main
+ *          doman as slave. These two instances are internally connected in the SoC:
+ *
+ *          Following is the internal pin signal connection information:
+ *          MasterSPI_SCLK----SlaveSPI_SCLK
+ *          MasterSPI_D1------SlaveSPI_D0
+ *          MasterSPI_D0------SlaveSPI_D1
+ *          MasterSPI_CS------SlaveSPI_CS
+ *
+ *          To run the example:
+ *          1) Run the MasterSlave mpu1_0 test binary (slave) on MPU1_0 core
+ *          2) Run the MasterSlave mcu1_0 test binary (master) on MCU1_0 core
+ *          3) Be sure to run slave application and then master application
  *
  *  \Output
  *          At slave end console:
@@ -221,7 +237,7 @@ uint32_t spi_test_xfer_len[SPI_NUM_XFERS] =
 #define SPI_TEST_TRIG_LVL       16
 #endif
 
-#if defined(SOC_AM65XX)  || defined(SOC_J721E)
+#if defined(SOC_AM65XX) || defined(SOC_J721E)
 
 /* WKUP CTRL base address + offset to beginning of PAD CONFIG section */
 #define WKUP_PINMUX_REG_BASE            (CSL_WKUP_CTRL_MMR0_CFG0_BASE + \
@@ -341,7 +357,7 @@ int32_t MCSPI_udma_deinit(void)
     return (retVal);
 }
 #endif
-#endif /* #if defined(SOC_AM65XX)  || defined(SOC_J721E) */
+#endif /* #if defined(SOC_AM65XX) || defined(SOC_J721E) */
 
 /**********************************************************************
  ************************** Global Variables **************************
@@ -502,7 +518,13 @@ static void SPI_initConfigDefault(SPI_HWAttrs *cfg, uint32_t chn)
 {
     cfg->chNum                        = chn;
     cfg->chnCfg[chn].tcs              = MCSPI_CS_TCS_0PNT5_CLK;
+#if defined (SOC_AM65XX) || defined(SOC_J721E)
+    /* SPIDAT[1] for TX and SPIDAT[0] for RX */
+    cfg->chnCfg[chn].dataLineCommMode = MCSPI_DATA_LINE_COMM_MODE_1;
+#else
+    /* SPIDAT[1] for RX and SPIDAT[0] for TX */
     cfg->chnCfg[chn].dataLineCommMode = MCSPI_DATA_LINE_COMM_MODE_6;
+#endif
     cfg->chnCfg[chn].trMode           = MCSPI_TX_RX_MODE;
     cfg->initDelay                    = MCSPI_INITDLY_0;
 #if defined (SOC_AM335x)
@@ -580,14 +602,24 @@ static void SPI_initConfig(uint32_t instance, SPI_Tests *test, uint32_t chn, boo
     {
     case (SPI_TEST_ID_TX_ONLY):
         spi_cfg.chnCfg[chn].trMode = MCSPI_TX_ONLY_MODE;
+#if defined (SOC_AM65XX) || defined(SOC_J721E)
+        /* Data line 1 TX enabled, data line 0 RX enabled TX disabled */
+        spi_cfg.chnCfg[chn].dataLineCommMode = MCSPI_DATA_LINE_COMM_MODE_1;
+#else
         /* Data line 0 TX enabled, data line 1 RX enabled TX disabled */
         spi_cfg.chnCfg[chn].dataLineCommMode = MCSPI_DATA_LINE_COMM_MODE_6;
+#endif
         break;
 
     case (SPI_TEST_ID_RX_ONLY):
         spi_cfg.chnCfg[chn].trMode = MCSPI_RX_ONLY_MODE;
+#if defined (SOC_AM65XX) || defined(SOC_J721E)
+    /* Data line 1 TX disabled, data line 0 RX enabled TX disabled */
+        spi_cfg.chnCfg[chn].dataLineCommMode = MCSPI_DATA_LINE_COMM_MODE_3;
+#else
         /* Data line 0 TX disabled, data line 1 RX enabled TX disabled */
         spi_cfg.chnCfg[chn].dataLineCommMode = MCSPI_DATA_LINE_COMM_MODE_7;
+#endif
         break;
 
     case (SPI_TEST_ID_TRIG_LVL):
@@ -915,6 +947,55 @@ Err:
     return (ret);
 }
 
+static uint32_t SPI_test_get_instance (uint32_t testId, bool master)
+{
+    uint32_t instance;
+
+    /* Soc configuration structures indexing starts from 0. If the IP
+     * instances start with 1, to address proper Configuration
+     * structure index, McSPI Instance should be substracted with 1
+     */
+    if (master == (bool)true)
+    {
+        instance = (uint32_t)BOARD_MCSPI_MASTER_INSTANCE - 1;
+    }
+    else
+    {
+        instance = (uint32_t)BOARD_MCSPI_SLAVE_INSTANCE - 1;
+    }
+#if defined (SOC_AM65XX)  || defined(SOC_J721E)
+    /*
+     * For AM65XX/J721E SoC, master/slave test is set up to use
+     * McSPI 2 on the MCU domain for master and McSPI 4 on the
+     * Main domain for slave, for loopback test it uses default
+     * board McSPI instance
+     */
+    if (testId < SPI_TEST_ID_LOOPBACK)
+    {
+        if (master == true)
+        {
+            instance = 2U;
+        }
+        else
+        {
+            instance = 4U;
+        }
+        if ((testId == SPI_TEST_ID_TIMEOUT) ||
+            (testId == SPI_TEST_ID_TIMEOUT_POLL))
+        {
+            /*
+             * Timeout test is done in slave mode,
+             * on the McSPI 2 on MCU domain
+             */
+            instance = 2U;
+        }
+
+    }
+#endif
+
+    return (instance);
+}
+
 static bool SPI_test_single_channel(void *arg)
 {
     SPI_Handle        spi;
@@ -954,21 +1035,8 @@ static bool SPI_test_single_channel(void *arg)
 	/* In case of SPI_TEST_ID_PHA_POL all SPI modes need to be tested */
     for (modeIndex = 0; modeIndex < SPI_modeIndex; modeIndex++)
     {
-		ret = false;
-
-        /* Soc configuration structures indexing starts from 0. If the IP
-         * instances start with 1, to address proper Configuration
-         * structure index, McSPI Instance should be substracted with 1
-         */
-        if (master == true)
-        {
-            instance = (uint32_t)BOARD_MCSPI_MASTER_INSTANCE - 1;
-        }
-        else
-        {
-            instance = (uint32_t)BOARD_MCSPI_SLAVE_INSTANCE - 1;
-        }
-
+        ret = false;
+        instance = SPI_test_get_instance(testId, master);
         SPI_initConfig(instance, test, MCSPI_TEST_CHN, false);
 
         /* Initialize SPI handle */
@@ -1016,7 +1084,11 @@ static bool SPI_test_single_channel(void *arg)
         }
         else
         {
+#if defined (SOC_AM65XX) || defined(SOC_J721E)
+            num_xfers = 1;
+#else
             num_xfers = SPI_NUM_XFERS;
+#endif
         }
         for (i = 0; i < num_xfers; i++)
         {
@@ -1043,10 +1115,15 @@ static bool SPI_test_single_channel(void *arg)
                  * master sleep for 1 second after each transfer
                  * to sync with slave transfer
                  */
-#ifdef USE_BIOS
-                Task_sleep(1000);
-#else
-#endif
+                Osal_delay(1000);
+            }
+            else
+            {
+                /*
+                 * slave sleep for half second after each transfer
+                 * to sync with master transfer
+                 */
+                Osal_delay(500);
             }
         }
 
@@ -1188,19 +1265,7 @@ static bool SPI_test_multi_channel(void *arg)
         cbSemParams.mode = SemaphoreP_Mode_BINARY;
     }
 
-    /* Soc configuration structures indexing starts from 0. If the IP
-     * instances start with 1, to address proper Configuration
-     * structure index, McSPI Instance should be substracted with 1
-     */
-    if (master == true)
-    {
-        instance = (uint32_t)BOARD_MCSPI_MASTER_INSTANCE - 1;
-    }
-    else
-    {
-        instance = (uint32_t)BOARD_MCSPI_SLAVE_INSTANCE - 1;
-    }
-
+    instance = SPI_test_get_instance(testId, master);
     testChn = MCSPI_TEST_CHN;
     SPI_initConfig(instance, test, testChn, false);
 
@@ -1262,7 +1327,11 @@ static bool SPI_test_multi_channel(void *arg)
         }
     }
 
+#if defined(SOC_AM65XX) || defined(SOC_J721E)
+    for (i = 0; i < 1; i++)
+#else
     for (i = 0; i < SPI_NUM_XFERS; i++)
+#endif
     {
         if (SPI_test_mst_slv_xfer((void *)(spi[testChn]), test, spi_test_xfer_len[i], true) == false)
         {
@@ -1275,10 +1344,15 @@ static bool SPI_test_multi_channel(void *arg)
              * master sleep for 1 second after each transfer
              * to sync with slave transfer
              */
-#ifdef USE_BIOS
-            Task_sleep(1000);
-#else
-#endif
+            Osal_delay(1000);
+        }
+        else
+        {
+            /*
+             * slave sleep for half second after each transfer
+             * to sync with master transfer
+             */
+            Osal_delay(500);
         }
     }
 
@@ -1501,12 +1575,6 @@ void masterTaskFxn()
         if (test->testFunc == NULL)
             break;
 
-#if defined (SOC_AM65XX)  || defined(SOC_J721E)
-        if ((test->testId < SPI_TEST_ID_LOOPBACK)       &&
-            (test->testId != SPI_TEST_ID_TIMEOUT)       &&
-            (test->testId != SPI_TEST_ID_TIMEOUT_POLL))
-            continue;
-#endif
         if (evmAM570x == true)
         {
             /* Only loopback test supported on AM570x EVM */
@@ -1563,15 +1631,24 @@ int main(void)
 #endif
 
 #ifdef USE_BIOS
-#if defined(SOC_AM335x) || defined (SOC_AM437x) || defined (SOC_AM65XX)  || defined(SOC_J721E)
+#if defined(SOC_AM335x) || defined (SOC_AM437x) || defined (SOC_AM65XX) || defined(SOC_J721E)
     Task_Handle task;
     Error_Block eb;
+    Task_Params taskParams;
 
     Error_init(&eb);
+
+    /* Initialize the task params */
+    Task_Params_init(&taskParams);
+
+    /* Set the task priority higher than the default priority (1) */
+    taskParams.priority = 2;
+    taskParams.stackSize = 0x4000;
+
 #if defined (MCSPI_SLAVE_TASK)
-    task = Task_create(slaveTaskFxn, NULL, &eb);
+    task = Task_create(slaveTaskFxn, &taskParams, &eb);
 #elif defined (MCSPI_MASTER_TASK)
-    task = Task_create(masterTaskFxn, NULL, &eb);
+    task = Task_create(masterTaskFxn, &taskParams, &eb);
 #endif /* Task type */
 
     if (task == NULL)
@@ -1582,16 +1659,29 @@ int main(void)
 #endif /* Soc type */
 #endif /* #ifdef USE_BIOS */
 
+#if defined(SOC_AM65XX) || defined(SOC_J721E)
+/*
+ * For AM65XX/J721E, master and slave apps are
+ * running on the same SoC, master is running on
+ * MCU core and slave is running on MPU core,
+ * pinmux only need to be initialized once in board
+ */
+#if defined(BUILD_MPU)
     boardCfg = BOARD_INIT_PINMUX_CONFIG |
-        BOARD_INIT_MODULE_CLOCK |
-        BOARD_INIT_UART_STDIO;
+               BOARD_INIT_MODULE_CLOCK |
+               BOARD_INIT_UART_STDIO;
+#else
+    boardCfg = BOARD_INIT_MODULE_CLOCK |
+               BOARD_INIT_UART_STDIO;
+#endif
     boardStatus = Board_init(boardCfg);
     if (boardStatus != BOARD_SOK)
     {
         return (0);
     }
+#endif
 
-#if defined(SOC_AM65XX)  || defined(SOC_J721E)
+#if defined(SOC_AM65XX) || defined(SOC_J721E)
 #if defined (__TI_ARM_V7R4__)
     /* Configure the MCU SPI0_D1 pinmux, since it is not set by default in board */
     HW_WR_REG32((WKUP_PINMUX_REG_BASE + MCU_SPI0_D1_PADCFG_OFFSET), PIN_MODE(0) | \
