@@ -42,21 +42,13 @@
 #include <ti/csl/soc/j721e/src/csl_psilcfg_thread_map.h>
 #include <ti/drv/spi/soc/SPI_soc.h>
 
-#if defined (__aarch64__)
-#define SPI_PDMA_TX_THREAD_BASE        (CSL_PDMA_CH_MAIN_MCSPI0_CH0_TX + 0U)
-#define SPI_PDMA_RX_THREAD_BASE        (CSL_PDMA_CH_MAIN_MCSPI0_CH0_RX + 0U)
-#else
-#define SPI_PDMA_TX_THREAD_BASE        (CSL_PSILCFG_NAVSS_MCU_PDMA_MCU1_PSILD_THREAD_OFFSET + 0U)
-#define SPI_PDMA_RX_THREAD_BASE        (CSL_PSILCFG_NAVSS_MCU_PDMA_MCU1_PSILS_THREAD_OFFSET + 0U)
-#endif
-
 #define SPI_OSPI_PER_CNT (2U)
 
 /* SPI configuration structure */
 SPI_v1_HWAttrs spiInitCfg[CSL_MCSPI_PER_CNT] =
 {
     {
-#if defined (__aarch64__)
+#if defined (BUILD_MPU)
         /* main domain */
         (uint32_t)CSL_MCSPI0_CFG_BASE,                         /* baseAddr */
         CSLR_COMPUTE_CLUSTER0_GIC500SS_SPI_MCSPI0_INTR_SPI_0,  /* intNum */
@@ -100,8 +92,13 @@ SPI_v1_HWAttrs spiInitCfg[CSL_MCSPI_PER_CNT] =
                 MCSPI_TX_RX_MODE,
             },
         },
-        SPI_PDMA_RX_THREAD_BASE,            /* rxDmaEventNumber */
-        SPI_PDMA_TX_THREAD_BASE,            /* txDmaEventNumber */
+#if defined (BUILD_MPU)
+        CSL_PDMA_CH_MAIN_MCSPI0_CH0_RX,     /* rxDmaEventNumber */
+        CSL_PDMA_CH_MAIN_MCSPI0_CH0_TX,     /* txDmaEventNumber */
+#else
+        CSL_PDMA_CH_MCU_MCSPI0_CH0_RX,      /* rxDmaEventNumber */
+        CSL_PDMA_CH_MCU_MCSPI0_CH0_TX,      /* txDmaEventNumber */
+#endif
         0,                                  /* edmaTxTCC */
         0,                                  /* edmaRxTCC */
         0,                                  /* edmaTxTC */
@@ -111,7 +108,7 @@ SPI_v1_HWAttrs spiInitCfg[CSL_MCSPI_PER_CNT] =
         NULL                                /* dmaInfo */
     },
     {
-#if defined (__aarch64__)
+#if defined (BUILD_MPU)
         /* main domain */
         (uint32_t)CSL_MCSPI1_CFG_BASE,
         CSLR_COMPUTE_CLUSTER0_GIC500SS_SPI_MCSPI1_INTR_SPI_0,
@@ -155,8 +152,13 @@ SPI_v1_HWAttrs spiInitCfg[CSL_MCSPI_PER_CNT] =
                 MCSPI_TX_RX_MODE,
             },
         },
-        SPI_PDMA_RX_THREAD_BASE + 4U,
-        SPI_PDMA_TX_THREAD_BASE + 4U,
+#if defined (BUILD_MPU)
+        CSL_PDMA_CH_MAIN_MCSPI1_CH0_RX,
+        CSL_PDMA_CH_MAIN_MCSPI1_CH0_TX,
+#else
+        CSL_PDMA_CH_MCU_MCSPI1_CH0_RX,
+        CSL_PDMA_CH_MCU_MCSPI1_CH0_TX,
+#endif
         0,
         0,
         0,
@@ -166,7 +168,7 @@ SPI_v1_HWAttrs spiInitCfg[CSL_MCSPI_PER_CNT] =
         NULL
     },
     {
-#if defined (__aarch64__)
+#if defined (BUILD_MPU)
         /* main domain */
         (uint32_t)CSL_MCSPI2_CFG_BASE,
         CSLR_COMPUTE_CLUSTER0_GIC500SS_SPI_MCSPI2_INTR_SPI_0,
@@ -210,8 +212,13 @@ SPI_v1_HWAttrs spiInitCfg[CSL_MCSPI_PER_CNT] =
                 MCSPI_TX_RX_MODE,
             },
         },
-        SPI_PDMA_RX_THREAD_BASE + 8U,
-        SPI_PDMA_TX_THREAD_BASE + 8U,
+#if defined (BUILD_MPU)
+        CSL_PDMA_CH_MAIN_MCSPI2_CH0_RX,
+        CSL_PDMA_CH_MAIN_MCSPI2_CH0_TX,
+#else
+        CSL_PDMA_CH_MCU_MCSPI2_CH0_RX,
+        CSL_PDMA_CH_MCU_MCSPI2_CH0_TX,
+#endif
         0,
         0,
         0,
@@ -221,7 +228,7 @@ SPI_v1_HWAttrs spiInitCfg[CSL_MCSPI_PER_CNT] =
         NULL
     },
     {
-#if defined (__aarch64__)
+#if defined (BUILD_MPU)
         /* main domain */
         (uint32_t)CSL_MCSPI3_CFG_BASE,
         CSLR_COMPUTE_CLUSTER0_GIC500SS_SPI_MCSPI3_INTR_SPI_0,
@@ -265,8 +272,8 @@ SPI_v1_HWAttrs spiInitCfg[CSL_MCSPI_PER_CNT] =
                 MCSPI_TX_RX_MODE,
             },
         },
-        SPI_PDMA_RX_THREAD_BASE + 12U,
-        SPI_PDMA_TX_THREAD_BASE + 12U,
+        CSL_PDMA_CH_MAIN_MCSPI3_CH0_RX,
+        CSL_PDMA_CH_MAIN_MCSPI3_CH0_TX,
         0,
         0,
         0,
@@ -276,7 +283,7 @@ SPI_v1_HWAttrs spiInitCfg[CSL_MCSPI_PER_CNT] =
         NULL
     },
     {
-#if defined (__aarch64__)
+#if defined (BUILD_MPU)
         /* main domain */
         (uint32_t)CSL_MCSPI4_CFG_BASE,
         CSLR_COMPUTE_CLUSTER0_GIC500SS_SPI_MCSPI4_INTR_SPI_0,
@@ -320,8 +327,8 @@ SPI_v1_HWAttrs spiInitCfg[CSL_MCSPI_PER_CNT] =
                 MCSPI_TX_RX_MODE,
             },
         },
-        SPI_PDMA_RX_THREAD_BASE + 16U,
-        SPI_PDMA_TX_THREAD_BASE + 16U,
+        CSL_PDMA_CH_MAIN_MCSPI4_CH0_RX,
+        CSL_PDMA_CH_MAIN_MCSPI4_CH0_TX,
         0,
         0,
         0,

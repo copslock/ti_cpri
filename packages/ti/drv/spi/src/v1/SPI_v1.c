@@ -924,12 +924,12 @@ static void MCSPI_v1_hwiFxn (uintptr_t arg)
     SPI_v1_HWAttrs const *hwAttrs;
     SPI_v1_ChnCfg const  *chnCfg;
     uint32_t              intCode = 0;
-    bool                  xferDone = (bool)false;
     bool                  trigLvlChg = (bool)false;
     uint32_t              rdBytes;
     uint32_t              wrBytes;
     uint32_t              chnStatus;
     bool                  loopFlag = (bool)true;
+    uint32_t              masterTxCnt = 0;
 
     /* Get the pointer to the object and hwAttrs */
     mcHandle = (MCSPI_Handle)arg;
@@ -942,88 +942,89 @@ static void MCSPI_v1_hwiFxn (uintptr_t arg)
 
     intCode = McSPIIntStatusGet(hwAttrs->baseAddr);
 
-    /*
-     * Fill the TX FIFO if an TX-empty interrupt has occurred.
-     */
-    if ((uint32_t)MCSPI_INT_TX_EMPTY(chNum) == (uint32_t)(intCode & (uint32_t)MCSPI_INT_TX_EMPTY(chNum)))
+    while (((chObj->readCountIdx != 0U) || (chObj->writeCountIdx != 0U)) &&
+           (loopFlag == (bool)true))
     {
-        while ((chObj->writeCountIdx != 0U) &&
-               ((McSPIChannelStatusGet(hwAttrs->baseAddr, chNum) & CSL_MCSPI_CH0STAT_TXFFF_MASK) == 0U)) 
+        chnStatus = McSPIChannelStatusGet(hwAttrs->baseAddr, chNum);
+        if (SPI_MASTER == chObj->spiParams.mode)
         {
-
-            /* Fill the TX FIFO until full */
-            chObj->writeBufIdx = MCSPI_transmitData_v1 (hwAttrs->baseAddr,
-                                                        chObj->spiParams.dataSize,
-                                                        chObj->writeBufIdx,
-                                                        chNum);
-            chObj->writeCountIdx--;
-
-            if ((chObj->readCountIdx != 0U) &&
-                ((McSPIChannelStatusGet(hwAttrs->baseAddr, chNum) & CSL_MCSPI_CH0STAT_RXFFE_MASK) == 0U))
+            if (chObj->writeCountIdx != 0U)
             {
-                /* Read from the RX FIFO until empty */
-                chObj->readBufIdx = MCSPI_receiveData_v1(hwAttrs->baseAddr,
-                                                         chObj->spiParams.dataSize,
-                                                         chObj->readBufIdx,
-                                                         chNum);
-                chObj->readCountIdx--;
-            }
-        }
-
-        McSPIIntStatusClear(hwAttrs->baseAddr, (uint32_t)MCSPI_INT_TX_EMPTY(chNum));
-        intCode = (uint32_t)(intCode & (uint32_t)(~MCSPI_INT_TX_EMPTY(chNum)));
-    }
-
-    
-    /* RX FIFO is full, empty the FIFO to receive more data if necessary */
-    if ((uint32_t)MCSPI_INT_RX_FULL(chNum) == (uint32_t)(intCode & (uint32_t)MCSPI_INT_RX_FULL(chNum)))
-    {
-        while ((loopFlag == (bool)true) && (chObj->readCountIdx != 0U))
-        {
-            chnStatus = McSPIChannelStatusGet(hwAttrs->baseAddr, chNum);
-            if (((chnStatus & CSL_MCSPI_CH0STAT_RXFFE_MASK) == 0U) ||
-                ((chnStatus & CSL_MCSPI_CH0STAT_RXS_MASK) == 1U))
-            {
-                /* Read from the FIFO until no data left */
-                chObj->readBufIdx = MCSPI_receiveData_v1(hwAttrs->baseAddr,
-                                                         chObj->spiParams.dataSize,
-                                                         chObj->readBufIdx,
-                                                         chNum);
-                chObj->readCountIdx--;
+                if (0U == (chnStatus & CSL_MCSPI_CH0STAT_TXFFF_MASK))
+                {
+                    /* TX FIFO is not full */
+                    chObj->writeBufIdx = MCSPI_transmitData_v1 (hwAttrs->baseAddr,
+                                                                chObj->spiParams.dataSize,
+                                                                chObj->writeBufIdx,
+                                                                chNum);
+                    chObj->writeCountIdx--;
+                    masterTxCnt++;
+                }
+                else
+                {
+                    loopFlag = (bool)false;
+                }
             }
             else
             {
                 loopFlag = (bool)false;
             }
+        }
 
-            if ((loopFlag == (bool)true) && (chObj->writeCountIdx != 0U) &&
-                ((McSPIChannelStatusGet(hwAttrs->baseAddr, chNum) & CSL_MCSPI_CH0STAT_TXFFF_MASK) == 0U))
+        if (chObj->readCountIdx != 0U)
+        {
+            if ((0U == (chnStatus & CSL_MCSPI_CH0STAT_RXFFE_MASK)) ||
+                (0U != (chnStatus & CSL_MCSPI_CH0STAT_RXS_MASK)))
             {
-                /* if TX FIFO not full, write 1 byte to TX FIFO */
-                chObj->writeBufIdx = MCSPI_transmitData_v1 (hwAttrs->baseAddr,
-                                                            chObj->spiParams.dataSize,
-                                                            chObj->writeBufIdx,
-                                                            chNum);
-
-                chObj->writeCountIdx--;
+                /* RX FIFO is not empty or RX register is full */
+                chObj->readBufIdx = MCSPI_receiveData_v1(hwAttrs->baseAddr,
+                                                         chObj->spiParams.dataSize,
+                                                         chObj->readBufIdx,
+                                                         chNum);
+                chObj->readCountIdx--;
+                loopFlag = (bool)true;
             }
-
-            if ((loopFlag == (bool)true) && (chObj->readCountIdx == 0U))
+            else
             {
-                xferDone = (bool)true;
+                if (SPI_MASTER != chObj->spiParams.mode)
+                {
+                    loopFlag = (bool)false;
+                }
+            }
+        }
+        else
+        {
+            if (SPI_MASTER != chObj->spiParams.mode)
+            {
                 loopFlag = (bool)false;
             }
         }
 
-        McSPIIntStatusClear(hwAttrs->baseAddr, (uint32_t)MCSPI_INT_RX_FULL(chNum));
-        intCode = intCode & (uint32_t)(~MCSPI_INT_RX_FULL(chNum));
+        if ((SPI_SLAVE == chObj->spiParams.mode) &&
+            (chObj->writeCountIdx != 0U))
+        {
+            if (0U == (chnStatus & CSL_MCSPI_CH0STAT_TXFFF_MASK))
+            {
+                /* TX FIFO is not full */
+                chObj->writeBufIdx = MCSPI_transmitData_v1 (hwAttrs->baseAddr,
+                                                            chObj->spiParams.dataSize,
+                                                            chObj->writeBufIdx,
+                                                            chNum);
+                chObj->writeCountIdx--;
+                loopFlag = (bool)true;
+            }
+        }
+        if (masterTxCnt == object->txTrigLvl)
+        {
+            loopFlag = (bool)false;
+        }
     }
 
     /* Update the TX trigger level */
     if (chObj->writeCountIdx != 0U)
     {
         wrBytes = chObj->writeCountIdx << chObj->wordLenShift;
-        if (wrBytes < object->fifoSize)
+        if (wrBytes < object->txTrigLvl)
         {
             object->txTrigLvl = wrBytes;
             trigLvlChg = (bool)true;
@@ -1031,12 +1032,16 @@ static void MCSPI_v1_hwiFxn (uintptr_t arg)
     }
 
     /* Update the RX trigger level */
-    if (chObj->readCountIdx != 0U)
+    if (chObj->readCountIdx > 1U)
     {
         rdBytes = chObj->readCountIdx << chObj->wordLenShift;
-        if (rdBytes < object->fifoSize)
+        if (rdBytes < object->rxTrigLvl)
         {
             object->rxTrigLvl = rdBytes;
+            if (chObj->writeCountIdx == 0U)
+            {
+                object->txTrigLvl = object->fifoSize;
+            }
             trigLvlChg = (bool)true;
         }
     }
@@ -1047,27 +1052,41 @@ static void MCSPI_v1_hwiFxn (uintptr_t arg)
                             (uint8_t)object->txTrigLvl, chnCfg->trMode);
     }
 
-    if ((MCSPI_INT_EOWKE == (intCode & MCSPI_INT_EOWKE)) || (xferDone == (bool)true))
+    /*if (MCSPI_INT_EOWKE == (intCode & MCSPI_INT_EOWKE))*/
+    if ((MCSPI_INT_EOWKE == (intCode & MCSPI_INT_EOWKE)) ||
+        ((chObj->writeCountIdx == 0U) && (chObj->readCountIdx <= 1U) && (chnCfg->trMode != MCSPI_TX_ONLY_MODE)))
     {
+        chnStatus = McSPIChannelStatusGet(hwAttrs->baseAddr, chNum);
+        while ((0U == (chnStatus & CSL_MCSPI_CH0STAT_EOT_MASK)))
+        {
+            chnStatus = McSPIChannelStatusGet(hwAttrs->baseAddr, chNum);
+        }
+        if (chObj->readCountIdx != 0U)
+        {
+            /* Read final RX byte */
+            chObj->readBufIdx = MCSPI_receiveData_v1(hwAttrs->baseAddr,
+                                                     chObj->spiParams.dataSize,
+                                                     chObj->readBufIdx,
+                                                     chNum);
+            chObj->readCountIdx--;
+        }
         /* Transaction Done */
-        McSPIIntDisable(hwAttrs->baseAddr,
-                        (uint32_t)(MCSPI_INT_RX_FULL(chNum) | MCSPI_INT_EOWKE));
-        McSPIIntStatusClear(hwAttrs->baseAddr, MCSPI_INT_EOWKE);
-        McSPIChannelDisable(hwAttrs->baseAddr, chNum);
+        intCode = (uint32_t)(MCSPI_INT_RX_FULL(chNum))  |
+                  (uint32_t)(MCSPI_INT_TX_EMPTY(chNum)) |
+                  MCSPI_INT_EOWKE;
+        McSPIIntDisable(hwAttrs->baseAddr,intCode);
+        McSPIIntStatusClear(hwAttrs->baseAddr, intCode);
         if ((SPI_MASTER == chObj->spiParams.mode) &&
             (hwAttrs->chMode == MCSPI_SINGLE_CH))
         {
             McSPICSDeAssert(hwAttrs->baseAddr, chNum);
         }
+        McSPIChannelDisable(hwAttrs->baseAddr, chNum);
         chObj->transaction->status=SPI_TRANSFER_COMPLETED;
         MCSPI_transferCallback_v1((MCSPI_Handle)arg, chObj->transaction);
-        intCode = intCode & ~MCSPI_INT_EOWKE;
     }
 
-    if (intCode != 0U)
-    {
-        McSPIIntStatusClear(hwAttrs->baseAddr, intCode);
-    }
+    McSPIIntStatusClear(hwAttrs->baseAddr, intCode);
 }
 
 /*
@@ -1210,7 +1229,7 @@ static MCSPI_Handle MCSPI_open_v1(MCSPI_Handle        mcHandle,
             Osal_RegisterInterrupt_initParams(&interruptRegParams);             
 
             interruptRegParams.corepacConfig.name=NULL;
-#if !defined (__TI_ARM_V7R5__) && !defined (__TI_ARM_V7M4__)
+#ifdef __TI_ARM_V7R4
             interruptRegParams.corepacConfig.priority=0x8U;
 #else
             interruptRegParams.corepacConfig.priority=0x20U;
@@ -1497,12 +1516,12 @@ static bool MCSPI_transfer_v1(MCSPI_Handle mcHandle, SPI_Transaction *transactio
                     McSPIIntDisable(hwAttrs->baseAddr, (uint32_t)(MCSPI_INT_RX_FULL(chNum)));
                 }
                 McSPIIntStatusClear(hwAttrs->baseAddr, clrInt);
-                McSPIChannelDisable(hwAttrs->baseAddr, chNum);
                 if ((SPI_MASTER == chObj->spiParams.mode) &&
                     (hwAttrs->chMode == MCSPI_SINGLE_CH))
                 {
                     McSPICSDeAssert(hwAttrs->baseAddr, chNum);
                 }
+                McSPIChannelDisable(hwAttrs->baseAddr, chNum);
 
                 /*
                  * Interrupt/dma (timeout) transaction
@@ -1601,7 +1620,39 @@ void MCSPI_transferCallback_v1(MCSPI_Handle     mcHandle,
  */
 static void MCSPI_transferCancel_v1(MCSPI_Handle mcHandle)
 {
-    (void)mcHandle;
+    SPI_Handle            handle;
+    SPI_v1_Object        *object;
+    SPI_v1_chObject      *chObj;
+    SPI_v1_HWAttrs const *hwAttrs;
+    uint32_t              chNum;
+    uint32_t              intCode;
+
+    /* Get the pointer to the channel object */
+    handle  = mcHandle->handle;
+    chNum   = mcHandle->chnNum;
+    object  = (SPI_v1_Object*)handle->object;
+    chObj   = &(object->chObject[chNum]);
+    hwAttrs = (const SPI_v1_HWAttrs *)handle->hwAttrs;
+
+    if(true == hwAttrs->enableIntr)
+    {
+        intCode = (uint32_t)(MCSPI_INT_RX_FULL(chNum))  |
+                  (uint32_t)(MCSPI_INT_TX_EMPTY(chNum)) |
+                  MCSPI_INT_EOWKE;
+        McSPIIntDisable(hwAttrs->baseAddr,intCode);
+        McSPIIntStatusClear(hwAttrs->baseAddr, intCode);
+    }
+
+    if ((SPI_MASTER == chObj->spiParams.mode) &&
+        (hwAttrs->chMode == MCSPI_SINGLE_CH))
+    {
+        McSPICSDeAssert(hwAttrs->baseAddr, chNum);
+    }
+    McSPIChannelDisable(hwAttrs->baseAddr, chNum);
+
+    chObj->transaction->status = SPI_TRANSFER_CANCELED;
+    MCSPI_transferCallback_v1(mcHandle, chObj->transaction);
+
     return;
 }
 
