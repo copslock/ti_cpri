@@ -644,10 +644,6 @@ P0_BUFFER_DESC_OFFSET	.set		SWITCH_SPECIFIC_SRAM_START_OFFSET
 EOF_48K_BUFFER_BD	.set	       P0_BUFFER_DESC_OFFSET + HOST_BD_SIZE + PORT_BD_SIZE 
 P0_COL_BD_OFFSET	.set			EOF_48K_BUFFER_BD 
 EOF_COL_BUFFER_BD	.set	       P0_COL_BD_OFFSET + 3* BD_SIZE * 48 
-STATIC_MAC_TABLE_RCV_PORT1	.set		EOF_COL_BUFFER_BD 
-STATIC_MAC_TABLE_FWD_PORT1	.set		STATIC_MAC_TABLE_RCV_PORT1  + 256 
-STATIC_MAC_TABLE_RCV_PORT2	.set		STATIC_MAC_TABLE_FWD_PORT1  + 256 
-STATIC_MAC_TABLE_FWD_PORT2	.set		STATIC_MAC_TABLE_RCV_PORT2  + 256 
 	
 ;***********************************************************************************************************
 ;													    *
@@ -669,12 +665,8 @@ STATIC_MAC_TABLE_FWD_PORT2	.set		STATIC_MAC_TABLE_RCV_PORT2  + 256
 ;									    *
 ;									    *
 ;****************************************************************************
-;------------------------------Queue Descriptors--------------------------------;
-MULTICAST_FIRST_VALID_ADDR_OFFSET	.set		STATIC_MAC_TABLE_FWD_PORT2 + 256        ;6 bytes
 ;------------------------------End of queue descriptors---------------------------;
 	
-; table offset for queue size: 3 ports * 4 Queues * 1 byte offset = 12 bytes
-MULTICAST_LAST_VALID_ADDR_OFFSET	.set		MULTICAST_FIRST_VALID_ADDR_OFFSET + 8   ;6 bytes
 ; table offset for queue: 4 Queues * 2 byte offset = 8 bytes
 P1_COL_BD_OFFSET	.set			P0_COL_BD_OFFSET  + BD_SIZE * 48 
 ; table offset for Host queue descriptors: 1 ports * 4 Queues * 2 byte offset = 8 bytes
