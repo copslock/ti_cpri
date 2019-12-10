@@ -236,22 +236,22 @@ static void GPIO_enableInt_v1(uint32_t index)
  */
 static void GPIO_v1_hwiFxn(uintptr_t portIdx)
 {
-    uint32_t          gpioPins;
-    uint32_t          gpioBase;
-    uint32_t          gpioIndex;
-    uint32_t          bitNum;
-    uint32_t portNo = (uint32_t)portIdx;
+    uint32_t               gpioPins;
+    uint32_t               gpioBase;
+    uint32_t               gpioIndex;
+    uint32_t               bitNum;
+    uint32_t               portNo = (uint32_t)portIdx;
     GPIO_PortCallbackInfo *portCallbackInfo;
-    GPIO_v1_HwAttrs *hwAttrs = (GPIO_v1_HwAttrs *)&GPIO_v1_hwAttrs[portNo - 1U];
-    uint32_t intrLineNum = GPIO_INT_LINE_1;
+    GPIO_v1_HwAttrs       *hwAttrs = (GPIO_v1_HwAttrs *)&GPIO_v1_hwAttrs[portNo - 1U];
+    uint32_t               intrLineNum = GPIO_INT_LINE_1;
+    uint32_t               gpioPinsClear;
+
     portCallbackInfo = &gpioCallbackInfo[portNo -1U];
-    gpioBase = hwAttrs->baseAddr;
+    gpioBase         = hwAttrs->baseAddr;
 
     /* Find out which pins have their interrupt flags set */
-    gpioPins = GPIORawIntStatus(gpioBase, intrLineNum, GPIO_PIN_MASK_ALL);
-
-    /* Clear all the set bits at once */
-    GPIOIntrClearMask(gpioBase, intrLineNum, gpioPins);
+    gpioPins         = GPIORawIntStatus(gpioBase, intrLineNum, GPIO_PIN_MASK_ALL);
+    gpioPinsClear    = gpioPins;
 
     /* Match each set bit to its corresponding callback function */
     while (gpioPins) {
@@ -263,6 +263,9 @@ static void GPIO_v1_hwiFxn(uintptr_t portIdx)
         }
         gpioPins &= ~(((uint32_t)1U) << bitNum);
     }
+
+    /* Clear all the set bits at once */
+    GPIOIntrClearMask(gpioBase, intrLineNum, gpioPinsClear);
 }
 
 /*
