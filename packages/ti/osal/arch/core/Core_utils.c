@@ -37,7 +37,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <xdc/std.h>
 #include <ti/osal/osal.h>
 
 
@@ -50,6 +49,25 @@ int32_t Osal_getCoreId(void)
 #if defined(gnu_targets_arm_A15F)
     return ((int32_t)CSL_a15ReadCoreId());
 #else
-    return 0;
+    return (osal_UNSUPPORTED);
 #endif
 }
+
+void CacheP_fenceCpu2Dma(uintptr_t addr, uint32_t size, Osal_CacheP_isCoherent isCoherent)
+{
+    /* CPU to DMA would be to do Wb call if it is not coherent */
+    if (isCoherent == OSAL_CACHEP_NOT_COHERENT)
+    {
+        CacheP_wb( (const void *) addr, size);
+    }
+}
+
+void CacheP_fenceDma2Cpu(uintptr_t addr, uint32_t size, Osal_CacheP_isCoherent isCoherent)
+{
+    /* DMA to CPU would be to do Cache inv call if it is not coherent */
+    if (isCoherent == OSAL_CACHEP_NOT_COHERENT)
+    {
+        CacheP_Inv( (const void *) addr, size);
+    }
+}
+/* Nothing past this point */
