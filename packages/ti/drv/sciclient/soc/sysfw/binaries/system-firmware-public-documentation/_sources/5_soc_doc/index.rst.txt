@@ -22,6 +22,7 @@ AM6 SoC Family
    am6x/processors
    am6x/runtime_keystore
    am6x/firewalls
+   am6x/soc_devgrps
 
 ================
 J721E SoC Family
@@ -40,3 +41,4 @@ J721E SoC Family
    j721e/sec_proxy
    j721e/processors
    j721e/firewalls
+   j721e/soc_devgrps

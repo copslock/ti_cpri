@@ -28,6 +28,7 @@ Resource Management (RM)
    :maxdepth: 1
 
    rm/rm_irq
+   rm/rm_proxy
    rm/rm_ra
    rm/rm_udmap
    rm/rm_psil

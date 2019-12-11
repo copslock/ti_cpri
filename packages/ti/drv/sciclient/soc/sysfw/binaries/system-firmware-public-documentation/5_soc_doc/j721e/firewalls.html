@@ -39,7 +39,7 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="TISCI User Guide" href="../../index.html"/>
         <link rel="up" title="Chapter 5: SoC Family Specific Documentation" href="../index.html"/>
-        <link rel="next" title="Chapter 6: Topic User Guides" href="../../6_topic_user_guides/index.html"/>
+        <link rel="next" title="J721E Device Group descriptions" href="soc_devgrps.html"/>
         <link rel="prev" title="J721E Processor Descriptions" href="processors.html"/> 
 
   
@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -124,6 +124,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#list-of-priv-ids">List of priv-ids</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="soc_devgrps.html">J721E Device Group descriptions</a></li>
 </ul>
 </li>
 </ul>
@@ -459,7 +460,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>dmsc</td>
 <td>0x31120000</td>
 <td>0x311200FF</td>
-<td>everyone,r</td>
+<td>dmsc,rwcd</td>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
@@ -467,7 +468,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>dmsc</td>
 <td>0x33400000</td>
 <td>0x3343FFFF</td>
-<td>everyone,rwcd</td>
+<td>dmsc,rwcd</td>
 <td>everyone,rwcd</td>
 <td>everyone,rwcd</td>
 </tr>
@@ -475,7 +476,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>dmsc</td>
 <td>0x31130000</td>
 <td>0x31133FFF</td>
-<td>everyone,r</td>
+<td>dmsc,rwcd</td>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
@@ -491,7 +492,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>dmsc</td>
 <td>0x33000000</td>
 <td>0x3303FFFF</td>
-<td>everyone,rwcd</td>
+<td>dmsc,rwcd</td>
 <td>everyone,rwcd</td>
 <td>everyone,rwcd</td>
 </tr>
@@ -583,7 +584,31 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>6156</td>
+<tr class="row-even"><td>6148</td>
+<td>dmsc</td>
+<td>0x28590000</td>
+<td>0x285900FF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>6148</td>
+<td>dmsc</td>
+<td>0x2A580000</td>
+<td>0x2A5BFFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-even"><td>6148</td>
+<td>dmsc</td>
+<td>0x285A0000</td>
+<td>0x285A3FFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,r</td>
+<td>everyone,r</td>
+</tr>
+<tr class="row-odd"><td>6156</td>
 <td>dmsc</td>
 <td>&#160;</td>
 <td>&#160;</td>
@@ -591,7 +616,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-odd"><td>6176</td>
+<tr class="row-even"><td>6176</td>
 <td>dmsc</td>
 <td>0x285D0000</td>
 <td>0x285D03FF</td>
@@ -599,7 +624,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-even"><td>6176</td>
+<tr class="row-odd"><td>6176</td>
 <td>dmsc</td>
 <td>0x28440000</td>
 <td>0x2847FFFF</td>
@@ -607,7 +632,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-odd"><td>6176</td>
+<tr class="row-even"><td>6176</td>
 <td>dmsc</td>
 <td>0x2B800000</td>
 <td>0x2BBFFFFF</td>
@@ -615,7 +640,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,rwcd</td>
 <td>everyone,rwcd</td>
 </tr>
-<tr class="row-even"><td>6176</td>
+<tr class="row-odd"><td>6176</td>
 <td>dmsc</td>
 <td>0x2A280000</td>
 <td>0x2A29FFFF</td>
@@ -623,7 +648,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,rwcd</td>
 <td>everyone,rwcd</td>
 </tr>
-<tr class="row-odd"><td>6240</td>
+<tr class="row-even"><td>6240</td>
 <td>dmsc</td>
 <td>0x283C0000</td>
 <td>0x283C001F</td>
@@ -631,7 +656,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-even"><td>6240</td>
+<tr class="row-odd"><td>6240</td>
 <td>dmsc</td>
 <td>0x28560000</td>
 <td>0x2856FFFF</td>
@@ -639,7 +664,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-odd"><td>6240</td>
+<tr class="row-even"><td>6240</td>
 <td>dmsc</td>
 <td>0x2A700000</td>
 <td>0x2A7FFFFF</td>
@@ -647,7 +672,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,rwcd</td>
 <td>everyone,rwcd</td>
 </tr>
-<tr class="row-even"><td>6240</td>
+<tr class="row-odd"><td>6240</td>
 <td>dmsc</td>
 <td>0x28570000</td>
 <td>0x285701FF</td>
@@ -655,7 +680,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-odd"><td>6240</td>
+<tr class="row-even"><td>6240</td>
 <td>dmsc</td>
 <td>0x28580000</td>
 <td>0x28580FFF</td>
@@ -663,7 +688,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-even"><td>6240</td>
+<tr class="row-odd"><td>6240</td>
 <td>dmsc</td>
 <td>0x28480000</td>
 <td>0x28481FFF</td>
@@ -671,7 +696,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-odd"><td>6240</td>
+<tr class="row-even"><td>6240</td>
 <td>dmsc</td>
 <td>0x2A600000</td>
 <td>0x2A6FFFFF</td>
@@ -679,7 +704,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,rwcd</td>
 <td>everyone,rwcd</td>
 </tr>
-<tr class="row-even"><td>6248</td>
+<tr class="row-odd"><td>6248</td>
 <td>dmsc</td>
 <td>0x285C0000</td>
 <td>0x285C00FF</td>
@@ -687,7 +712,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-odd"><td>6248</td>
+<tr class="row-even"><td>6248</td>
 <td>dmsc</td>
 <td>0x28400000</td>
 <td>0x28401FFF</td>
@@ -695,7 +720,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-even"><td>6248</td>
+<tr class="row-odd"><td>6248</td>
 <td>dmsc</td>
 <td>0x284A0000</td>
 <td>0x284A3FFF</td>
@@ -703,7 +728,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-odd"><td>6248</td>
+<tr class="row-even"><td>6248</td>
 <td>dmsc</td>
 <td>0x284C0000</td>
 <td>0x284C3FFF</td>
@@ -711,7 +736,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>everyone,r</td>
 </tr>
-<tr class="row-even"><td>6248</td>
+<tr class="row-odd"><td>6248</td>
 <td>dmsc</td>
 <td>0x2AA00000</td>
 <td>0x2AA3FFFF</td>
@@ -719,10 +744,18 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,rwcd</td>
 <td>everyone,rwcd</td>
 </tr>
-<tr class="row-odd"><td>6248</td>
+<tr class="row-even"><td>6248</td>
 <td>dmsc</td>
 <td>0x2A800000</td>
 <td>0x2A83FFFF</td>
+<td>dmsc,rwcd</td>
+<td>everyone,rwcd</td>
+<td>everyone,rwcd</td>
+</tr>
+<tr class="row-odd"><td>6260</td>
+<td>dmsc</td>
+<td>0x2A500000</td>
+<td>0x2A53FFFF</td>
 <td>dmsc,rwcd</td>
 <td>everyone,rwcd</td>
 <td>everyone,rwcd</td>
@@ -858,22 +891,14 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 </tr>
 <tr class="row-even"><td>4660</td>
-<td>dmsc</td>
+<td>rm</td>
 <td>0</td>
 <td>0</td>
-<td>dmsc,rwcd</td>
+<td>block_everyone,r</td>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>4660</td>
-<td>none</td>
-<td>1</td>
-<td>63</td>
-<td>everyone,rwcd</td>
-<td>everyone,rwcd</td>
-<td>everyone,rwcd</td>
-</tr>
-<tr class="row-even"><td>4672</td>
+<tr class="row-odd"><td>4672</td>
 <td>dmsc</td>
 <td>0</td>
 <td>159</td>
@@ -881,21 +906,13 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>4684</td>
-<td>dmsc</td>
-<td>0</td>
-<td>0</td>
-<td>dmsc,rwcd</td>
-<td>&#160;</td>
-<td>&#160;</td>
-</tr>
 <tr class="row-even"><td>4684</td>
-<td>none</td>
-<td>1</td>
-<td>63</td>
-<td>everyone,rwcd</td>
-<td>everyone,rwcd</td>
-<td>everyone,rwcd</td>
+<td>rm</td>
+<td>0</td>
+<td>0</td>
+<td>block_everyone,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
 </tr>
 <tr class="row-odd"><td>4696</td>
 <td>dmsc</td>
@@ -1049,7 +1066,15 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>6152</td>
+<tr class="row-even"><td>6146</td>
+<td>dmsc</td>
+<td>0</td>
+<td>0</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6152</td>
 <td>dmsc</td>
 <td>5</td>
 <td>5</td>
@@ -1057,7 +1082,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>dmsc,rwcd</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>6152</td>
+<tr class="row-even"><td>6152</td>
 <td>dmsc</td>
 <td>0</td>
 <td>4</td>
@@ -1065,7 +1090,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>6152</td>
+<tr class="row-odd"><td>6152</td>
 <td>dmsc</td>
 <td>6</td>
 <td>89</td>
@@ -1073,7 +1098,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>everyone,r</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>6160</td>
+<tr class="row-even"><td>6160</td>
 <td>rm</td>
 <td>4</td>
 <td>4</td>
@@ -1081,7 +1106,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>6160</td>
+<tr class="row-odd"><td>6160</td>
 <td>dmsc</td>
 <td>46</td>
 <td>47</td>
@@ -1089,7 +1114,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>6160</td>
+<tr class="row-even"><td>6160</td>
 <td>rm</td>
 <td>52</td>
 <td>53</td>
@@ -1097,7 +1122,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>6160</td>
+<tr class="row-odd"><td>6160</td>
 <td>dmsc</td>
 <td>93</td>
 <td>95</td>
@@ -1105,7 +1130,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>6160</td>
+<tr class="row-even"><td>6160</td>
 <td>rm</td>
 <td>100</td>
 <td>101</td>
@@ -1113,7 +1138,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>6160</td>
+<tr class="row-odd"><td>6160</td>
 <td>dmsc</td>
 <td>252</td>
 <td>255</td>
@@ -1121,23 +1146,23 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>6208</td>
-<td>rm</td>
-<td>0</td>
-<td>0</td>
-<td>block_everyone,r</td>
-<td>&#160;</td>
-<td>&#160;</td>
-</tr>
 <tr class="row-even"><td>6208</td>
 <td>rm</td>
+<td>0</td>
+<td>0</td>
+<td>block_everyone,r</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>6208</td>
+<td>rm</td>
 <td>256</td>
 <td>256</td>
 <td>block_everyone,r</td>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>6244</td>
+<tr class="row-even"><td>6244</td>
 <td>rm</td>
 <td>0</td>
 <td>3</td>
@@ -1145,7 +1170,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>6244</td>
+<tr class="row-odd"><td>6244</td>
 <td>rm</td>
 <td>4</td>
 <td>4</td>
@@ -1153,7 +1178,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>6244</td>
+<tr class="row-even"><td>6244</td>
 <td>rm</td>
 <td>5</td>
 <td>45</td>
@@ -1161,7 +1186,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>6244</td>
+<tr class="row-odd"><td>6244</td>
 <td>dmsc</td>
 <td>46</td>
 <td>47</td>
@@ -1169,7 +1194,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>6244</td>
+<tr class="row-even"><td>6244</td>
 <td>rm</td>
 <td>48</td>
 <td>51</td>
@@ -1177,7 +1202,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>6244</td>
+<tr class="row-odd"><td>6244</td>
 <td>rm</td>
 <td>52</td>
 <td>53</td>
@@ -1185,7 +1210,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-odd"><td>6244</td>
+<tr class="row-even"><td>6244</td>
 <td>rm</td>
 <td>54</td>
 <td>92</td>
@@ -1193,10 +1218,18 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
 <td>&#160;</td>
 <td>&#160;</td>
 </tr>
-<tr class="row-even"><td>6244</td>
+<tr class="row-odd"><td>6244</td>
 <td>dmsc</td>
 <td>93</td>
 <td>95</td>
+<td>dmsc,rwcd</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>6256</td>
+<td>dmsc</td>
+<td>0</td>
+<td>0</td>
 <td>dmsc,rwcd</td>
 <td>&#160;</td>
 <td>&#160;</td>
@@ -1511,7 +1544,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../6_topic_user_guides/index.html" class="btn btn-neutral float-right" title="Chapter 6: Topic User Guides" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="soc_devgrps.html" class="btn btn-neutral float-right" title="J721E Device Group descriptions" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="processors.html" class="btn btn-neutral" title="J721E Processor Descriptions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -1545,7 +1578,7 @@ Firewall configuration is internally handled by RM based on RM boardcfg.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

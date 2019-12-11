@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -122,6 +122,7 @@
 <li class="toctree-l3"><a class="reference internal" href="processors.html">AM6 Processor Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="runtime_keystore.html">AM6 Runtime Keystore</a></li>
 <li class="toctree-l3"><a class="reference internal" href="firewalls.html">AM6 Firewall Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="soc_devgrps.html">AM6 Device Group descriptions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#j721e-soc-family">J721E SoC Family</a></li>
@@ -264,472 +265,480 @@ represented in this section from the <em>perspective of the board</em>.</p>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>0</td>
-<td>DEV_BOARD0_BUS_SCL3</td>
+<td>DEV_BOARD0_BUS_SCL3_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>1</td>
-<td>DEV_BOARD0_BUS_SCL2</td>
+<td>DEV_BOARD0_BUS_SCL2_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_BOARD0_BUS_SCL1</td>
+<td>DEV_BOARD0_BUS_SCL1_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>3</td>
-<td>DEV_BOARD0_BUS_SCL0</td>
+<td>DEV_BOARD0_BUS_SCL0_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>4</td>
-<td>DEV_BOARD0_BUS_PRG2_RGMII2_TCLK</td>
+<td>DEV_BOARD0_BUS_PRG2_RGMII2_TCLK_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_BOARD0_BUS_MCU_OSPI1CLK</td>
+<td>DEV_BOARD0_BUS_MCU_OSPI1CLK_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_BOARD0_BUS_PRG1_RGMII1_TCLK</td>
+<td>DEV_BOARD0_BUS_PRG1_RGMII1_TCLK_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_BOARD0_BUS_REFCLK1P</td>
+<td>DEV_BOARD0_BUS_REFCLK1P_IN</td>
 <td>Input muxed clock</td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td>DEV_BOARD0_BUS_REFCLK1P_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1P</td>
+<td>DEV_BOARD0_BUS_REFCLK1P_IN_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1P_IN</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_BOARD0_BUS_REFCLK1P_PARENT_BOARD_0_HFOSC1_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1P</td>
+<td>DEV_BOARD0_BUS_REFCLK1P_IN_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1P_IN</td>
 </tr>
 <tr class="row-even"><td>10</td>
-<td>DEV_BOARD0_BUS_REFCLK1P_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1P</td>
+<td>DEV_BOARD0_BUS_REFCLK1P_IN_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1P_IN</td>
 </tr>
 <tr class="row-odd"><td>11</td>
-<td>DEV_BOARD0_BUS_REFCLK1P_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_HSDIV_CLKOUT4_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1P</td>
+<td>DEV_BOARD0_BUS_REFCLK1P_IN_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_HSDIV_CLKOUT4_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1P_IN</td>
 </tr>
 <tr class="row-even"><td>12</td>
-<td>DEV_BOARD0_BUS_MCU_OSPI1LBCLKO</td>
+<td>DEV_BOARD0_BUS_MCU_OSPI1LBCLKO_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>13</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>14</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_RCOSC_12P5M_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_RCOSC_12P5M_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>15</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>16</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>17</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_CLKOUT_CLK_DUP0</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_CLKOUT_CLK_DUP0</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>18</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT1_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT1_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>19</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT2_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT2_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>20</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT3_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT3_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>21</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT4_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT4_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>22</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>23</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_RCOSC_32K_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_RCOSC_32K_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>24</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT1_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT1_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>25</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT2_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT2_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>26</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT3_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT3_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>27</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT4_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT4_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>28</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK_DUP0</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK_DUP0</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>29</td>
-<td>DEV_BOARD0_BUS_MCU_OBSCLK_PARENT_GLUELOGIC_LFOSC_CLK_BUS_OUT</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK</td>
+<td>DEV_BOARD0_BUS_MCU_OBSCLK_IN_PARENT_GLUELOGIC_LFOSC_CLK_BUS_OUT</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>30</td>
-<td>DEV_BOARD0_BUS_PRG2_RGMII1_TCLK</td>
+<td>DEV_BOARD0_BUS_PRG2_RGMII1_TCLK_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>31</td>
-<td>DEV_BOARD0_BUS_REFCLK1M</td>
+<td>DEV_BOARD0_BUS_REFCLK1M_IN</td>
 <td>Input muxed clock</td>
 </tr>
 <tr class="row-even"><td>32</td>
-<td>DEV_BOARD0_BUS_REFCLK1M_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1M</td>
+<td>DEV_BOARD0_BUS_REFCLK1M_IN_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1M_IN</td>
 </tr>
 <tr class="row-odd"><td>33</td>
-<td>DEV_BOARD0_BUS_REFCLK1M_PARENT_BOARD_0_HFOSC1_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1M</td>
+<td>DEV_BOARD0_BUS_REFCLK1M_IN_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1M_IN</td>
 </tr>
 <tr class="row-even"><td>34</td>
-<td>DEV_BOARD0_BUS_REFCLK1M_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1M</td>
+<td>DEV_BOARD0_BUS_REFCLK1M_IN_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1M_IN</td>
 </tr>
 <tr class="row-odd"><td>35</td>
-<td>DEV_BOARD0_BUS_REFCLK1M_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_HSDIV_CLKOUT4_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1M</td>
+<td>DEV_BOARD0_BUS_REFCLK1M_IN_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_HSDIV_CLKOUT4_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK1M_IN</td>
 </tr>
 <tr class="row-even"><td>36</td>
-<td>DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>37</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_BOARD_0_HFOSC1_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>38</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>39</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>40</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_ADPLLLJM_WRAP_MAIN_1_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_ADPLLLJM_WRAP_MAIN_1_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>41</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_GLUELOGIC_LFOSC_CLK_BUS_OUT</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_GLUELOGIC_LFOSC_CLK_BUS_OUT</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>42</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_2_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_2_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>43</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_ADPLLLJM_WRAP_MAIN_4_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_ADPLLLJM_WRAP_MAIN_4_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>44</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_ADPLLM_WRAP_MAIN_6_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_ADPLLM_WRAP_MAIN_6_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>45</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_ADPLLLJM_WRAP_MAIN_3_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_ADPLLLJM_WRAP_MAIN_3_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>46</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>47</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_HSDIV_CLKOUT1_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_HSDIV_CLKOUT1_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>48</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_ADPLLM_WRAP_MAIN_7_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_ADPLLM_WRAP_MAIN_7_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>49</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_NAVSS256L_MAIN_0_BUS_CPTS0_GENF2_0</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_NAVSS256L_MAIN_0_BUS_CPTS0_GENF2_0</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>50</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_NAVSS256L_MAIN_0_BUS_CPTS0_GENF3_0</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_NAVSS256L_MAIN_0_BUS_CPTS0_GENF3_0</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>51</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_NAVSS256L_MAIN_0_BUS_CPTS0_GENF4_0</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_NAVSS256L_MAIN_0_BUS_CPTS0_GENF4_0</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-even"><td>52</td>
-<td>DEV_BOARD0_BUS_OBSCLK_PARENT_NAVSS256L_MAIN_0_BUS_CPTS0_GENF5_0</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK</td>
+<td>DEV_BOARD0_BUS_OBSCLK_IN_PARENT_NAVSS256L_MAIN_0_BUS_CPTS0_GENF5_0</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_OBSCLK_IN</td>
 </tr>
 <tr class="row-odd"><td>53</td>
-<td>DEV_BOARD0_BUS_PRG0_RGMII1_TCLK</td>
+<td>DEV_BOARD0_BUS_PRG0_RGMII1_TCLK_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>54</td>
-<td>DEV_BOARD0_BUS_MCU_OSPI0CLK</td>
+<td>DEV_BOARD0_BUS_MCU_OSPI0CLK_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>55</td>
-<td>DEV_BOARD0_BUS_DSS0PCLK</td>
+<td>DEV_BOARD0_BUS_DSS0PCLK_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>56</td>
-<td>DEV_BOARD0_BUS_PRG0_RGMII2_TCLK</td>
+<td>DEV_BOARD0_BUS_PRG0_RGMII2_TCLK_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>57</td>
-<td>DEV_BOARD0_BUS_WKUP_SCL0</td>
+<td>DEV_BOARD0_BUS_WKUP_SCL0_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>58</td>
-<td>DEV_BOARD0_BUS_REFCLK0P</td>
+<td>DEV_BOARD0_BUS_REFCLK0P_IN</td>
 <td>Input muxed clock</td>
 </tr>
 <tr class="row-odd"><td>59</td>
-<td>DEV_BOARD0_BUS_REFCLK0P_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0P</td>
+<td>DEV_BOARD0_BUS_REFCLK0P_IN_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0P_IN</td>
 </tr>
 <tr class="row-even"><td>60</td>
-<td>DEV_BOARD0_BUS_REFCLK0P_PARENT_BOARD_0_HFOSC1_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0P</td>
+<td>DEV_BOARD0_BUS_REFCLK0P_IN_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0P_IN</td>
 </tr>
 <tr class="row-odd"><td>61</td>
-<td>DEV_BOARD0_BUS_REFCLK0P_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0P</td>
+<td>DEV_BOARD0_BUS_REFCLK0P_IN_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0P_IN</td>
 </tr>
 <tr class="row-even"><td>62</td>
-<td>DEV_BOARD0_BUS_REFCLK0P_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_HSDIV_CLKOUT4_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0P</td>
+<td>DEV_BOARD0_BUS_REFCLK0P_IN_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_HSDIV_CLKOUT4_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0P_IN</td>
 </tr>
 <tr class="row-odd"><td>63</td>
-<td>DEV_BOARD0_BUS_REFCLK0M</td>
+<td>DEV_BOARD0_BUS_REFCLK0M_IN</td>
 <td>Input muxed clock</td>
 </tr>
 <tr class="row-even"><td>64</td>
-<td>DEV_BOARD0_BUS_REFCLK0M_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0M</td>
+<td>DEV_BOARD0_BUS_REFCLK0M_IN_PARENT_MX_WAKEUP_GS80_WKUP_0_BUS_WKUP_OSC0_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0M_IN</td>
 </tr>
 <tr class="row-odd"><td>65</td>
-<td>DEV_BOARD0_BUS_REFCLK0M_PARENT_BOARD_0_HFOSC1_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0M</td>
+<td>DEV_BOARD0_BUS_REFCLK0M_IN_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0M_IN</td>
 </tr>
 <tr class="row-even"><td>66</td>
-<td>DEV_BOARD0_BUS_REFCLK0M_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_CLKOUT_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0M</td>
+<td>DEV_BOARD0_BUS_REFCLK0M_IN_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_CLKOUT_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0M_IN</td>
 </tr>
 <tr class="row-odd"><td>67</td>
-<td>DEV_BOARD0_BUS_REFCLK0M_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_HSDIV_CLKOUT4_CLK</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0M</td>
+<td>DEV_BOARD0_BUS_REFCLK0M_IN_PARENT_ADPLLLJM_HSDIV_WRAP_MAIN_0_BUS_HSDIV_CLKOUT4_CLK</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_REFCLK0M_IN</td>
 </tr>
 <tr class="row-even"><td>68</td>
-<td>DEV_BOARD0_BUS_MCU_OSPI0LBCLKO</td>
+<td>DEV_BOARD0_BUS_MCU_OSPI0LBCLKO_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>69</td>
-<td>DEV_BOARD0_BUS_MCU_CLKOUT</td>
+<td>DEV_BOARD0_BUS_MCU_CLKOUT_IN</td>
 <td>Input muxed clock</td>
 </tr>
 <tr class="row-even"><td>70</td>
-<td>DEV_BOARD0_BUS_MCU_CLKOUT_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_CLKOUT_CLK5</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_CLKOUT</td>
+<td>DEV_BOARD0_BUS_MCU_CLKOUT_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_CLKOUT_CLK5</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_CLKOUT_IN</td>
 </tr>
 <tr class="row-odd"><td>71</td>
-<td>DEV_BOARD0_BUS_MCU_CLKOUT_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_CLKOUT_CLK10</td>
-<td>Parent input clock option to DEV_BOARD0_BUS_MCU_CLKOUT</td>
+<td>DEV_BOARD0_BUS_MCU_CLKOUT_IN_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_CLKOUT_CLK10</td>
+<td>Parent input clock option to DEV_BOARD0_BUS_MCU_CLKOUT_IN</td>
 </tr>
 <tr class="row-even"><td>72</td>
-<td>DEV_BOARD0_BUS_MCU_SCL0</td>
+<td>DEV_BOARD0_BUS_MCU_SCL0_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>73</td>
-<td>DEV_BOARD0_BUS_SYSCLKOUT</td>
+<td>DEV_BOARD0_BUS_SYSCLKOUT_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>74</td>
-<td>DEV_BOARD0_BUS_MCU_SYSCLKOUT</td>
+<td>DEV_BOARD0_BUS_MCU_SYSCLKOUT_IN</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>75</td>
-<td>DEV_BOARD0_BUS_PRG1_RGMII1_RCLK</td>
+<td>DEV_BOARD0_BUS_PRG1_RGMII1_RCLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>76</td>
-<td>DEV_BOARD0_BUS_PRG1_RGMII2_RCLK</td>
+<td>DEV_BOARD0_BUS_PRG1_RGMII2_RCLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>77</td>
-<td>DEV_BOARD0_BUS_GPMCCLK</td>
+<td>DEV_BOARD0_BUS_GPMCCLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>78</td>
-<td>DEV_BOARD0_BUS_MCASP2AHCLKX</td>
+<td>DEV_BOARD0_BUS_MCASP2AHCLKX_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>79</td>
-<td>DEV_BOARD0_BUS_MCASP2AHCLKR</td>
+<td>DEV_BOARD0_BUS_MCASP2AHCLKR_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>80</td>
-<td>DEV_BOARD0_BUS_PRG2_RGMII2_RCLK</td>
+<td>DEV_BOARD0_BUS_PRG2_RGMII2_RCLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>81</td>
-<td>DEV_BOARD0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_BOARD0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>82</td>
-<td>DEV_BOARD0_BUS_MCASP0ACLKR</td>
+<td>DEV_BOARD0_BUS_MCASP0ACLKR_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>83</td>
-<td>DEV_BOARD0_BUS_MCASP0ACLKX</td>
+<td>DEV_BOARD0_BUS_MCASP0ACLKX_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>84</td>
-<td>DEV_BOARD0_BUS_EXT_REFCLK1</td>
+<td>DEV_BOARD0_BUS_EXT_REFCLK1_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>85</td>
-<td>DEV_BOARD0_BUS_PRG0_RGMII2_RCLK</td>
+<td>DEV_BOARD0_BUS_PRG0_RGMII2_RCLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>86</td>
-<td>DEV_BOARD0_BUS_MCU_OSPI0DQS</td>
+<td>DEV_BOARD0_BUS_MCU_OSPI0DQS_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>87</td>
-<td>DEV_BOARD0_BUS_USB0REFCLKP</td>
+<td>DEV_BOARD0_BUS_USB0REFCLKP_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>88</td>
-<td>DEV_BOARD0_BUS_DSS0EXTPCLKIN</td>
+<td>DEV_BOARD0_BUS_DSS0EXTPCLKIN_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>89</td>
-<td>DEV_BOARD0_BUS_SPI1CLK</td>
+<td>DEV_BOARD0_BUS_SPI1CLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>90</td>
-<td>DEV_BOARD0_BUS_MCASP2ACLKR</td>
+<td>DEV_BOARD0_BUS_MCASP2ACLKR_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>91</td>
-<td>DEV_BOARD0_BUS_MCASP1ACLKX</td>
+<td>DEV_BOARD0_BUS_MCASP1ACLKX_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>92</td>
-<td>DEV_BOARD0_BUS_MCASP1ACLKR</td>
+<td>DEV_BOARD0_BUS_MCASP1ACLKR_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>93</td>
-<td>DEV_BOARD0_BUS_MCASP2ACLKX</td>
+<td>DEV_BOARD0_BUS_MCASP2ACLKX_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>94</td>
-<td>DEV_BOARD0_BUS_MCU_RMII1_REFCLK</td>
+<td>DEV_BOARD0_BUS_MCU_RMII1_REFCLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>95</td>
-<td>DEV_BOARD0_BUS_MCU_CPTS_RFT_CLK</td>
+<td>DEV_BOARD0_BUS_MCU_CPTS_RFT_CLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>96</td>
-<td>DEV_BOARD0_BUS_MCU_RGMII1_TCLK</td>
+<td>DEV_BOARD0_BUS_MCU_RGMII1_TCLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>97</td>
-<td>DEV_BOARD0_BUS_MCU_SPI0CLK</td>
+<td>DEV_BOARD0_BUS_MCU_SPI0CLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>98</td>
-<td>DEV_BOARD0_BUS_MCU_SPI1CLK</td>
+<td>DEV_BOARD0_BUS_MCU_SPI1CLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>99</td>
-<td>DEV_BOARD0_BUS_PRG0_RGMII1_RCLK</td>
+<td>DEV_BOARD0_BUS_PRG0_RGMII1_RCLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>100</td>
-<td>DEV_BOARD0_BUS_SPI2CLK</td>
+<td>DEV_BOARD0_BUS_SPI2CLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>101</td>
-<td>DEV_BOARD0_BUS_WKUP_TCK</td>
+<td>DEV_BOARD0_BUS_WKUP_TCK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>102</td>
-<td>DEV_BOARD0_BUS_SPI3CLK</td>
+<td>DEV_BOARD0_BUS_SPI3CLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>103</td>
-<td>DEV_BOARD0_BUS_USB0REFCLKM</td>
+<td>DEV_BOARD0_BUS_USB0REFCLKM_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>104</td>
-<td>DEV_BOARD0_BUS_MCU_RGMII1_RCLK</td>
+<td>DEV_BOARD0_BUS_MCU_RGMII1_RCLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>105</td>
-<td>DEV_BOARD0_BUS_MCASP0AHCLKR</td>
+<td>DEV_BOARD0_BUS_MCASP0AHCLKR_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>106</td>
-<td>DEV_BOARD0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_BOARD0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>107</td>
-<td>DEV_BOARD0_BUS_MCASP0AHCLKX</td>
+<td>DEV_BOARD0_BUS_MCASP0AHCLKX_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>108</td>
-<td>DEV_BOARD0_BUS_CCDC0_PCLK</td>
+<td>DEV_BOARD0_BUS_CCDC0_PCLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>109</td>
-<td>DEV_BOARD0_HFOSC1_CLK</td>
+<td>DEV_BOARD0_HFOSC1_CLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>110</td>
-<td>DEV_BOARD0_BUS_MCU_OSPI1DQS</td>
+<td>DEV_BOARD0_BUS_MCU_OSPI1DQS_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>111</td>
-<td>DEV_BOARD0_BUS_MCASP1AHCLKX</td>
+<td>DEV_BOARD0_BUS_MCASP1AHCLKX_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>112</td>
-<td>DEV_BOARD0_BUS_PCIE1REFCLKM</td>
+<td>DEV_BOARD0_BUS_PCIE1REFCLKM_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>113</td>
-<td>DEV_BOARD0_BUS_MCASP1AHCLKR</td>
+<td>DEV_BOARD0_BUS_MCASP1AHCLKR_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>114</td>
-<td>DEV_BOARD0_BUS_PCIE1REFCLKP</td>
+<td>DEV_BOARD0_BUS_PCIE1REFCLKP_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-odd"><td>115</td>
-<td>DEV_BOARD0_BUS_PRG2_RGMII1_RCLK</td>
+<td>DEV_BOARD0_BUS_PRG2_RGMII1_RCLK_OUT</td>
 <td>Output clock</td>
 </tr>
 <tr class="row-even"><td>116</td>
-<td>DEV_BOARD0_BUS_SPI0CLK</td>
+<td>DEV_BOARD0_BUS_SPI0CLK_OUT</td>
 <td>Output clock</td>
+</tr>
+<tr class="row-odd"><td>117</td>
+<td>DEV_BOARD0_BUS_MCU_HYPERBUS_CLK_IN</td>
+<td>Input clock</td>
+</tr>
+<tr class="row-even"><td>118</td>
+<td>DEV_BOARD0_BUS_MCU_HYPERBUS_NCLK_IN</td>
+<td>Input clock</td>
 </tr>
 </tbody>
 </table>
@@ -876,19 +885,19 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
-<td>DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK_PARENT_BOARD_0_BUS_MCU_CPTS_RFT_CLK</td>
+<td>DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK_PARENT_BOARD_0_BUS_MCU_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK</td>
 </tr>
 <tr class="row-even"><td>4</td>
-<td>DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_CBASS_INFRA0_BUS_GTC_CLOCK_1_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
@@ -2269,8 +2278,8 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="9%" />
-<col width="47%" />
-<col width="43%" />
+<col width="48%" />
+<col width="42%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Clock ID</th>
@@ -2296,7 +2305,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_DSS0_BUS_DPI_1_IN_CLK</td>
 </tr>
 <tr class="row-even"><td>4</td>
-<td>DEV_DSS0_BUS_DPI_1_IN_CLK_PARENT_BOARD_0_BUS_DSS0EXTPCLKIN</td>
+<td>DEV_DSS0_BUS_DPI_1_IN_CLK_PARENT_BOARD_0_BUS_DSS0EXTPCLKIN_OUT</td>
 <td>Parent input clock option to DEV_DSS0_BUS_DPI_1_IN_CLK</td>
 </tr>
 <tr class="row-odd"><td>5</td>
@@ -2314,40 +2323,40 @@ represented in this section from the <em>perspective of the board</em>.</p>
 </tbody>
 </table>
 </div>
-<div class="section" id="clocks-for-dummy-ip-lpsc-debug2dmsc-device">
-<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-debug2dmsc"></span><h3>Clocks for DUMMY_IP_LPSC_DEBUG2DMSC Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-debug2dmsc-device" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="clocks-for-dummy-ip-lpsc-debug2dmsc-vd-device">
+<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-debug2dmsc-vd"></span><h3>Clocks for DUMMY_IP_LPSC_DEBUG2DMSC_VD Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-debug2dmsc-vd-device" title="Permalink to this headline">¶</a></h3>
 <p><strong>This device has no defined clocks.</strong></p>
 </div>
-<div class="section" id="clocks-for-dummy-ip-lpsc-dmsc-device">
-<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-dmsc"></span><h3>Clocks for DUMMY_IP_LPSC_DMSC Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-dmsc-device" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="clocks-for-dummy-ip-lpsc-dmsc-vd-device">
+<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-dmsc-vd"></span><h3>Clocks for DUMMY_IP_LPSC_DMSC_VD Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-dmsc-vd-device" title="Permalink to this headline">¶</a></h3>
 <p><strong>This device has no defined clocks.</strong></p>
 </div>
-<div class="section" id="clocks-for-dummy-ip-lpsc-emif-data-device">
-<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-emif-data"></span><h3>Clocks for DUMMY_IP_LPSC_EMIF_DATA Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-emif-data-device" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="clocks-for-dummy-ip-lpsc-emif-data-vd-device">
+<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-emif-data-vd"></span><h3>Clocks for DUMMY_IP_LPSC_EMIF_DATA_VD Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-emif-data-vd-device" title="Permalink to this headline">¶</a></h3>
 <p><strong>This device has no defined clocks.</strong></p>
 </div>
-<div class="section" id="clocks-for-dummy-ip-lpsc-main2mcu-device">
-<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-main2mcu"></span><h3>Clocks for DUMMY_IP_LPSC_MAIN2MCU Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-main2mcu-device" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="clocks-for-dummy-ip-lpsc-main2mcu-vd-device">
+<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-main2mcu-vd"></span><h3>Clocks for DUMMY_IP_LPSC_MAIN2MCU_VD Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-main2mcu-vd-device" title="Permalink to this headline">¶</a></h3>
 <p><strong>This device has no defined clocks.</strong></p>
 </div>
-<div class="section" id="clocks-for-dummy-ip-lpsc-mcu2main-device">
-<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-mcu2main"></span><h3>Clocks for DUMMY_IP_LPSC_MCU2MAIN Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-mcu2main-device" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="clocks-for-dummy-ip-lpsc-mcu2main-infra-vd-device">
+<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-mcu2main-infra-vd"></span><h3>Clocks for DUMMY_IP_LPSC_MCU2MAIN_INFRA_VD Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-mcu2main-infra-vd-device" title="Permalink to this headline">¶</a></h3>
 <p><strong>This device has no defined clocks.</strong></p>
 </div>
-<div class="section" id="clocks-for-dummy-ip-lpsc-mcu2main-infra-device">
-<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-mcu2main-infra"></span><h3>Clocks for DUMMY_IP_LPSC_MCU2MAIN_INFRA Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-mcu2main-infra-device" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="clocks-for-dummy-ip-lpsc-mcu2main-vd-device">
+<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-mcu2main-vd"></span><h3>Clocks for DUMMY_IP_LPSC_MCU2MAIN_VD Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-mcu2main-vd-device" title="Permalink to this headline">¶</a></h3>
 <p><strong>This device has no defined clocks.</strong></p>
 </div>
-<div class="section" id="clocks-for-dummy-ip-lpsc-mcu2wkup-device">
-<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-mcu2wkup"></span><h3>Clocks for DUMMY_IP_LPSC_MCU2WKUP Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-mcu2wkup-device" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="clocks-for-dummy-ip-lpsc-mcu2wkup-vd-device">
+<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-mcu2wkup-vd"></span><h3>Clocks for DUMMY_IP_LPSC_MCU2WKUP_VD Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-mcu2wkup-vd-device" title="Permalink to this headline">¶</a></h3>
 <p><strong>This device has no defined clocks.</strong></p>
 </div>
-<div class="section" id="clocks-for-dummy-ip-lpsc-wkup2main-infra-device">
-<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-wkup2main-infra"></span><h3>Clocks for DUMMY_IP_LPSC_WKUP2MAIN_INFRA Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-wkup2main-infra-device" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="clocks-for-dummy-ip-lpsc-wkup2main-infra-vd-device">
+<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-wkup2main-infra-vd"></span><h3>Clocks for DUMMY_IP_LPSC_WKUP2MAIN_INFRA_VD Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-wkup2main-infra-vd-device" title="Permalink to this headline">¶</a></h3>
 <p><strong>This device has no defined clocks.</strong></p>
 </div>
-<div class="section" id="clocks-for-dummy-ip-lpsc-wkup2mcu-device">
-<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-wkup2mcu"></span><h3>Clocks for DUMMY_IP_LPSC_WKUP2MCU Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-wkup2mcu-device" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="clocks-for-dummy-ip-lpsc-wkup2mcu-vd-device">
+<span id="soc-doc-am6-public-clks-dummy-ip-lpsc-wkup2mcu-vd"></span><h3>Clocks for DUMMY_IP_LPSC_WKUP2MCU_VD Device<a class="headerlink" href="#clocks-for-dummy-ip-lpsc-wkup2mcu-vd-device" title="Permalink to this headline">¶</a></h3>
 <p><strong>This device has no defined clocks.</strong></p>
 </div>
 <div class="section" id="clocks-for-ecap0-device">
@@ -3012,19 +3021,19 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_GTC0_BUS_VBUSP_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
-<td>DEV_GTC0_BUS_VBUSP_CLK_PARENT_BOARD_0_BUS_MCU_CPTS_RFT_CLK</td>
+<td>DEV_GTC0_BUS_VBUSP_CLK_PARENT_BOARD_0_BUS_MCU_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_GTC0_BUS_VBUSP_CLK</td>
 </tr>
 <tr class="row-even"><td>4</td>
-<td>DEV_GTC0_BUS_VBUSP_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_GTC0_BUS_VBUSP_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_GTC0_BUS_VBUSP_CLK</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_GTC0_BUS_VBUSP_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_GTC0_BUS_VBUSP_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_GTC0_BUS_VBUSP_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_GTC0_BUS_VBUSP_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_GTC0_BUS_VBUSP_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_GTC0_BUS_VBUSP_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
@@ -3268,7 +3277,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Input muxed clock</td>
 </tr>
 <tr class="row-odd"><td>1</td>
-<td>DEV_MCASP0_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_MCASP0_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_MCASP0_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
@@ -3276,7 +3285,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCASP0_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
-<td>DEV_MCASP0_BUS_AUX_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_MCASP0_BUS_AUX_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_MCASP0_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>4</td>
@@ -3288,15 +3297,15 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCASP0_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_MCASP0_BUS_AUX_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_MCASP0_BUS_AUX_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_MCASP0_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_MCASP0_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP0</td>
+<td>DEV_MCASP0_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP0</td>
 <td>Parent input clock option to DEV_MCASP0_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td>DEV_MCASP0_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP1</td>
+<td>DEV_MCASP0_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP1</td>
 <td>Parent input clock option to DEV_MCASP0_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
@@ -3336,7 +3345,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Input muxed clock</td>
 </tr>
 <tr class="row-odd"><td>1</td>
-<td>DEV_MCASP1_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_MCASP1_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_MCASP1_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
@@ -3344,7 +3353,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCASP1_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
-<td>DEV_MCASP1_BUS_AUX_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_MCASP1_BUS_AUX_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_MCASP1_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>4</td>
@@ -3356,15 +3365,15 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCASP1_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_MCASP1_BUS_AUX_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_MCASP1_BUS_AUX_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_MCASP1_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_MCASP1_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP0</td>
+<td>DEV_MCASP1_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP0</td>
 <td>Parent input clock option to DEV_MCASP1_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td>DEV_MCASP1_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP1</td>
+<td>DEV_MCASP1_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP1</td>
 <td>Parent input clock option to DEV_MCASP1_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
@@ -3404,7 +3413,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Input muxed clock</td>
 </tr>
 <tr class="row-odd"><td>1</td>
-<td>DEV_MCASP2_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_MCASP2_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_MCASP2_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
@@ -3412,7 +3421,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCASP2_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
-<td>DEV_MCASP2_BUS_AUX_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_MCASP2_BUS_AUX_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_MCASP2_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>4</td>
@@ -3424,15 +3433,15 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCASP2_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_MCASP2_BUS_AUX_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_MCASP2_BUS_AUX_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_MCASP2_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_MCASP2_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP0</td>
+<td>DEV_MCASP2_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP0</td>
 <td>Parent input clock option to DEV_MCASP2_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td>DEV_MCASP2_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP1</td>
+<td>DEV_MCASP2_BUS_AUX_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP1</td>
 <td>Parent input clock option to DEV_MCASP2_BUS_AUX_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
@@ -3664,7 +3673,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCU_ADC0_BUS_ADC_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_MCU_ADC0_BUS_ADC_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_MCU_ADC0_BUS_ADC_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_MCU_ADC0_BUS_ADC_CLK</td>
 </tr>
 </tbody>
@@ -3712,7 +3721,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCU_ADC1_BUS_ADC_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_MCU_ADC1_BUS_ADC_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_MCU_ADC1_BUS_ADC_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_MCU_ADC1_BUS_ADC_CLK</td>
 </tr>
 </tbody>
@@ -3964,7 +3973,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCU_CPSW0_BUS_RMII_MHZ_50_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td>DEV_MCU_CPSW0_BUS_RMII_MHZ_50_CLK_PARENT_BOARD_0_BUS_MCU_RMII1_REFCLK</td>
+<td>DEV_MCU_CPSW0_BUS_RMII_MHZ_50_CLK_PARENT_BOARD_0_BUS_MCU_RMII1_REFCLK_OUT</td>
 <td>Parent input clock option to DEV_MCU_CPSW0_BUS_RMII_MHZ_50_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
@@ -4406,15 +4415,19 @@ represented in this section from the <em>perspective of the board</em>.</p>
 </tbody>
 </table>
 </div>
-<div class="section" id="clocks-for-mcu-fss0-device">
-<span id="soc-doc-am6-public-clks-mcu-fss0"></span><h3>Clocks for MCU_FSS0 Device<a class="headerlink" href="#clocks-for-mcu-fss0-device" title="Permalink to this headline">¶</a></h3>
-<p>Device: <a class="reference internal" href="devices.html#soc-doc-am6-public-devices-desc-device-list"><span class="std std-ref">AM6_DEV_MCU_FSS0</span></a> (ID = 55)</p>
+<div class="section" id="clocks-for-mcu-fss0-fsas-0-device">
+<span id="soc-doc-am6-public-clks-mcu-fss0-fsas-0"></span><h3>Clocks for MCU_FSS0_FSAS_0 Device<a class="headerlink" href="#clocks-for-mcu-fss0-fsas-0-device" title="Permalink to this headline">¶</a></h3>
+<p><strong>This device has no defined clocks.</strong></p>
+</div>
+<div class="section" id="clocks-for-mcu-fss0-hyperbus0-device">
+<span id="soc-doc-am6-public-clks-mcu-fss0-hyperbus0"></span><h3>Clocks for MCU_FSS0_HYPERBUS0 Device<a class="headerlink" href="#clocks-for-mcu-fss0-hyperbus0-device" title="Permalink to this headline">¶</a></h3>
+<p>Device: <a class="reference internal" href="devices.html#soc-doc-am6-public-devices-desc-device-list"><span class="std std-ref">AM6_DEV_MCU_FSS0_HYPERBUS0</span></a> (ID = 247)</p>
 <p>Following is a mapping of Clocks IDs to function:</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="8%" />
-<col width="54%" />
-<col width="39%" />
+<col width="17%" />
+<col width="64%" />
+<col width="19%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Clock ID</th>
@@ -4424,87 +4437,151 @@ represented in this section from the <em>perspective of the board</em>.</p>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>0</td>
-<td>DEV_MCU_FSS0_BUS_HPB_CLKX1_INV_CLK</td>
+<td>DEV_MCU_FSS0_HYPERBUS0_BUS_HPB_CLKX1_INV_CLK</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>1</td>
-<td>DEV_MCU_FSS0_BUS_VBUS_CLK</td>
+<td>DEV_MCU_FSS0_HYPERBUS0_BUS_HPB_CLKX1_CLK</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_MCU_FSS0_BUS_OSPI1_ICLK_CLK</td>
-<td>Input muxed clock</td>
+<td>DEV_MCU_FSS0_HYPERBUS0_BUS_HPB_CLKX2_CLK</td>
+<td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>3</td>
-<td>DEV_MCU_FSS0_BUS_OSPI1_ICLK_CLK_PARENT_BOARD_0_BUS_MCU_OSPI1DQS</td>
-<td>Parent input clock option to DEV_MCU_FSS0_BUS_OSPI1_ICLK_CLK</td>
+<td>DEV_MCU_FSS0_HYPERBUS0_BUS_CBA_CLK</td>
+<td>Input clock</td>
 </tr>
 <tr class="row-even"><td>4</td>
-<td>DEV_MCU_FSS0_BUS_OSPI1_ICLK_CLK_PARENT_FSS_MCU_0_BUS_OSPI1_OCLK_CLK</td>
-<td>Parent input clock option to DEV_MCU_FSS0_BUS_OSPI1_ICLK_CLK</td>
+<td>DEV_MCU_FSS0_HYPERBUS0_BUS_HPB_CLKX2_INV_CLK</td>
+<td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_MCU_FSS0_BUS_OSPI0_RCLK_CLK</td>
-<td>Input muxed clock</td>
+<td>DEV_MCU_FSS0_HYPERBUS0_HPB_OUT_CLK_N</td>
+<td>Output clock</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_MCU_FSS0_BUS_OSPI0_RCLK_CLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT4_CLK</td>
-<td>Parent input clock option to DEV_MCU_FSS0_BUS_OSPI0_RCLK_CLK</td>
+<td>DEV_MCU_FSS0_HYPERBUS0_HPB_OUT_CLK_P</td>
+<td>Output clock</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="clocks-for-mcu-fss0-ospi-0-device">
+<span id="soc-doc-am6-public-clks-mcu-fss0-ospi-0"></span><h3>Clocks for MCU_FSS0_OSPI_0 Device<a class="headerlink" href="#clocks-for-mcu-fss0-ospi-0-device" title="Permalink to this headline">¶</a></h3>
+<p>Device: <a class="reference internal" href="devices.html#soc-doc-am6-public-devices-desc-device-list"><span class="std std-ref">AM6_DEV_MCU_FSS0_OSPI_0</span></a> (ID = 248)</p>
+<p>Following is a mapping of Clocks IDs to function:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="53%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Clock ID</th>
+<th class="head">Name</th>
+<th class="head">Function</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_RCLK_CLK</td>
+<td>Input muxed clock</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_RCLK_CLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT4_CLK</td>
+<td>Parent input clock option to DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_RCLK_CLK</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_RCLK_CLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT4_CLK</td>
+<td>Parent input clock option to DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_RCLK_CLK</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_ICLK_CLK</td>
+<td>Input muxed clock</td>
+</tr>
+<tr class="row-even"><td>4</td>
+<td>DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_ICLK_CLK_PARENT_BOARD_0_BUS_MCU_OSPI0DQS_OUT</td>
+<td>Parent input clock option to DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_ICLK_CLK</td>
+</tr>
+<tr class="row-odd"><td>5</td>
+<td>DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_ICLK_CLK_PARENT_FSS_MCU_0_OSPI_0_BUS_OSPI0_OCLK_CLK</td>
+<td>Parent input clock option to DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_ICLK_CLK</td>
+</tr>
+<tr class="row-even"><td>6</td>
+<td>DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_PCLK_CLK</td>
+<td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_MCU_FSS0_BUS_OSPI0_RCLK_CLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT4_CLK</td>
-<td>Parent input clock option to DEV_MCU_FSS0_BUS_OSPI0_RCLK_CLK</td>
+<td>DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_DQS_CLK</td>
+<td>Input clock</td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td>DEV_MCU_FSS0_BUS_HPB_CLKX2_CLK</td>
+<td>DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_HCLK_CLK</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_MCU_FSS0_BUS_HPB_CLKX2_INV_CLK</td>
-<td>Input clock</td>
-</tr>
-<tr class="row-even"><td>10</td>
-<td>DEV_MCU_FSS0_BUS_OSPI0_ICLK_CLK</td>
-<td>Input muxed clock</td>
-</tr>
-<tr class="row-odd"><td>11</td>
-<td>DEV_MCU_FSS0_BUS_OSPI0_ICLK_CLK_PARENT_BOARD_0_BUS_MCU_OSPI0DQS</td>
-<td>Parent input clock option to DEV_MCU_FSS0_BUS_OSPI0_ICLK_CLK</td>
-</tr>
-<tr class="row-even"><td>12</td>
-<td>DEV_MCU_FSS0_BUS_OSPI0_ICLK_CLK_PARENT_FSS_MCU_0_BUS_OSPI0_OCLK_CLK</td>
-<td>Parent input clock option to DEV_MCU_FSS0_BUS_OSPI0_ICLK_CLK</td>
-</tr>
-<tr class="row-odd"><td>13</td>
-<td>DEV_MCU_FSS0_BUS_HPB_CLKX1_CLK</td>
-<td>Input clock</td>
-</tr>
-<tr class="row-even"><td>14</td>
-<td>DEV_MCU_FSS0_BUS_OSPI0_DQS_CLK</td>
-<td>Input clock</td>
-</tr>
-<tr class="row-odd"><td>15</td>
-<td>DEV_MCU_FSS0_BUS_OSPI1_DQS_CLK</td>
-<td>Input clock</td>
-</tr>
-<tr class="row-even"><td>16</td>
-<td>DEV_MCU_FSS0_BUS_OSPI1_RCLK_CLK</td>
-<td>Input muxed clock</td>
-</tr>
-<tr class="row-odd"><td>17</td>
-<td>DEV_MCU_FSS0_BUS_OSPI1_RCLK_CLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT4_CLK</td>
-<td>Parent input clock option to DEV_MCU_FSS0_BUS_OSPI1_RCLK_CLK</td>
-</tr>
-<tr class="row-even"><td>18</td>
-<td>DEV_MCU_FSS0_BUS_OSPI1_RCLK_CLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT4_CLK</td>
-<td>Parent input clock option to DEV_MCU_FSS0_BUS_OSPI1_RCLK_CLK</td>
-</tr>
-<tr class="row-odd"><td>19</td>
-<td>DEV_MCU_FSS0_BUS_OSPI0_OCLK_CLK</td>
+<td>DEV_MCU_FSS0_OSPI_0_BUS_OSPI0_OCLK_CLK</td>
 <td>Output clock</td>
 </tr>
-<tr class="row-even"><td>20</td>
-<td>DEV_MCU_FSS0_BUS_OSPI1_OCLK_CLK</td>
+</tbody>
+</table>
+</div>
+<div class="section" id="clocks-for-mcu-fss0-ospi-1-device">
+<span id="soc-doc-am6-public-clks-mcu-fss0-ospi-1"></span><h3>Clocks for MCU_FSS0_OSPI_1 Device<a class="headerlink" href="#clocks-for-mcu-fss0-ospi-1-device" title="Permalink to this headline">¶</a></h3>
+<p>Device: <a class="reference internal" href="devices.html#soc-doc-am6-public-devices-desc-device-list"><span class="std std-ref">AM6_DEV_MCU_FSS0_OSPI_1</span></a> (ID = 249)</p>
+<p>Following is a mapping of Clocks IDs to function:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="53%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Clock ID</th>
+<th class="head">Name</th>
+<th class="head">Function</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_PCLK_CLK</td>
+<td>Input clock</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_ICLK_CLK</td>
+<td>Input muxed clock</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_ICLK_CLK_PARENT_BOARD_0_BUS_MCU_OSPI1DQS_OUT</td>
+<td>Parent input clock option to DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_ICLK_CLK</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_ICLK_CLK_PARENT_FSS_MCU_0_OSPI_1_BUS_OSPI1_OCLK_CLK</td>
+<td>Parent input clock option to DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_ICLK_CLK</td>
+</tr>
+<tr class="row-even"><td>4</td>
+<td>DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_HCLK_CLK</td>
+<td>Input clock</td>
+</tr>
+<tr class="row-odd"><td>5</td>
+<td>DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_DQS_CLK</td>
+<td>Input clock</td>
+</tr>
+<tr class="row-even"><td>6</td>
+<td>DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_RCLK_CLK</td>
+<td>Input muxed clock</td>
+</tr>
+<tr class="row-odd"><td>7</td>
+<td>DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_RCLK_CLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_0_BUS_HSDIV_CLKOUT4_CLK</td>
+<td>Parent input clock option to DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_RCLK_CLK</td>
+</tr>
+<tr class="row-even"><td>8</td>
+<td>DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_RCLK_CLK_PARENT_ADPLLM_HSDIV_WRAP_MCU_1_BUS_HSDIV_CLKOUT4_CLK</td>
+<td>Parent input clock option to DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_RCLK_CLK</td>
+</tr>
+<tr class="row-odd"><td>9</td>
+<td>DEV_MCU_FSS0_OSPI_1_BUS_OSPI1_OCLK_CLK</td>
 <td>Output clock</td>
 </tr>
 </tbody>
@@ -5124,7 +5201,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCU_TIMER0_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_MCU_TIMER0_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_MCU_TIMER0_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_MCU_TIMER0_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
@@ -5184,7 +5261,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCU_TIMER1_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_MCU_TIMER1_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_MCU_TIMER1_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_MCU_TIMER1_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
@@ -5244,7 +5321,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCU_TIMER2_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_MCU_TIMER2_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_MCU_TIMER2_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_MCU_TIMER2_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
@@ -5304,7 +5381,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_MCU_TIMER3_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_MCU_TIMER3_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_MCU_TIMER3_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_MCU_TIMER3_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
@@ -5512,7 +5589,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>3</td>
-<td>DEV_NAVSS0_BUS_RCLK_BUS_IN3_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_NAVSS0_BUS_RCLK_BUS_IN3_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>4</td>
@@ -5524,7 +5601,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_NAVSS0_BUS_RCLK_BUS_IN2_BOARD_0_BUS_MCU_CPTS_RFT_CLK</td>
+<td>DEV_NAVSS0_BUS_RCLK_BUS_IN2_BOARD_0_BUS_MCU_CPTS_RFT_CLK_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>7</td>
@@ -5532,7 +5609,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td>DEV_NAVSS0_BUS_RCLK_BUS_IN4_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_NAVSS0_BUS_RCLK_BUS_IN4_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>9</td>
@@ -5556,7 +5633,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>14</td>
-<td>DEV_NAVSS0_BUS_RCLK_BUS_IN5_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_NAVSS0_BUS_RCLK_BUS_IN5_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>15</td>
@@ -5796,7 +5873,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>0</td>
-<td>DEV_PCIE0_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN5_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_PCIE0_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN5_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>1</td>
@@ -5804,7 +5881,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_PCIE0_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN3_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_PCIE0_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN3_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -5820,11 +5897,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_PCIE0_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN4_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_PCIE0_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN4_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_PCIE0_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN2_BOARD_0_BUS_MCU_CPTS_RFT_CLK</td>
+<td>DEV_PCIE0_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN2_BOARD_0_BUS_MCU_CPTS_RFT_CLK_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -5856,7 +5933,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>0</td>
-<td>DEV_PCIE1_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN5_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_PCIE1_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN5_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>1</td>
@@ -5864,7 +5941,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_PCIE1_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN3_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_PCIE1_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN3_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -5880,11 +5957,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_PCIE1_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN4_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_PCIE1_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN4_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_PCIE1_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN2_BOARD_0_BUS_MCU_CPTS_RFT_CLK</td>
+<td>DEV_PCIE1_BUS_PCIE_CPTS_RCLK_CLK_BUS_IN2_BOARD_0_BUS_MCU_CPTS_RFT_CLK_OUT</td>
 <td>Input clock</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -6000,7 +6077,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_PLLCTRL0_BUS_PLL_REFCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>4</td>
-<td>DEV_PLLCTRL0_BUS_PLL_REFCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_PLLCTRL0_BUS_PLL_REFCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_PLLCTRL0_BUS_PLL_REFCLK_CLK</td>
 </tr>
 </tbody>
@@ -6100,19 +6177,19 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_PRU_ICSSG0_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-odd"><td>13</td>
-<td>DEV_PRU_ICSSG0_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_CPTS_RFT_CLK</td>
+<td>DEV_PRU_ICSSG0_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG0_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-even"><td>14</td>
-<td>DEV_PRU_ICSSG0_BUS_IEP_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_PRU_ICSSG0_BUS_IEP_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG0_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-odd"><td>15</td>
-<td>DEV_PRU_ICSSG0_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_PRU_ICSSG0_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG0_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-even"><td>16</td>
-<td>DEV_PRU_ICSSG0_BUS_IEP_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_PRU_ICSSG0_BUS_IEP_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG0_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-odd"><td>17</td>
@@ -6220,19 +6297,19 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_PRU_ICSSG1_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-odd"><td>13</td>
-<td>DEV_PRU_ICSSG1_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_CPTS_RFT_CLK</td>
+<td>DEV_PRU_ICSSG1_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG1_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-even"><td>14</td>
-<td>DEV_PRU_ICSSG1_BUS_IEP_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_PRU_ICSSG1_BUS_IEP_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG1_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-odd"><td>15</td>
-<td>DEV_PRU_ICSSG1_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_PRU_ICSSG1_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG1_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-even"><td>16</td>
-<td>DEV_PRU_ICSSG1_BUS_IEP_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_PRU_ICSSG1_BUS_IEP_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG1_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-odd"><td>17</td>
@@ -6340,19 +6417,19 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_PRU_ICSSG2_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-odd"><td>13</td>
-<td>DEV_PRU_ICSSG2_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_CPTS_RFT_CLK</td>
+<td>DEV_PRU_ICSSG2_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG2_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-even"><td>14</td>
-<td>DEV_PRU_ICSSG2_BUS_IEP_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_PRU_ICSSG2_BUS_IEP_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG2_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-odd"><td>15</td>
-<td>DEV_PRU_ICSSG2_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_PRU_ICSSG2_BUS_IEP_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG2_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-even"><td>16</td>
-<td>DEV_PRU_ICSSG2_BUS_IEP_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_PRU_ICSSG2_BUS_IEP_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_PRU_ICSSG2_BUS_IEP_CLK</td>
 </tr>
 <tr class="row-odd"><td>17</td>
@@ -6488,19 +6565,19 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_RTI0_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_RTI0_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_RTI0_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_RTI0_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_RTI0_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP0</td>
+<td>DEV_RTI0_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP0</td>
 <td>Parent input clock option to DEV_RTI0_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_RTI0_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP1</td>
+<td>DEV_RTI0_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP1</td>
 <td>Parent input clock option to DEV_RTI0_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td>DEV_RTI0_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP2</td>
+<td>DEV_RTI0_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP2</td>
 <td>Parent input clock option to DEV_RTI0_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
@@ -6548,19 +6625,19 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_RTI1_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_RTI1_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_RTI1_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_RTI1_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_RTI1_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP0</td>
+<td>DEV_RTI1_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP0</td>
 <td>Parent input clock option to DEV_RTI1_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_RTI1_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP1</td>
+<td>DEV_RTI1_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP1</td>
 <td>Parent input clock option to DEV_RTI1_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td>DEV_RTI1_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP2</td>
+<td>DEV_RTI1_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP2</td>
 <td>Parent input clock option to DEV_RTI1_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
@@ -6608,19 +6685,19 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_RTI2_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_RTI2_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_RTI2_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_RTI2_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_RTI2_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP0</td>
+<td>DEV_RTI2_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP0</td>
 <td>Parent input clock option to DEV_RTI2_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_RTI2_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP1</td>
+<td>DEV_RTI2_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP1</td>
 <td>Parent input clock option to DEV_RTI2_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td>DEV_RTI2_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP2</td>
+<td>DEV_RTI2_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP2</td>
 <td>Parent input clock option to DEV_RTI2_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
@@ -6668,19 +6745,19 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_RTI3_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td>DEV_RTI3_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_RTI3_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_RTI3_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_RTI3_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP0</td>
+<td>DEV_RTI3_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP0</td>
 <td>Parent input clock option to DEV_RTI3_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_RTI3_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP1</td>
+<td>DEV_RTI3_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP1</td>
 <td>Parent input clock option to DEV_RTI3_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td>DEV_RTI3_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_DUP2</td>
+<td>DEV_RTI3_BUS_RTI_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT_DUP2</td>
 <td>Parent input clock option to DEV_RTI3_BUS_RTI_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
@@ -6764,7 +6841,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_SERDES0_BUS_LI_REFCLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_SERDES0_BUS_LI_REFCLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_SERDES0_BUS_LI_REFCLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_SERDES0_BUS_LI_REFCLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
@@ -6836,7 +6913,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_SERDES1_BUS_RI_REFCLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_SERDES1_BUS_RI_REFCLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_SERDES1_BUS_RI_REFCLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_SERDES1_BUS_RI_REFCLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -6920,7 +6997,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER0_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER0_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER0_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER0_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -6936,11 +7013,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER0_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER0_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER0_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER0_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER0_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER0_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER0_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -6948,7 +7025,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER0_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER0_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER0_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER0_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -7012,7 +7089,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER1_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER1_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER1_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER1_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -7028,11 +7105,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER1_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER1_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER1_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER1_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER1_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER1_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER1_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -7040,7 +7117,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER1_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER1_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER1_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER1_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -7104,7 +7181,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER10_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER10_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER10_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER10_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -7120,11 +7197,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER10_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER10_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER10_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER10_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER10_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER10_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER10_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -7132,7 +7209,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER10_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER10_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER10_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER10_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -7196,7 +7273,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER11_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER11_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER11_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER11_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -7212,11 +7289,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER11_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER11_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER11_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER11_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER11_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER11_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER11_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -7224,7 +7301,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER11_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER11_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER11_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER11_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -7288,7 +7365,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER2_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER2_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER2_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER2_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -7304,11 +7381,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER2_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER2_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER2_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER2_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER2_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER2_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER2_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -7316,7 +7393,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER2_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER2_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER2_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER2_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -7380,7 +7457,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER3_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER3_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER3_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER3_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -7396,11 +7473,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER3_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER3_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER3_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER3_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER3_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER3_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER3_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -7408,7 +7485,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER3_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER3_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER3_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER3_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -7472,7 +7549,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER4_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER4_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER4_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER4_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -7488,11 +7565,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER4_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER4_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER4_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER4_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER4_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER4_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER4_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -7500,7 +7577,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER4_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER4_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER4_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER4_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -7564,7 +7641,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER5_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER5_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER5_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER5_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -7580,11 +7657,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER5_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER5_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER5_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER5_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER5_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER5_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER5_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -7592,7 +7669,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER5_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER5_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER5_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER5_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -7656,7 +7733,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER6_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER6_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER6_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER6_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -7672,11 +7749,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER6_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER6_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER6_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER6_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER6_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER6_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER6_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -7684,7 +7761,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER6_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER6_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER6_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER6_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -7748,7 +7825,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER7_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER7_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER7_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER7_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -7764,11 +7841,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER7_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER7_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER7_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER7_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER7_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER7_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER7_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -7776,7 +7853,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER7_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER7_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER7_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER7_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -7840,7 +7917,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER8_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER8_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER8_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER8_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -7856,11 +7933,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER8_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER8_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER8_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER8_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER8_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER8_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER8_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -7868,7 +7945,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER8_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER8_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER8_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER8_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -7932,7 +8009,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER9_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td>DEV_TIMER9_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK</td>
+<td>DEV_TIMER9_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_HFOSC1_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER9_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>3</td>
@@ -7948,11 +8025,11 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER9_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td>DEV_TIMER9_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0</td>
+<td>DEV_TIMER9_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_MCU_EXT_REFCLK0_OUT</td>
 <td>Parent input clock option to DEV_TIMER9_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td>DEV_TIMER9_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1</td>
+<td>DEV_TIMER9_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_EXT_REFCLK1_OUT</td>
 <td>Parent input clock option to DEV_TIMER9_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>8</td>
@@ -7960,7 +8037,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
 <td>Parent input clock option to DEV_TIMER9_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-odd"><td>9</td>
-<td>DEV_TIMER9_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK</td>
+<td>DEV_TIMER9_BUS_TIMER_TCLK_CLK_PARENT_BOARD_0_BUS_CPTS_RFT_CLK_OUT</td>
 <td>Parent input clock option to DEV_TIMER9_BUS_TIMER_TCLK_CLK</td>
 </tr>
 <tr class="row-even"><td>10</td>
@@ -8722,7 +8799,7 @@ represented in this section from the <em>perspective of the board</em>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

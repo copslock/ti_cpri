@@ -54,7 +54,8 @@ int32_t Sciclient_boardCfg(const Sciclient_BoardCfgPrms_t * pInPrms)
     struct tisci_msg_board_config_req request = {
         .tisci_boardcfgp_low  = (uint32_t) &gBoardConfigLow,
         .tisci_boardcfgp_high = (uint32_t) 0x0U,
-        .tisci_boardcfg_size  = (uint16_t) sizeof(struct tisci_boardcfg)
+        .tisci_boardcfg_size  = (uint16_t) sizeof(struct tisci_boardcfg),
+        .tisci_boardcfg_devgrp = (uint8_t) DEVGRP_ALL
     };
 
     /* NULL pInPrms will retain default values */
@@ -62,6 +63,7 @@ int32_t Sciclient_boardCfg(const Sciclient_BoardCfgPrms_t * pInPrms)
     {
         request.tisci_boardcfgp_low = pInPrms->boardConfigLow;
         request.tisci_boardcfgp_high = pInPrms->boardConfigHigh;
+        request.tisci_boardcfg_devgrp = pInPrms->devGrp;
     }
 
     Sciclient_ReqPrm_t reqParam = {
@@ -93,7 +95,9 @@ int32_t Sciclient_boardCfgPm(const Sciclient_BoardCfgPrms_t * pInPrms)
         .tisci_boardcfg_pmp_low  = (uint32_t) NULL, /* PM Board Config structure
                                                  definition removed from TISCI */
         .tisci_boardcfg_pmp_high = (uint32_t) 0x0U,
-        .tisci_boardcfg_pm_size  = (uint16_t) 0x0
+        .tisci_boardcfg_pm_size  = (uint16_t) 0x0,
+        .tisci_boardcfg_pm_devgrp = (uint8_t) DEVGRP_ALL
+
     };
 
     /* NULL pInPrms will retain default values */
@@ -102,6 +106,7 @@ int32_t Sciclient_boardCfgPm(const Sciclient_BoardCfgPrms_t * pInPrms)
         request.tisci_boardcfg_pmp_low = pInPrms->boardConfigLow;
         request.tisci_boardcfg_pmp_high = pInPrms->boardConfigHigh;
         request.tisci_boardcfg_pm_size = pInPrms->boardConfigSize;
+        request.tisci_boardcfg_pm_devgrp = pInPrms->devGrp;
     }
 
     Sciclient_ReqPrm_t reqParam = {
@@ -132,7 +137,8 @@ int32_t Sciclient_boardCfgRm(const Sciclient_BoardCfgPrms_t * pInPrms)
     struct tisci_msg_board_config_rm_req request = {
         .tisci_boardcfg_rmp_low  = (uint32_t) &gBoardConfigLow_rm,
         .tisci_boardcfg_rmp_high = (uint32_t) 0x0U,
-        .tisci_boardcfg_rm_size  = (uint16_t) sizeof(struct tisci_local_rm_boardcfg)
+        .tisci_boardcfg_rm_size  = (uint16_t) sizeof(struct tisci_local_rm_boardcfg),
+        .tisci_boardcfg_rm_devgrp = (uint8_t) DEVGRP_ALL
     };
 
     /* NULL pInPrms will retain default values */
@@ -141,6 +147,7 @@ int32_t Sciclient_boardCfgRm(const Sciclient_BoardCfgPrms_t * pInPrms)
         request.tisci_boardcfg_rmp_low = pInPrms->boardConfigLow;
         request.tisci_boardcfg_rmp_high = pInPrms->boardConfigHigh;
         request.tisci_boardcfg_rm_size = pInPrms->boardConfigSize;
+        request.tisci_boardcfg_rm_devgrp = pInPrms->devGrp;
     }
 
     Sciclient_ReqPrm_t reqParam = {
@@ -171,7 +178,8 @@ int32_t Sciclient_boardCfgSec(const Sciclient_BoardCfgPrms_t * pInPrms)
     struct tisci_msg_board_config_security_req request = {
         .tisci_boardcfg_securityp_low  = (uint32_t) &gBoardConfigLow_security,
         .tisci_boardcfg_securityp_high = (uint32_t) 0x0U,
-        .tisci_boardcfg_security_size  = (uint16_t) sizeof(struct tisci_boardcfg_sec)
+        .tisci_boardcfg_security_size  = (uint16_t) sizeof(struct tisci_boardcfg_sec),
+        .tisci_boardcfg_security_devgrp = (uint8_t) DEVGRP_ALL
     };
 
     /* NULL pInPrms will retain default values */
@@ -180,6 +188,7 @@ int32_t Sciclient_boardCfgSec(const Sciclient_BoardCfgPrms_t * pInPrms)
         request.tisci_boardcfg_securityp_low = pInPrms->boardConfigLow;
         request.tisci_boardcfg_securityp_high = pInPrms->boardConfigHigh;
         request.tisci_boardcfg_security_size = pInPrms->boardConfigSize;
+        request.tisci_boardcfg_security_devgrp = pInPrms->devGrp;
     }
 
     Sciclient_ReqPrm_t reqParam = {

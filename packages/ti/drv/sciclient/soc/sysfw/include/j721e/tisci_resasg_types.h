@@ -184,6 +184,12 @@
 #define TISCI_RESASG_SUBTYPES_IRQ_CNT (0x005AU)
 
 /**
+ * Proxy subtypes definitions
+ */
+#define TISCI_RESASG_SUBTYPE_PROXY_PROXIES (0x0000U)
+#define TISCI_RESASG_SUBTYPES_PROXY_CNT (0x0001U)
+
+/**
  * RA subtypes definitions
  */
 #define TISCI_RESASG_SUBTYPE_RA_ERROR_OES (0x0000U)
@@ -219,7 +225,7 @@
 /**
  * Total number of unique resource types for SoC
  */
-#define TISCI_RESASG_UTYPE_CNT 136U
+#define TISCI_RESASG_UTYPE_CNT 138U
 
 #endif /* TISCI_RESASG_TYPES_H */
 

@@ -25,8 +25,10 @@ regular memory by the host software, made coherent (writeback and fences as
 required by host architecture) then passed to System Firmware via
 :ref:`TISCI_MSG_BOARD_CONFIG <pub_boardcfg_tisci>`. On HS devices, the board
 config blob is signed and encrypted using customer root public key and customer
-encryption key for HS-SE or HS-Prime. For HS-FS and GP devices there are no
-customer keys, therefore board config must be unsigned and plain text.
+encryption key for HS-SE devices. For HS-FS and GP devices there are no customer
+keys, therefore board config must be unsigned and plain text. Please refer to
+:doc:`../6_topic_user_guides/hs_boardcfg_signing` on how to sign and encrypt
+board configuration on HS devices.
 
 It is presumed that this memory is owned by trusted software that will not
 intentionally corrupt the memory while System Firmware is processing. However,

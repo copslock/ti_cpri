@@ -1,0 +1,248 @@
+===========================================
+ Signing Board Configuration on HS devices
+===========================================
+
+.. note::
+
+   This document is only applicable to High Security(HS) devices.
+
+.. _sysfw_pub_hs_bcfg_intro:
+
+On General Purpose(GP) devices, various board configuration blobs are placed in
+on-chip memory and the pointer to each board configuration blob is sent in
+the body of the corresponding board configuration message. On a HS device, |sysfw|
+must verify that the board configurations are from a trusted source before they
+are used.
+
+On a HS device, |sysfw| relies on the efused asymmetric public key hash(PKH) to
+provide root of trust. Each board configuration blob must be signed by the
+private key corresponding to the PKH to establish authenticity. |sysfw| supports
+two ways of signing the board configuration blobs.
+
+1. :ref:`sysfw_pub_hs_bcfg_flexi_approach` - when the board configuration is
+   changing during system development and flexiblity in updating each board
+   configuration independently is desired.
+
+2. :ref:`sysfw_pub_hs_bcfg_opt_approach` - when the board configuration is
+   fixed and millisecond improvements in boot time are a care about.
+
+In addition, |sysfw| also supports the use of encryption for the |sec_bcfg|.
+
+.. warning::
+
+   Both the approaches described above are exclusive. All the board
+   configuration blobs must follow the same signing approach.
+
+The rest of the document is organized as follows.
+
+1. :ref:`sysfw_pub_sec_bcfg_flexi_approach` during development - The operations
+   specified here are the superset of the operations required for signing the
+   remaining board configurations.
+
+2. todo
+
+.. _sysfw_pub_hs_bcfg_flexi_approach:
+
+Signing procedure during development
+====================================
+
+.. _sysfw_pub_sec_bcfg_flexi_approach:
+
+Signing Security Board configuration
+------------------------------------
+
+The operations to create the signed |sec_bcfg| are shown in the below figure and
+also described in
+
+1. :ref:`sysfw_pub_sec_bcfg_encrypt`
+2. :ref:`sysfw_pub_sec_bcfg_sign`
+
+.. figure:: ../img/sec/signed-boardcfg/unoptimized-flow-security-option-1.png
+            :width: 100%
+
+.. _sysfw_pub_sec_bcfg_encrypt:
+
+Encrypting the security board configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note::
+
+   The steps to encrypt the |sec_bcfg| are the same for both the signing
+   approaches.
+
+1. Create the security board configuration as described in :ref:`Security Board
+   Configuration Format <pub_boardcfg_sec>`.
+
+2. Encrypt the structure from (1). The procedure is same as the one used for
+   :ref:`encrypting binaries for secure boot <pub_sign_encrypted_mek>`. It is
+   also shown in the above diagram.
+
+   1. Pad the binary with zeros until the length is a multiple of 16 bytes.
+
+   2. Append a 32 byte long random string(RS) to the binary output in step (2.1).
+      This random string is used by |sysfw| to verify successful decryption.
+      This string needs to be populated in the X509 certificate.
+
+   3. Choose 16 byte long random string as the initialization vector(IV) for CBC
+      encryption. This string also needs to be populated in the X509
+      certificate.
+
+   4. Encrypt the binary output from step (2.2) with the active MEK in AES-256-CBC
+      mode. Use the string chosen in step (2.3) as the initialization vector.
+
+   The RS and IV chosen in steps (2.2) and (2.3) are required for later operations.
+
+.. _sysfw_pub_sec_bcfg_sign:
+
+Signing the encrypted security board configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note::
+
+   The procedure to sign the binary is the same for the |sec_bcfg| and PM/RM/Core
+   board configurations.
+
+1. Calculate SHA2-512 hash of the encrypted binary created above. Populate the
+   :ref:`sysfw_image_integrity_ext` with the calculated hash and the length of
+   the encrypted board configuration.
+
+2. Populate the :ref:`sysfw_swrev_ext` with the version for the security board
+   configuration. The software revision is used to enforce rollback protection.
+
+3. Populate the :ref:`sysfw_encryption_ext` with the encryption parameters chosen
+   when encrypting the board configuration.
+
+4. Sign the X509 certificate populated in steps (1)-(3) with the MPK.
+
+5. Append the encrypted board configuration binary to the signed X509 certificate.
+
+6. On the target, load the output of step (5) to a memory location. Use the memory
+   location as the payload of the
+   :ref:`TISCI_MSG_BOARD_CONFIG_SECURITY <pub_boardcfg_security_tisci>`.
+
+
+.. _sysfw_pub_other_bcfg_flexi_approach:
+
+Signing PM, RM and core board configurations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+On HS device, PM/RM/Core board configurations also need to be signed to ensure
+that they come from a trusted source. . However these board configurations do
+not need to be encrypted. The below diagram shows the procedure for signing
+PM/RM/Core board configuration.
+
+.. figure:: ../img/sec/signed-boardcfg/unoptimized-flow-pm-rm.png
+            :width: 75%
+
+The signing steps are the same as the steps described in 
+:ref:`sysfw_pub_sec_bcfg_sign` with below differences.
+
+1. SHA2-512 hash included is calculated using the corresponding PM/RM/Core board
+   configuration blob.
+
+2. PM/RM/Core board configuration blobs are not encrypted. So the 
+   :ref:`sysfw_encryption_ext` must not be populated in the certificate.
+
+3. There is no version defined for the PM/RM/Core board configurations. So the 
+   :ref:`sysfw_swrev_ext` must not be populated in the certificate.
+
+.. _sysfw_pub_hs_bcfg_opt_approach:
+   
+Signing procedue for optimized boot time
+========================================
+
+Due to the asymmetric key verify operation when authenticating the signed board
+configuration, there is ~4 ms increase in boot time compared to using an
+unsigned board configuration. To reduce the boot time increase, |sysfw| offers
+an alternative way of supplying signed board configuration. This approach has
+two key differences from the normal approach.
+
+1. The information populated into :ref:`sysfw_image_integrity_ext`,
+   :ref:`sysfw_swrev_ext` and :ref:`sysfw_encryption_ext` above is now populated
+   into a single :ref:`sysfw_hs_bcfg_ext`.
+
+2. Instead of creating a separate signed certificate, the new X509 extension
+   needs to be included in the SYSFW outer certificate before signing.
+
+As the |sysfw| outer certificate is signed by the private key corresponding to
+the PKH, it ensures that the security board configuration originated from a
+trusted source. The below diagram shows the full signing flow. Also see
+:ref:`sysfw_pub_hs_bcfg_in_cert` below on how to populate
+:ref:`sysfw_hs_bcfg_ext`
+
+.. figure:: ../img/sec/signed-boardcfg/optimized-flow---option-4.png
+
+.. _sysfw_pub_hs_bcfg_in_cert:
+
+Including board configuration information in |sysfw| outer certificate
+----------------------------------------------------------------------
+
+.. note::
+
+   This step is in addition to the operations performed when creating the
+   certificate for counter signing the |sysfw| binary. All the extensions
+   required to be populated by ROM need to be populated as well.
+
+Before counter signing the |sysfw| binary with the private key corresponding to
+PKH, include the :ref:`sysfw_hs_bcfg_ext` in the counter signing
+certificate. Populate different fields of the extension as shown below.
+
+1. Populate the ``initialVector`` field with the IV from step 2.3 in
+   :ref:`sysfw_pub_sec_bcfg_encrypt`.
+
+2. Populate the ``randomString`` field with the RS from step 2.2 in
+   :ref:`sysfw_pub_sec_bcfg_encrypt`.
+
+3. Set ``iterationCnt`` and ``salt`` to zero.
+
+4. Calculate SHA2-512 hash of the encrypted binary created in
+   :ref:`sysfw_pub_sec_bcfg_encrypt` and populate the ``secBoardCfgHash`` field.
+
+5. Set the ``secBoardCfgVer`` field to zero.
+
+6. Populate ``pmBoardCfgHash`` , ``rmBoardCfgHash`` and ``boardCfgHash`` with
+   the SHA2-512 hashes of PM Board configuration, RM board configuration and the
+   core board configuration blobs respectively.
+
+Payload format for TISCI messages
+---------------------------------
+
+The below table explicitly calls out the payload format for |sec_bcfg| on
+GP and HS devices.
+
++---------+------------+-------------+-----------------+--------------------+
+| Device  | Boardcfg   | Signing     | TISCI message   | Boardcfg extension |
+| Type    | signing    | approach    | payload         | in SYSFW Outer     |
+|         | required   |             |                 | Certificate        |
++=========+============+=============+=================+====================+
+| GP      | No         | NA          | Raw boardcfg    | NA                 |
++---------+------------+-------------+-----------------+--------------------+
+| HS      | Yes        | Development | Signed          | Do not include     |
+|         |            |             | certificate +   |                    |
+|         |            |             | encrypted       |                    |
+|         |            |             | boardcfg        |                    |
++---------+------------+-------------+-----------------+--------------------+
+| HS      | Yes        | Boot        | encrypted       | Include            |
+|         |            | time        | boardcfg        |                    |
+|         |            | optimized   |                 |                    |
++---------+------------+-------------+-----------------+--------------------+
+
+The below table explicitly calls out the payload format for core/PM/RM board
+configurations on GP and HS devices.
+
++---------+------------+-------------+-----------------+--------------------+
+| Device  | Boardcfg   | Signing     | TISCI message   | Boardcfg extension |
+| Type    | signing    | approach    | payload         | in SYSFW Outer     |
+|         | required   |             |                 | Certificate        |
++=========+============+=============+=================+====================+
+| GP      | No         | NA          | Raw boardcfg    | NA                 |
++---------+------------+-------------+-----------------+--------------------+
+| HS      | Yes        | Development | Signed          | Do not include     |
+|         |            |             | certificate +   |                    |
+|         |            |             | raw             |                    |
+|         |            |             | boardcfg        |                    |
++---------+------------+-------------+-----------------+--------------------+
+| HS      | Yes        | Boot        | raw             | Include            |
+|         |            | time        | boardcfg        |                    |
+|         |            | optimized   |                 |                    |
++---------+------------+-------------+-----------------+--------------------+

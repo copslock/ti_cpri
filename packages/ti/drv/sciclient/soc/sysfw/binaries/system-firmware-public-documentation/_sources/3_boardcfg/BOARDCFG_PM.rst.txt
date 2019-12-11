@@ -87,3 +87,11 @@ However, the boardcfg_pm data structure is **currently empty**.
    Although currently empty, in order to properly initialize the PM subsystem
    this message must still be sent with the address and size parameters all
    configured to 0.
+
+
+.. note::
+
+   Although currently empty, PM Board configuration requires to be signed and
+   encrypted on HS devices to ensure authenticity and protect secrets. Please
+   refer to :doc:`../6_topic_user_guides/hs_boardcfg_signing` on how to sign and
+   encrypt board configuration on HS devices.

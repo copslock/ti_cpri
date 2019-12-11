@@ -38,10 +38,11 @@ Board Configuration design.
 
 .. warning::
 
-   The Resource Management board configuration message is rejected if resource
-   assignment data is not sent and does not conform to the resource assignment
-   validation guidelines.  Please see :ref:`pub_boardcfg_rm_resasg_validation`
-   for a description of the resource assignment data validation guidelines.
+   The first Resource Management board configuration message received is rejected
+   if resource assignment data is not sent and does not conform to the resource
+   assignment validation guidelines.  Please see
+   :ref:`pub_boardcfg_rm_resasg_validation` for a description of the resource
+   assignment data validation guidelines.
 
 .. warning::
 
@@ -65,8 +66,7 @@ contains the host configuration attributes and the resource assignment data.
 The RM subsystem is not considered functional until after the RM board
 configuration message is received by DMSC.  The RM board configuration data can
 be sent any time after the standard boardcfg message, :ref:`pub_boardcfg_cfg`
-is received.  The RM board configuration message can only be sent once.  RM
-board configuration messages received after the first are NACK'd.
+is received.
 
 The separation of boardcfg reception and subsystem startup is to
 reduce DMSC boot time.  The resource management data is placed into regular
@@ -74,9 +74,10 @@ memory by the host software, made coherent (writeback and fences as required by
 host architecture) then passed to System Firmware via
 :ref:`TISCI_MSG_BOARD_CONFIG_RM <pub_boardcfg_rm_tisci>`.  On HS devices, the
 board config blob is signed and encrypted using customer root
-public key and customer encryption key for HS-SE or HS-Prime. For HS-FS and
+public key and customer encryption key for HS-SE devices. For HS-FS and
 GP devices there are no customer keys, therefore board config must be
-unsigned and plain text.
+unsigned and plain text. Please refer to :doc:`../6_topic_user_guides/hs_boardcfg_signing` on how to sign and encrypt
+board configuration on HS devices.
 
 The resource management data is provided separately to reduce DMSC boot time.
 The resource management board cfg message is sent any time after the boot
@@ -111,6 +112,24 @@ Assigned resource ranges are retrievable at runtime by sending System Firmware
 a request via
 :ref:`TISCI_MSG_RM_GET_RESOURCE_RANGE <pub_boardcfg_resasg_get_tisci>`.  The
 specified resource type's range is returned for the host who sent the request.
+
+The RM board configuration TISCI message allows the user to specify the DEVGRP
+under which the RM subsystem operates.  A specified DEVGRP defines which RM
+driver instances are capable of usage by the host applications.  The host
+application can implement RM subsystem DEVGRP usage by sending a
+"ref"`TISCI_MSG_RM_BOARD_CONFIG_RM <pub_boardcfg_rm_tisci>` message with the
+boardcfg_rm_devgrp parameter populated with one or more SoC-specific device
+group values.  The DEVGRP value specifying whole device is mapped to zero so
+existing RM board configurations not explicitly defining a DEVGRP for the
+boardcfg_rm_devgrp parameter will be backwards compatible.
+
+DEVGRPS are cumulative so if multiple RM board configurations are received,
+each with a unique DEVGRP defined, all received DEVGRPs will be active.  To
+support accumulation of DEVGRPs the RM board configuration message can be sent
+any number of times.  However, board configuration content pointed to by the
+message is copied and validated when only the first board configuration message
+is received.  All subsequent messages only serve to update the RM subsystem
+DEVGRP.
 
 .. _pub_boardcfg_rm_resasg_cfg:
 

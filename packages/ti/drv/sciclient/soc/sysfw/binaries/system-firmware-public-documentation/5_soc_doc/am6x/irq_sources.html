@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -122,6 +122,7 @@
 <li class="toctree-l3"><a class="reference internal" href="processors.html">AM6 Processor Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="runtime_keystore.html">AM6 Runtime Keystore</a></li>
 <li class="toctree-l3"><a class="reference internal" href="firewalls.html">AM6 Firewall Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="soc_devgrps.html">AM6 Device Group descriptions</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#j721e-soc-family">J721E SoC Family</a></li>
@@ -1357,45 +1358,55 @@ SoC.</p>
 <td>0</td>
 <td>pend_intr</td>
 </tr>
-<tr class="row-odd"><td>187</td>
+<tr class="row-odd"><td>185</td>
+<td>AM6_DEV_NAVSS0_PROXY0</td>
+<td>0 - 63</td>
+<td>Main Nav Proxy proxy error events</td>
+</tr>
+<tr class="row-even"><td>187</td>
 <td>AM6_DEV_NAVSS0_RINGACC0</td>
 <td>0 - 767</td>
 <td>Main Nav Ring Accelerator ring events</td>
 </tr>
-<tr class="row-even"><td>187</td>
+<tr class="row-odd"><td>187</td>
 <td>AM6_DEV_NAVSS0_RINGACC0</td>
 <td>1024 - 1055</td>
 <td>Main Nav Ring Accelerator ring monitor events</td>
 </tr>
-<tr class="row-odd"><td>187</td>
+<tr class="row-even"><td>187</td>
 <td>AM6_DEV_NAVSS0_RINGACC0</td>
 <td>4096</td>
 <td>main nav ring accelerator global error event</td>
 </tr>
-<tr class="row-even"><td>188</td>
+<tr class="row-odd"><td>188</td>
 <td>AM6_DEV_NAVSS0_UDMAP0</td>
 <td>0 - 151</td>
 <td>Main Nav UDMAP transmit channel output event (OES)</td>
 </tr>
-<tr class="row-odd"><td>188</td>
+<tr class="row-even"><td>188</td>
 <td>AM6_DEV_NAVSS0_UDMAP0</td>
 <td>4096 - 4247</td>
 <td>Main Nav UDMAP transmit channel error output event (EOES)</td>
 </tr>
-<tr class="row-even"><td>188</td>
+<tr class="row-odd"><td>188</td>
 <td>AM6_DEV_NAVSS0_UDMAP0</td>
 <td>8192 - 8341</td>
 <td>Main Nav UDMAP receive channel output event (OES)</td>
 </tr>
-<tr class="row-odd"><td>188</td>
+<tr class="row-even"><td>188</td>
 <td>AM6_DEV_NAVSS0_UDMAP0</td>
 <td>12288 - 12437</td>
 <td>Main Nav UDMAP receive channel error output event (EOES)</td>
 </tr>
-<tr class="row-even"><td>188</td>
+<tr class="row-odd"><td>188</td>
 <td>AM6_DEV_NAVSS0_UDMAP0</td>
 <td>16384</td>
 <td>Main Nav UDMAP global invalid flow ouput event</td>
+</tr>
+<tr class="row-even"><td>191</td>
+<td>AM6_DEV_MCU_NAVSS0_PROXY0</td>
+<td>0 - 63</td>
+<td>MCU Nav Proxy proxy error events</td>
 </tr>
 <tr class="row-odd"><td>194</td>
 <td>AM6_DEV_MCU_NAVSS0_UDMAP0</td>
@@ -1483,7 +1494,7 @@ SoC.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

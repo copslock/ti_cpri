@@ -47,6 +47,14 @@ Subsystem to be modified as part of the request. Based on :doc:`j721e Device IDs
 | J721E_DEV_MCU_NAVSS0_UDMAP_0 |              236 |
 +------------------------------+------------------+
 
++------------------------------+-------------------+
+| Proxy Device Name            |   Proxy Device ID |
++==============================+===================+
+| J721E_DEV_NAVSS0_PROXY_0     |               210 |
++------------------------------+-------------------+
+| J721E_DEV_MCU_NAVSS0_PROXY_0 |               234 |
++------------------------------+-------------------+
+
 +-------------------------------------+-----------------------------------+
 | PSI-L Proxy Navigator Device Name   |   PSI-L Proxy Navigator Device ID |
 +=====================================+===================================+
@@ -298,6 +306,32 @@ used in interrupt management based TISCI messages.
 +-----------------------------------+----------------------+
 | MCU_NAVSS0_UDMAP_0 TRIGGER        | 56320 to 56575       |
 +-----------------------------------+----------------------+
+
+.. _pub_soc_j721e_proxies:
+
+Navigator Subsystem Proxies
+===========================
+
+This section describes Navigator Subsystem proxy proxies.
+
+
+.. warning::
+
+    Resources marked as reserved for use by DMSC **cannot** be assigned to a
+    host within the RM Board Configuration resource assignment array.  The RM
+    Board Configuration is rejected if an overlap with a reserved resource is
+    detected.
+
++-----------------------------------+---------------+
+| Proxy Name                        | Proxy Range   |
++===================================+===============+
+| J721E_DEV_NAVSS0_PROXY_0          | 0 to 63       |
++-----------------------------------+---------------+
+| J721E_DEV_MCU_NAVSS0_PROXY_0      | 0 to 0        |
+| (**RESERVED BY SYSTEM FIRMWARE**) |               |
++-----------------------------------+---------------+
+| J721E_DEV_MCU_NAVSS0_PROXY_0      | 1 to 63       |
++-----------------------------------+---------------+
 
 .. _pub_soc_j721e_psil_thread_ids:
 

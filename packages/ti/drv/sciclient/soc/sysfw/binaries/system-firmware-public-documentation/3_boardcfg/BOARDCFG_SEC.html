@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -184,6 +184,13 @@ data within a flat-typed array.  The security data is provided
 separately to reduce DMSC boot time.  The security board cfg message
 is sent any time after the boot notification message is sent and has no
 dependence upon receipt of the standard board configuration message.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Security Board configuration requires to be signed and encrypted on HS devices
+to ensure authenticity and protect secrets. Please refer to
+<a class="reference internal" href="../6_topic_user_guides/hs_boardcfg_signing.html"><span class="doc">Signing Board Configuration on HS devices</span></a> on how to sign and encrypt
+board configuration on HS devices.</p>
+</div>
 <div class="section" id="tisci-api-for-security-board-config">
 <span id="pub-boardcfg-security-tisci"></span><h3>TISCI API for Security Board Config<a class="headerlink" href="#tisci-api-for-security-board-config" title="Permalink to this headline">¶</a></h3>
 <p>The following are the parameters required in the TI-SCI message to pass security
@@ -217,9 +224,9 @@ standard board configuration message.</p>
 <p>TISCI_MSG_BOARD_CONFIG_SECURITY request to provide the location and size of the boardcfg security configuration structure.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="20%" />
+<col width="21%" />
 <col width="17%" />
-<col width="63%" />
+<col width="62%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Parameter</th>
@@ -244,9 +251,24 @@ standard board configuration message.</p>
 <td>u16</td>
 <td>Size of security configuration data.</td>
 </tr>
+<tr class="row-even"><td>boardcfg_security_devgrp</td>
+<td>devgrp_t</td>
+<td>Device group for the security board configuration.</td>
+</tr>
 </tbody>
 </table>
 </p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Even though the security board configuration structure contains the
+<code class="docutils literal"><span class="pre">boardcfg_security_devgrp</span></code> member, it is ignored. Initialization of
+firewalls is performed for a devgrp when it is enabled via the core board
+configuration message. This is necessary to ensure isolation. See
+<a class="reference internal" href="BOARDCFG.html"><span class="doc">Board Configuration</span></a>.</p>
+<p class="last">The reamining security services are initialized when the security board configuration is
+received for the first time. Subsequent security board configuration messages do not have
+any effect on operation of System Firmware.</p>
+</div>
 <p><p><strong>struct tisci_msg_board_config_security_resp</strong></p>
 <p>Empty response for TISCI_MSG_BOARD_CONFIG_SECURITY.</p>
 <table border="1" class="docutils">
@@ -476,7 +498,7 @@ defines the supervisory tree for all processing entities in the SoC.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

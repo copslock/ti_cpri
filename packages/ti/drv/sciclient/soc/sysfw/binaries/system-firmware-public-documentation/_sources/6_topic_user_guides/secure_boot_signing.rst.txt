@@ -13,6 +13,9 @@ Usecases are listed in order of increasing complexity.
 Signing an unencrypted binary for secure boot
 ======================================================
 
+.. figure:: ../img/sec/signed-boardcfg/binary-signing-flow.png
+            :width: 50%
+
 1. Calculate SHA2-512 hash of the binary. Populate the :ref:`sysfw_image_integrity_ext`
    with the calculated hash and the length of the binary.
 
@@ -50,6 +53,9 @@ X509 extensions are also modified. This section describes the encryption
 operation and changes in populating the X509 extensions. First, the steps to
 encrypt the binary are listed below.
 
+.. figure:: ../img/sec/signed-boardcfg/encryption-flow.png
+            :width: 50%
+
 1. Pad the binary with zeros until the length is a multiple of 16 bytes. 
 
 2. Append a 32 byte long random string to the binary output in step (1). This
@@ -79,3 +85,8 @@ the certificate before signing. The following changes apply to the other extensi
    instead of the unencrypted binary.
 
 Please refer to :ref:`sysfw_image_integrity_ext` and :ref:`sysfw_encryption_ext`.
+The complete signing flow for an encrypted image is shown below.
+
+.. figure:: ../img/sec/signed-boardcfg/encrypted-binary-whole-flow.png
+            :width: 100%
+

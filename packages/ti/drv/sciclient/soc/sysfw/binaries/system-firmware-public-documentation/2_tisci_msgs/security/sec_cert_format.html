@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -230,6 +230,9 @@ frameworks
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#sysfw-encryption-ext"><span class="std std-ref">System Firmware Encryption Extension</span></a></td>
 <td>Encryption extension</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#sysfw-hs-bcfg-ext"><span class="std std-ref">System Firmware HS Board Configuration Extension</span></a></td>
+<td>HS Boardcfg extension</td>
 </tr>
 </tbody>
 </table>
@@ -593,6 +596,100 @@ BMPK) must be hidden</td>
 </table>
 <p>For an example, please refer to the section <code class="docutils literal"><span class="pre">[</span> <span class="pre">debug</span> <span class="pre">]</span></code> in <a class="reference internal" href="#sysfw-x509-template-example"><span class="std std-ref">Sample x509 template</span></a>.</p>
 </div>
+<div class="section" id="sysfw-hs-board-configuration-extension">
+<span id="sysfw-hs-bcfg-ext"></span><h3>System Firmware HS Board Configuration Extension<a class="headerlink" href="#sysfw-hs-board-configuration-extension" title="Permalink to this headline">¶</a></h3>
+<p>System Firmware extends the Encryption extension/OID as defined by ROM for the purpose
+of authenticating the board configurations on HS devices. The hashes of the 4
+board configuration blobs</p>
+<ol class="arabic simple">
+<li>Core board configuration</li>
+<li>PM board configurations</li>
+<li>RM board configuration</li>
+<li>Encrypted Security board configuration</li>
+</ol>
+<p>and the encryption parameters of the security board configuration are encoded in
+the board configuration extension of the System Firmware outer certificate . This
+extension is identified by OID <strong>1.3.6.1.4.1.294.1.36</strong>.</p>
+<div class="highlight-cpp"><div class="highlight"><pre><span></span><span class="n">SYSFW</span><span class="o">-</span><span class="n">HS</span><span class="o">-</span><span class="nl">BCFG</span><span class="p">:</span><span class="o">=</span> <span class="n">SEQUENCE</span>
+<span class="p">{</span>
+   <span class="n">initalVector</span> <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span>
+   <span class="n">randomString</span> <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span>
+   <span class="n">iterationCnt</span> <span class="n">INTEGER</span><span class="p">,</span>
+   <span class="n">salt</span> <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span>
+   <span class="n">secBoardCfgHash</span> <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span>
+   <span class="n">secBoardCfgVer</span> <span class="n">INTEGER</span><span class="p">,</span>
+   <span class="n">pmBoardCfgHash</span> <span class="n">OCTET</span> <span class="n">STRING</span><span class="p">,</span>
+   <span class="n">rmBoardCfgHash</span> <span class="n">OCTET</span> <span class="n">STRING</span>
+   <span class="n">boardCfgHash</span> <span class="n">OCTET</span> <span class="n">STRING</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The extension is decoded into the following data structure.</p>
+<div class="highlight-c"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">ti_bcfg_info</span> <span class="p">{</span>
+ <span class="n">u8</span> <span class="n">initialVector</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+ <span class="n">u8</span> <span class="n">randomString</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+ <span class="n">u8</span> <span class="n">iterationCnt</span><span class="p">;</span>
+ <span class="n">u8</span> <span class="n">salt</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+ <span class="n">u8</span> <span class="n">secBoardCfgHash</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+ <span class="n">u8</span> <span class="n">secBoardCfgVer</span><span class="p">;</span>
+ <span class="n">u8</span> <span class="n">pmBoardCfgHash</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+ <span class="n">u8</span> <span class="n">rmBoardCfgHash</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+ <span class="n">u8</span> <span class="n">boardCfgHash</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="section" id="id3">
+<h4>Populating the certificate fields<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li><code class="docutils literal"><span class="pre">initialVector</span></code><ul>
+<li>This is the 16 byte initialization vector to be used in AES-CBC
+decryption.</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">randomString</span></code><ul>
+<li>This field indicates the random 32 byte string that was appended to the
+board configuration binary before encrypting the combined binary. System Firmware
+will compare the last 32 bytes of the decryption output against the
+<code class="docutils literal"><span class="pre">randomString</span></code> field from the X509 certificate to verify the success of
+decryption operation.</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">iterationCnt</span></code><ul>
+<li>This field is reserved and must be initialized to zero.</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">salt</span></code><ul>
+<li>This field is 32 bytes long. It is reserved and must be initialized to
+zero.</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">secBoardCfgHash</span></code><ul>
+<li>This is a 64 byte field containing the SHA2-512 hash of the encrypted security board configuration.</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">secBoardCfgVer</span></code><ul>
+<li>This field indicates the version of security board configuration and must be initialized
+to zero.</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">pmBoardCfgHash</span></code><ul>
+<li>This is a 64 byte field containing the SHA2-512 hash of the PM board configuration.</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">rmBoardCfgHash</span></code><ul>
+<li>This is a 64 byte field containing the SHA2-512 hash of the RM board configuration.</li>
+</ul>
+</li>
+</ol>
+<ol class="arabic simple" start="8">
+<li><code class="docutils literal"><span class="pre">boardCfgHash</span></code><ul>
+<li>This is a 64 byte field containing the SHA2-512 hash of the main board configuration
+structure.</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
 <div class="section" id="sample-x509-template">
 <span id="sysfw-x509-template-example"></span><h3>Sample x509 template<a class="headerlink" href="#sample-x509-template" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
@@ -634,6 +731,7 @@ Image integrity (<code class="docutils literal"><span class="pre">sysfw_image_in
 <span class="m">1</span>.3.6.1.4.1.294.1.33<span class="o">=</span>ASN1:SEQUENCE:sysfw_boot_seq
 <span class="m">1</span>.3.6.1.4.1.294.1.34<span class="o">=</span>ASN1:SEQUENCE:sysfw_image_integrity
 <span class="m">1</span>.3.6.1.4.1.294.1.35<span class="o">=</span>ASN1:SEQUENCE:sysfw_image_load
+<span class="m">1</span>.3.6.1.4.1.294.1.36<span class="o">=</span>ASN1:SEQUENCE:sysfw_hs_boardcfg
 
 <span class="o">[</span> sysfw_boot_seq <span class="o">]</span>
 <span class="nv">bootCore</span> <span class="o">=</span> INTEGER:0x20
@@ -669,6 +767,17 @@ Image integrity (<code class="docutils literal"><span class="pre">sysfw_image_in
 <span class="nv">randomString</span> <span class="o">=</span>  FORMAT:HEX,OCT:TEST_IMAGE_ENC_RS
 <span class="nv">iterationCnt</span> <span class="o">=</span>  INTEGER:TEST_IMAGE_KEY_DERIVE_INDEX
 <span class="nv">salt</span>         <span class="o">=</span>  FORMAT:HEX,OCT:TEST_IMAGE_KEY_DERIVE_SALT
+
+<span class="o">[</span> sysfw_hs_boardcfg <span class="o">]</span>
+<span class="nv">initalVector</span>    <span class="o">=</span>  FORMAT:HEX,OCT:SEC_BCFG_ENC_IV
+<span class="nv">randomString</span>    <span class="o">=</span>  FORMAT:HEX,OCT:SEC_BCFG_ENC_RS
+<span class="nv">iterationCnt</span>    <span class="o">=</span>  INTEGER:SEC_BCFG_KEY_DERIVE_INDEX
+<span class="nv">salt</span>            <span class="o">=</span>  FORMAT:HEX,OCT:SEC_BCFG_KEY_DERIVE_SALT
+<span class="nv">secBoardcfgHash</span> <span class="o">=</span>  FORMAT:HEX,OCT:SEC_BCFG_HASH
+<span class="nv">secBoardcfgVer</span>  <span class="o">=</span>  INTEGER:SEC_BCFG_VER
+<span class="nv">pmBoardcfgHash</span>  <span class="o">=</span>  FORMAT:HEX,OCT:PM_BCFG_HASH
+<span class="nv">rmBoardcfgHash</span>  <span class="o">=</span>  FORMAT:HEX,OCT:RM_BCFG_HASH
+<span class="nv">boardcfgHash</span>    <span class="o">=</span>  FORMAT:HEX,OCT:BCFG_HASH
 </pre></div>
 </div>
 </div>
@@ -716,7 +825,7 @@ Image integrity (<code class="docutils literal"><span class="pre">sysfw_image_in
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

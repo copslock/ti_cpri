@@ -1,0 +1,558 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Signing Board Configuration on HS devices &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../index.html"/>
+        <link rel="up" title="Chapter 6: Topic User Guides" href="index.html"/>
+        <link rel="next" title="Asymmetric Key Services" href="asymmetric_key_services.html"/>
+        <link rel="prev" title="Signing binaries for Secure Boot" href="secure_boot_signing.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.10.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5_soc_doc/index.html">Chapter 5: SoC Family Specific Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Chapter 6: Topic User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="secure_boot_signing.html">Signing binaries for Secure Boot</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Signing Board Configuration on HS devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#signing-procedure-during-development">Signing procedure during development</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#signing-security-board-configuration">Signing Security Board configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#signing-procedue-for-optimized-boot-time">Signing procedue for optimized boot time</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#including-board-configuration-information-in-sysfw-outer-certificate">Including board configuration information in System Firmware outer certificate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#payload-format-for-tisci-messages">Payload format for TISCI messages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="asymmetric_key_services.html">Asymmetric Key Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devgrp_usage.html">Device Group Primer</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Chapter 6: Topic User Guides</a> &raquo;</li>
+      
+    <li>Signing Board Configuration on HS devices</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="signing-board-configuration-on-hs-devices">
+<h1>Signing Board Configuration on HS devices<a class="headerlink" href="#signing-board-configuration-on-hs-devices" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This document is only applicable to High Security(HS) devices.</p>
+</div>
+<p id="sysfw-pub-hs-bcfg-intro">On General Purpose(GP) devices, various board configuration blobs are placed in
+on-chip memory and the pointer to each board configuration blob is sent in
+the body of the corresponding board configuration message. On a HS device, System Firmware
+must verify that the board configurations are from a trusted source before they
+are used.</p>
+<p>On a HS device, System Firmware relies on the efused asymmetric public key hash(PKH) to
+provide root of trust. Each board configuration blob must be signed by the
+private key corresponding to the PKH to establish authenticity. System Firmware supports
+two ways of signing the board configuration blobs.</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#sysfw-pub-hs-bcfg-flexi-approach"><span class="std std-ref">Signing procedure during development</span></a> - when the board configuration is
+changing during system development and flexiblity in updating each board
+configuration independently is desired.</li>
+<li><a class="reference internal" href="#sysfw-pub-hs-bcfg-opt-approach"><span class="std std-ref">Signing procedue for optimized boot time</span></a> - when the board configuration is
+fixed and millisecond improvements in boot time are a care about.</li>
+</ol>
+<p>In addition, System Firmware also supports the use of encryption for the security board configuration.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Both the approaches described above are exclusive. All the board
+configuration blobs must follow the same signing approach.</p>
+</div>
+<p>The rest of the document is organized as follows.</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#sysfw-pub-sec-bcfg-flexi-approach"><span class="std std-ref">Signing Security Board configuration</span></a> during development - The operations
+specified here are the superset of the operations required for signing the
+remaining board configurations.</li>
+<li>todo</li>
+</ol>
+<div class="section" id="signing-procedure-during-development">
+<span id="sysfw-pub-hs-bcfg-flexi-approach"></span><h2>Signing procedure during development<a class="headerlink" href="#signing-procedure-during-development" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="signing-security-board-configuration">
+<span id="sysfw-pub-sec-bcfg-flexi-approach"></span><h3>Signing Security Board configuration<a class="headerlink" href="#signing-security-board-configuration" title="Permalink to this headline">¶</a></h3>
+<p>The operations to create the signed security board configuration are shown in the below figure and
+also described in</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#sysfw-pub-sec-bcfg-encrypt"><span class="std std-ref">Encrypting the security board configuration</span></a></li>
+<li><a class="reference internal" href="#sysfw-pub-sec-bcfg-sign"><span class="std std-ref">Signing the encrypted security board configuration</span></a></li>
+</ol>
+<div class="figure">
+<a class="reference internal image-reference" href="../_images/unoptimized-flow-security-option-1.png"><img alt="../_images/unoptimized-flow-security-option-1.png" src="../_images/unoptimized-flow-security-option-1.png" style="width: 100%;" /></a>
+</div>
+<div class="section" id="encrypting-the-security-board-configuration">
+<span id="sysfw-pub-sec-bcfg-encrypt"></span><h4>Encrypting the security board configuration<a class="headerlink" href="#encrypting-the-security-board-configuration" title="Permalink to this headline">¶</a></h4>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The steps to encrypt the security board configuration are the same for both the signing
+approaches.</p>
+</div>
+<ol class="arabic">
+<li><p class="first">Create the security board configuration as described in <a class="reference internal" href="../3_boardcfg/BOARDCFG_SEC.html#pub-boardcfg-sec"><span class="std std-ref">Security Board
+Configuration Format</span></a>.</p>
+</li>
+<li><p class="first">Encrypt the structure from (1). The procedure is same as the one used for
+<a class="reference internal" href="secure_boot_signing.html#pub-sign-encrypted-mek"><span class="std std-ref">encrypting binaries for secure boot</span></a>. It is
+also shown in the above diagram.</p>
+<ol class="arabic simple">
+<li>Pad the binary with zeros until the length is a multiple of 16 bytes.</li>
+<li>Append a 32 byte long random string(RS) to the binary output in step (2.1).
+This random string is used by System Firmware to verify successful decryption.
+This string needs to be populated in the X509 certificate.</li>
+<li>Choose 16 byte long random string as the initialization vector(IV) for CBC
+encryption. This string also needs to be populated in the X509
+certificate.</li>
+<li>Encrypt the binary output from step (2.2) with the active MEK in AES-256-CBC
+mode. Use the string chosen in step (2.3) as the initialization vector.</li>
+</ol>
+<p>The RS and IV chosen in steps (2.2) and (2.3) are required for later operations.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="signing-the-encrypted-security-board-configuration">
+<span id="sysfw-pub-sec-bcfg-sign"></span><h4>Signing the encrypted security board configuration<a class="headerlink" href="#signing-the-encrypted-security-board-configuration" title="Permalink to this headline">¶</a></h4>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The procedure to sign the binary is the same for the security board configuration and PM/RM/Core
+board configurations.</p>
+</div>
+<ol class="arabic simple">
+<li>Calculate SHA2-512 hash of the encrypted binary created above. Populate the
+<a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-image-integrity-ext"><span class="std std-ref">System Firmware Image Integrity Extension</span></a> with the calculated hash and the length of
+the encrypted board configuration.</li>
+<li>Populate the <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-swrev-ext"><span class="std std-ref">System Firmware Software Revision Extension</span></a> with the version for the security board
+configuration. The software revision is used to enforce rollback protection.</li>
+<li>Populate the <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-encryption-ext"><span class="std std-ref">System Firmware Encryption Extension</span></a> with the encryption parameters chosen
+when encrypting the board configuration.</li>
+<li>Sign the X509 certificate populated in steps (1)-(3) with the MPK.</li>
+<li>Append the encrypted board configuration binary to the signed X509 certificate.</li>
+<li>On the target, load the output of step (5) to a memory location. Use the memory
+location as the payload of the
+<a class="reference internal" href="../3_boardcfg/BOARDCFG_SEC.html#pub-boardcfg-security-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_SECURITY</span></a>.</li>
+</ol>
+</div>
+<div class="section" id="signing-pm-rm-and-core-board-configurations">
+<span id="sysfw-pub-other-bcfg-flexi-approach"></span><h4>Signing PM, RM and core board configurations<a class="headerlink" href="#signing-pm-rm-and-core-board-configurations" title="Permalink to this headline">¶</a></h4>
+<p>On HS device, PM/RM/Core board configurations also need to be signed to ensure
+that they come from a trusted source. . However these board configurations do
+not need to be encrypted. The below diagram shows the procedure for signing
+PM/RM/Core board configuration.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../_images/unoptimized-flow-pm-rm.png"><img alt="../_images/unoptimized-flow-pm-rm.png" src="../_images/unoptimized-flow-pm-rm.png" style="width: 75%;" /></a>
+</div>
+<p>The signing steps are the same as the steps described in
+<a class="reference internal" href="#sysfw-pub-sec-bcfg-sign"><span class="std std-ref">Signing the encrypted security board configuration</span></a> with below differences.</p>
+<ol class="arabic simple">
+<li>SHA2-512 hash included is calculated using the corresponding PM/RM/Core board
+configuration blob.</li>
+<li>PM/RM/Core board configuration blobs are not encrypted. So the
+<a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-encryption-ext"><span class="std std-ref">System Firmware Encryption Extension</span></a> must not be populated in the certificate.</li>
+<li>There is no version defined for the PM/RM/Core board configurations. So the
+<a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-swrev-ext"><span class="std std-ref">System Firmware Software Revision Extension</span></a> must not be populated in the certificate.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="signing-procedue-for-optimized-boot-time">
+<span id="sysfw-pub-hs-bcfg-opt-approach"></span><h2>Signing procedue for optimized boot time<a class="headerlink" href="#signing-procedue-for-optimized-boot-time" title="Permalink to this headline">¶</a></h2>
+<p>Due to the asymmetric key verify operation when authenticating the signed board
+configuration, there is ~4 ms increase in boot time compared to using an
+unsigned board configuration. To reduce the boot time increase, System Firmware offers
+an alternative way of supplying signed board configuration. This approach has
+two key differences from the normal approach.</p>
+<ol class="arabic simple">
+<li>The information populated into <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-image-integrity-ext"><span class="std std-ref">System Firmware Image Integrity Extension</span></a>,
+<a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-swrev-ext"><span class="std std-ref">System Firmware Software Revision Extension</span></a> and <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-encryption-ext"><span class="std std-ref">System Firmware Encryption Extension</span></a> above is now populated
+into a single <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-hs-bcfg-ext"><span class="std std-ref">System Firmware HS Board Configuration Extension</span></a>.</li>
+<li>Instead of creating a separate signed certificate, the new X509 extension
+needs to be included in the SYSFW outer certificate before signing.</li>
+</ol>
+<p>As the System Firmware outer certificate is signed by the private key corresponding to
+the PKH, it ensures that the security board configuration originated from a
+trusted source. The below diagram shows the full signing flow. Also see
+<a class="reference internal" href="#sysfw-pub-hs-bcfg-in-cert"><span class="std std-ref">Including board configuration information in System Firmware outer certificate</span></a> below on how to populate
+<a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-hs-bcfg-ext"><span class="std std-ref">System Firmware HS Board Configuration Extension</span></a></p>
+<div class="figure">
+<img alt="../_images/optimized-flow---option-4.png" src="../_images/optimized-flow---option-4.png" />
+</div>
+<div class="section" id="including-board-configuration-information-in-sysfw-outer-certificate">
+<span id="sysfw-pub-hs-bcfg-in-cert"></span><h3>Including board configuration information in System Firmware outer certificate<a class="headerlink" href="#including-board-configuration-information-in-sysfw-outer-certificate" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This step is in addition to the operations performed when creating the
+certificate for counter signing the System Firmware binary. All the extensions
+required to be populated by ROM need to be populated as well.</p>
+</div>
+<p>Before counter signing the System Firmware binary with the private key corresponding to
+PKH, include the <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-hs-bcfg-ext"><span class="std std-ref">System Firmware HS Board Configuration Extension</span></a> in the counter signing
+certificate. Populate different fields of the extension as shown below.</p>
+<ol class="arabic simple">
+<li>Populate the <code class="docutils literal"><span class="pre">initialVector</span></code> field with the IV from step 2.3 in
+<a class="reference internal" href="#sysfw-pub-sec-bcfg-encrypt"><span class="std std-ref">Encrypting the security board configuration</span></a>.</li>
+<li>Populate the <code class="docutils literal"><span class="pre">randomString</span></code> field with the RS from step 2.2 in
+<a class="reference internal" href="#sysfw-pub-sec-bcfg-encrypt"><span class="std std-ref">Encrypting the security board configuration</span></a>.</li>
+<li>Set <code class="docutils literal"><span class="pre">iterationCnt</span></code> and <code class="docutils literal"><span class="pre">salt</span></code> to zero.</li>
+<li>Calculate SHA2-512 hash of the encrypted binary created in
+<a class="reference internal" href="#sysfw-pub-sec-bcfg-encrypt"><span class="std std-ref">Encrypting the security board configuration</span></a> and populate the <code class="docutils literal"><span class="pre">secBoardCfgHash</span></code> field.</li>
+<li>Set the <code class="docutils literal"><span class="pre">secBoardCfgVer</span></code> field to zero.</li>
+<li>Populate <code class="docutils literal"><span class="pre">pmBoardCfgHash</span></code> , <code class="docutils literal"><span class="pre">rmBoardCfgHash</span></code> and <code class="docutils literal"><span class="pre">boardCfgHash</span></code> with
+the SHA2-512 hashes of PM Board configuration, RM board configuration and the
+core board configuration blobs respectively.</li>
+</ol>
+</div>
+<div class="section" id="payload-format-for-tisci-messages">
+<h3>Payload format for TISCI messages<a class="headerlink" href="#payload-format-for-tisci-messages" title="Permalink to this headline">¶</a></h3>
+<p>The below table explicitly calls out the payload format for security board configuration on
+GP and HS devices.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="17%" />
+<col width="18%" />
+<col width="24%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Device
+Type</th>
+<th class="head">Boardcfg
+signing
+required</th>
+<th class="head">Signing
+approach</th>
+<th class="head">TISCI message
+payload</th>
+<th class="head">Boardcfg extension
+in SYSFW Outer
+Certificate</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>GP</td>
+<td>No</td>
+<td>NA</td>
+<td>Raw boardcfg</td>
+<td>NA</td>
+</tr>
+<tr class="row-odd"><td>HS</td>
+<td>Yes</td>
+<td>Development</td>
+<td>Signed
+certificate +
+encrypted
+boardcfg</td>
+<td>Do not include</td>
+</tr>
+<tr class="row-even"><td>HS</td>
+<td>Yes</td>
+<td>Boot
+time
+optimized</td>
+<td>encrypted
+boardcfg</td>
+<td>Include</td>
+</tr>
+</tbody>
+</table>
+<p>The below table explicitly calls out the payload format for core/PM/RM board
+configurations on GP and HS devices.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="17%" />
+<col width="18%" />
+<col width="24%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Device
+Type</th>
+<th class="head">Boardcfg
+signing
+required</th>
+<th class="head">Signing
+approach</th>
+<th class="head">TISCI message
+payload</th>
+<th class="head">Boardcfg extension
+in SYSFW Outer
+Certificate</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>GP</td>
+<td>No</td>
+<td>NA</td>
+<td>Raw boardcfg</td>
+<td>NA</td>
+</tr>
+<tr class="row-odd"><td>HS</td>
+<td>Yes</td>
+<td>Development</td>
+<td>Signed
+certificate +
+raw
+boardcfg</td>
+<td>Do not include</td>
+</tr>
+<tr class="row-even"><td>HS</td>
+<td>Yes</td>
+<td>Boot
+time
+optimized</td>
+<td>raw
+boardcfg</td>
+<td>Include</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="asymmetric_key_services.html" class="btn btn-neutral float-right" title="Asymmetric Key Services" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="secure_boot_signing.html" class="btn btn-neutral" title="Signing binaries for Secure Boot" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'19.10.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

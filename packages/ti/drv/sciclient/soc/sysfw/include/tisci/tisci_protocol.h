@@ -341,6 +341,11 @@ struct tisci_sec_header {
  * RM TISCI message to write PSI-L thread RT registers via the PSI-L proxy
  */
 #define TISCI_MSG_RM_PSIL_WRITE                 (0x1283U)
+/**
+ * RM TISCI message to setup a Navigator Subsystem proxy for
+ * configuration
+ */
+#define TISCI_MSG_RM_PROXY_CFG                  (0x1300U)
 
 #endif /* TISCI_PROTOCOL_H */
 

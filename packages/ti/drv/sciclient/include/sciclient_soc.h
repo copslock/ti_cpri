@@ -48,7 +48,7 @@
 #include <ti/drv/sciclient/soc/V0/sciclient_fmwMsgParams.h>
 #endif
 
-#if defined (SOC_J721E)
+#if defined (SOC_J721E) || defined (SOC_J7200)
 #include <ti/drv/sciclient/soc/sysfw/include/j721e/tisci_resasg_types.h>
 #include <ti/drv/sciclient/soc/V1/sciclient_fmwMsgParams.h>
 #endif

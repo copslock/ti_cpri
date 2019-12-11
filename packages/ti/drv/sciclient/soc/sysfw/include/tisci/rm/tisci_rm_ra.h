@@ -371,7 +371,12 @@ struct tisci_msg_rm_ring_get_cfg_req {
  * Ring number of elements.
  *
  * \param mode
- * Ring mode.  Will be a value from @ref tisci_msg_value_rm_ring_mode.
+ * Ring mode.  Will be a value from:
+ * @ref TISCI_MSG_VALUE_RM_MON_MODE_DISABLED
+ * @ref TISCI_MSG_VALUE_RM_MON_MODE_PUSH_POP
+ * @ref TISCI_MSG_VALUE_RM_MON_MODE_THRESHOLD
+ * @ref TISCI_MSG_VALUE_RM_MON_MODE_WATERMARK
+ * @ref TISCI_MSG_VALUE_RM_MON_MODE_STARVATION
  *
  * \param size
  * Ring element size.

@@ -71,13 +71,12 @@ extern const struct tisci_boardcfg_sec gBoardConfigLow_security;
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
-/* Number of entries of type tisci_boardcfg_rm_resasg_entry for RM resource
-*   assignment*/
-#define TISCI_BOARDCFG_RM_RESASG_ENTRIES (136U)
 
 struct tisci_local_rm_boardcfg {
     struct tisci_boardcfg_rm      rm_boardcfg;
-    struct tisci_boardcfg_rm_resasg_entry resasg_entries[TISCI_BOARDCFG_RM_RESASG_ENTRIES];
+    /**< RM board configuration */
+    struct tisci_boardcfg_rm_resasg_entry resasg_entries[TISCI_BOARDCFG_RM_RESASG_ENTRIES_MAX];
+    /**< Resource Assignment Entries */
 };
 #endif
 

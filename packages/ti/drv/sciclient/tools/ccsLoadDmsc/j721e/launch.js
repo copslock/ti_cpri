@@ -56,13 +56,13 @@ if (disableGelLoad == 0)
     gelFilePath = "k3-avv-repo/framework/gels/K3J7";
 }
 //PDK path. Edit this
-pdkPath = "/home/piyali/WORK/PROJECTS/J7/CODE/pdk";
+pdkPath = "/ti/j7presi/workarea/pdk";
 
 //path to board config elf
 ccs_init_elf_file = pdkPath+"/packages/ti/drv/sciclient/tools/ccsLoadDmsc/j721e/sciclient_ccs_init_mcu1_0_release.xer5f";
 
 //path to sysfw bin
-sysfw_bin = pdkPath+"/packages/ti/drv/sciclient/soc/sysfw/binaries/ti-sci-firmware-j721e-gp.bin";
+sysfw_bin = pdkPath+"/packages/ti/drv/sciclient/soc/sysfw/binaries/ti-sci-firmware-j721e-gp.bin"
 
 //<!!!!!! EDIT THIS !!!!!>
 
@@ -120,26 +120,26 @@ function connectTargets()
     // Connect the MCU R5F
     dsMCU1_0.target.connect();
 
-//    print("Running the board configuration initialization from R5!");
-//    // Load the board configuration init file.
-//    dsMCU1_0.memory.loadProgram(ccs_init_elf_file);
-//    // Halt the R5F and re-run.
-//    dsMCU1_0.target.halt();
-//    // Run Synchronously for the executable to finish
-//    dsMCU1_0.target.run();
-//
-//    /* Run the DDR Configuration */
-//    print("Running the DDR configuration... Wait till it completes!");
-//    dsDMSC_0.target.halt();
-//    dsDMSC_0.expression.evaluate("J7ES_LPDDR4_4266MTs_Config_Late()");
-//    dsDMSC_0.target.runAsynch();
+    print("Running the board configuration initialization from R5!");
+    // Load the board configuration init file.
+    dsMCU1_0.memory.loadProgram(ccs_init_elf_file);
+    // Halt the R5F and re-run.
+    dsMCU1_0.target.halt();
+    // Run Synchronously for the executable to finish
+    dsMCU1_0.target.run();
+
+    /* Run the DDR Configuration */
+    print("Running the DDR configuration... Wait till it completes!");
+    dsDMSC_0.target.halt();
+    dsDMSC_0.expression.evaluate("J7ES_LPDDR4_Config_Late()");
+    dsDMSC_0.target.runAsynch();
 }
 
 function disconnectTargets()
 {
     updateScriptVars();
     // Disconnect targets
-    dsDMSC_0.target.disconnect();
+    //dsDMSC_0.target.disconnect();
     // Reset the R5F to be in clean state.
     //dsMCU1_0.target.reset();
 }
@@ -149,7 +149,7 @@ function doEverything()
     printVars();
     connectTargets();
     disconnectTargets();
-    print("Okay you are good to go.. Happy Debugging!");
+    print("Okay you are good to go.. Happy Debugging!!");
 }
 
 var ds;

@@ -68,7 +68,10 @@ typedef struct
      struct.
      */
     const uint16_t boardConfigSize;
-    /* (uint16_t) sizeof(<board configuration structure>) */
+    /**< (uint16_t) sizeof(<board configuration structure>) */
+    const uint8_t  devGrp;
+    /**< SoC defined SYSFW devgrp. Example: #DEVGRP_ALL
+     */
 } Sciclient_BoardCfgPrms_t;
 
 /* ========================================================================== */

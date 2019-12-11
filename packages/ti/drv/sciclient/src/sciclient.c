@@ -440,10 +440,10 @@ int32_t Sciclient_init(const Sciclient_ConfigPrms_t *pCfgPrms)
                     evtCfg.rtMap = 0x3C;
                     evtCfg.extEvtNum = 0x0;
                     evtCfg.c7xEvtNum = SCICLIENT_C7X_NON_SECURE_INTERRUPT_NUM;
-		    /* Clec interrupt number 1024 is connected to GIC interrupt number 32 in J721E.
-		     * Due to this for CLEC programming one needs to add an offset of 992 (1024 - 32)
-		     * to the event number which is shared between GIC and CLEC.
-		     */
+                    /* Clec interrupt number 1024 is connected to GIC interrupt number 32 in J721E.
+                     * Due to this for CLEC programming one needs to add an offset of 992 (1024 - 32)
+                     * to the event number which is shared between GIC and CLEC.
+                     */
                     CSL_clecConfigEvent(regs, CSLR_COMPUTE_CLUSTER0_GIC500SS_SPI_NAVSS0_INTR_ROUTER_0_OUTL_INTR_189 + 992, &evtCfg);
                     intrPrms.corepacConfig.priority = 1U;
                 }
@@ -496,10 +496,10 @@ int32_t Sciclient_init(const Sciclient_ConfigPrms_t *pCfgPrms)
                     evtCfg.rtMap = 0x3C;
                     evtCfg.extEvtNum = 0x0;
                     evtCfg.c7xEvtNum = SCICLIENT_C7X_SECURE_INTERRUPT_NUM;
-		    /* Clec interrupt number 1024 is connected to GIC interrupt number 32 in J721E.
-		     * Due to this for CLEC programming one needs to add an offset of 992 (1024 - 32)
-		     * to the event number which is shared between GIC and CLEC.
-		     */
+                    /* Clec interrupt number 1024 is connected to GIC interrupt number 32 in J721E.
+                     * Due to this for CLEC programming one needs to add an offset of 992 (1024 - 32)
+                     * to the event number which is shared between GIC and CLEC.
+                     */
                     CSL_clecConfigEvent(regs, CSLR_COMPUTE_CLUSTER0_GIC500SS_SPI_NAVSS0_INTR_ROUTER_0_OUTL_INTR_191 + 992, &evtCfg);
                     intrPrms.corepacConfig.priority = 1U;
                 }
@@ -541,7 +541,7 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
     uint8_t           localSeqId;
     uintptr_t         key = 0U;
     uint32_t          timeToWait;
-    struct tisci_header header;
+    struct tisci_header *header;
     uint8_t *pSecHeader = NULL;
     struct tisci_sec_header secHeader;
     uint32_t numWords = 0U;
@@ -576,7 +576,14 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
                 secHeader.rsvd = (uint16_t)0;
                 pSecHeader = (uint8_t * )(&secHeader);
             }
-            txPayloadSize = pReqPrm->reqPayloadSize;
+            if (pReqPrm->reqPayloadSize > 0U)
+            {
+                txPayloadSize = pReqPrm->reqPayloadSize - sizeof(struct tisci_header);
+            }
+            else
+            {
+                txPayloadSize = 0U;
+            }
             if (txPayloadSize > gSciclient_maxMsgSizeBytes)
             {
                 status = CSL_EBADARGS;
@@ -585,8 +592,14 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
             {
                 status = CSL_EBADARGS;
             }
-
-            rxPayloadSize = pRespPrm->respPayloadSize;
+            if (pRespPrm->respPayloadSize > 0U)
+            {
+                rxPayloadSize = pRespPrm->respPayloadSize - sizeof(struct tisci_header);
+            }
+            else
+            {
+                rxPayloadSize = 0U;
+            }
             if (rxPayloadSize > gSciclient_maxMsgSizeBytes)
             {
                 status = CSL_EBADARGS;
@@ -598,7 +611,7 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
             }
             else
             {
-                pLocalRespPayload = (uint32_t *)(pRespPrm->pRespPayload);
+                pLocalRespPayload = (uint32_t *)(pRespPrm->pRespPayload + sizeof(struct tisci_header));
             }
         }
         else
@@ -613,6 +626,7 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
 
     if (CSL_PASS == status)
     {
+        struct tisci_msg_version_req *dummyHdr = (struct tisci_msg_version_req *)pReqPrm->pReqPayload;
         /* Construct header */
         /*This is done to remove stray messages(due to timeout) in a thread
         * in case of "polling". */
@@ -621,11 +635,12 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
         {
             Sciclient_flush(rxThread);
         }
-        header.type = pReqPrm->messageType;
-        header.host = (uint8_t) gSciclientMap[contextId].hostId;
+        header = &dummyHdr->hdr;
+        header->type = pReqPrm->messageType;
+        header->host = (uint8_t) gSciclientMap[contextId].hostId;
         localSeqId = (uint8_t) gSciclientHandle.currSeqId;
-        header.seq = localSeqId;
-        header.flags = pReqPrm->flags;
+        header->seq = localSeqId;
+        header->flags = pReqPrm->flags;
         gSciclientHandle.currSeqId = (gSciclientHandle.currSeqId + 1U) %
                                     SCICLIENT_MAX_QUEUE_SIZE;
         if (gSciclientHandle.currSeqId == 0U)
@@ -649,8 +664,8 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
     {
         /* Send Message */
         initialCount = Sciclient_readThreadCount(rxThread);
-        Sciclient_sendMessage(txThread, pSecHeader ,(uint8_t *) &header,
-                              (pReqPrm->pReqPayload),
+        Sciclient_sendMessage(txThread, pSecHeader ,(uint8_t *) header,
+                              (pReqPrm->pReqPayload + sizeof(struct tisci_header)),
                               txPayloadSize);
 
         /* Verify thread status before reading/writing */
@@ -688,7 +703,7 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
         {
             /* Check the seqId of response*/
             status = CSL_ETIMEOUT;
-            timeToWait =  pReqPrm->timeout;;
+            timeToWait =  pReqPrm->timeout;
             while (timeToWait > 0U)
             {
                 if ((pLocalRespHdr->seq == (uint32_t) localSeqId))

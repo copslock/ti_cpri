@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -971,83 +971,78 @@ configuration</td>
 <td>2</td>
 <td>Configuration retrieval type</td>
 </tr>
-<tr class="row-odd"><td rowspan="17">UDMAP_FLOW_CFG</td>
-<td rowspan="17">29</td>
-<td rowspan="17">NavSS UDMAP receive
-flow configuration</td>
+<tr class="row-odd"><td>PROXY_INIT</td>
+<td>24</td>
+<td>Proxy driver init
+complete</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td rowspan="4">PROXY_CFG</td>
+<td rowspan="4">25</td>
+<td rowspan="4">NavSS proxy
+configuration</td>
 <td>DEVICE_ID</td>
 <td>0</td>
-<td>UDMAP Device ID</td>
+<td>Proxy Device ID</td>
 </tr>
-<tr class="row-even"><td>INDEX</td>
+<tr class="row-odd"><td>INDEX</td>
 <td>1</td>
-<td>receive flow index</td>
+<td>Proxy index</td>
 </tr>
-<tr class="row-odd"><td>VALID_PARAM_HI</td>
+<tr class="row-even"><td>VALID_PARAM_HI</td>
 <td>7</td>
 <td>Upper 16-bits of valid_params</td>
 </tr>
-<tr class="row-even"><td>VALID_PARAM_LO</td>
+<tr class="row-odd"><td>VALID_PARAM_LO</td>
 <td>8</td>
 <td>Lower 16-bits of valid_params</td>
 </tr>
-<tr class="row-odd"><td>UDMA_FLOW_RX_EINFO_PRESENT</td>
-<td>10</td>
-<td>extended info present</td>
+<tr class="row-even"><td rowspan="4">PROXY_OES_SET</td>
+<td rowspan="4">26</td>
+<td rowspan="4">Set OES register in
+NavSS Proxy</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>Proxy Device ID</td>
 </tr>
-<tr class="row-even"><td>UDMA_FLOW_RX_PSINFO_PRESENT</td>
-<td>11</td>
-<td>psinfo present</td>
+<tr class="row-odd"><td>INDEX</td>
+<td>1</td>
+<td>Proxy index</td>
 </tr>
-<tr class="row-odd"><td>UDMA_FLOW_RX_ERROR_HANDLING</td>
-<td>12</td>
-<td>error handling</td>
+<tr class="row-even"><td>EVENT</td>
+<td>3</td>
+<td>Global event</td>
 </tr>
-<tr class="row-even"><td>UDMA_FLOW_DESC_TYPE</td>
-<td>13</td>
-<td>descriptor type</td>
+<tr class="row-odd"><td>OES_REG_INDEX</td>
+<td>4</td>
+<td>OES register index</td>
 </tr>
-<tr class="row-odd"><td>UDMA_FLOW_RX_SOP_OFFSET</td>
-<td>14</td>
-<td>SOP offset</td>
+<tr class="row-even"><td rowspan="4">PROXY_OES_GET</td>
+<td rowspan="4">27</td>
+<td rowspan="4">Get OES register in
+NavSS Proxy</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>Proxy Device ID</td>
 </tr>
-<tr class="row-even"><td>UDMA_FLOW_RX_PS_LOCATION</td>
-<td>15</td>
-<td>PS location</td>
+<tr class="row-odd"><td>INDEX</td>
+<td>1</td>
+<td>Proxy index</td>
 </tr>
-<tr class="row-odd"><td>UDMA_FLOW_SRC_TAG_SEL</td>
-<td>16</td>
-<td>Source tag selector</td>
+<tr class="row-even"><td>EVENT</td>
+<td>3</td>
+<td>Global event</td>
 </tr>
-<tr class="row-even"><td>UDMA_FLOW_DEST_TAG_SEL</td>
-<td>17</td>
-<td>Destination tag selector</td>
+<tr class="row-odd"><td>OES_REG_INDEX</td>
+<td>4</td>
+<td>OES register index</td>
 </tr>
-<tr class="row-odd"><td>UDMA_FLOW_RX_DEST_QNUM</td>
-<td>18</td>
-<td>Destination queue number</td>
-</tr>
-<tr class="row-even"><td>UDMA_FLOW_RX_FDQ0_SZ0_QNUM</td>
-<td>19</td>
-<td>FDQ0 SZ0 queue number</td>
-</tr>
-<tr class="row-odd"><td>UDMA_FLOW_RX_FDQ1_QNUM</td>
-<td>20</td>
-<td>FDQ1 queue number</td>
-</tr>
-<tr class="row-even"><td>UDMA_FLOW_RX_FDQ2_QNUM</td>
-<td>21</td>
-<td>FDQ2 queue number</td>
-</tr>
-<tr class="row-odd"><td>UDMA_FLOW_RX_FDQ3_QNUM</td>
-<td>22</td>
-<td>FDQ3 queue number</td>
-</tr>
-<tr class="row-even"><td rowspan="8">UDMAP_FLOW_SZ_CFG</td>
-<td rowspan="8">30</td>
-<td rowspan="8">NavSS UDMAP receive
-flow size threshold
-configuration</td>
+<tr class="row-even"><td rowspan="17">UDMAP_FLOW_CFG</td>
+<td rowspan="17">29</td>
+<td rowspan="17">NavSS UDMAP receive
+flow configuration</td>
 <td>DEVICE_ID</td>
 <td>0</td>
 <td>UDMAP Device ID</td>
@@ -1064,23 +1059,96 @@ configuration</td>
 <td>8</td>
 <td>Lower 16-bits of valid_params</td>
 </tr>
-<tr class="row-even"><td>UDMA_FLOW_RX_FDQ0_SZ1_QNUM</td>
+<tr class="row-even"><td>UDMA_FLOW_RX_EINFO_PRESENT</td>
+<td>10</td>
+<td>extended info present</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_PSINFO_PRESENT</td>
+<td>11</td>
+<td>psinfo present</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_RX_ERROR_HANDLING</td>
+<td>12</td>
+<td>error handling</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_DESC_TYPE</td>
+<td>13</td>
+<td>descriptor type</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_RX_SOP_OFFSET</td>
+<td>14</td>
+<td>SOP offset</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_PS_LOCATION</td>
+<td>15</td>
+<td>PS location</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_SRC_TAG_SEL</td>
+<td>16</td>
+<td>Source tag selector</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_DEST_TAG_SEL</td>
+<td>17</td>
+<td>Destination tag selector</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_RX_DEST_QNUM</td>
+<td>18</td>
+<td>Destination queue number</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_FDQ0_SZ0_QNUM</td>
+<td>19</td>
+<td>FDQ0 SZ0 queue number</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_RX_FDQ1_QNUM</td>
+<td>20</td>
+<td>FDQ1 queue number</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_FDQ2_QNUM</td>
+<td>21</td>
+<td>FDQ2 queue number</td>
+</tr>
+<tr class="row-even"><td>UDMA_FLOW_RX_FDQ3_QNUM</td>
+<td>22</td>
+<td>FDQ3 queue number</td>
+</tr>
+<tr class="row-odd"><td rowspan="8">UDMAP_FLOW_SZ_CFG</td>
+<td rowspan="8">30</td>
+<td rowspan="8">NavSS UDMAP receive
+flow size threshold
+configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-even"><td>INDEX</td>
+<td>1</td>
+<td>receive flow index</td>
+</tr>
+<tr class="row-odd"><td>VALID_PARAM_HI</td>
+<td>7</td>
+<td>Upper 16-bits of valid_params</td>
+</tr>
+<tr class="row-even"><td>VALID_PARAM_LO</td>
+<td>8</td>
+<td>Lower 16-bits of valid_params</td>
+</tr>
+<tr class="row-odd"><td>UDMA_FLOW_RX_FDQ0_SZ1_QNUM</td>
 <td>23</td>
 <td>FDQ0 SZ1 queue number</td>
 </tr>
-<tr class="row-odd"><td>UDMA_FLOW_RX_FDQ0_SZ2_QNUM</td>
+<tr class="row-even"><td>UDMA_FLOW_RX_FDQ0_SZ2_QNUM</td>
 <td>24</td>
 <td>FDQ0 SZ2 queue number</td>
 </tr>
-<tr class="row-even"><td>UDMA_FLOW_RX_FDQ0_SZ3_QNUM</td>
+<tr class="row-odd"><td>UDMA_FLOW_RX_FDQ0_SZ3_QNUM</td>
 <td>25</td>
 <td>FDQ0 SZ3 queue number</td>
 </tr>
-<tr class="row-odd"><td>UDMA_FLOW_RX_SIZE_THRESH_EN</td>
+<tr class="row-even"><td>UDMA_FLOW_RX_SIZE_THRESH_EN</td>
 <td>26</td>
 <td>size threshold routing enable</td>
 </tr>
-<tr class="row-even"><td rowspan="4">UDMAP_OES_SET</td>
+<tr class="row-odd"><td rowspan="4">UDMAP_OES_SET</td>
 <td rowspan="4">31</td>
 <td rowspan="4">Set OES register in
 NavSS UDMAP</td>
@@ -1088,19 +1156,19 @@ NavSS UDMAP</td>
 <td>0</td>
 <td>UDMAP Device ID</td>
 </tr>
-<tr class="row-odd"><td>INDEX</td>
+<tr class="row-even"><td>INDEX</td>
 <td>1</td>
 <td>Channel index</td>
 </tr>
-<tr class="row-even"><td>EVENT</td>
+<tr class="row-odd"><td>EVENT</td>
 <td>3</td>
 <td>Global event</td>
 </tr>
-<tr class="row-odd"><td>OES_REG_INDEX</td>
+<tr class="row-even"><td>OES_REG_INDEX</td>
 <td>4</td>
 <td>OES register index</td>
 </tr>
-<tr class="row-even"><td rowspan="4">UDMAP_OES_GET</td>
+<tr class="row-odd"><td rowspan="4">UDMAP_OES_GET</td>
 <td rowspan="4">32</td>
 <td rowspan="4">Get OES register in
 NavSS UDMAP</td>
@@ -1108,40 +1176,22 @@ NavSS UDMAP</td>
 <td>0</td>
 <td>UDMAP Device ID</td>
 </tr>
-<tr class="row-odd"><td>INDEX</td>
+<tr class="row-even"><td>INDEX</td>
 <td>1</td>
 <td>Channel index</td>
 </tr>
-<tr class="row-even"><td>EVENT</td>
+<tr class="row-odd"><td>EVENT</td>
 <td>3</td>
 <td>Global event</td>
 </tr>
-<tr class="row-odd"><td>OES_REG_INDEX</td>
+<tr class="row-even"><td>OES_REG_INDEX</td>
 <td>4</td>
 <td>OES register index</td>
 </tr>
-<tr class="row-even"><td rowspan="3">UDMAP_FLOW_GET_CFG</td>
+<tr class="row-odd"><td rowspan="3">UDMAP_FLOW_GET_CFG</td>
 <td rowspan="3">33</td>
 <td rowspan="3">Get NavSS UDMAP
 receive flow
-configuration</td>
-<td>DEVICE_ID</td>
-<td>0</td>
-<td>UDMAP Device ID</td>
-</tr>
-<tr class="row-odd"><td>INDEX</td>
-<td>1</td>
-<td>UDMAP receive flow index</td>
-</tr>
-<tr class="row-even"><td>GET_RESET_CFG</td>
-<td>2</td>
-<td>Configuration retrieval type</td>
-</tr>
-<tr class="row-odd"><td rowspan="3">UDMAP_FLOW_SZ_GET_CFG</td>
-<td rowspan="3">34</td>
-<td rowspan="3">Get NavSS UDMAP
-receive flow size
-threshold
 configuration</td>
 <td>DEVICE_ID</td>
 <td>0</td>
@@ -1155,7 +1205,25 @@ configuration</td>
 <td>2</td>
 <td>Configuration retrieval type</td>
 </tr>
-<tr class="row-even"><td>PSIL_INIT</td>
+<tr class="row-even"><td rowspan="3">UDMAP_FLOW_SZ_GET_CFG</td>
+<td rowspan="3">34</td>
+<td rowspan="3">Get NavSS UDMAP
+receive flow size
+threshold
+configuration</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>UDMAP Device ID</td>
+</tr>
+<tr class="row-odd"><td>INDEX</td>
+<td>1</td>
+<td>UDMAP receive flow index</td>
+</tr>
+<tr class="row-even"><td>GET_RESET_CFG</td>
+<td>2</td>
+<td>Configuration retrieval type</td>
+</tr>
+<tr class="row-odd"><td>PSIL_INIT</td>
 <td>35</td>
 <td>PSI-L driver init
 complete</td>
@@ -1163,7 +1231,7 @@ complete</td>
 <td>N/A</td>
 <td>N/A</td>
 </tr>
-<tr class="row-odd"><td rowspan="4">PSIL_PAIR</td>
+<tr class="row-even"><td rowspan="4">PSIL_PAIR</td>
 <td rowspan="4">36</td>
 <td rowspan="4">Pair NavSS PSI-L
 threads</td>
@@ -1171,47 +1239,22 @@ threads</td>
 <td>0</td>
 <td>PSI-L proxy device ID</td>
 </tr>
-<tr class="row-even"><td>PSIL_SRC_THREAD</td>
+<tr class="row-odd"><td>PSIL_SRC_THREAD</td>
 <td>10</td>
 <td>PSI-L source thread</td>
 </tr>
-<tr class="row-odd"><td>PSIL_DST_THREAD</td>
+<tr class="row-even"><td>PSIL_DST_THREAD</td>
 <td>11</td>
 <td>PSI-L destination thread</td>
 </tr>
-<tr class="row-even"><td>PSIL_THREAD_ENABLED</td>
+<tr class="row-odd"><td>PSIL_THREAD_ENABLED</td>
 <td>12</td>
 <td>PSI-L thread enabled prior to
 pairing</td>
 </tr>
-<tr class="row-odd"><td rowspan="5">PSIL_READ</td>
+<tr class="row-even"><td rowspan="5">PSIL_READ</td>
 <td rowspan="5">38</td>
 <td rowspan="5">Read NavSS PSI-L
-thread configuration
-register</td>
-<td>DEVICE_ID</td>
-<td>0</td>
-<td>PSI-L proxy device ID</td>
-</tr>
-<tr class="row-even"><td>PSIL_THREAD</td>
-<td>15</td>
-<td>PSI-L thread</td>
-</tr>
-<tr class="row-odd"><td>PSIL_THREAD_CFG_REG_ADDR</td>
-<td>16</td>
-<td>Thread configuration register addr</td>
-</tr>
-<tr class="row-even"><td>PSIL_THREAD_CFG_REG_VAL_HI</td>
-<td>17</td>
-<td>Upper 16-bits of register value</td>
-</tr>
-<tr class="row-odd"><td>PSIL_THREAD_CFG_REG_VAL_LO</td>
-<td>18</td>
-<td>Lower 16-bits of register value</td>
-</tr>
-<tr class="row-even"><td rowspan="5">PSIL_WRITE</td>
-<td rowspan="5">39</td>
-<td rowspan="5">Write NavSS PSI-L
 thread configuration
 register</td>
 <td>DEVICE_ID</td>
@@ -1228,13 +1271,38 @@ register</td>
 </tr>
 <tr class="row-odd"><td>PSIL_THREAD_CFG_REG_VAL_HI</td>
 <td>17</td>
-<td>Upper 16-bits of written value</td>
+<td>Upper 16-bits of register value</td>
 </tr>
 <tr class="row-even"><td>PSIL_THREAD_CFG_REG_VAL_LO</td>
 <td>18</td>
+<td>Lower 16-bits of register value</td>
+</tr>
+<tr class="row-odd"><td rowspan="5">PSIL_WRITE</td>
+<td rowspan="5">39</td>
+<td rowspan="5">Write NavSS PSI-L
+thread configuration
+register</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>PSI-L proxy device ID</td>
+</tr>
+<tr class="row-even"><td>PSIL_THREAD</td>
+<td>15</td>
+<td>PSI-L thread</td>
+</tr>
+<tr class="row-odd"><td>PSIL_THREAD_CFG_REG_ADDR</td>
+<td>16</td>
+<td>Thread configuration register addr</td>
+</tr>
+<tr class="row-even"><td>PSIL_THREAD_CFG_REG_VAL_HI</td>
+<td>17</td>
+<td>Upper 16-bits of written value</td>
+</tr>
+<tr class="row-odd"><td>PSIL_THREAD_CFG_REG_VAL_LO</td>
+<td>18</td>
 <td>Lower 16-bits of written value</td>
 </tr>
-<tr class="row-odd"><td rowspan="5">PSIL_UNPAIR</td>
+<tr class="row-even"><td rowspan="5">PSIL_UNPAIR</td>
 <td rowspan="5">40</td>
 <td rowspan="5">Unpair NavSS PSI-L
 threads</td>
@@ -1242,25 +1310,25 @@ threads</td>
 <td>0</td>
 <td>PSI-L proxy device ID</td>
 </tr>
-<tr class="row-even"><td>PSIL_SRC_THREAD</td>
+<tr class="row-odd"><td>PSIL_SRC_THREAD</td>
 <td>10</td>
 <td>PSI-L source thread</td>
 </tr>
-<tr class="row-odd"><td>PSIL_DST_THREAD</td>
+<tr class="row-even"><td>PSIL_DST_THREAD</td>
 <td>11</td>
 <td>PSI-L destination thread</td>
 </tr>
-<tr class="row-even"><td>PSIL_THREAD_DISABLED</td>
+<tr class="row-odd"><td>PSIL_THREAD_DISABLED</td>
 <td>13</td>
 <td>PSI-L thread disabled prior to
 unpairing</td>
 </tr>
-<tr class="row-odd"><td>PSIL_SRC_THREAD_PEER</td>
+<tr class="row-even"><td>PSIL_SRC_THREAD_PEER</td>
 <td>14</td>
 <td>Source thread peer register thread
 value</td>
 </tr>
-<tr class="row-even"><td rowspan="2">PSIL_DRU_DST_OFFSET</td>
+<tr class="row-odd"><td rowspan="2">PSIL_DRU_DST_OFFSET</td>
 <td rowspan="2">41</td>
 <td rowspan="2">DRU thread offset for
 UTC control
@@ -1269,11 +1337,11 @@ programming</td>
 <td>0</td>
 <td>PSI-L proxy device ID</td>
 </tr>
-<tr class="row-odd"><td>PSIL_THREAD</td>
+<tr class="row-even"><td>PSIL_THREAD</td>
 <td>15</td>
 <td>PSI-L thread</td>
 </tr>
-<tr class="row-even"><td>IRQ_INIT</td>
+<tr class="row-odd"><td>IRQ_INIT</td>
 <td>43</td>
 <td>IRQ driver init
 complete</td>
@@ -1281,57 +1349,9 @@ complete</td>
 <td>N/A</td>
 <td>N/A</td>
 </tr>
-<tr class="row-odd"><td rowspan="11">IRQ_SET</td>
+<tr class="row-even"><td rowspan="11">IRQ_SET</td>
 <td rowspan="11">44</td>
 <td rowspan="11">Program interrupt
-route</td>
-<td>VALID_PARAM_HI</td>
-<td>7</td>
-<td>Upper 16-bits of valid_params</td>
-</tr>
-<tr class="row-even"><td>VALID_PARAM_LO</td>
-<td>8</td>
-<td>Lower 16-bits of valid_params</td>
-</tr>
-<tr class="row-odd"><td>IRQ_IA_ID</td>
-<td>10</td>
-<td>IA device ID</td>
-</tr>
-<tr class="row-even"><td>IRQ_GLOBAL_EVENT</td>
-<td>11</td>
-<td>Global event</td>
-</tr>
-<tr class="row-odd"><td>IRQ_DST_HOST_IRQ</td>
-<td>12</td>
-<td>Destination host IRQ input index</td>
-</tr>
-<tr class="row-even"><td>IRQ_SECONDARY_HOST</td>
-<td>13</td>
-<td>Secondary host ID</td>
-</tr>
-<tr class="row-odd"><td>IRQ_SRC_ID</td>
-<td>14</td>
-<td>Interrupt source device ID</td>
-</tr>
-<tr class="row-even"><td>IRQ_SRC_INDEX</td>
-<td>15</td>
-<td>Interrupt source index</td>
-</tr>
-<tr class="row-odd"><td>IRQ_DST_ID</td>
-<td>16</td>
-<td>Interrupt destination device ID</td>
-</tr>
-<tr class="row-even"><td>IRQ_VINT</td>
-<td>17</td>
-<td>Virtual interrupt</td>
-</tr>
-<tr class="row-odd"><td>IRQ_VINT_STATUS_BIT_INDEX</td>
-<td>18</td>
-<td>Virtual interrupt status bit</td>
-</tr>
-<tr class="row-even"><td rowspan="11">IRQ_RELEASE</td>
-<td rowspan="11">45</td>
-<td rowspan="11">Clear interrupt
 route</td>
 <td>VALID_PARAM_HI</td>
 <td>7</td>
@@ -1377,7 +1397,55 @@ route</td>
 <td>18</td>
 <td>Virtual interrupt status bit</td>
 </tr>
-<tr class="row-odd"><td>IRQ_IA_INIT</td>
+<tr class="row-odd"><td rowspan="11">IRQ_RELEASE</td>
+<td rowspan="11">45</td>
+<td rowspan="11">Clear interrupt
+route</td>
+<td>VALID_PARAM_HI</td>
+<td>7</td>
+<td>Upper 16-bits of valid_params</td>
+</tr>
+<tr class="row-even"><td>VALID_PARAM_LO</td>
+<td>8</td>
+<td>Lower 16-bits of valid_params</td>
+</tr>
+<tr class="row-odd"><td>IRQ_IA_ID</td>
+<td>10</td>
+<td>IA device ID</td>
+</tr>
+<tr class="row-even"><td>IRQ_GLOBAL_EVENT</td>
+<td>11</td>
+<td>Global event</td>
+</tr>
+<tr class="row-odd"><td>IRQ_DST_HOST_IRQ</td>
+<td>12</td>
+<td>Destination host IRQ input index</td>
+</tr>
+<tr class="row-even"><td>IRQ_SECONDARY_HOST</td>
+<td>13</td>
+<td>Secondary host ID</td>
+</tr>
+<tr class="row-odd"><td>IRQ_SRC_ID</td>
+<td>14</td>
+<td>Interrupt source device ID</td>
+</tr>
+<tr class="row-even"><td>IRQ_SRC_INDEX</td>
+<td>15</td>
+<td>Interrupt source index</td>
+</tr>
+<tr class="row-odd"><td>IRQ_DST_ID</td>
+<td>16</td>
+<td>Interrupt destination device ID</td>
+</tr>
+<tr class="row-even"><td>IRQ_VINT</td>
+<td>17</td>
+<td>Virtual interrupt</td>
+</tr>
+<tr class="row-odd"><td>IRQ_VINT_STATUS_BIT_INDEX</td>
+<td>18</td>
+<td>Virtual interrupt status bit</td>
+</tr>
+<tr class="row-even"><td>IRQ_IA_INIT</td>
 <td>48</td>
 <td>IA driver init
 complete</td>
@@ -1385,7 +1453,7 @@ complete</td>
 <td>N/A</td>
 <td>N/A</td>
 </tr>
-<tr class="row-even"><td rowspan="4">IRQ_IA_MAP_VINT</td>
+<tr class="row-odd"><td rowspan="4">IRQ_IA_MAP_VINT</td>
 <td rowspan="4">49</td>
 <td rowspan="4">Map an event to an IA
 virtual interrupt</td>
@@ -1393,19 +1461,19 @@ virtual interrupt</td>
 <td>0</td>
 <td>IA device ID</td>
 </tr>
-<tr class="row-odd"><td>IA_VINT</td>
+<tr class="row-even"><td>IA_VINT</td>
 <td>10</td>
 <td>Virtual interrupt</td>
 </tr>
-<tr class="row-even"><td>IA_GLOBAL_EVENT</td>
+<tr class="row-odd"><td>IA_GLOBAL_EVENT</td>
 <td>11</td>
 <td>Global event</td>
 </tr>
-<tr class="row-odd"><td>IA_VINT_STATUS_BIT</td>
+<tr class="row-even"><td>IA_VINT_STATUS_BIT</td>
 <td>12</td>
 <td>Virtual interrupt status bit</td>
 </tr>
-<tr class="row-even"><td rowspan="4">IRQ_IA_UNMAP_VINT</td>
+<tr class="row-odd"><td rowspan="4">IRQ_IA_UNMAP_VINT</td>
 <td rowspan="4">50</td>
 <td rowspan="4">Unmap an event from
 an IA virtual
@@ -1414,19 +1482,19 @@ interrupt</td>
 <td>0</td>
 <td>IA device ID</td>
 </tr>
-<tr class="row-odd"><td>IA_VINT</td>
+<tr class="row-even"><td>IA_VINT</td>
 <td>10</td>
 <td>Virtual interrupt</td>
 </tr>
-<tr class="row-even"><td>IA_GLOBAL_EVENT</td>
+<tr class="row-odd"><td>IA_GLOBAL_EVENT</td>
 <td>11</td>
 <td>Global event</td>
 </tr>
-<tr class="row-odd"><td>IA_VINT_STATUS_BIT</td>
+<tr class="row-even"><td>IA_VINT_STATUS_BIT</td>
 <td>12</td>
 <td>Virtual interrupt status bit</td>
 </tr>
-<tr class="row-even"><td>IRQ_IR_INIT</td>
+<tr class="row-odd"><td>IRQ_IR_INIT</td>
 <td>52</td>
 <td>IR driver init
 complete</td>
@@ -1434,25 +1502,9 @@ complete</td>
 <td>N/A</td>
 <td>N/A</td>
 </tr>
-<tr class="row-odd"><td rowspan="3">IRQ_IR_CFG</td>
+<tr class="row-even"><td rowspan="3">IRQ_IR_CFG</td>
 <td rowspan="3">53</td>
 <td rowspan="3">Configured IR input
-to output mapping</td>
-<td>DEVICE_ID</td>
-<td>0</td>
-<td>IR device ID</td>
-</tr>
-<tr class="row-even"><td>IR_INPUT</td>
-<td>10</td>
-<td>IR input index</td>
-</tr>
-<tr class="row-odd"><td>IR_OUTPUT</td>
-<td>11</td>
-<td>IR output index</td>
-</tr>
-<tr class="row-even"><td rowspan="3">IRQ_IR_CLR</td>
-<td rowspan="3">54</td>
-<td rowspan="3">Cleared IR input
 to output mapping</td>
 <td>DEVICE_ID</td>
 <td>0</td>
@@ -1466,7 +1518,23 @@ to output mapping</td>
 <td>11</td>
 <td>IR output index</td>
 </tr>
-<tr class="row-odd"><td rowspan="4">RESASG_VALIDATE_BRDCFG_LIST</td>
+<tr class="row-odd"><td rowspan="3">IRQ_IR_CLR</td>
+<td rowspan="3">54</td>
+<td rowspan="3">Cleared IR input
+to output mapping</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>IR device ID</td>
+</tr>
+<tr class="row-even"><td>IR_INPUT</td>
+<td>10</td>
+<td>IR input index</td>
+</tr>
+<tr class="row-odd"><td>IR_OUTPUT</td>
+<td>11</td>
+<td>IR output index</td>
+</tr>
+<tr class="row-even"><td rowspan="4">RESASG_VALIDATE_BRDCFG_LIST</td>
 <td rowspan="4">58</td>
 <td rowspan="4">RM board
 configuration
@@ -1477,19 +1545,19 @@ validation</td>
 <td>6</td>
 <td>Resource assignment unique type</td>
 </tr>
-<tr class="row-even"><td>RESASG_VALIDATE_HOST</td>
+<tr class="row-odd"><td>RESASG_VALIDATE_HOST</td>
 <td>10</td>
 <td>host ID</td>
 </tr>
-<tr class="row-odd"><td>RESASG_VALIDATE_RES_START</td>
+<tr class="row-even"><td>RESASG_VALIDATE_RES_START</td>
 <td>11</td>
 <td>Resource range start</td>
 </tr>
-<tr class="row-even"><td>RESASG_VALIDATE_RES_NUM</td>
+<tr class="row-odd"><td>RESASG_VALIDATE_RES_NUM</td>
 <td>12</td>
 <td>Resource range number</td>
 </tr>
-<tr class="row-odd"><td rowspan="4">RESASG_FIREWALL_CFG</td>
+<tr class="row-even"><td rowspan="4">RESASG_FIREWALL_CFG</td>
 <td rowspan="4">59</td>
 <td rowspan="4">RM resource
 assignment firewall
@@ -1498,19 +1566,19 @@ configuration</td>
 <td>1</td>
 <td>Resource index</td>
 </tr>
-<tr class="row-even"><td>RESASG_UTYPE</td>
+<tr class="row-odd"><td>RESASG_UTYPE</td>
 <td>6</td>
 <td>Resource assignment unique type</td>
 </tr>
-<tr class="row-odd"><td>RESASG_FWL_ID</td>
+<tr class="row-even"><td>RESASG_FWL_ID</td>
 <td>13</td>
 <td>Channelized firewall ID</td>
 </tr>
-<tr class="row-even"><td>RESASG_FWL_CH</td>
+<tr class="row-odd"><td>RESASG_FWL_CH</td>
 <td>14</td>
 <td>Channelized firewall channel</td>
 </tr>
-<tr class="row-odd"><td rowspan="3">RESASG_VALIDATE_RESOURCE</td>
+<tr class="row-even"><td rowspan="3">RESASG_VALIDATE_RESOURCE</td>
 <td rowspan="3">60</td>
 <td rowspan="3">RM validate
 resource against
@@ -1519,39 +1587,60 @@ board configuration</td>
 <td>1</td>
 <td>Resource index</td>
 </tr>
-<tr class="row-even"><td>RESASG_UTYPE</td>
+<tr class="row-odd"><td>RESASG_UTYPE</td>
 <td>6</td>
 <td>Resource assignment unique type</td>
 </tr>
-<tr class="row-odd"><td>RESASG_VALIDATE_HOST</td>
+<tr class="row-even"><td>RESASG_VALIDATE_HOST</td>
 <td>10</td>
 <td>host ID</td>
 </tr>
-<tr class="row-even"><td rowspan="5">RESOURCE_GET</td>
-<td rowspan="5">61</td>
-<td rowspan="5">Retrieve a resource
+<tr class="row-odd"><td rowspan="6">RESOURCE_GET</td>
+<td rowspan="6">61</td>
+<td rowspan="6">Retrieve a resource
 range for a host</td>
 <td>RESASG_UTYPE</td>
 <td>6</td>
 <td>Resource assignment unique type</td>
 </tr>
-<tr class="row-odd"><td>RESOURCE_GET_TYPE</td>
+<tr class="row-even"><td>RESOURCE_GET_TYPE</td>
 <td>10</td>
 <td>Resource type</td>
 </tr>
-<tr class="row-even"><td>RESOURCE_GET_SUBTYPE</td>
+<tr class="row-odd"><td>RESOURCE_GET_SUBTYPE</td>
 <td>11</td>
 <td>Resource subtype</td>
 </tr>
-<tr class="row-odd"><td>RESOURCE_GET_RANGE_START</td>
+<tr class="row-even"><td>RESOURCE_GET_RANGE_START</td>
 <td>12</td>
 <td>Resource range start</td>
 </tr>
-<tr class="row-even"><td>RESOURCE_GET_RANGE_NUM</td>
+<tr class="row-odd"><td>RESOURCE_GET_RANGE_NUM</td>
 <td>13</td>
 <td>Resource range number</td>
 </tr>
-<tr class="row-odd"><td>FAIL (modifier)</td>
+<tr class="row-even"><td>RESOURCE_GET_SECONDARY_HOST</td>
+<td>14</td>
+<td>Secondary host</td>
+</tr>
+<tr class="row-odd"><td rowspan="3">DEVGRP_VALIDATE</td>
+<td rowspan="3">62</td>
+<td rowspan="3">Validate device
+against current RM
+device group</td>
+<td>DEVICE_ID</td>
+<td>0</td>
+<td>Device ID</td>
+</tr>
+<tr class="row-even"><td>DEVGRP_BOARDCFG</td>
+<td>10</td>
+<td>RM Board configuration devgrp</td>
+</tr>
+<tr class="row-odd"><td>DEVGRP_DEVICE</td>
+<td>11</td>
+<td>RM managed device devgrp</td>
+</tr>
+<tr class="row-even"><td>FAIL (modifier)</td>
 <td>0x40</td>
 <td>Action failed when
 action bit set</td>
@@ -1559,7 +1648,7 @@ action bit set</td>
 <td>N/A</td>
 <td>N/A</td>
 </tr>
-<tr class="row-even"><td>GENERIC_DEBUG</td>
+<tr class="row-odd"><td>GENERIC_DEBUG</td>
 <td>127</td>
 <td>Generic Debug Message</td>
 <td>N/A</td>
@@ -1609,15 +1698,15 @@ action bit set</td>
 <tr class="row-even"><td>CLOCK_SET_RATE</td>
 <td>4</td>
 <td>Clock frequency has been changed.</td>
-<td>[9:0]   - Clock ID
+<td>[21:17] - Clock frequency, exponent
 [16:10] - Clock frequency, significand
-[21:17] - Clock frequency, exponent</td>
+[9:0]   - Clock ID</td>
 </tr>
 <tr class="row-odd"><td>CLOCK_SET_PARENT</td>
 <td>5</td>
 <td>Clock parent has been changed.</td>
-<td>[9:0]   - Clock ID
-[21:10] - New parent ID</td>
+<td>[21:10] - New parent ID
+[9:0]   - Clock ID</td>
 </tr>
 <tr class="row-even"><td>MSG_RECEIVED</td>
 <td>6</td>
@@ -1627,8 +1716,8 @@ action bit set</td>
 <tr class="row-odd"><td>MSG_PARAM_DEV_CLK_ID</td>
 <td>7</td>
 <td>TI-SCI message content: dev/clk-ids</td>
-<td>[9:0]   - Device ID
-[10:21] - Clock ID</td>
+<td>[10:21] - Clock ID
+[9:0]   - Device ID</td>
 </tr>
 <tr class="row-even"><td>MSG_PARAM_VAL</td>
 <td>8</td>
@@ -1648,50 +1737,50 @@ action bit set</td>
 <tr class="row-odd"><td>PD_GET</td>
 <td>11</td>
 <td>Powerdomain get</td>
-<td>[19:14]   - Powerdomain ID
-[21:20]   - PSC ID
+<td>[21:20]   - PSC ID
+[19:14]   - Powerdomain ID
 [13:0]    - PD Use count</td>
 </tr>
 <tr class="row-even"><td>PD_PUT</td>
 <td>12</td>
 <td>Powerdomain put</td>
-<td>[19:14]   - Powerdomain ID
-[21:20]   - PSC ID
+<td>[21:20]   - PSC ID
+[19:14]   - Powerdomain ID
 [13:0]    - PD Use count</td>
 </tr>
 <tr class="row-odd"><td>SET_LOCAL_RESET</td>
 <td>13</td>
 <td>Set local reset</td>
-<td>[19:14]   - Powerdomain ID
-[21:20]   - PSC ID
+<td>[21:20]   - PSC ID
+[19:14]   - Powerdomain ID
 [0]       - Enable (1) / Disable (0)</td>
 </tr>
 <tr class="row-even"><td>MODULE_GET</td>
 <td>14</td>
 <td>Module get</td>
-<td>[19:14]   - LPSC ID
-[21:20]   - PSC ID
+<td>[21:20]   - PSC ID
+[19:14]   - LPSC ID
 [13:0]    - Module Use count</td>
 </tr>
 <tr class="row-odd"><td>MODULE_PUT</td>
 <td>15</td>
 <td>Module put</td>
-<td>[19:14]   - LPSC ID
-[21:20]   - PSC ID
+<td>[21:20]   - PSC ID
+[19:14]   - LPSC ID
 [13:0]    - Module Use count</td>
 </tr>
 <tr class="row-even"><td>RETENTION_GET</td>
 <td>16</td>
 <td>Retention put</td>
-<td>[19:14]   - Powerdomain ID
-[21:20]   - LPSC ID
+<td>[21:20]   - LPSC ID
+[19:14]   - Powerdomain ID
 [13:0]    - Module Retention count</td>
 </tr>
 <tr class="row-odd"><td>RETENTION_PUT</td>
 <td>17</td>
 <td>Retention put</td>
-<td>[19:14]   - Powerdomain ID
-[21:20]   - LPSC ID
+<td>[21:20]   - LPSC ID
+[19:14]   - Powerdomain ID
 [13:0]    - Module Retention count</td>
 </tr>
 <tr class="row-even"><td>PD_INIT</td>
@@ -1699,6 +1788,46 @@ action bit set</td>
 <td>Powerdomain init</td>
 <td>[19:14]   - Powerdomain ID
 [21:20]   - PSC ID</td>
+</tr>
+<tr class="row-odd"><td>PSC_INV_DATA</td>
+<td>19</td>
+<td>Invalid PSC Data</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>PD_TRANS_TIMEOUT</td>
+<td>20</td>
+<td>Powerdomain Transition timeout</td>
+<td>[21:20]   - PSC ID
+[19:14]   - Powerdomain ID
+[2:0]     - Priv Position information</td>
+</tr>
+<tr class="row-odd"><td>PD_INV_DEP_DATA</td>
+<td>21</td>
+<td>Powerdomain Invalid Dep Data</td>
+<td>[21:20]   - Dependent PD ID
+[19:14]   - Powerdomain ID
+[2:0]     - Priv Position information</td>
+</tr>
+<tr class="row-even"><td>PD_RSTDNE_TIMEOUT</td>
+<td>22</td>
+<td>Powerdomain resetdone timeout</td>
+<td>[21:20]   - PSC ID
+[19:14]   - Powerdomain ID
+[2:0]     - Priv Position information</td>
+</tr>
+<tr class="row-odd"><td>PM_INIT</td>
+<td>32</td>
+<td>Power Management Init</td>
+<td>[20]      - Power Init result
+[19]      - Modules defer result
+[18:16]   - Index of start module
+[15:0]    - Error value</td>
+</tr>
+<tr class="row-even"><td>PM_DEV_INIT</td>
+<td>33</td>
+<td>Power Management device init</td>
+<td>[21:12]   - Device ID
+[11:0]    - Error value</td>
 </tr>
 <tr class="row-odd"><td>FAIL (modifier)</td>
 <td>0x40</td>
@@ -1784,7 +1913,7 @@ to the requested device</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

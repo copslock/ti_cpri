@@ -1,0 +1,80 @@
+===================================================
+Resource Management Proxy TISCI Message Description
+===================================================
+
+Introduction
+============
+
+This chapter provides information on usage of the RM Proxy management
+TISCI message API parameters.
+
++------------------+-------------------------------------------------------------------------------+
+| TISCI Message ID |                                 Message Name                                  |
++==================+===============================================================================+
+| 0x1300           | :ref:`TISCI_MSG_RM_PROXY_CFG <pub_rm_public_proxy_cfg>`                       |
++------------------+-------------------------------------------------------------------------------+
+| N/A              | :ref:`TISCI_MSG_RM_PROXY_CFG Response <pub_rm_public_proxy_cfg_response>`     |
++------------------+-------------------------------------------------------------------------------+
+
+.. _pub_rm_public_proxy_valid_params:
+
+Proxy Valid Parameters Field Usage
+----------------------------------
+
+Some proxy TISCI message APIs make use of a valid_params bit field.  Bits within
+the valid_params field define whether or not individual TISCI message
+parameters are valid.  When a bit corresponding to a parameter is set (to 1)
+the parameter is considered valid and will be programmed into its
+corresponding register field, assuming validation of the parameter passes.
+When a valid_params bit is not set, i.e. a value of 0, the corresponding
+register field is read and used within the validation process of the request.
+The register field for a parameter is not programmed if the corresponding
+valid_params bit is not set.
+
+TISCI_MSG_RM_PROXY_CFG - Proxy Configuration
+============================================
+
+.. _pub_rm_public_proxy_cfg:
+
+Proxy Configuration Request
+---------------------------
+
+The **proxy_cfg** TISCI message API is used to configure the channelized
+firewalls of a Navigator Subsystem proxy.  The proxy index must be assigned to
+the host defined in the TISCI header via the RM board configuration resource
+assignment range list.  The channelized firewalls covering the proxy error
+events are configured to only give DMSC write access.  The proxy target data
+control region channelized firewalls are configured to give the assigned host
+read and write access.
+
+Usage
+^^^^^
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | No     |
++------------------------+--------+
+
+TISCI Message ID
+^^^^^^^^^^^^^^^^
+
+.. sysfwapimacro:: TISCI_MSG_RM_PROXY_CFG
+
+Proxy Configuration Message Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. sysfwapistruct:: tisci_msg_rm_proxy_cfg_req
+
+.. _pub_rm_public_proxy_cfg_response:
+
+Proxy Configuration Response
+----------------------------
+
+The **proxy_cfg_response** message returns the result status of the
+processed **proxy_cfg** message.
+
+Proxy Configuration Response Message Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. sysfwapistruct:: tisci_msg_rm_proxy_cfg_resp

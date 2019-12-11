@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -203,10 +203,11 @@ services are available.</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The Resource Management board configuration message is rejected if resource
-assignment data is not sent and does not conform to the resource assignment
-validation guidelines.  Please see <a class="reference internal" href="#pub-boardcfg-rm-resasg-validation"><span class="std std-ref">Resource Assignment Validation</span></a>
-for a description of the resource assignment data validation guidelines.</p>
+<p class="last">The first Resource Management board configuration message received is rejected
+if resource assignment data is not sent and does not conform to the resource
+assignment validation guidelines.  Please see
+<a class="reference internal" href="#pub-boardcfg-rm-resasg-validation"><span class="std std-ref">Resource Assignment Validation</span></a> for a description of the resource
+assignment data validation guidelines.</p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -229,17 +230,17 @@ contains the host configuration attributes and the resource assignment data.
 The RM subsystem is not considered functional until after the RM board
 configuration message is received by DMSC.  The RM board configuration data can
 be sent any time after the standard boardcfg message, <a class="reference internal" href="BOARDCFG.html#pub-boardcfg-cfg"><span class="std std-ref">Configuration substructure enumeration</span></a>
-is received.  The RM board configuration message can only be sent once.  RM
-board configuration messages received after the first are NACK’d.</p>
+is received.</p>
 <p>The separation of boardcfg reception and subsystem startup is to
 reduce DMSC boot time.  The resource management data is placed into regular
 memory by the host software, made coherent (writeback and fences as required by
 host architecture) then passed to System Firmware via
 <a class="reference internal" href="#pub-boardcfg-rm-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_RM</span></a>.  On HS devices, the
 board config blob is signed and encrypted using customer root
-public key and customer encryption key for HS-SE or HS-Prime. For HS-FS and
+public key and customer encryption key for HS-SE devices. For HS-FS and
 GP devices there are no customer keys, therefore board config must be
-unsigned and plain text.</p>
+unsigned and plain text. Please refer to <a class="reference internal" href="../6_topic_user_guides/hs_boardcfg_signing.html"><span class="doc">Signing Board Configuration on HS devices</span></a> on how to sign and encrypt
+board configuration on HS devices.</p>
 <p>The resource management data is provided separately to reduce DMSC boot time.
 The resource management board cfg message is sent any time after the boot
 notification message is sent and has no dependence upon reception of the
@@ -269,6 +270,22 @@ ascending start_resource value order.</p>
 a request via
 <a class="reference internal" href="#pub-boardcfg-resasg-get-tisci"><span class="std std-ref">TISCI_MSG_RM_GET_RESOURCE_RANGE</span></a>.  The
 specified resource type’s range is returned for the host who sent the request.</p>
+<p>The RM board configuration TISCI message allows the user to specify the DEVGRP
+under which the RM subsystem operates.  A specified DEVGRP defines which RM
+driver instances are capable of usage by the host applications.  The host
+application can implement RM subsystem DEVGRP usage by sending a
+“ref”<cite>TISCI_MSG_RM_BOARD_CONFIG_RM &lt;pub_boardcfg_rm_tisci&gt;</cite> message with the
+boardcfg_rm_devgrp parameter populated with one or more SoC-specific device
+group values.  The DEVGRP value specifying whole device is mapped to zero so
+existing RM board configurations not explicitly defining a DEVGRP for the
+boardcfg_rm_devgrp parameter will be backwards compatible.</p>
+<p>DEVGRPS are cumulative so if multiple RM board configurations are received,
+each with a unique DEVGRP defined, all received DEVGRPs will be active.  To
+support accumulation of DEVGRPs the RM board configuration message can be sent
+any number of times.  However, board configuration content pointed to by the
+message is copied and validated when only the first board configuration message
+is received.  All subsequent messages only serve to update the RM subsystem
+DEVGRP.</p>
 <div class="section" id="static-resource-assignment-configurations">
 <span id="pub-boardcfg-rm-resasg-cfg"></span><h3>Static Resource Assignment Configurations<a class="headerlink" href="#static-resource-assignment-configurations" title="Permalink to this headline">¶</a></h3>
 <p>The RM board configuration static resource assignment functionality supports
@@ -388,9 +405,9 @@ is not dependent on reception of the standard board configuration message.</p>
 <p>TISCI_MSG_BOARD_CONFIG_RM request to provide the location and size of the boardcfg Resource Management configuration structure.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="17%" />
+<col width="18%" />
 <col width="19%" />
-<col width="64%" />
+<col width="63%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Parameter</th>
@@ -414,6 +431,10 @@ is not dependent on reception of the standard board configuration message.</p>
 <tr class="row-odd"><td>boardcfg_rm_size</td>
 <td>u16</td>
 <td>Size of RM configuration data.</td>
+</tr>
+<tr class="row-even"><td>boardcfg_rm_devgrp</td>
+<td>devgrp_t</td>
+<td>Device group for the RM configuration.</td>
 </tr>
 </tbody>
 </table>
@@ -884,7 +905,7 @@ found in <a class="reference internal" href="../5_soc_doc/am6x/resasg_types.html
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

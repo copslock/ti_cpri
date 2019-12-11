@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -193,8 +193,10 @@ regular memory by the host software, made coherent (writeback and fences as
 required by host architecture) then passed to System Firmware via
 <a class="reference internal" href="#pub-boardcfg-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG</span></a>. On HS devices, the board
 config blob is signed and encrypted using customer root public key and customer
-encryption key for HS-SE or HS-Prime. For HS-FS and GP devices there are no
-customer keys, therefore board config must be unsigned and plain text.</p>
+encryption key for HS-SE devices. For HS-FS and GP devices there are no customer
+keys, therefore board config must be unsigned and plain text. Please refer to
+<a class="reference internal" href="../6_topic_user_guides/hs_boardcfg_signing.html"><span class="doc">Signing Board Configuration on HS devices</span></a> on how to sign and encrypt
+board configuration on HS devices.</p>
 <p>It is presumed that this memory is owned by trusted software that will not
 intentionally corrupt the memory while System Firmware is processing. However,
 System Firmware will take reasonable precautions for misconfiguration by
@@ -305,6 +307,10 @@ notification complete.</p>
 <tr class="row-odd"><td>boardcfg_size</td>
 <td>u16</td>
 <td>Size of configuration data.</td>
+</tr>
+<tr class="row-even"><td>boardcfg_devgrp</td>
+<td>devgrp_t</td>
+<td>Device group for the base board configuration.</td>
 </tr>
 </tbody>
 </table>
@@ -677,7 +683,7 @@ specified as bits (so all, some, or none can be enabled)</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

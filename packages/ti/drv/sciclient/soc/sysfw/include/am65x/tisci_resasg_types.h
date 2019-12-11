@@ -114,6 +114,10 @@
 #define TISCI_RESASG_TYPE_ICSSG1_IRQ   (0x00FU)
 /** ICSSG 2 IRQ (input interrupts) */
 #define TISCI_RESASG_TYPE_ICSSG2_IRQ   (0x010U)
+/** Main domain Navigator Subsystem proxy */
+#define TISCI_RESASG_TYPE_MAIN_NAV_PROXY   (0x011U)
+/** MCU domain Navigator Subsystem proxy */
+#define TISCI_RESASG_TYPE_MCU_NAV_PROXY   (0x012U)
 /** Maximum TISCI_RESASG_TYPE value.  DO NOT create types with a value
  *  greater than this */
 #define TISCI_RESASG_TYPE_MAX   (0x3FFU)
@@ -226,6 +230,11 @@
 /** Total Main Nav RA subtypes. Update when subtypes are added */
 #define TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_CNT   (0x06U)
 
+/** Main Nav proxy driver proxies */
+#define TISCI_RESASG_SUBTYPE_MAIN_NAV_PROXY_PROXIES   (0x00U)
+/** Total Main Nav proxy subtypes. Update when subtypes are added */
+#define TISCI_RESASG_SUBTYPE_MAIN_NAV_PROXY_CNT   (0x01U)
+
 /** MCU Nav RA driver UDMAP tx rings */
 #define TISCI_RESASG_SUBTYPE_MCU_NAV_RA_RING_UDMAP_TX   (0x00U)
 /** MCU Nav RA driver UDMAP rx rings */
@@ -297,6 +306,11 @@
 /** Total ICSSG2 IRQ subtypes. Update when subtypes added */
 #define TISCI_RESASG_SUBTYPE_ICSSG2_IRQ_CNT   (0x02U)
 
+/** MCU Nav proxy driver proxies */
+#define TISCI_RESASG_SUBTYPE_MCU_NAV_PROXY_PROXIES   (0x00U)
+/** Total MCU Nav proxy subtypes. Update when subtypes are added */
+#define TISCI_RESASG_SUBTYPE_MCU_NAV_PROXY_CNT   (0x01U)
+
 /**
  * Total number of unique resource types for AM6
  */
@@ -312,6 +326,8 @@
      TISCI_RESASG_SUBTYPE_MSMC_CNT + \
      TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_CNT + \
      TISCI_RESASG_SUBTYPE_MCU_NAV_RA_CNT + \
+     TISCI_RESASG_SUBTYPE_MAIN_NAV_PROXY_CNT + \
+     TISCI_RESASG_SUBTYPE_MCU_NAV_PROXY_CNT + \
      TISCI_RESASG_SUBTYPE_GIC_IRQ_CNT + \
      TISCI_RESASG_SUBTYPE_PULSAR_C0_IRQ_CNT + \
      TISCI_RESASG_SUBTYPE_PULSAR_C1_IRQ_CNT + \

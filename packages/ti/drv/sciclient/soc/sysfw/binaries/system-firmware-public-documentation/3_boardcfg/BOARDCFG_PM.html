@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -232,9 +232,9 @@ standard board configuration message.</p>
 <p>TISCI_MSG_BOARD_CONFIG_PM request to provide the location and size of the boardcfg Power Management configuration structure.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="17%" />
+<col width="18%" />
 <col width="19%" />
-<col width="64%" />
+<col width="63%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Parameter</th>
@@ -258,6 +258,10 @@ standard board configuration message.</p>
 <tr class="row-odd"><td>boardcfg_pm_size</td>
 <td>u16</td>
 <td>Size of PM configuration data.</td>
+</tr>
+<tr class="row-even"><td>boardcfg_pm_devgrp</td>
+<td>devgrp_t</td>
+<td>Device group for the PM configuration</td>
 </tr>
 </tbody>
 </table>
@@ -298,6 +302,13 @@ However, the boardcfg_pm data structure is <strong>currently empty</strong>.</p>
 <p class="last">Although currently empty, in order to properly initialize the PM subsystem
 this message must still be sent with the address and size parameters all
 configured to 0.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Although currently empty, PM Board configuration requires to be signed and
+encrypted on HS devices to ensure authenticity and protect secrets. Please
+refer to <a class="reference internal" href="../6_topic_user_guides/hs_boardcfg_signing.html"><span class="doc">Signing Board Configuration on HS devices</span></a> on how to sign and
+encrypt board configuration on HS devices.</p>
 </div>
 </div>
 </div>
@@ -344,7 +355,7 @@ configured to 0.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

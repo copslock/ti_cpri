@@ -119,13 +119,14 @@ struct tisci_msg_boot_notification_resp {
  * \param tisci_boardcfg_rmp_high High 32-bits of physical pointer to tisci_boardcfg
  *                          RM configuration struct.
  * \param tisci_boardcfg_rm_size Size of RM configuration data.
- *
+ * \param tisci_boardcfg_rm_devgrp Device group for the RM configuration.
  */
 struct tisci_msg_board_config_rm_req {
     struct tisci_header    hdr;
     uint32_t            tisci_boardcfg_rmp_low;
     uint32_t            tisci_boardcfg_rmp_high;
     uint16_t            tisci_boardcfg_rm_size;
+    devgrp_t        tisci_boardcfg_rm_devgrp;
 } __attribute__((__packed__));
 
 /**
@@ -160,6 +161,7 @@ struct tisci_msg_board_config_resasg_resp {
  * \param tisci_boardcfgp_low Low 32-bits of physical pointer to tisci_boardcfg struct.
  * \param tisci_boardcfgp_high High 32-bits of physical pointer to tisci_boardcfg struct.
  * \param tisci_boardcfg_size Size of configuration data.
+ * \param tisci_boardcfg_devgrp Device group for the base board configuration.
  *
  */
 struct tisci_msg_board_config_req {
@@ -167,6 +169,7 @@ struct tisci_msg_board_config_req {
     uint32_t            tisci_boardcfgp_low;
     uint32_t            tisci_boardcfgp_high;
     uint16_t            tisci_boardcfg_size;
+    devgrp_t        tisci_boardcfg_devgrp;
 } __attribute__((__packed__));
 
 /**
@@ -191,6 +194,7 @@ struct tisci_msg_board_config_resp {
  * \param tisci_boardcfg_securityp_high High 32-bits of physical pointer to tisci_boardcfg
  *                              security configuration struct.
  * \param tisci_boardcfg_security_size Size of security configuration data.
+ * \param tisci_boardcfg_security_devgrp Device group for the security board configuration.
  *
  */
 struct tisci_msg_board_config_security_req {
@@ -198,6 +202,7 @@ struct tisci_msg_board_config_security_req {
     uint32_t            tisci_boardcfg_securityp_low;
     uint32_t            tisci_boardcfg_securityp_high;
     uint16_t            tisci_boardcfg_security_size;
+    devgrp_t        tisci_boardcfg_security_devgrp;
 } __attribute__((__packed__));
 
 /**
@@ -222,6 +227,7 @@ struct tisci_msg_board_config_security_resp {
  * \param tisci_boardcfg_pmp_high High 32-bits of physical pointer to tisci_boardcfg
  *                              PM configuration struct.
  * \param tisci_boardcfg_pm_size Size of PM configuration data.
+ * \param tisci_boardcfg_pm_devgrp  Device group for the PM configuration
  *
  */
 struct tisci_msg_board_config_pm_req {
@@ -229,6 +235,7 @@ struct tisci_msg_board_config_pm_req {
     uint32_t            tisci_boardcfg_pmp_low;
     uint32_t            tisci_boardcfg_pmp_high;
     uint16_t            tisci_boardcfg_pm_size;
+    devgrp_t        tisci_boardcfg_pm_devgrp;
 } __attribute__((__packed__));
 
 /**

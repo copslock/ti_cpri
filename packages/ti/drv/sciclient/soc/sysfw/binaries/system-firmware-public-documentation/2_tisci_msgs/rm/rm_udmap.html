@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -107,6 +107,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#power-management-pm">Power Management (PM)</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#resource-management-rm">Resource Management (RM)</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="rm_irq.html">Resource Management IRQ TISCI Message Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rm_proxy.html">Resource Management Proxy TISCI Message Description</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rm_ra.html">Resource Management Ring Accelerator TISCI Message Description</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Resource Management UDMAP TISCI Message Description</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
@@ -2493,7 +2494,12 @@ index.</td>
 <td>Receive flow packet size threshold 0</td>
 <td colspan="2">See the UDMAP section of the TRM
 for more information on this
-setting.  The register field is
+setting.
+The value must be provided in
+32-byte units due to a 5-bit
+left shift performed by the HW
+prior to comparison to packet
+size. The register field is
 programmed if rx_size_thresh0’s
 valid bit is set.</td>
 </tr>
@@ -2502,7 +2508,12 @@ valid bit is set.</td>
 <td>Receive flow packet size threshold 1</td>
 <td colspan="2">See the UDMAP section of the TRM
 for more information on this
-setting.  The register field is
+setting.
+The value must be provided in
+32-byte units due to a 5-bit
+left shift performed by the HW
+prior to comparison to packet
+size. The register field is
 programmed if rx_size_thresh1’s
 valid bit is set.</td>
 </tr>
@@ -2511,7 +2522,12 @@ valid bit is set.</td>
 <td>Receive flow packet size threshold 2</td>
 <td colspan="2">See the UDMAP section of the TRM
 for more information on this
-setting.  The register field is
+setting.
+The value must be provided in
+32-byte unites due to a left
+performed by the HW prior to
+comparison to packet size.  The
+register field is
 programmed if rx_size_thresh2’s
 valid bit is set.</td>
 </tr>
@@ -3135,7 +3151,7 @@ global configuration’s non-real-time register field values.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

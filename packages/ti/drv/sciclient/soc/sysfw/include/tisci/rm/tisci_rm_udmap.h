@@ -702,7 +702,7 @@
  * \param hdr
  * Standard TISCI header
  *
- * \params valid_params
+ * \param valid_params
  * Bitfield defining validity of global configuration parameters.  The
  * configuration fields are not valid, and will not be used for global
  * configuration, if their corresponding valid bit is zero.  Valid bit usage:
@@ -1052,8 +1052,8 @@ struct tisci_msg_rm_udmap_gcfg_get_cfg_resp {
  * \param tx_tdtype
  * UDMAP transmit channel teardown type configuration to be programmed
  * into the tdtype field of the TCHAN_TCFG register.  Can be set to:
- * @ref TISCI_MSG_VALUE_RM_UDMAP_CH_TX_TDTYPE_IMMEDIATE
- * @ref TISCI_MSG_VALUE_RM_UDMAP_CH_TX_TDTYPE_WAIT
+ * @ref TISCI_MSG_VALUE_RM_UDMAP_TX_CH_TDTYPE_IMMEDIATE
+ * @ref TISCI_MSG_VALUE_RM_UDMAP_TX_CH_TDTYPE_WAIT
  * This field is only valid if
  * @ref TISCI_MSG_VALUE_RM_UDMAP_CH_TX_TDTYPE_VALID is set in
  * @ref tisci_msg_rm_udmap_tx_ch_cfg_req::valid_params.  This field is not
@@ -1237,7 +1237,7 @@ struct tisci_msg_rm_udmap_tx_ch_get_cfg_resp {
  *   10 - Valid bit for @ref tisci_msg_rm_udmap_rx_ch_cfg_req::flowid_cnt
  *   11 - Valid bit for @ref tisci_msg_rm_udmap_rx_ch_cfg_req::rx_ignore_short
  *   12 - Valid bit for @ref tisci_msg_rm_udmap_rx_ch_cfg_req::rx_ignore_long
- *   14 - Valid bit for @ref tisci_msg_rm_udmap_tx_ch_cfg_req::rx_burst_size
+ *   14 - Valid bit for @ref tisci_msg_rm_udmap_rx_ch_cfg_req::rx_burst_size
  *
  * \param nav_id
  * SoC device ID of Navigator Subsystem where rx channel is located
@@ -1598,11 +1598,11 @@ struct tisci_msg_rm_udmap_rx_ch_get_cfg_resp {
  *    14 - Valid bit for
  *         @ref tisci_msg_rm_udmap_flow_cfg_req::rx_fdq0_sz0_qnum
  *    15 - Valid bit for
- *         @ref tisci_msg_rm_udmap_flow_cfg_req::rx_fdq1_sz0_qnum
+ *         @ref tisci_msg_rm_udmap_flow_cfg_req::rx_fdq1_qnum
  *    16 - Valid bit for
- *         @ref tisci_msg_rm_udmap_flow_cfg_req::rx_fdq2_sz0_qnum
+ *         @ref tisci_msg_rm_udmap_flow_cfg_req::rx_fdq2_qnum
  *    17 - Valid bit for
- *         @ref tisci_msg_rm_udmap_flow_cfg_req::rx_fdq3_sz0_qnum
+ *         @ref tisci_msg_rm_udmap_flow_cfg_req::rx_fdq3_qnum
  *    18 - Valid bit for
  *         @ref tisci_msg_rm_udmap_flow_cfg_req::rx_ps_location
  *
@@ -2034,8 +2034,10 @@ struct tisci_msg_rm_udmap_flow_get_cfg_resp {
  *
  * \param rx_size_thresh0
  * UDMAP receive flow packet size threshold 0 configuration to be programmed
- * into the rx_size_thresh0 field of the flow's RFLOW_RFF register.  See the
- * UDMAP section of the TRM for more information on this setting.
+ * into the rx_size_thresh0 field of the flow's RFLOW_RFF register.  The
+ * value must be provided in 32-byte units due to a 5-bit left shift performed
+ * by the hardware prior to comparison to packet size.  See the UDMAP section
+ * of the TRM for more information on this setting and the shift on comparison.
  *
  * This field is only valid if
  * @ref TISCI_MSG_VALUE_RM_UDMAP_FLOW_SIZE_THRESH0_VALID is set in
@@ -2043,8 +2045,10 @@ struct tisci_msg_rm_udmap_flow_get_cfg_resp {
  *
  * \param rx_size_thresh1
  * UDMAP receive flow packet size threshold 1 configuration to be programmed
- * into the rx_size_thresh1 field of the flow's RFLOW_RFF register.  See the
- * UDMAP section of the TRM for more information on this setting.
+ * into the rx_size_thresh1 field of the flow's RFLOW_RFF register.  The
+ * value must be provided in 32-byte units due to a 5-bit left shift performed
+ * by the hardware prior to comparison to packet size.  See the UDMAP section
+ * of the TRM for more information on this setting and the shift on comparison.
  *
  * This field is only valid if
  * @ref TISCI_MSG_VALUE_RM_UDMAP_FLOW_SIZE_THRESH1_VALID is set in
@@ -2052,8 +2056,10 @@ struct tisci_msg_rm_udmap_flow_get_cfg_resp {
  *
  * \param rx_size_thresh2
  * UDMAP receive flow packet size threshold 2 configuration to be programmed
- * into the rx_size_thresh2 field of the flow's RFLOW_RFG register.  See the
- * UDMAP section of the TRM for more information on this setting.
+ * into the rx_size_thresh2 field of the flow's RFLOW_RFG register.  The
+ * value must be provided in 32-byte units due to a 5-bit left shift performed
+ * by the hardware prior to comparison to packet size.  See the UDMAP section
+ * of the TRM for more information on this setting and the shift on comparison.
  *
  * This field is only valid if
  * @ref TISCI_MSG_VALUE_RM_UDMAP_FLOW_SIZE_THRESH2_VALID is set in

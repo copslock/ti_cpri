@@ -6,7 +6,7 @@
             {
                 "design_file": "./docs/DOCUMENTATION_STYLE.rst",
                 "design_id": "did_component1_design_id",
-                "design_linenumber": 472,
+                "design_linenumber": 476,
                 "design_sectionname": "Example Design Document template"
             },
             {
@@ -102,49 +102,73 @@
             {
                 "design_file": "./docs/design/BOARDCFG_RM.rst",
                 "design_id": "did_boardcfg_rm_design",
-                "design_linenumber": 75,
+                "design_linenumber": 78,
                 "design_sectionname": "Design"
             },
             {
                 "design_file": "./docs/design/BOARDCFG_RM.rst",
                 "design_id": "did_boardcfg_interrupts",
-                "design_linenumber": 657,
+                "design_linenumber": 678,
                 "design_sectionname": "Design details for interrupt management"
             },
             {
                 "design_file": "./docs/design/BOARDCFG_RM.rst",
-                "design_id": "did_boardcfg_rm_res_northbridge",
-                "design_linenumber": 690,
-                "design_sectionname": "Design details for NorthBridge Configuration"
-            },
-            {
-                "design_file": "./docs/design/BOARDCFG_RM.rst",
                 "design_id": "did_boardcfg_rm_res_psil",
-                "design_linenumber": 701,
+                "design_linenumber": 719,
                 "design_sectionname": "Design details for PSIL Configuration"
             },
             {
                 "design_file": "./docs/design/BOARDCFG_RM.rst",
                 "design_id": "did_boardcfg_rm_res_udma",
-                "design_linenumber": 713,
+                "design_linenumber": 731,
                 "design_sectionname": "Design details for UDMA Configuration"
             },
             {
                 "design_file": "./docs/design/BOARDCFG_RM.rst",
                 "design_id": "did_boardcfg_rm_res_ringacc",
-                "design_linenumber": 729,
+                "design_linenumber": 747,
                 "design_sectionname": "Design details for RingAcc and RingAccRT Configuration"
             },
             {
                 "design_file": "./docs/design/BOARDCFG_RM.rst",
                 "design_id": "did_boardcfg_rm_res_insec_proxy",
-                "design_linenumber": 745,
-                "design_sectionname": "Design details for (Insecure) Proxy Configuration"
+                "design_linenumber": 763,
+                "design_sectionname": "Design details for Proxy Configuration"
             },
             {
                 "design_file": "./docs/design/MSMC_MAT.rst",
                 "design_id": "did_mat_msmc_erratum",
                 "design_linenumber": 91,
+                "design_sectionname": "Features Not Supported"
+            },
+            {
+                "design_file": "./docs/design/pm/PM_CLOCK.rst",
+                "design_id": "did_pm_clock_init",
+                "design_linenumber": 105,
+                "design_sectionname": "Features Not Supported"
+            },
+            {
+                "design_file": "./docs/design/pm/PM_CLOCK.rst",
+                "design_id": "did_pm_clock",
+                "design_linenumber": 713,
+                "design_sectionname": "Final Decision"
+            },
+            {
+                "design_file": "./docs/design/pm/PM_DEVICE.rst",
+                "design_id": "did_pm_device_init",
+                "design_linenumber": 108,
+                "design_sectionname": "Features Not Supported"
+            },
+            {
+                "design_file": "./docs/design/pm/PM_DEVICE.rst",
+                "design_id": "did_pm_device",
+                "design_linenumber": 386,
+                "design_sectionname": "Final Decision"
+            },
+            {
+                "design_file": "./docs/design/drivers/PROXY.rst",
+                "design_id": "did_rm_proxy_driver",
+                "design_linenumber": 105,
                 "design_sectionname": "Features Not Supported"
             },
             {
@@ -177,6 +201,7 @@
                 "design_id": "did_msmc",
                 "source_ids": [
                     "msmc_config_init",
+                    "is_msmc_in_devgrp",
                     "msmc_driver_init"
                 ]
             }
@@ -278,7 +303,8 @@
             {
                 "arch_ids": [],
                 "design_ids": [
-                    "did_boardcfg_rm_design"
+                    "did_boardcfg_rm_design",
+                    "did_rm_proxy_driver"
                 ],
                 "req_id": "SYSFW-270",
                 "source_ids": []
@@ -294,14 +320,6 @@
             {
                 "arch_ids": [],
                 "design_ids": [
-                    "did_boardcfg_rm_res_northbridge"
-                ],
-                "req_id": "SYSFW-298",
-                "source_ids": []
-            },
-            {
-                "arch_ids": [],
-                "design_ids": [
                     "did_boardcfg_rm_res_psil"
                 ],
                 "req_id": "SYSFW-291",
@@ -312,15 +330,7 @@
                 "design_ids": [
                     "did_boardcfg_rm_res_udma"
                 ],
-                "req_id": "SYSFW-289",
-                "source_ids": []
-            },
-            {
-                "arch_ids": [],
-                "design_ids": [
-                    "did_boardcfg_rm_res_ringacc"
-                ],
-                "req_id": "SYSFW-288",
+                "req_id": "SYSFW-1463",
                 "source_ids": []
             },
             {
@@ -334,9 +344,10 @@
             {
                 "arch_ids": [],
                 "design_ids": [
-                    "did_boardcfg_rm_res_insec_proxy"
+                    "did_boardcfg_rm_res_insec_proxy",
+                    "did_rm_proxy_driver"
                 ],
-                "req_id": "SYSFW-283",
+                "req_id": "SYSFW-943",
                 "source_ids": []
             },
             {
@@ -345,6 +356,30 @@
                     "did_mat_msmc_erratum"
                 ],
                 "req_id": "SYSFW-1891",
+                "source_ids": []
+            },
+            {
+                "arch_ids": [],
+                "design_ids": [
+                    "did_pm_clock"
+                ],
+                "req_id": "SYSFW-367",
+                "source_ids": []
+            },
+            {
+                "arch_ids": [],
+                "design_ids": [
+                    "did_pm_clock"
+                ],
+                "req_id": "SYSFW-172",
+                "source_ids": []
+            },
+            {
+                "arch_ids": [],
+                "design_ids": [
+                    "did_pm_device"
+                ],
+                "req_id": "SYSFW-366",
                 "source_ids": []
             },
             {
@@ -368,7 +403,7 @@
             {
                 "source_file": "security/firewall/firewall.c",
                 "source_id": "fwl_reg_write_perm",
-                "source_linenumber": 99
+                "source_linenumber": 100
             },
             {
                 "source_file": "drivers/mat/mat_msmc_erratum.c",
@@ -382,8 +417,13 @@
             },
             {
                 "source_file": "drivers/msmc/msmc.c",
+                "source_id": "is_msmc_in_devgrp",
+                "source_linenumber": 316
+            },
+            {
+                "source_file": "drivers/msmc/msmc.c",
                 "source_id": "msmc_driver_init",
-                "source_linenumber": 358
+                "source_linenumber": 380
             }
         ]
     }

@@ -39,7 +39,7 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="TISCI User Guide" href="../index.html"/>
         <link rel="up" title="Chapter 6: Topic User Guides" href="index.html"/>
-        <link rel="next" title="Asymmetric Key Services" href="asymmetric_key_services.html"/>
+        <link rel="next" title="Signing Board Configuration on HS devices" href="hs_boardcfg_signing.html"/>
         <link rel="prev" title="Chapter 6: Topic User Guides" href="index.html"/> 
 
   
@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -112,7 +112,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#signing-an-encrypted-binary-for-secure-boot">Signing an encrypted binary for secure boot</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="hs_boardcfg_signing.html">Signing Board Configuration on HS devices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="asymmetric_key_services.html">Asymmetric Key Services</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devgrp_usage.html">Device Group Primer</a></li>
 </ul>
 </li>
 </ul>
@@ -169,6 +171,9 @@ Usecases are listed in order of increasing complexity.</p>
 </ol>
 <div class="section" id="signing-an-unencrypted-binary-for-secure-boot">
 <span id="pub-sign-unencrypted-mpk"></span><h2>Signing an unencrypted binary for secure boot<a class="headerlink" href="#signing-an-unencrypted-binary-for-secure-boot" title="Permalink to this headline">¶</a></h2>
+<div class="figure">
+<a class="reference internal image-reference" href="../_images/binary-signing-flow.png"><img alt="../_images/binary-signing-flow.png" src="../_images/binary-signing-flow.png" style="width: 50%;" /></a>
+</div>
 <ol class="arabic simple">
 <li>Calculate SHA2-512 hash of the binary. Populate the <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-image-integrity-ext"><span class="std std-ref">System Firmware Image Integrity Extension</span></a>
 with the calculated hash and the length of the binary.</li>
@@ -196,6 +201,9 @@ input to the signing process described above. Some of the values populated in
 X509 extensions are also modified. This section describes the encryption
 operation and changes in populating the X509 extensions. First, the steps to
 encrypt the binary are listed below.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../_images/encryption-flow.png"><img alt="../_images/encryption-flow.png" src="../_images/encryption-flow.png" style="width: 50%;" /></a>
+</div>
 <ol class="arabic simple">
 <li>Pad the binary with zeros until the length is a multiple of 16 bytes.</li>
 <li>Append a 32 byte long random string to the binary output in step (1). This
@@ -219,7 +227,11 @@ populated in the X509 image integrity extension.</li>
 <li>The binary output of step (5) must be appended to the signed X509 certificate
 instead of the unencrypted binary.</li>
 </ol>
-<p>Please refer to <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-image-integrity-ext"><span class="std std-ref">System Firmware Image Integrity Extension</span></a> and <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-encryption-ext"><span class="std std-ref">System Firmware Encryption Extension</span></a>.</p>
+<p>Please refer to <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-image-integrity-ext"><span class="std std-ref">System Firmware Image Integrity Extension</span></a> and <a class="reference internal" href="../2_tisci_msgs/security/sec_cert_format.html#sysfw-encryption-ext"><span class="std std-ref">System Firmware Encryption Extension</span></a>.
+The complete signing flow for an encrypted image is shown below.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../_images/encrypted-binary-whole-flow.png"><img alt="../_images/encrypted-binary-whole-flow.png" src="../_images/encrypted-binary-whole-flow.png" style="width: 100%;" /></a>
+</div>
 </div>
 </div>
 
@@ -230,7 +242,7 @@ instead of the unencrypted binary.</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="asymmetric_key_services.html" class="btn btn-neutral float-right" title="Asymmetric Key Services" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="hs_boardcfg_signing.html" class="btn btn-neutral float-right" title="Signing Board Configuration on HS devices" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Chapter 6: Topic User Guides" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -264,7 +276,7 @@ instead of the unencrypted binary.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

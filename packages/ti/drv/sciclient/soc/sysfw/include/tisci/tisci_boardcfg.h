@@ -432,6 +432,33 @@ struct tisci_boardcfg {
     struct tisci_boardcfg_dbg_cfg        debug_cfg;
 } __attribute__((__packed__));
 
+
+/**
+ * \brief structure to hold the board configuration hashes received via X509 certificate
+ *
+ * \param sec_bcfg_hash Hash of encrypted security board configuration blob
+ * \param rm_bcfg_hash Hash of RM board configuration blob
+ * \param pm_bcfg_hash Hash of PM board configuration blob
+ * \param core_bcfg_hash Hash of main board configuration blob
+ * \param sec_bcfg_iv initial vector used during security board configuration encryption
+ * \param sec_bcfg_rs byte string used to verify that security board configuration is
+ *                    decrypted correctly.
+ * \param sec_bcfg_ver version of the security board configuration
+ * \param sec_bcfg_num_iter Number of iterations for the KDF
+ * \param hashes_received Flag indicating whether SYSFW outer certificate contained tisci_boardcfg
+ *                        information
+ */
+struct tisci_boardcfg_hashes_data {
+    uint8_t    sec_bcfg_hash[TISCI_BOARDCFG_HASH_LEN_BYTES];
+    uint8_t    rm_bcfg_hash[TISCI_BOARDCFG_HASH_LEN_BYTES];
+    uint8_t    pm_bcfg_hash[TISCI_BOARDCFG_HASH_LEN_BYTES];
+    uint8_t    core_bcfg_hash[TISCI_BOARDCFG_HASH_LEN_BYTES];
+    uint8_t    sec_bcfg_iv[TISCI_BOARDCFG_SEC_IV_LEN];
+    uint8_t    sec_bcfg_rs[TISCI_BOARDCFG_SEC_RS_LEN];
+    uint8_t    sec_bcfg_ver;
+    uint8_t      sec_bcfg_num_iter;
+    uint8_t    hashes_received;
+};
 #endif          /* TISCI_BOARD_CFG_H */
 
 /* @} */

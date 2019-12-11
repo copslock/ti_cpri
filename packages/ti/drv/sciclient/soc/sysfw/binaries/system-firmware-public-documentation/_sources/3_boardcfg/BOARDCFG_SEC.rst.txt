@@ -23,6 +23,13 @@ separately to reduce DMSC boot time.  The security board cfg message
 is sent any time after the boot notification message is sent and has no
 dependence upon receipt of the standard board configuration message.
 
+.. note::
+
+  Security Board configuration requires to be signed and encrypted on HS devices
+  to ensure authenticity and protect secrets. Please refer to
+  :doc:`../6_topic_user_guides/hs_boardcfg_signing` on how to sign and encrypt
+  board configuration on HS devices.
+
 .. _pub_boardcfg_security_tisci:
 
 TISCI API for Security Board Config
@@ -51,6 +58,19 @@ Message Data Structures
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 .. sysfwapistruct:: tisci_msg_board_config_security_req
+
+
+.. note::
+
+   Even though the security board configuration structure contains the
+   ``boardcfg_security_devgrp`` member, it is ignored. Initialization of
+   firewalls is performed for a devgrp when it is enabled via the core board
+   configuration message. This is necessary to ensure isolation. See
+   :doc:`./BOARDCFG`.
+
+   The reamining security services are initialized when the |sec_bcfg| is
+   received for the first time. Subsequent |sec_bcfg| messages do not have
+   any effect on operation of |sysfw|.
 
 .. sysfwapistruct:: tisci_msg_board_config_security_resp
 

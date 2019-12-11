@@ -1,0 +1,206 @@
+===================
+Device Group Primer
+===================
+
+This document provides a quick primer on what device group is
+and provides guidance on usage of device groups.
+
+.. _pub_devgrp_usage_intro:
+
+Introduction
+============
+
+A typical SoC has a large number of peripherals such as I2C, UART etc.
+In an optimized boot flow mode, we typically need to startup a limited
+set of peripherals and incrementally increase the usage of the SoC.
+Motivation for this usage can be one of two reasons:
+
+* Hardware functionality is limited for varied reasons
+  (Such as voltage not enabled for a domain etc..).
+* Limited peripherals initialized implies lesser time required for initialization
+  functions in |sysfw| and applications can perform time critical activities earlier.
+
+|sysfw| provides a scheme where we can choose one of the two
+initialization models:
+
+* Bring up everything during the configuration sequences so that application software
+  (HLOS/Bootloader..) can operate on any peripheral it desires.
+* Start up a limited set of peripheral set and incrementally add capability to control
+  additional resources of the SoC.
+
+The above mentioned schemes are mutually exclusive since the product
+use cases are specific in the manner of usage of peripheral sets. We
+shall go into more in-depth discussion later in this document.
+
+.. _pub_devgrp_definition:
+
+Definition
+==========
+
+In the simplest of terms, we call "Device Group" or DEVGRP as a
+concept to organize a logical set of peripherals to provide services.
+
+Each device group enables a set of peripherals that can be
+operated upon when the domain initialization for that domain is
+invoked with the corresponding boardconfig API calls such as
+:ref:`TISCI_MSG_BOARD_CONFIG <pub_boardcfg_tisci>`
+
+The specific grouping of device instances are documented in the SoC
+specific documentation.
+
+.. _pub_devgrp_values:
+
+DEVGRP values
+=============
+
+Device group identification follows a generic bitfield format.
+
+* devgrp_t type is u8 (8 bits)
+* Values for the field is defined as follows:
+
++--------------+--------+-----------------------------------------------------------------------------------------------+
+| Device Group | Value  |                                          Description                                          |
++==============+========+===============================================================================================+
+| DEVGRP_ALL   | 0      | SoC SYSFW devgrp any: NOT TO BE used for SoC data.                                            |
+|              |        | This implies that specific sequenced devgrp is NOT used.                                      |
+|              |        | This functionality is SoC boot mode specific.                                                 |
+|              |        | Allows for all peripherals for the specific domain to be used                                 |
++--------------+--------+-----------------------------------------------------------------------------------------------+
+| DEVGRP_00    | 1 << 0 | SoC specific Devgrp 0.                                                                        |
+|              |        | Please refer to :ref:`SoC information <pub_soc_family_doc>` for validity in the specific SoC. |
+|              |        | This implies that specific sequenced devgrp is used.                                          |
+|              |        | This enables the peripherals listed accessible for this group.                                |
++--------------+--------+-----------------------------------------------------------------------------------------------+
+| DEVGRP_01    | 1 << 1 | SoC specific Devgrp 1.                                                                        |
+|              |        | Please refer to :ref:`SoC information <pub_soc_family_doc>` for validity in the specific SoC. |
+|              |        | This implies that specific sequenced devgrp is used.                                          |
+|              |        | This enables the peripherals listed accessible for this group.                                |
++--------------+--------+-----------------------------------------------------------------------------------------------+
+| DEVGRP_02    | 1 << 2 | SoC specific Devgrp 2.                                                                        |
+|              |        | Please refer to :ref:`SoC information <pub_soc_family_doc>` for validity in the specific SoC. |
+|              |        | This implies that specific sequenced devgrp is used.                                          |
+|              |        | This enables the peripherals listed accessible for this group.                                |
++--------------+--------+-----------------------------------------------------------------------------------------------+
+| DEVGRP_03    | 1 << 3 | SoC specific Devgrp 3.                                                                        |
+|              |        | Please refer to :ref:`SoC information <pub_soc_family_doc>` for validity in the specific SoC. |
+|              |        | This implies that specific sequenced devgrp is used.                                          |
+|              |        | This enables the peripherals listed accessible for this group.                                |
++--------------+--------+-----------------------------------------------------------------------------------------------+
+| DEVGRP_04    | 1 << 4 | SoC specific Devgrp 4.                                                                        |
+|              |        | Please refer to :ref:`SoC information <pub_soc_family_doc>` for validity in the specific SoC. |
+|              |        | This implies that specific sequenced devgrp is used.                                          |
+|              |        | This enables the peripherals listed accessible for this group.                                |
++--------------+--------+-----------------------------------------------------------------------------------------------+
+| DEVGRP_05    | 1 << 5 | SoC specific Devgrp 5.                                                                        |
+|              |        | Please refer to :ref:`SoC information <pub_soc_family_doc>` for validity in the specific SoC. |
+|              |        | This implies that specific sequenced devgrp is used.                                          |
+|              |        | This enables the peripherals listed accessible for this group.                                |
++--------------+--------+-----------------------------------------------------------------------------------------------+
+| DEVGRP_06    | 1 << 6 | SoC specific Devgrp 6.                                                                        |
+|              |        | Please refer to :ref:`SoC information <pub_soc_family_doc>` for validity in the specific SoC. |
+|              |        | This implies that specific sequenced devgrp is used.                                          |
+|              |        | This enables the peripherals listed accessible for this group.                                |
++--------------+--------+-----------------------------------------------------------------------------------------------+
+
+.. warning::
+
+   * User MUST be careful NOT to use DEVGRP_ALL when using DEVGRP_00 to DEVGRP_06. The usage is mutually exclusive.
+   * SoC specific peripheral grouping is predefined and NOT configurable by user.
+
+
+.. _pub_devgrp_usage_model:
+
+Usage models
+============
+
+As mentioned in previous sections, there are two valid models of
+usage. This section deals with each valid mode of operation.
+
+.. _pub_devgrp_usage_model1:
+
+Usage Model 1: Enable all devices
+---------------------------------
+
+In this usage model, we don't really know upfront as to the usage of peripherals in the system.
+Typical example is running generic community software OR boot time is not of concern.
+
+Sequence of calls could be:
+
+* :ref:`TISCI_MSG_BOARD_CONFIG <pub_boardcfg_tisci>` (devgrp = DEVGRP_ALL)
+* :ref:`TISCI_MSG_BOARD_CONFIG_PM <pub_boardcfg_pm_tisci>` (devgrp = DEVGRP_ALL)
+* :ref:`TISCI_MSG_BOARD_CONFIG_RM <pub_boardcfg_rm_tisci>` (devgrp = DEVGRP_ALL)
+* :ref:`TISCI_MSG_BOARD_CONFIG_SECURITY <pub_boardcfg_security_tisci>` (devgrp = DEVGRP_ALL)
+* Do other activities
+
+In this sequence of initialization, all domains are initialized
+equally and further |sysfw| services are now operational corresponding
+to that domain after each domain initialization is complete.
+
+.. warning::
+
+   * User MUST be careful NOT to mix DEVGRP_ALL usage with :ref:`incremental initialization <pub_devgrp_usage_model2>`.
+   * Because this usage model initializes the entire SoC at boot, applications sensitive to boot time latency
+     should first try to use :ref:`incremental initialization <pub_devgrp_usage_model2>` to optimize boot time by
+     only initializing what is needed.
+
+.. _pub_devgrp_usage_model2:
+
+Usage Model 2: Incremental initialization
+-----------------------------------------
+
+In this usage model, we don't enable access to all resources on
+the SoC. Instead, we incrementally add responsibility for |sysfw|
+to introduce control over wider parts of SoC. This is achieved by
+incrementally invoking increasing order of devgrp permitted by the
+SoC. Each devgrp indicates a specific group of peripherals and
+resources that |sysfw| takes ownership of. The specific group of
+peripherals for a given devgrp can vary SoC to SoC.
+
+For each of the DEVGRP_00, DEVGRP_01 definitions, please refer to
+:ref:`SoC information <pub_soc_family_doc>` devgrp section to get
+details corresponding to the SoC.
+
+Sequence of calls could be:
+
+* :ref:`TISCI_MSG_BOARD_CONFIG <pub_boardcfg_tisci>` (devgrp = DEVGRP_00)
+* :ref:`TISCI_MSG_BOARD_CONFIG_PM <pub_boardcfg_pm_tisci>` (devgrp = DEVGRP_00)
+* :ref:`TISCI_MSG_BOARD_CONFIG_RM <pub_boardcfg_rm_tisci>` (devgrp = DEVGRP_00)
+* :ref:`TISCI_MSG_BOARD_CONFIG_SECURITY <pub_boardcfg_security_tisci>` (devgrp = DEVGRP_00)
+* Do time critical activities here including critical peripherals in DEVGRP_00
+  that are now controlled by |sysfw|
+* At a convenient point in time, invoke initialization for remaining set of peripherals
+* :ref:`TISCI_MSG_BOARD_CONFIG <pub_boardcfg_tisci>` (devgrp = DEVGRP_01)
+* :ref:`TISCI_MSG_BOARD_CONFIG_PM <pub_boardcfg_pm_tisci>` (devgrp = DEVGRP_01)
+* :ref:`TISCI_MSG_BOARD_CONFIG_RM <pub_boardcfg_rm_tisci>` (devgrp = DEVGRP_01)
+* :ref:`TISCI_MSG_BOARD_CONFIG_SECURITY <pub_boardcfg_security_tisci>` (devgrp = DEVGRP_01)
+* Do other activities
+* Steps above are repeated for all DEVGRPs relevant for the SoC to make sure
+  that full SoC functionality is enabled.
+
+To compare with :ref:`Enable all <pub_devgrp_usage_model1>` model, if
+absolutely no operation is performed by the application other than
+invoking the boardconfig APIs, the state of the SoC at the end of
+initialization of all valid devgrps should be equal to the state of
+the SoC with DEVGRP_ALL being invoked.
+
+.. note::
+
+    * Even though it is permitted to use a bitfield mix such as DEVGRP_00|DEVGRP_01,
+      users are expected to be familiar with hardware architecture to understand the
+      dependencies and side effects of invalid usage.
+
+.. warning::
+
+   * User MUST be careful NOT to mix usage with :ref:`Enable all <pub_devgrp_usage_model1>`.
+   * Users are strongly recommended to read :ref:`SoC information <pub_soc_family_doc>` for validity
+     of various devgrps in a specific SoC.
+   * User must be careful NOT to access resources OR invoke system firmware services that can be impacted
+     by peripherals or domains not initialized by each stage of devgrp. |sysfw| does not provide protection
+     schemes to prevent or detect such usage.
+   * User must be careful NOT to confuse hardware "domains" with similar sounding names used in devgrps.
+     devgrps is a software defined logical grouping of peripherals which may be a subset of a domain OR may
+     span physical domains.
+   * Users should be careful NOT to re-initialize a devgrp that is already initialized. Checks and
+     protection  for invalid attempts are not performed in sysfw in the interest of primary function
+     of high speed initialization. You may use the debug functionality
+     :ref:`Board Config Debug <pub_boardcfg_debug_console>` to track down invalid usage.

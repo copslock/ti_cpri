@@ -1182,19 +1182,34 @@ UDMAP Receive Flow Size Threshold Configure Message Parameters
 +-------------------+------------------------------+----------------------------------------------------------------------------------+----------------------------------+
 | rx_size_thresh0   | u16                          | Receive flow packet size threshold 0                                             | See the UDMAP section of the TRM |
 |                   |                              |                                                                                  | for more information on this     |
-|                   |                              |                                                                                  | setting.  The register field is  |
+|                   |                              |                                                                                  | setting.                         |
+|                   |                              |                                                                                  | The value must be provided in    |
+|                   |                              |                                                                                  | 32-byte units due to a 5-bit     |
+|                   |                              |                                                                                  | left shift performed by the HW   |
+|                   |                              |                                                                                  | prior to comparison to packet    |
+|                   |                              |                                                                                  | size. The register field is      |
 |                   |                              |                                                                                  | programmed if rx_size_thresh0's  |
 |                   |                              |                                                                                  | valid bit is set.                |
 +-------------------+------------------------------+----------------------------------------------------------------------------------+----------------------------------+
 | rx_size_thresh1   | u16                          | Receive flow packet size threshold 1                                             | See the UDMAP section of the TRM |
 |                   |                              |                                                                                  | for more information on this     |
-|                   |                              |                                                                                  | setting.  The register field is  |
+|                   |                              |                                                                                  | setting.                         |
+|                   |                              |                                                                                  | The value must be provided in    |
+|                   |                              |                                                                                  | 32-byte units due to a 5-bit     |
+|                   |                              |                                                                                  | left shift performed by the HW   |
+|                   |                              |                                                                                  | prior to comparison to packet    |
+|                   |                              |                                                                                  | size. The register field is      |
 |                   |                              |                                                                                  | programmed if rx_size_thresh1's  |
 |                   |                              |                                                                                  | valid bit is set.                |
 +-------------------+------------------------------+----------------------------------------------------------------------------------+----------------------------------+
 | rx_size_thresh2   | u16                          | Receive flow packet size threshold 2                                             | See the UDMAP section of the TRM |
 |                   |                              |                                                                                  | for more information on this     |
-|                   |                              |                                                                                  | setting.  The register field is  |
+|                   |                              |                                                                                  | setting.                         |
+|                   |                              |                                                                                  | The value must be provided in    |
+|                   |                              |                                                                                  | 32-byte unites due to a left     |
+|                   |                              |                                                                                  | performed by the HW prior to     |
+|                   |                              |                                                                                  | comparison to packet size.  The  |
+|                   |                              |                                                                                  | register field is                |
 |                   |                              |                                                                                  | programmed if rx_size_thresh2's  |
 |                   |                              |                                                                                  | valid bit is set.                |
 +-------------------+------------------------------+----------------------------------------------------------------------------------+----------------------------------+

@@ -438,7 +438,7 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
                 .magic = TISCI_BOARDCFG_RM_RESASG_MAGIC_NUM,
                 .size  = sizeof(struct tisci_boardcfg_rm_resasg),
             },
-            .resasg_entries_size = TISCI_BOARDCFG_RM_RESASG_ENTRIES *
+            .resasg_entries_size = TISCI_RESASG_UTYPE_CNT *
                     sizeof(struct tisci_boardcfg_rm_resasg_entry),
         },
     },
@@ -505,43 +505,6 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
             .host_id = TISCI_HOST_ID_ALL,
         },
         {
-            /* MCU Nav UDMASS IA VINT 0 - 7 reserved for use by DMSC */
-            .start_resource = 8,
-            .num_resource = 248,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMASS_IA0,
-                         TISCI_RESASG_SUBTYPE_MCU_NAV_UDMASS_IA0_VINT),
-            .host_id = TISCI_HOST_ID_ALL,
-        },
-        {
-            /* MCU Nav UDMASS IA SEVI 16384 - 16391 reserved for use by DMSC */
-            .start_resource = 16392,
-            .num_resource = 1000,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMASS_IA0,
-                         TISCI_RESASG_SUBTYPE_MCU_NAV_UDMASS_IA0_SEVI),
-            .host_id = TISCI_HOST_ID_ALL,
-        },
-        {
-            .start_resource = 17392,
-            .num_resource = 528,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMASS_IA0,
-                         TISCI_RESASG_SUBTYPE_MCU_NAV_UDMASS_IA0_SEVI),
-            .host_id = TISCI_HOST_ID_R5_0,
-        },
-        {
-            .start_resource = 34816,
-            .num_resource = 128,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMASS_IA0,
-                         TISCI_RESASG_SUBTYPE_MCU_NAV_UDMASS_IA0_MEVI),
-            .host_id = TISCI_HOST_ID_ALL,
-        },
-        {
-            .start_resource = 39936,
-            .num_resource = 256,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMASS_IA0,
-                         TISCI_RESASG_SUBTYPE_MCU_NAV_UDMASS_IA0_GEVI),
-            .host_id = TISCI_HOST_ID_ALL,
-        },
-        {
             .start_resource = 43008,
             .num_resource = 4,
             .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_MCRC,
@@ -549,10 +512,10 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
             .host_id = TISCI_HOST_ID_ALL,
         },
         {
-            .start_resource = 43136,
-            .num_resource = 4,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_MCRC,
-                         TISCI_RESASG_SUBTYPE_MCU_NAV_MCRC_LEVI),
+            .start_resource = 0,
+            .num_resource = 1,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_UDMAP,
+                         TISCI_RESASG_SUBTYPE_MAIN_NAV_UDMAP_GCFG),
             .host_id = TISCI_HOST_ID_ALL,
         },
         {
@@ -614,10 +577,99 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
             .host_id = TISCI_HOST_ID_ALL,
         },
         {
+            /* Ring 0 is reserved for use by DMSC */
+            .start_resource = 1,
+            .num_resource = 151,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_RA,
+                         TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_RING_UDMAP_TX),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            /* Ring 152 is reserved for use by DMSC */
+            .start_resource = 153,
+            .num_resource = 149,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_RA,
+                         TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_RING_UDMAP_RX),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            /* Rings 302 and 303 are reserved for use by DMSC */
+            .start_resource = 304,
+            .num_resource = 464,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_RA,
+                         TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_RING_GP),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
             .start_resource = 0,
             .num_resource = 1,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_UDMAP,
-                    TISCI_RESASG_SUBTYPE_MAIN_NAV_UDMAP_GCFG),
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_RA,
+                         TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_ERROR_OES),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            .start_resource = 1024,
+            .num_resource = 1024,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_RA,
+                         TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_VIRTID),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            .start_resource = 0,
+            .num_resource = 32,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_RA,
+                         TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_MONITOR),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            /* MCU Nav UDMASS IA VINT 0 - 7 reserved for use by DMSC */
+            .start_resource = 8,
+            .num_resource = 248,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMASS_IA0,
+                         TISCI_RESASG_SUBTYPE_MCU_NAV_UDMASS_IA0_VINT),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            /* MCU Nav UDMASS IA SEVI 16384 - 16391 reserved for use by DMSC */
+            .start_resource = 16392,
+            .num_resource = 1000,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMASS_IA0,
+                         TISCI_RESASG_SUBTYPE_MCU_NAV_UDMASS_IA0_SEVI),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            .start_resource = 17392,
+            .num_resource = 528,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMASS_IA0,
+                         TISCI_RESASG_SUBTYPE_MCU_NAV_UDMASS_IA0_SEVI),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            .start_resource = 34816,
+            .num_resource = 128,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMASS_IA0,
+                         TISCI_RESASG_SUBTYPE_MCU_NAV_UDMASS_IA0_MEVI),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            .start_resource = 39936,
+            .num_resource = 256,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMASS_IA0,
+                         TISCI_RESASG_SUBTYPE_MCU_NAV_UDMASS_IA0_GEVI),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            .start_resource = 43136,
+            .num_resource = 4,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_MCRC,
+                         TISCI_RESASG_SUBTYPE_MCU_NAV_MCRC_LEVI),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            .start_resource = 0,
+            .num_resource = 1,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMAP,
+                         TISCI_RESASG_SUBTYPE_MCU_NAV_UDMAP_GCFG),
             .host_id = TISCI_HOST_ID_ALL,
         },
         {
@@ -670,48 +722,10 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
             .host_id = TISCI_HOST_ID_ALL,
         },
         {
-            .start_resource = 0,
-            .num_resource = 1,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_UDMAP,
-                    TISCI_RESASG_SUBTYPE_MCU_NAV_UDMAP_GCFG),
-            .host_id = TISCI_HOST_ID_ALL,
-        },
-        {
             .start_resource = 61440,
             .num_resource = 64,
             .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MSMC,
                          TISCI_RESASG_SUBTYPE_MSMC_DRU),
-            .host_id = TISCI_HOST_ID_ALL,
-        },
-        {
-            /* Ring 0 is reserved for use by DMSC */
-            .start_resource = 1,
-            .num_resource = 151,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_RA,
-                         TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_RING_UDMAP_TX),
-            .host_id = TISCI_HOST_ID_ALL,
-        },
-        {
-            /* Ring 152 is reserved for use by DMSC */
-            .start_resource = 153,
-            .num_resource = 149,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_RA,
-                         TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_RING_UDMAP_RX),
-            .host_id = TISCI_HOST_ID_ALL,
-        },
-        {
-            /* Rings 302 and 303 are reserved for use by DMSC */
-            .start_resource = 304,
-            .num_resource = 464,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_RA,
-                         TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_RING_GP),
-            .host_id = TISCI_HOST_ID_ALL,
-        },
-        {
-            .start_resource = 0,
-            .num_resource = 1,
-            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_RA,
-                         TISCI_RESASG_SUBTYPE_MAIN_NAV_RA_ERROR_OES),
             .host_id = TISCI_HOST_ID_ALL,
         },
         {
@@ -740,6 +754,33 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
             .num_resource = 1,
             .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_RA,
                          TISCI_RESASG_SUBTYPE_MCU_NAV_RA_ERROR_OES),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            .start_resource = 2048,
+            .num_resource = 1024,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_RA,
+                         TISCI_RESASG_SUBTYPE_MCU_NAV_RA_VIRTID),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            .start_resource = 0,
+            .num_resource = 32,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_RA,
+                         TISCI_RESASG_SUBTYPE_MCU_NAV_RA_MONITOR),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            /* Proxy 0 reserved for use by DMSC */
+            .start_resource = 1U,
+            .num_resource = 63U,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MAIN_NAV_PROXY, TISCI_RESASG_SUBTYPE_MAIN_NAV_PROXY_PROXIES),
+            .host_id = TISCI_HOST_ID_ALL,
+        },
+        {
+            .start_resource = 0U,
+            .num_resource = 64U,
+            .type = TISCI_RESASG_UTYPE(TISCI_RESASG_TYPE_MCU_NAV_PROXY, TISCI_RESASG_SUBTYPE_MCU_NAV_PROXY_PROXIES),
             .host_id = TISCI_HOST_ID_ALL,
         },
         {

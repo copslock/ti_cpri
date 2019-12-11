@@ -6,4 +6,6 @@
    :maxdepth: 1
 
    ./secure_boot_signing
+   ./hs_boardcfg_signing
    ./asymmetric_key_services
+   ./devgrp_usage

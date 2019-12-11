@@ -53,6 +53,8 @@ The following X509 extensions are supported by |sysfw|.
 +--------------------------------------+----------------------------------------+
 | :ref:`sysfw_encryption_ext`          | Encryption extension                   |
 +--------------------------------------+----------------------------------------+
+| :ref:`sysfw_hs_bcfg_ext`             | HS Boardcfg extension                  |
++--------------------------------------+----------------------------------------+
 
 .. _sysfw_boot_ext:
 
@@ -373,6 +375,101 @@ The following table shows the enumeration of the bitfield **hw_key_hide_flags**:
 
 For an example, please refer to the section ``[ debug ]`` in :ref:`sysfw_x509_template_example`.
 
+.. _sysfw_hs_bcfg_ext:
+
+|sysfw| HS Board Configuration Extension
+-------------------------------------------------
+
+|sysfw| extends the Encryption extension/OID as defined by ROM for the purpose
+of authenticating the board configurations on HS devices. The hashes of the 4
+board configuration blobs
+
+1. Core board configuration
+2. PM board configurations
+3. RM board configuration
+4. Encrypted Security board configuration
+
+and the encryption parameters of the security board configuration are encoded in
+the board configuration extension of the |sysfw| outer certificate . This
+extension is identified by OID **1.3.6.1.4.1.294.1.36**.
+
+::
+
+   SYSFW-HS-BCFG:= SEQUENCE
+   {
+      initalVector OCTET STRING,
+      randomString OCTET STRING,
+      iterationCnt INTEGER,
+      salt OCTET STRING,
+      secBoardCfgHash OCTET STRING,
+      secBoardCfgVer INTEGER,
+      pmBoardCfgHash OCTET STRING,
+      rmBoardCfgHash OCTET STRING
+      boardCfgHash OCTET STRING
+   }
+
+The extension is decoded into the following data structure.
+
+.. code-block:: c
+
+   struct ti_bcfg_info {
+    u8 initialVector[16];
+    u8 randomString[32];
+    u8 iterationCnt;
+    u8 salt[32];
+    u8 secBoardCfgHash[64];
+    u8 secBoardCfgVer;
+    u8 pmBoardCfgHash[64];
+    u8 rmBoardCfgHash[64];
+    u8 boardCfgHash[64];
+   };
+
+Populating the certificate fields
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. ``initialVector``
+
+   - This is the 16 byte initialization vector to be used in AES-CBC
+     decryption.
+
+2. ``randomString``
+
+   - This field indicates the random 32 byte string that was appended to the
+     board configuration binary before encrypting the combined binary. |sysfw|
+     will compare the last 32 bytes of the decryption output against the
+     ``randomString`` field from the X509 certificate to verify the success of
+     decryption operation.
+
+3. ``iterationCnt``
+
+   - This field is reserved and must be initialized to zero.
+
+4. ``salt``
+
+   - This field is 32 bytes long. It is reserved and must be initialized to
+     zero.
+
+5. ``secBoardCfgHash``
+
+   - This is a 64 byte field containing the SHA2-512 hash of the encrypted |sec_bcfg|. 
+
+6. ``secBoardCfgVer``
+
+   - This field indicates the version of security board configuration and must be initialized
+     to zero.
+
+7. ``pmBoardCfgHash``
+
+   - This is a 64 byte field containing the SHA2-512 hash of the PM board configuration.
+
+8. ``rmBoardCfgHash``
+
+   - This is a 64 byte field containing the SHA2-512 hash of the RM board configuration.
+
+8. ``boardCfgHash``
+
+   - This is a 64 byte field containing the SHA2-512 hash of the main board configuration
+     structure.
 
 .. _sysfw_x509_template_example:
 
@@ -419,6 +516,7 @@ Sample x509 template
     1.3.6.1.4.1.294.1.33=ASN1:SEQUENCE:sysfw_boot_seq
     1.3.6.1.4.1.294.1.34=ASN1:SEQUENCE:sysfw_image_integrity
     1.3.6.1.4.1.294.1.35=ASN1:SEQUENCE:sysfw_image_load
+    1.3.6.1.4.1.294.1.36=ASN1:SEQUENCE:sysfw_hs_boardcfg
 
     [ sysfw_boot_seq ]
     bootCore = INTEGER:0x20
@@ -454,3 +552,14 @@ Sample x509 template
     randomString =  FORMAT:HEX,OCT:TEST_IMAGE_ENC_RS
     iterationCnt =  INTEGER:TEST_IMAGE_KEY_DERIVE_INDEX
     salt         =  FORMAT:HEX,OCT:TEST_IMAGE_KEY_DERIVE_SALT
+
+    [ sysfw_hs_boardcfg ]
+    initalVector    =  FORMAT:HEX,OCT:SEC_BCFG_ENC_IV
+    randomString    =  FORMAT:HEX,OCT:SEC_BCFG_ENC_RS
+    iterationCnt    =  INTEGER:SEC_BCFG_KEY_DERIVE_INDEX
+    salt            =  FORMAT:HEX,OCT:SEC_BCFG_KEY_DERIVE_SALT
+    secBoardcfgHash =  FORMAT:HEX,OCT:SEC_BCFG_HASH
+    secBoardcfgVer  =  INTEGER:SEC_BCFG_VER
+    pmBoardcfgHash  =  FORMAT:HEX,OCT:PM_BCFG_HASH
+    rmBoardcfgHash  =  FORMAT:HEX,OCT:RM_BCFG_HASH
+    boardcfgHash    =  FORMAT:HEX,OCT:BCFG_HASH

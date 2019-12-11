@@ -50,7 +50,7 @@ struct sblTest_boardcfg_rm {
 
 struct sblTest_local_rm_boardcfg {
     struct sblTest_boardcfg_rm      rm_boardcfg;
-    struct tisci_boardcfg_rm_resasg_entry resasg_entries[TISCI_BOARDCFG_RM_RESASG_ENTRIES];
+    struct tisci_boardcfg_rm_resasg_entry resasg_entries[TISCI_BOARDCFG_RM_RESASG_ENTRIES_MAX];
 };
 
 void sbl_puts(char *str);

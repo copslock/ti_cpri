@@ -79,7 +79,7 @@
             
             
               <div class="version">
-                19.08.00
+                19.10.00
               </div>
             
           
@@ -121,12 +121,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-channel-and-flow-indices">Navigator Subsystem Channel and Flow Indices</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-virtual-interrupts">Navigator Subsystem Virtual Interrupts</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-global-events">Navigator Subsystem Global Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-proxies">Navigator Subsystem Proxies</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-psi-l-source-and-destination-thread-ids">Navigator Subsystem PSI-L Source and Destination Thread IDs</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="sec_proxy.html">J721E Secure Proxy Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="processors.html">J721E Processor Descriptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="firewalls.html">J721E Firewall Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="soc_devgrps.html">J721E Device Group descriptions</a></li>
 </ul>
 </li>
 </ul>
@@ -249,6 +251,25 @@ Subsystem to be modified as part of the request. Based on <a class="reference in
 </tr>
 <tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_UDMAP_0</td>
 <td>236</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="61%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Proxy Device Name</th>
+<th class="head">Proxy Device ID</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>J721E_DEV_NAVSS0_PROXY_0</td>
+<td>210</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_PROXY_0</td>
+<td>234</td>
 </tr>
 </tbody>
 </table>
@@ -654,6 +675,40 @@ detected.</p>
 </tbody>
 </table>
 </div>
+<div class="section" id="navigator-subsystem-proxies">
+<span id="pub-soc-j721e-proxies"></span><h2>Navigator Subsystem Proxies<a class="headerlink" href="#navigator-subsystem-proxies" title="Permalink to this headline">¶</a></h2>
+<p>This section describes Navigator Subsystem proxy proxies.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Resources marked as reserved for use by DMSC <strong>cannot</strong> be assigned to a
+host within the RM Board Configuration resource assignment array.  The RM
+Board Configuration is rejected if an overlap with a reserved resource is
+detected.</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="70%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Proxy Name</th>
+<th class="head">Proxy Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>J721E_DEV_NAVSS0_PROXY_0</td>
+<td>0 to 63</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_PROXY_0
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>0 to 0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_NAVSS0_PROXY_0</td>
+<td>1 to 63</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="section" id="navigator-subsystem-psi-l-source-and-destination-thread-ids">
 <span id="pub-soc-j721e-psil-thread-ids"></span><h2>Navigator Subsystem PSI-L Source and Destination Thread IDs<a class="headerlink" href="#navigator-subsystem-psi-l-source-and-destination-thread-ids" title="Permalink to this headline">¶</a></h2>
 <p>This section describes valid Navigator Subsystem PSI-L source and destination
@@ -917,7 +972,7 @@ linked to another thread.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'19.08.00',
+            VERSION:'19.10.00',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
