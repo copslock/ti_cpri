@@ -52,6 +52,23 @@ uint8_t uart_inst = BOARD_UART_INSTANCE;
 void _resetvectors (void);
 int8_t UFP_openUartHandle(void);
 
+static int32_t UFP_isNoBootEnabled(void)
+{
+    uint32_t mainDevStat;
+    uint32_t wkupDevStat;
+
+    mainDevStat = HW_RD_REG32(UFP_MAIN_DEVSTAT_ADDR);
+    wkupDevStat = HW_RD_REG32(UFP_WKUP_DEVSTAT_ADDR);
+
+    if(((mainDevStat & UFP_MAIN_DEVSTAT_NOBOOT_MASK) == UFP_MAIN_DEVSTAT_NOBOOT_CFG) &&
+       ((wkupDevStat & UFP_WKUP_DEVSTAT_NOBOOT_MASK) == UFP_WKUP_DEVSTAT_NOBOOT_CFG))
+    {
+        return (TRUE);
+    }
+
+    return (FALSE);
+}
+
 static void UFP_asmAtcmEn(void)
 {
     asm volatile ("    MRC     p15, #0, r0, c9, c1, #1");
@@ -200,12 +217,26 @@ int8_t UFP_socInit(Board_initCfg *cfg)
 {
     Board_initCfg boardCfg;
     UART_HwAttrs uart_cfg;
+    int32_t noBootCfg;
 
-    UFP_initUARTPwrClk();
+#ifdef UFP_DISABLE_JTAG_LOAD
+    noBootCfg = FALSE;
+#else
+    noBootCfg = UFP_isNoBootEnabled();
+#endif
 
     if (cfg == NULL)
     {
         boardCfg = BOARD_INIT_PINMUX_CONFIG;
+
+        /* System firmware should be already loaded for no boot mode.
+           Enable PLL and PSC config in board.
+         */
+        if(noBootCfg == TRUE)
+        {
+            boardCfg |= (BOARD_INIT_PLL |
+                         BOARD_INIT_MODULE_CLOCK);
+        }
     }
     else
     {
@@ -218,16 +249,28 @@ int8_t UFP_socInit(Board_initCfg *cfg)
         return -1;
     }
 
-    UART_socGetInitCfg(BOARD_UART_INSTANCE, &uart_cfg);
-    /* Use UART fclk freq setup by ROM */
-    uart_cfg.frequency = UFP_ROM_UART_MODULE_INPUT_CLK;
-    /* Disable the UART interrupt */
-    uart_cfg.enableInterrupt = FALSE;
-    UART_socSetInitCfg(BOARD_UART_INSTANCE, &uart_cfg);
-    /* Init UART for logging. */
-    UFP_uartConfig(UFP_BAUDRATE_115200);
+    if(noBootCfg == TRUE)
+    {
+        /* No need of changing the UART input clock when
+           PLL init is done by board
+         */
+        UFP_uartConfig(UFP_BAUDRATE_115200);
+    }
+    else
+    {
+        UFP_initUARTPwrClk();
 
-    UFP_enableATCM();
+        UART_socGetInitCfg(BOARD_UART_INSTANCE, &uart_cfg);
+        /* Use UART fclk freq setup by ROM */
+        uart_cfg.frequency = UFP_ROM_UART_MODULE_INPUT_CLK;
+        /* Disable the UART interrupt */
+        uart_cfg.enableInterrupt = FALSE;
+        UART_socSetInitCfg(BOARD_UART_INSTANCE, &uart_cfg);
+
+        UFP_uartConfig(UFP_BAUDRATE_115200);
+
+        UFP_enableATCM();
+    }
 
     return 0;
 }

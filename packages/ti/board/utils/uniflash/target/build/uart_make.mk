@@ -92,6 +92,9 @@ SRCS_COMMON += ospi.c qspi.c hyperflash.c emmc.c diag_common_cfg.c
 EXTERNAL_LNKCMD_FILE_LOCAL = ../soc/k3/linker_j7.cmd
 endif
 
+ifeq ($(NOJTAG), yes)
+BOARD_UTILS_CFLAGS += UFP_DISABLE_JTAG_LOAD
+endif
 
 CFLAGS_LOCAL_COMMON = $(PDK_CFLAGS) $(BOARD_UTILS_CFLAGS) -DSOC_$(SOC) -D$(BOARD) -DSPI_DMA_ENABLE
 
