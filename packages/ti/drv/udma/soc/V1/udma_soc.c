@@ -567,7 +567,7 @@ uint32_t Udma_isCacheCoherent(void)
 {
     uint32_t isCacheCoherent;
 
-#if defined (BUILD_MPU1_0) || defined (BUILD_C7X_1)
+#if defined (BUILD_MPU1_0)
     isCacheCoherent = TRUE;
 #else
     isCacheCoherent = FALSE;

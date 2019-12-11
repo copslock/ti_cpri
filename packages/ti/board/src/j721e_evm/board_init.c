@@ -87,6 +87,9 @@ static Board_STATUS Board_sysInit(void)
     if(gBoardSysInitDone == 0)
     {
         Sciclient_configPrmsInit(&config);
+    #if defined(BUILD_C7X_1)
+        config.isSecureMode  = 1;
+    #endif
         ret = Sciclient_init(&config);
 
         if(ret != 0)
