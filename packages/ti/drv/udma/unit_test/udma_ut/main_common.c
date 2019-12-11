@@ -31,7 +31,7 @@
  */
 
 /**
- *  \file main_tirtos.c
+ *  \file main_common.c
  *
  *  \brief Main file for TI-RTOS build
  */
@@ -41,13 +41,6 @@
 /* ========================================================================== */
 
 #include <stdio.h>
-/* XDCtools Header files */
-#include <xdc/std.h>
-#include <xdc/runtime/Error.h>
-#include <xdc/runtime/System.h>
-/* BIOS Header files */
-#include <ti/sysbios/BIOS.h>
-#include <ti/sysbios/knl/Task.h>
 #include <ti/board/board.h>
 #include <udma_test.h>
 
@@ -55,8 +48,7 @@
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
 
-/* Test application stack size */
-#define APP_TSK_STACK_MAIN              (16U * 1024U)
+/* None */
 
 /* ========================================================================== */
 /*                         Structure Declarations                             */
@@ -74,44 +66,35 @@ void taskFxn(void *a0, void *a1);
 /*                            Global Variables                                */
 /* ========================================================================== */
 
-/* Test application stack */
-static uint8_t  gAppTskStackMain[APP_TSK_STACK_MAIN] __attribute__((aligned(32)));;
+/* None */
 
 /* ========================================================================== */
 /*                          Function Definitions                              */
 /* ========================================================================== */
 
-int main(void)
+void taskFxn(void *a0, void *a1)
 {
-    Task_Handle task;
-    Error_Block eb;
-    Task_Params taskParams;
+    int32_t                 testPassed;
+    Board_initCfg           boardCfg;
+    Fvid2_InitPrms          fvid2InitPrms;
 
-    Error_init(&eb);
+    boardCfg = BOARD_INIT_PINMUX_CONFIG |
+               BOARD_INIT_UART_STDIO;
+    Board_init(boardCfg);
 
-    Udma_appC7xPreInit();
+    Udma_appC66xIntrConfig();
 
-    /* Initialize the task params */
-    Task_Params_init(&taskParams);
-    /* Set the task priority higher than the default priority (1) */
-    taskParams.priority = 2;
-    taskParams.stack        = gAppTskStackMain;
-    taskParams.stackSize    = sizeof (gAppTskStackMain);
+    Fvid2InitPrms_init(&fvid2InitPrms);
+    fvid2InitPrms.printFxn = &udmaTestPrint;
+    Fvid2_init(&fvid2InitPrms);
 
-    task = Task_create((Task_FuncPtr) taskFxn, &taskParams, &eb);
-    if(NULL == task)
+    testPassed = udmaTestParser();
+    if (UDMA_SOK != testPassed)
     {
-        BIOS_exit(0);
+        GT_0trace(UdmaUtTrace, GT_INFO1, " UDMA Unit Test Failed!!!\n");
     }
-    BIOS_start();    /* does not return */
 
-    return(0);
-}
+    Fvid2_deInit(NULL);
 
-#if defined(BUILD_MPU) || defined (__C7100__)
-extern void Osal_initMmuDefault(void);
-void InitMmu(void)
-{
-    Osal_initMmuDefault();
+    return;
 }
-#endif

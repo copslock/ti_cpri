@@ -42,11 +42,7 @@
 /* ========================================================================== */
 
 #include <string.h>
-#include <xdc/runtime/System.h>
-#include <xdc/runtime/Memory.h>
-#include <xdc/runtime/IHeap.h>
-#include <ti/sysbios/heaps/HeapMem.h>
-#include <ti/sysbios/knl/Clock.h>
+#include <stdlib.h>
 #include "udma_test.h"
 
 /* ========================================================================== */
@@ -73,6 +69,9 @@
 #endif
 #define UTILS_MEM_HEAP_SIZE_OSPI        (16U * MB)
 
+/* Macro to align x to y */
+#define align(x,y)   ((x + y - 1) & (~(y - 1)))
+
 /* ========================================================================== */
 /*                         Structure Declarations                             */
 /* ========================================================================== */
@@ -89,14 +88,15 @@
 /*                            Global Variables                                */
 /* ========================================================================== */
 
-/* Memory pool handle */
-static HeapMem_Handle gUtilsHeapMemHandle[UTILS_MEM_HEAP_NUM] = {NULL, NULL};
-static HeapMem_Struct gUtilsHeapMemStruct[UTILS_MEM_HEAP_NUM];
-
 static uint8_t gUtilsHeapMemMsmc[UTILS_MEM_HEAP_SIZE_MSMC] __attribute__(( aligned(128), section(".udma_buffer_msmc") ));
 static uint8_t gUtilsHeapMemDdr[UTILS_MEM_HEAP_SIZE_DDR] __attribute__(( aligned(128), section(".udma_buffer_ddr") ));
 static uint8_t gUtilsHeapMemInternal[UTILS_MEM_HEAP_SIZE_INTERNAL] __attribute__(( aligned(128), section(".udma_buffer_internal") ));
 static uint8_t gUtilsHeapMemOspi[UTILS_MEM_HEAP_SIZE_OSPI] __attribute__(( aligned(128), section(".udma_buffer_ospi") ));
+
+uint8_t *fw_mem_start[UTILS_MEM_HEAP_NUM];
+uint8_t *fw_mem_end[UTILS_MEM_HEAP_NUM];
+uint8_t *fw_mem_alloc_ptr[UTILS_MEM_HEAP_NUM];
+uint8_t  fw_mem_wraparound[UTILS_MEM_HEAP_NUM];
 
 static uint32_t gUtilsMemClearBuf = FALSE;
 
@@ -106,39 +106,22 @@ static uint32_t gUtilsMemClearBuf = FALSE;
 
 int32_t Utils_memInit(void)
 {
-    HeapMem_Params heapMemPrm;
-
-    /* create memory pool heap - Msmc */
-    HeapMem_Params_init(&heapMemPrm);
-    heapMemPrm.buf  = gUtilsHeapMemMsmc;
-    heapMemPrm.size = sizeof (gUtilsHeapMemMsmc);
-    HeapMem_construct(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_MSMC], &heapMemPrm);
-    gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_MSMC] = HeapMem_handle(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_MSMC]);
-    GT_assert(UdmaUtTrace, gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_MSMC] != NULL);
-
-    /* create memory pool heap - DDR */
-    HeapMem_Params_init(&heapMemPrm);
-    heapMemPrm.buf  = gUtilsHeapMemDdr;
-    heapMemPrm.size = sizeof (gUtilsHeapMemDdr);
-    HeapMem_construct(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_DDR], &heapMemPrm);
-    gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_DDR] = HeapMem_handle(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_DDR]);
-    GT_assert(UdmaUtTrace, gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_DDR] != NULL);
-
-    /* create memory pool heap - internal */
-    HeapMem_Params_init(&heapMemPrm);
-    heapMemPrm.buf  = gUtilsHeapMemInternal;
-    heapMemPrm.size = sizeof (gUtilsHeapMemInternal);
-    HeapMem_construct(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_INTERNAL], &heapMemPrm);
-    gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_INTERNAL] = HeapMem_handle(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_INTERNAL]);
-    GT_assert(UdmaUtTrace, gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_INTERNAL] != NULL);
-
-    /* create memory pool heap - OSPI */
-    HeapMem_Params_init(&heapMemPrm);
-    heapMemPrm.buf  = gUtilsHeapMemOspi;
-    heapMemPrm.size = sizeof (gUtilsHeapMemOspi);
-    HeapMem_construct(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_OSPI], &heapMemPrm);
-    gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_OSPI] = HeapMem_handle(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_OSPI]);
-    GT_assert(UdmaUtTrace, gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_OSPI] != NULL);
+    fw_mem_start[0]     = (uint8_t*)  gUtilsHeapMemMsmc;
+    fw_mem_end[0]       = (uint8_t*)(&gUtilsHeapMemMsmc[UTILS_MEM_HEAP_SIZE_MSMC-1U]);
+    fw_mem_alloc_ptr[0] = (uint8_t*)  gUtilsHeapMemMsmc;
+    fw_mem_wraparound[0]= FALSE;
+    fw_mem_start[1]     = (uint8_t*)  gUtilsHeapMemDdr;
+    fw_mem_end[1]       = (uint8_t*)(&gUtilsHeapMemDdr[UTILS_MEM_HEAP_SIZE_DDR-1U]);
+    fw_mem_alloc_ptr[1] = (uint8_t*)  gUtilsHeapMemDdr;
+    fw_mem_wraparound[1]= FALSE;
+    fw_mem_start[2]     = (uint8_t*)  gUtilsHeapMemInternal;
+    fw_mem_end[2]       = (uint8_t*)(&gUtilsHeapMemInternal[UTILS_MEM_HEAP_SIZE_INTERNAL-1U]);
+    fw_mem_alloc_ptr[2] = (uint8_t*)  gUtilsHeapMemInternal;
+    fw_mem_wraparound[2]= FALSE;
+    fw_mem_start[3]     = (uint8_t*)  gUtilsHeapMemOspi;
+    fw_mem_end[3]       = (uint8_t*)(&gUtilsHeapMemOspi[UTILS_MEM_HEAP_SIZE_OSPI-1U]);
+    fw_mem_alloc_ptr[3] = (uint8_t*)  gUtilsHeapMemOspi;
+    fw_mem_wraparound[3]= FALSE;
 
     gUtilsMemClearBuf = TRUE;
 
@@ -147,16 +130,37 @@ int32_t Utils_memInit(void)
 
 int32_t Utils_memDeInit(void)
 {
-    /* delete memory pool heap  */
-    HeapMem_destruct(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_MSMC]);
-    gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_MSMC] = NULL;
-    HeapMem_destruct(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_DDR]);
-    gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_DDR] = NULL;
-    HeapMem_destruct(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_INTERNAL]);
-    gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_INTERNAL] = NULL;
-    HeapMem_destruct(&gUtilsHeapMemStruct[UTILS_MEM_HEAP_ID_OSPI]);
-    gUtilsHeapMemHandle[UTILS_MEM_HEAP_ID_OSPI] = NULL;
     return (UDMA_SOK);
+}
+
+void *Utils_alignedMalloc(uint32_t heapId, uint32_t size, uint32_t alignment)
+{
+  uint8_t *alloc_ptr;
+  void    *p_block = (void *) NULL;
+
+  alloc_ptr = (uint8_t*)align((uintptr_t)fw_mem_alloc_ptr[heapId], alignment);
+
+  if ((alloc_ptr + size) < fw_mem_end[heapId])
+  {
+    p_block =(void *)alloc_ptr;
+    fw_mem_alloc_ptr[heapId] = alloc_ptr + size;
+  }
+  else
+  {
+      /* wraparound happened. */
+      fw_mem_wraparound[heapId] = TRUE;
+      fw_mem_alloc_ptr[heapId] = fw_mem_start[heapId];
+      alloc_ptr = (uint8_t*)align((uintptr_t)fw_mem_alloc_ptr[heapId], alignment);
+      p_block =(void *)alloc_ptr;
+      fw_mem_alloc_ptr[heapId] = alloc_ptr + size;
+  }
+
+    return p_block;
+}
+
+void Utils_alignedFree(void *p, uint32_t size )
+{
+  /* Nothing to be done here */
 }
 
 void *Utils_memAlloc(uint32_t heapId, uint32_t size, uint32_t align)
@@ -164,7 +168,6 @@ void *Utils_memAlloc(uint32_t heapId, uint32_t size, uint32_t align)
     void *addr;
 
     GT_assert(UdmaUtTrace, heapId < UTILS_MEM_HEAP_NUM);
-    GT_assert(UdmaUtTrace, gUtilsHeapMemHandle[heapId] != NULL);
 
     /* Heap alloc need some minimum allocation size */
     if(size < UDMA_CACHELINE_ALIGNMENT)
@@ -173,7 +176,7 @@ void *Utils_memAlloc(uint32_t heapId, uint32_t size, uint32_t align)
     }
 
     /* allocate memory  */
-        addr = HeapMem_alloc(gUtilsHeapMemHandle[heapId], size, align, NULL);
+    addr = Utils_alignedMalloc(heapId, size, align);
     if((addr != NULL) && (TRUE == gUtilsMemClearBuf))
     {
         memset(addr, 0U, size);
@@ -187,7 +190,6 @@ void *Utils_memAlloc(uint32_t heapId, uint32_t size, uint32_t align)
 int32_t Utils_memFree(uint32_t heapId, void *addr, uint32_t size)
 {
     GT_assert(UdmaUtTrace, heapId < UTILS_MEM_HEAP_NUM);
-    GT_assert(UdmaUtTrace, gUtilsHeapMemHandle[heapId] != NULL);
 
     /* Heap alloc need some minimum allocation size */
     if(size < UDMA_CACHELINE_ALIGNMENT)
@@ -195,7 +197,7 @@ int32_t Utils_memFree(uint32_t heapId, void *addr, uint32_t size)
         size = UDMA_CACHELINE_ALIGNMENT;
     }
     /* free previously allocated memory  */
-    HeapMem_free(gUtilsHeapMemHandle[heapId], addr, size);
+    Utils_alignedFree(addr, size);
     return (UDMA_SOK);
 }
 
@@ -256,24 +258,10 @@ int32_t Utils_memCheckHeapStat(const Utils_MemHeapStatus *heapStat)
 
 uint32_t Utils_memGetSystemHeapFreeSpace(void)
 {
-    Memory_Stats stats;
-    extern const IHeap_Handle Memory_defaultHeapInstance;
-
-    Memory_getStats(Memory_defaultHeapInstance, &stats);
-
-    return ((uint32_t) (stats.totalFreeSize));
+    return ((UInt32) 1U);
 }
 
 uint32_t Utils_memGetBufferHeapFreeSpace(uint32_t heapId)
 {
-    uint32_t        totalFreeSize = 0U;
-    Memory_Stats    stats;
-
-    GT_assert(UdmaUtTrace, heapId < UTILS_MEM_HEAP_NUM);
-    if(NULL != gUtilsHeapMemHandle[heapId])
-    {
-        HeapMem_getStats(gUtilsHeapMemHandle[heapId], &stats);
-        totalFreeSize = (uint32_t) stats.totalFreeSize;
-    }
-    return (totalFreeSize);
+    return ((UInt32) 0U);
 }
