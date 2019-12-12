@@ -4,7 +4,7 @@
  * @brief  This is device specific configuration file .
  */
 /*
- * Copyright (c) 2017-2018, Texas Instruments Incorporated
+ * Copyright (c) 2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,16 +36,9 @@
  */
 /** ============================================================================*/
 
-
-#include <stdint.h>
+#include <ti/csl/soc.h>
 #include <ti/drv/pruss/pruicss.h>
 #include <ti/drv/pruss/soc/pruicss_v1.h>
-
-
-
-//#include <ti/csl/soc/j721e/src/cslr_soc.h>
-#include <ti/csl/soc.h>
-
 
 /* PRUICSS configuration structure */
 PRUICSS_HwAttrs prussInitCfg[PRUICCSS_INSTANCE_TWO] =
@@ -71,13 +64,19 @@ PRUICSS_HwAttrs prussInitCfg[PRUICCSS_INSTANCE_TWO] =
        CSL_PRU_ICSSG0_PR1_RTU1_PR1_RTU1_IRAM_RAM_BASE,    /* prussRtu1IramBase */
        CSL_PRU_ICSSG0_PR1_RTU0_PR1_RTU0_IRAM_BASE,        /* prussRtu0CtrlRegBase */
        CSL_PRU_ICSSG0_PR1_RTU1_PR1_RTU1_IRAM_BASE,        /* prussRtu1CtrlRegBase */
+       CSL_PRU_ICSSG0_PR1_TX0_PR1_TX0_IRAM_BASE,          /* prussTxPru0CtrlRegBase */
+       CSL_PRU_ICSSG0_PR1_TX1_PR1_TX1_IRAM_BASE,          /* prussTxPru1CtrlRegBase */
+       CSL_PRU_ICSSG0_PR1_TX0_PR1_TX0_IRAM_RAM_BASE,      /* prussTxPru0IramBase */
+       CSL_PRU_ICSSG0_PR1_TX1_PR1_TX1_IRAM_RAM_BASE,      /* prussTxPru1IramBase */
        CSL_PRU_ICSSG0_DRAM0_SLV_RAM_SIZE,                 /* prussPru0DramSize */
        CSL_PRU_ICSSG0_DRAM1_SLV_RAM_SIZE,                 /* prussPru1DramSize */
        CSL_PRU_ICSSG0_PR1_PDSP0_IRAM_SIZE,                /* prussPru0IramSize */
        CSL_PRU_ICSSG0_PR1_PDSP1_IRAM_SIZE,                /* prussPru1IramSize */
        CSL_PRU_ICSSG0_RAM_SLV_RAM_SIZE,                   /* prussSharedDramSize */
        CSL_PRU_ICSSG0_PR1_RTU0_PR1_RTU0_IRAM_RAM_SIZE,    /* prussRtu0IramSize */
-       CSL_PRU_ICSSG0_PR1_RTU1_PR1_RTU1_IRAM_RAM_SIZE     /* prussRtu1IramSize */
+       CSL_PRU_ICSSG0_PR1_RTU1_PR1_RTU1_IRAM_RAM_SIZE,    /* prussRtu1IramSize */
+       CSL_PRU_ICSSG0_PR1_TX0_PR1_TX0_IRAM_RAM_SIZE,      /* prussTxPru0IramSize */
+       CSL_PRU_ICSSG0_PR1_TX1_PR1_TX1_IRAM_RAM_SIZE       /* prussTxPru1IramSize */
     },
     {
        CSL_PRU_ICSSG1_DRAM0_SLV_RAM_BASE,                 /* baseAddr */
@@ -100,13 +99,19 @@ PRUICSS_HwAttrs prussInitCfg[PRUICCSS_INSTANCE_TWO] =
        CSL_PRU_ICSSG1_PR1_RTU1_PR1_RTU1_IRAM_RAM_BASE,    /* prussRtu1IramBase */
        CSL_PRU_ICSSG1_PR1_RTU0_PR1_RTU0_IRAM_BASE,        /* prussRtu0CtrlRegBase */
        CSL_PRU_ICSSG1_PR1_RTU1_PR1_RTU1_IRAM_BASE,        /* prussRtu1CtrlRegBase */
+       CSL_PRU_ICSSG1_PR1_TX0_PR1_TX0_IRAM_BASE,          /* prussTxPru0CtrlRegBase */
+       CSL_PRU_ICSSG1_PR1_TX1_PR1_TX1_IRAM_BASE,          /* prussTxPru1CtrlRegBase */
+       CSL_PRU_ICSSG1_PR1_TX0_PR1_TX0_IRAM_RAM_BASE,      /* prussTxPru0IramBase */
+       CSL_PRU_ICSSG1_PR1_TX1_PR1_TX1_IRAM_RAM_BASE,      /* prussTxPru1IramBase */
        CSL_PRU_ICSSG1_DRAM0_SLV_RAM_SIZE,                 /* prussPru0DramSize */
        CSL_PRU_ICSSG1_DRAM1_SLV_RAM_SIZE,                 /* prussPru1DramSize */
        CSL_PRU_ICSSG1_PR1_PDSP0_IRAM_SIZE,                /* prussPru0IramSize */
        CSL_PRU_ICSSG1_PR1_PDSP1_IRAM_SIZE,                /* prussPru1IramSize */
        CSL_PRU_ICSSG1_RAM_SLV_RAM_SIZE,                   /* prussSharedDramSize */
        CSL_PRU_ICSSG1_PR1_RTU0_PR1_RTU0_IRAM_RAM_SIZE,    /* prussRtu0IramSize */
-       CSL_PRU_ICSSG1_PR1_RTU1_PR1_RTU1_IRAM_RAM_SIZE     /* prussRtu1IramSize */
+       CSL_PRU_ICSSG1_PR1_RTU1_PR1_RTU1_IRAM_RAM_SIZE,    /* prussRtu1IramSize */
+       CSL_PRU_ICSSG1_PR1_TX0_PR1_TX0_IRAM_RAM_SIZE,      /* prussTxPru0IramSize */
+       CSL_PRU_ICSSG1_PR1_TX1_PR1_TX1_IRAM_RAM_SIZE       /* prussTxPru1IramSize */
     }
 };
 

@@ -4,7 +4,7 @@
  * @brief  This is soc specific configuration file .
  */
 /*
- * Copyright (c) 2015-2018, Texas Instruments Incorporated
+ * Copyright (c) 2017-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,12 +36,9 @@
  */
 /** ============================================================================*/
 
-
-#include <stdint.h>
+#include <ti/csl/soc.h>
 #include <ti/drv/pruss/pruicss.h>
 #include <ti/drv/pruss/soc/pruicss_v1.h>
-
-#include <ti/csl/soc/am572x/src/cslr_soc.h>
 
 /* PRUICSS configuration structure */
 PRUICSS_HwAttrs prussInitCfg[2] =
@@ -68,11 +65,17 @@ PRUICSS_HwAttrs prussInitCfg[2] =
        0U,
        0U,
        0U,
+       0U,
+       0U,
+       0U,
+       0U,
        CSL_IPU_PRUSS1_U_DATA_RAM0_8KB_SIZE,
        CSL_IPU_PRUSS1_U_DATA_RAM1_8KB_SIZE,
        CSL_IPU_PRUSS1_U_INST_RAM0_12KB_SIZE,
        CSL_IPU_PRUSS1_U_INST_RAM1_12KB_SIZE,
        CSL_IPU_PRUSS1_U_DATA_RAM_32KB_SIZE,
+       0U,
+       0U,
        0U,
        0U
     },
@@ -97,11 +100,17 @@ PRUICSS_HwAttrs prussInitCfg[2] =
        0U,
        0U,
        0U,
+       0U,
+       0U,
+       0U,
+       0U,
        CSL_IPU_PRUSS2_U_DATA_RAM0_8KB_SIZE,
        CSL_IPU_PRUSS2_U_DATA_RAM1_8KB_SIZE,
        CSL_IPU_PRUSS2_U_INST_RAM0_12KB_SIZE,
        CSL_IPU_PRUSS2_U_INST_RAM1_12KB_SIZE,
        CSL_IPU_PRUSS2_U_DATA_RAM_32KB_SIZE,
+       0U,
+       0U,
        0U,
        0U
      }
@@ -127,11 +136,17 @@ PRUICSS_HwAttrs prussInitCfg[2] =
        0U,
        0U,
        0U,
+       0U,
+       0U,
+       0U,
+       0U,
        CSL_DSP_PRUSS1_U_DATA_RAM0_8KB_SIZE,
        CSL_DSP_PRUSS1_U_DATA_RAM1_8KB_SIZE,
        CSL_DSP_PRUSS1_U_INST_RAM0_12KB_SIZE,
        CSL_DSP_PRUSS1_U_INST_RAM1_12KB_SIZE,
        CSL_DSP_PRUSS1_U_DATA_RAM_32KB_SIZE,
+       0U,
+       0U,
        0U,
        0U
     },
@@ -156,11 +171,17 @@ PRUICSS_HwAttrs prussInitCfg[2] =
        0U,
        0U,
        0U,
+       0U,
+       0U,
+       0U,
+       0U,
        CSL_DSP_PRUSS2_U_DATA_RAM0_8KB_SIZE,
        CSL_DSP_PRUSS2_U_DATA_RAM1_8KB_SIZE,
        CSL_DSP_PRUSS2_U_INST_RAM0_12KB_SIZE,
        CSL_DSP_PRUSS2_U_INST_RAM1_12KB_SIZE,
        CSL_DSP_PRUSS2_U_DATA_RAM_32KB_SIZE,
+       0U,
+       0U,
        0U,
        0U
      }
@@ -186,11 +207,17 @@ PRUICSS_HwAttrs prussInitCfg[2] =
        0U,
        0U,
        0U,
+       0U,
+       0U,
+       0U,
+       0U,
        CSL_MPU_PRUSS1_U_DATA_RAM0_8KB_SIZE,
        CSL_MPU_PRUSS1_U_DATA_RAM1_8KB_SIZE,
        CSL_MPU_PRUSS1_U_INST_RAM0_12KB_SIZE,
        CSL_MPU_PRUSS1_U_INST_RAM1_12KB_SIZE,
        CSL_MPU_PRUSS1_U_DATA_RAM_32KB_SIZE,
+       0U,
+       0U,
        0U,
        0U
     },
@@ -215,11 +242,17 @@ PRUICSS_HwAttrs prussInitCfg[2] =
        0U,
        0U,
        0U,
+       0U,
+       0U,
+       0U,
+       0U,
        CSL_MPU_PRUSS2_U_DATA_RAM0_8KB_SIZE,
        CSL_MPU_PRUSS2_U_DATA_RAM1_8KB_SIZE,
        CSL_MPU_PRUSS2_U_INST_RAM0_12KB_SIZE,
        CSL_MPU_PRUSS2_U_INST_RAM1_12KB_SIZE,
        CSL_MPU_PRUSS2_U_DATA_RAM_32KB_SIZE,
+       0U,
+       0U,
        0U,
        0U
      }

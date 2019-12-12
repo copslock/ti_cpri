@@ -66,11 +66,17 @@ const PRUICSS_HwAttrs prussInitCfg =
     0U,
     0U,
     0U,
+    0U,
+    0U,
+    0U,
+    0U,
     SOC_PRU_ICSS_DATA_RAM0_SIZE,
     SOC_PRU_ICSS_DATA_RAM1_SIZE,
     SOC_PRU_ICSS_INST_RAM0_SIZE,
     SOC_PRU_ICSS_INST_RAM1_SIZE,
     SOC_PRU_ICSS_SHARED_RAM_SIZE,
+    0U,
+    0U,
     0U,
     0U
 };
