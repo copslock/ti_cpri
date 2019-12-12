@@ -394,7 +394,11 @@ MCSPI_MasterSlave_TestApp_PKG_LIST = MCSPI_MasterSlave_TestApp
 MCSPI_MasterSlave_TestApp_INCLUDE = $(MCSPI_MasterSlave_TestApp_PATH)
 MCSPI_MasterSlave_TestApp_BOARDLIST = $(drvspi_BOARDLIST)
 export MCSPI_MasterSlave_TestApp_BOARDLIST
+ifeq ($(SOC),$(filter $(SOC), j721e))
+MCSPI_MasterSlave_TestApp_$(SOC)_CORELIST = $(drvspi_j721e_CORELISTARM)
+else
 MCSPI_MasterSlave_TestApp_$(SOC)_CORELIST = $(drvspi_$(SOC)_CORELIST)
+endif
 export MCSPI_MasterSlave_TestApp_$(SOC)_CORELIST
 
 # SPI rtos dma master slave Test app
@@ -414,7 +418,11 @@ MCSPI_MasterSlave_Dma_TestApp_PKG_LIST = MCSPI_MasterSlave_Dma_TestApp
 MCSPI_MasterSlave_Dma_TestApp_INCLUDE = $(MCSPI_MasterSlave_Dma_TestApp_PATH)
 MCSPI_MasterSlave_Dma_TestApp_BOARDLIST = $(drvspi_BOARDLIST)
 export MCSPI_MasterSlave_Dma_TestApp_BOARDLIST
+ifeq ($(SOC),$(filter $(SOC), j721e))
+MCSPI_MasterSlave_Dma_TestApp_$(SOC)_CORELIST = $(drvspi_j721e_CORELISTARM)
+else
 MCSPI_MasterSlave_Dma_TestApp_$(SOC)_CORELIST = $(drvspi_$(SOC)_CORELIST)
+endif
 export MCSPI_MasterSlave_Dma_TestApp_$(SOC)_CORELIST
 
 # OSPI baremetal Flash Test app
