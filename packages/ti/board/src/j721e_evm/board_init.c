@@ -277,7 +277,17 @@ Board_STATUS Board_init(Board_initCfg cfg)
         return ret;
 
     if (cfg & BOARD_INIT_DDR)
-        ret = Board_DDRInit();
+    {
+        if (cfg & BOARD_INIT_DDR_ECC)
+        {
+            ret = Board_DDRInit(true);
+        }
+        else
+        {
+            ret = Board_DDRInit(false);
+        }
+    }
+
     if (ret != BOARD_SOK)
         return ret;
 

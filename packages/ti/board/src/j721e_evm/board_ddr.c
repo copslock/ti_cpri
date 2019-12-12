@@ -30,12 +30,15 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  *****************************************************************************/
-
+#include <string.h>
 #include "board_ddr.h"
 
 /* Global variables */
 static LPDDR4_Config gBoardDdrCfg;
 static LPDDR4_PrivateData gBoardDdrPd;
+
+/* Local function prototypes */
+static int32_t emif_ConfigureECC(void);
 
 /**
  * \brief   Set DDR PLL to bypass, efectively 20MHz or 19.2MHz (on silicon).
@@ -319,16 +322,72 @@ static Board_STATUS Board_DDRStart(void)
 }
 
 /**
- * \brief DDR4 Initialization function
+ * \brief Configures DDR ECC
  *
- * Invokes DDR CSL APIs to configure the DDR timing parameters
+ * Invokes EMIF CSL APIs to configure ECC and Primes the memory
  *
  * \return  BOARD_SOK in case of success or appropriate error code
  *
  */
-Board_STATUS Board_DDRInit(void)
+/* Refer EMIF ECC Configuration Section in TRM */
+static Board_STATUS emif_ConfigureECC(void)
+{
+    Board_STATUS   status    = BOARD_SOK;
+    int32_t        cslResult = CSL_PASS;
+    CSL_EmifConfig emifCfg;
+    uintptr_t      memPtr;
+
+    BOARD_DEBUG_LOG("\r\n Configuring ECC");
+
+    memset(&emifCfg, 0, sizeof(emifCfg));
+
+    emifCfg.bEnableMemoryECC = true;
+    emifCfg.bReadModifyWriteEnable = true;
+    emifCfg.bECCCheck = true;
+    emifCfg.bWriteAlloc = true;
+    emifCfg.ECCThreshold = 1U;
+    emifCfg.pMemEccCfg.startAddr[0] = BOARD_DDR_START_ADDR-BOARD_DDR_START_ADDR;
+    emifCfg.pMemEccCfg.endAddr[0] = BOARD_DDR_ECC_END_ADDR-BOARD_DDR_START_ADDR;
+    cslResult = CSL_emifConfig((CSL_emif_sscfgRegs *)CSL_COMPUTE_CLUSTER0_SS_CFG_BASE,
+                               &emifCfg);
+
+    if (cslResult != CSL_PASS)
+    {
+        BOARD_DEBUG_LOG("\r\n CSL_emifConfig Failed");
+        status = BOARD_FAIL;
+    }
+
+    /* Prime the memory */
+    if ( status == BOARD_SOK )
+    {
+        /* Prime memory with known pattern */
+        for (memPtr = BOARD_DDR_START_ADDR; memPtr < BOARD_DDR_ECC_END_ADDR; memPtr += 4)
+        {
+            *((volatile uint32_t *) memPtr) = memPtr;
+        }
+
+        /* Make sure the write is complete by writeback */
+        CacheP_wbInv((const void *)BOARD_DDR_START_ADDR, BOARD_DDR_ECC_END_ADDR-BOARD_DDR_START_ADDR);
+
+        /* Clears ECC errors */
+        CSL_emifClearAllECCErrors((CSL_emif_sscfgRegs *)CSL_COMPUTE_CLUSTER0_SS_CFG_BASE);
+    }
+
+    return status;
+}
+
+/**
+ * \brief DDR4 Initialization function
+ *
+ * Invokes DDR CSL APIs to configure the DDR timing parameters and ECC configuration
+ *
+ * \return  BOARD_SOK in case of success or appropriate error code
+ *
+ */
+Board_STATUS Board_DDRInit(Bool eccEnable)
 {
     Board_STATUS status = BOARD_SOK;
+
     /* PLL should be bypassed while configuring the DDR */
     Board_DDRSetPLLExtBypass();
 
@@ -359,6 +418,11 @@ Board_STATUS Board_DDRInit(void)
     if(status != BOARD_SOK)
     {
         return status;
+    }
+
+    if (eccEnable == TRUE)
+    {
+         status = emif_ConfigureECC();
     }
 
     return status;

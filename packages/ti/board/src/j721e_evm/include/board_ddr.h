@@ -42,6 +42,7 @@
 #include <ti/csl/soc.h>
 #include <ti/csl/hw_types.h>
 #include <ti/csl/csl_lpddr.h>
+#include <ti/csl/csl_emif.h>
 #include <ti/drv/sciclient/sciclient.h>
 
 #include "board_ddrRegInit.h"

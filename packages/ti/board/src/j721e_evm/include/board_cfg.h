@@ -57,6 +57,8 @@ extern "C" {
 #define BOARD_DDR_START_ADDR                            (0x80000000U)
 #define BOARD_DDR_SIZE                                  (2048 * 1024 * 1024UL)
 #define BOARD_DDR_END_ADDR                              (0xFFFFFFFFU)
+/* Note with ECC enabled, all memory is not usable: 1/8 memory used for inline ECC */
+#define BOARD_DDR_ECC_END_ADDR                          (0xF1FFFFFFU)
 
 /* UART LLD instance number for primary UART port */
 #define BOARD_UART_INSTANCE                             (0U)
