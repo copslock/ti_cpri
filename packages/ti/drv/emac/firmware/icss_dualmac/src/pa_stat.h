@@ -52,25 +52,33 @@
 ;  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 ;  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+ .if $defined("SLICE0")
 TX_COL_RETRIES	.set	80
 TX_COL_DROPPED	.set	81
+TX_QUEUE_CNT	.set	16 ; 8 counters 16-23
+RX2HOST		.set	48 ; 4 counters 48-51
+ .else
+TX_COL_RETRIES	.set	80 + 128
+TX_COL_DROPPED	.set	81 + 128
+TX_QUEUE_CNT	.set	16 + 128 ; 8 counters 16-23
+RX2HOST		.set	48 + 128; 4 counters 48-51
+ .endif
+
+ .if $defined("PRU0")
+PA_STAT_R	.set	0x40
+ .endif
+ .if $defined("PRU1")
+PA_STAT_R	.set	0x44
+ .endif
+ .if $defined("RTU0")
+PA_STAT_R	.set	0x48
+ .endif
+ .if $defined("RTU1")
+PA_STAT_R	.set	0x4c
+ .endif
 
 ; index is just a number but not an offset.
 m_inc_stat .macro reg, index
- .if $defined("PRU0")
 	ldi	reg, index
-	sbco	&reg, c9, 0x40, 1
- .endif
- .if $defined("PRU1")
-	ldi	reg, (index + 128)
-	sbco	&reg, c9, 0x44, 1
- .endif
- .if $defined("RTU0")
-	ldi	reg, index
-	sbco	&reg, c9, 0x48, 1
- .endif
- .if $defined("RTU1")
-	ldi	reg, (index + 128)
-	sbco	&reg, c9, 0x4c, 1
- .endif
+	sbco	&reg, c9, PA_STAT_R, 1
 	.endm

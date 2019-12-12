@@ -369,6 +369,7 @@ th_schedule0:
 	TM_DISABLE
 	PSIQ_POP
 	TM_ENABLE
+	m_inc_stat	r19, RX2HOST
 ;r2 = flow | len  r3 = starting read index
 	PSISANDF_TX_INIT2	r2, r3
 
