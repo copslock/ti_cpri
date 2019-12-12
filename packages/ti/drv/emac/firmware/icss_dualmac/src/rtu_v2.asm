@@ -212,13 +212,7 @@ start_test:
 	TM_ENABLE
 
 ;set up IEP - assume this only needs to get done once
-	SET_IEP_SYNC_MODE	IEP_CFG1_BASEx
 	ENABLE_IEP	IEP_BASEx
-
-;r2-r3 are scratch
-	ldi	r4, 400 ;every 400ns
-	SET_CMP8_15	IEP_BASEx, 56, r2, r3, r4
-	ENABLE_CMP	IEP_BASEx, 15, r2
 
 ;we READY FOR NEW PACKET
 	zero	&Ctx, 20	;now set ingress context
