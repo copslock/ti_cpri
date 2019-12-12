@@ -1273,6 +1273,7 @@ static void emac_config_icssg_dual_mac_fw(uint32_t port_num, EMAC_HwAttrs_V5 *hw
     Udma_FlowHandle flowHandle;
     Udma_ChHandle chHandle;
     EMAC_ICSSG_DUALMAC_FW_CFG *pDmFwCfg;
+    uint32_t regVal;
 
     /* work-around to use PG1.0 firmware on J7 for bringup */
 #ifdef SOC_J721E
@@ -1292,6 +1293,20 @@ static void emac_config_icssg_dual_mac_fw(uint32_t port_num, EMAC_HwAttrs_V5 *hw
     emac_hw_mem_write(addr, (void*) &tempVal, 1);
     
 #endif
+
+    /* Set CORE_CLK as the source of CORE_IEP_CLK (sync mode)*/
+    regVal = CSL_REG32_RD (emac_mcb.port_cb[port_num].icssDram0BaseAddr + CSL_ICSSCFG_REGS_BASE +CSL_ICSSCFG_IEPCLK);
+    regVal |= 0x1U << CSL_ICSSCFG_IEPCLK_OCP_EN_SHIFT;
+    CSL_REG32_WR (emac_mcb.port_cb[port_num].icssDram0BaseAddr +
+                CSL_ICSSCFG_REGS_BASE + CSL_ICSSCFG_IEPCLK,
+                regVal);
+
+    /* Set internal CORE_CLK to be ICSSGn_ICLK (250Mhz) */
+    regVal = CSL_REG32_RD (emac_mcb.port_cb[port_num].icssDram0BaseAddr + CSL_ICSSCFG_REGS_BASE +CSL_ICSSCFG_CORE_SYNC_REG);
+    regVal |= 0x1U << CSL_ICSSCFG_CORE_SYNC_REG_CORE_VBUSP_SYNC_EN_SHIFT;
+    CSL_REG32_WR (emac_mcb.port_cb[port_num].icssDram0BaseAddr +
+                CSL_ICSSCFG_REGS_BASE +CSL_ICSSCFG_CORE_SYNC_REG,
+                regVal);
 
     memset(&pruCfg, 0, sizeof(EMAC_PRU_CFG_T));
     if (hwAttrs->portCfg[port_num].getFwCfg)
