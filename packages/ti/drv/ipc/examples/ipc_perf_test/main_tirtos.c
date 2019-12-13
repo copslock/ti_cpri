@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) Texas Instruments Incorporated 2018
+ *  Copyright (c) Texas Instruments Incorporated 2019
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -52,22 +52,18 @@
 #include <ti/sysbios/BIOS.h>
 #include <ti/sysbios/knl/Task.h>
 
-#include "ipc_utils.h"
-#if defined (__C7100__)
-#include <ti/sysbios/family/c7x/Mmu.h>
-#endif
-
-#ifdef IPC_SUPPORT_SCICLIENT
-#include <ti/drv/sciclient/sciclient.h>
-#endif
-
+#include <ti/csl/soc.h>
 #include <ti/board/board.h>
+#include <ti/drv/sciclient/sciclient.h>
+
+#include "ipc_apputils.h"
 
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
 
-/* None */
+/* Test application stack size */
+#define APP_TSK_STACK_MAIN              (16U * 1024U)
 
 /* ========================================================================== */
 /*                         Structure Declarations                             */
@@ -80,20 +76,21 @@
 /* ========================================================================== */
 
 static Void taskFxn(UArg a0, UArg a1);
-extern int32_t Ipc_echo_test(void);
+extern int32_t Ipc_perf_test(void);
 
 /* ========================================================================== */
 /*                            Global Variables                                */
 /* ========================================================================== */
 
-/* None */
+/* Test application stack */
+static uint8_t  gAppTskStackMain[APP_TSK_STACK_MAIN] 
+__attribute__ ((aligned(8192)));
 
 /* ========================================================================== */
 /*                          Function Definitions                              */
 /* ========================================================================== */
 
 
-#ifdef IPC_SUPPORT_SCICLIENT
 void ipc_initSciclient()
 {
     Sciclient_ConfigPrms_t        config;
@@ -109,38 +106,29 @@ void ipc_initSciclient()
 
 }
 
-void ipc_boardInit()
+int main(void)
 {
-    Board_initCfg           boardCfg;
+    Task_Handle       task;
+    Error_Block       eb;
+    Task_Params       taskParams;
+    Board_initCfg     boardCfg;
+
+    /* It must be called before BoardInit() */
+    ipc_initSciclient();
 
     boardCfg = BOARD_INIT_PINMUX_CONFIG |
                BOARD_INIT_UART_STDIO;
     Board_init(boardCfg);
 
-}
-#endif
-
-int main(void)
-{
-    Task_Handle task;
-    Error_Block eb;
-    Task_Params taskParams;
-
-#ifdef IPC_SUPPORT_SCICLIENT
-
-    /* It must be called before board init */
-    ipc_initSciclient();
-
-    ipc_boardInit();
-
-#endif
-
     Error_init(&eb);
 
     /* Initialize the task params */
     Task_Params_init(&taskParams);
+    
     /* Set the task priority higher than the default priority (1) */
-    taskParams.priority = 2;
+    taskParams.priority     = 2;
+    taskParams.stack        = gAppTskStackMain;
+    taskParams.stackSize    = sizeof (gAppTskStackMain);
 
     task = Task_create(taskFxn, &taskParams, &eb);
     if(NULL == task)
@@ -154,7 +142,8 @@ int main(void)
 
 static Void taskFxn(UArg a0, UArg a1)
 {
-    Ipc_echo_test();
+    Ipc_perf_test();
+    return;
 }
 
 #if defined(BUILD_MPU) || defined (__C7100__)
@@ -164,4 +153,3 @@ void InitMmu(void)
     Osal_initMmuDefault();
 }
 #endif
-
