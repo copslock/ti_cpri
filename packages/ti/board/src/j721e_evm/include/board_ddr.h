@@ -65,16 +65,6 @@ extern "C" {
 
 #define BOARD_DDR_SRAM_MAX     (512U)
 
-#define TH_MACRO_EXP(fld, str) (fld##str)
-
-#define TH_FLD_MASK(fld)  TH_MACRO_EXP(fld, _MASK)
-#define TH_FLD_SHIFT(fld) TH_MACRO_EXP(fld, _SHIFT)
-#define TH_FLD_WIDTH(fld) TH_MACRO_EXP(fld, _WIDTH)
-#define TH_FLD_WOCLR(fld) TH_MACRO_EXP(fld, _WOCLR)
-#define TH_FLD_WOSET(fld) TH_MACRO_EXP(fld, _WOSET)
-
-#define str(s) #s
-
 #define  BOARD_DDR_CTL_REG_OFFSET    (0)
 
 #ifdef __cplusplus
