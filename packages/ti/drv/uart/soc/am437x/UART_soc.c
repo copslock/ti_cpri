@@ -123,7 +123,7 @@ UART_HwAttrs uartInitCfg[CSL_UART_PER_CNT_AM437X] =
     },
     {
         SOC_UART3_REG,
-        102,
+        76,
         0,
         48000000U,
         CSL_EDMA3_CHA_UART3_RX,
@@ -143,7 +143,7 @@ UART_HwAttrs uartInitCfg[CSL_UART_PER_CNT_AM437X] =
     },
     {
         SOC_UART4_REG,
-        137,
+        77,
         0,
         48000000U,
         CSL_EDMA3_CHA_UART4_RX,
@@ -163,7 +163,7 @@ UART_HwAttrs uartInitCfg[CSL_UART_PER_CNT_AM437X] =
     },
     {
         SOC_UART5_REG,
-        138,
+        78,
         0,
         48000000U,
         CSL_EDMA3_CHA_UART5_RX,
