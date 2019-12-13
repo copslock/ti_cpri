@@ -107,6 +107,7 @@ __mii_xmt_p	.set	1
 
     .if $defined(PTP)
     .global FN_PTP_TX_ADD_DELAY
+    .global FN_PTP_TX_ADD_DELAY_UDP
     .endif
 
 MII_TX_TASK:
@@ -481,6 +482,14 @@ NO_QUEUE_WRAP_XMT_FB:
     
     LBCO	&BUFFER, L3_OCMC_RAM_CONST, BUFFER_INDEX, 32	    ; load new data from buffer
     LDI	TX_DATA_POINTER, buffer_ptr	
+
+    .if $defined (PTP)
+    LDI    TEMP_REG_1.w0, PTP_IPV4_UDP_E2E_ENABLE
+    LBCO   &TEMP_REG_1.b0, ICSS_SHARED_CONST, TEMP_REG_1.w0, 1
+    QBEQ   PTP_NOT_ENABLED_TX, TEMP_REG_1.b0, 0
+    JAL     R0.w0, FN_PTP_TX_ADD_DELAY_UDP
+PTP_NOT_ENABLED_TX:
+    .endif
     
     .if $defined("ICSS_REV1")	
     ; Insert next 22 bytes in Tx FIFO
@@ -667,6 +676,14 @@ fetch_data_from_ocmc:
     
     ; Check if the RX EOF has come
     LBCO	&BUFFER, L3_OCMC_RAM_CONST, BUFFER_INDEX, 32        ;load new buffer data
+
+    .if $defined (PTP)
+    LDI    TEMP_REG_1.w0, PTP_IPV4_UDP_E2E_ENABLE
+    LBCO   &TEMP_REG_1.b0, ICSS_SHARED_CONST, TEMP_REG_1.w0, 1
+    QBEQ   PTP_NOT_ENABLED_TX_NB, TEMP_REG_1.b0, 0
+    JAL     R0.w0, FN_PTP_TX_ADD_DELAY_UDP
+PTP_NOT_ENABLED_TX_NB:
+    .endif
     
     ; Insert Tx Data in the Tx Fifo
     LDI	TX_DATA_POINTER, buffer_ptr	

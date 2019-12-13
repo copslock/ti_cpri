@@ -101,6 +101,8 @@ __mii_rcv_p	.set	1
         .global  XMT_QUEUE
         .global  TASK_EXECUTION_FINISHED
         .global  FN_TIMESTAMP_GPTP_PACKET
+        .global  FN_TIMESTAMP_GPTP_PACKET_UDP
+        .global  FN_COMPARE_DELAY_RESP_ID
 
     
 ;****************************************************************************
@@ -1027,21 +1029,39 @@ NB_PROCESS_32BYTES_CHECK_FLAGS:
     .if $defined("ICSS_SWITCH_BUILD")
     QBBC    NB_PROCESS_32BYTES_CHECK_FWD_FLAG, MII_RCV.rx_flags, host_rcv_flag_shift     ; MII_RCV.rx_flags.host_rcv_flag
     .endif
+
+    QBGE    LESS_THAN_64_BYTES_RCVD, MII_RCV.byte_cntr,  32
+    QBA        EXIT_PREPROCESSING_NB
+    
+LESS_THAN_64_BYTES_RCVD:
+    ;between 32 and 64 bytes
+    QBGE    LESS_THAN_32_BYTES_RCVD, MII_RCV.byte_cntr,  0
     
     .if $defined(PTP)
-    ADD     RCV_TEMP_REG_3.w2, MII_RCV.byte_cntr, 32
-    QBLT    PTP_RCVD_MORE_THAN32_BYTES, RCV_TEMP_REG_3.w2, 32
-    JAL     RCV_TEMP_REG_3.w2, FN_TIMESTAMP_GPTP_PACKET
-    .if $defined("ICSS_DUAL_EMAC_BUILD")
-    ; For DualEMAC, check here to skip host rcv to properly drop sync frames not from master
-    QBBC    NB_PROCESS_32BYTES_CHECK_FLAGS_QUEUE_NOT_FULL, MII_RCV.rx_flags, host_rcv_flag_shift     ; MII_RCV.rx_flags.host_rcv_flag
-    .endif
-PTP_RCVD_MORE_THAN32_BYTES:
-
-    .endif    ;PTP 
-    SBCO	&Ethernet, L3_OCMC_RAM_CONST, MII_RCV.buffer_index, 32	
-    ADD	MII_RCV.byte_cntr , MII_RCV.byte_cntr ,  32     ; increment byte count by 32
+    LDI    RCV_TEMP_REG_3.w2, PTP_IPV4_UDP_E2E_ENABLE
+    LBCO   &RCV_TEMP_REG_3.b2, ICSS_SHARED_CONST, RCV_TEMP_REG_3.w2, 1
+    QBEQ   PTP_NOT_ENABLED_RX_B2, RCV_TEMP_REG_3.b2, 0
+    JAL    R11.w2, FN_TIMESTAMP_GPTP_PACKET_UDP
+PTP_NOT_ENABLED_RX_B2:
+    .endif    ; "PTP"
+    QBA       EXIT_PREPROCESSING_NB
     
+LESS_THAN_32_BYTES_RCVD:
+
+    .if $defined(PTP)
+    JAL     RCV_TEMP_REG_3.w2, FN_TIMESTAMP_GPTP_PACKET
+
+    LDI    RCV_TEMP_REG_3.w2, PTP_IPV4_UDP_E2E_ENABLE
+    LBCO   &RCV_TEMP_REG_3.b2, ICSS_SHARED_CONST, RCV_TEMP_REG_3.w2, 1
+    QBEQ   PTP_NOT_ENABLED_RX_B1, RCV_TEMP_REG_3.b2, 0
+    M_GPTP_CHECK_AND_SET_FLAGS_L4
+PTP_NOT_ENABLED_RX_B1:
+    .endif    ;PTP 
+
+EXIT_PREPROCESSING_NB:
+    SBCO    &Ethernet, L3_OCMC_RAM_CONST, MII_RCV.buffer_index, 32  
+    ADD MII_RCV.byte_cntr , MII_RCV.byte_cntr ,  32     ; increment byte count by 32
+
     ; Compare current wrk pointer to top_most queue desc pointer ..check for wrap around
     QBNE	RCV_NB_NO_QUEUE_WRAP, MII_RCV.wrkng_wr_ptr, MII_RCV.top_most_buffer_desc_offset
     AND MII_RCV.wrkng_wr_ptr , MII_RCV.base_buffer_desc_offset , MII_RCV.base_buffer_desc_offset
@@ -1357,6 +1377,16 @@ LB_XIN_LOWER_BANK:
 LB_XIN_UPPER_BANK:
     XIN	RX_L2_BANK1_ID, &R18, RANGE_R18_b0	
     XIN	RX_L2_BANK1_ID, &R2, RANGE_R2_R13	; XIN RX L2 bank 1
+
+    ;For PTP frames if flow comes here it
+    ; can only mean that 32-64 bytes have been received
+    .if $defined("PTP")   
+    LDI    RCV_TEMP_REG_1.w0, PTP_IPV4_UDP_E2E_ENABLE
+    LBCO   &RCV_TEMP_REG_1.b0, ICSS_SHARED_CONST, RCV_TEMP_REG_1.w0, 1
+    QBEQ   PTP_NOT_ENABLED_RX_LB, RCV_TEMP_REG_1.b0, 0 
+    JAL    R11.w2, FN_TIMESTAMP_GPTP_PACKET_UDP
+PTP_NOT_ENABLED_RX_LB:
+    .endif    ; "PTP"
     
     ; have we received more than 32 bytes?
     QBLE	LB_XIN_STORE_LESS_THAN_32_FROM_UPPER_BANK, R18_RCV_BYTECOUNT, 32	
@@ -1371,7 +1401,6 @@ LB_STORE_FIRST_32_BYTES:
     JAL     RCV_TEMP_REG_3.w2, FN_TIMESTAMP_GPTP_PACKET
 
 MORE_THAN_32_BYTES_RCVD:
-
     .endif ;PTP
     SBCO	&Ethernet, L3_OCMC_RAM_CONST, MII_RCV.buffer_index, 32	
     ADD		MII_RCV.byte_cntr, MII_RCV.byte_cntr,  32
