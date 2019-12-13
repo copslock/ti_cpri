@@ -611,12 +611,6 @@ EOF_48K_BUFFER_BD    .set       P0_BUFFER_DESC_OFFSET + HOST_BD_SIZE + PORT_BD_S
 P0_COL_BD_OFFSET    .set        EOF_48K_BUFFER_BD
 EOF_COL_BUFFER_BD    .set       P0_COL_BD_OFFSET + 3* BD_SIZE * 48
 
-;Static Tables are only used in Profinet, they are not used in EMAC, EtherNet/IP or HSR/PRP
-STATIC_MAC_TABLE_RCV_PORT1    .set  EOF_COL_BUFFER_BD
-STATIC_MAC_TABLE_FWD_PORT1    .set  STATIC_MAC_TABLE_RCV_PORT1  + 256
-STATIC_MAC_TABLE_RCV_PORT2    .set  STATIC_MAC_TABLE_FWD_PORT1  + 256
-STATIC_MAC_TABLE_FWD_PORT2    .set  STATIC_MAC_TABLE_RCV_PORT2  + 256
-
 ;***********************************************************************************************************
 ;                                                                                                          *
 ;                                                                                                          *
@@ -637,9 +631,6 @@ STATIC_MAC_TABLE_FWD_PORT2    .set  STATIC_MAC_TABLE_RCV_PORT2  + 256
 ;                                                                           *
 ;                                                                           *
 ;****************************************************************************
-
-MULTICAST_FIRST_VALID_ADDR_OFFSET    .set   STATIC_MAC_TABLE_FWD_PORT2 + 256       ;6 bytes
-MULTICAST_LAST_VALID_ADDR_OFFSET    .set    MULTICAST_FIRST_VALID_ADDR_OFFSET + 8  ;6 bytes
 
 P1_COL_BD_OFFSET    .set        P0_COL_BD_OFFSET  + BD_SIZE * 48
 P2_COL_BD_OFFSET    .set        P1_COL_BD_OFFSET  + BD_SIZE * 48
