@@ -349,6 +349,31 @@ bg_loop:
 	loop_here
 
 skip_chk01:
+	ldi32	r1, RTU_SETPORT
+	qbne	skip_chk02, r9, r1
+	; rtu initiated set port state command
+	; let's execute it now
+	lbbo	&r9, r0, CMD_PARAM, 4
+ .if $isdefed("SLICE0")
+	and	r9.b0, r9.b0, 0x0e
+	and	GRegs.speed_f, GRegs.speed_f, 0xf1
+ .else
+	lsl	r9.b0, r9.b0, 4
+	and	r9.b0, r9.b0, 0xe0
+	and	GRegs.speed_f, GRegs.speed_f, 0x1f
+ .endif
+	or	GRegs.speed_f, GRegs.speed_f, r9.b0
+	; TODO: if we were in half duplex and TX is active are we aboute to
+	; retransmit a packet, we need to stop doing that and IPS to rtu
+	; that we are done
+
+
+	; OK we are done
+	ldi32	r1, PRU_DONE
+	sbbo	&r1, r0, CFG_RTU_STATUS, 4
+	jmp	bg_loop
+
+skip_chk02:
 ;-----------------------
 ;schedule TX2HOST?
 ;----------------------
@@ -377,7 +402,6 @@ th_schedule0:
 ;schedule TX2WIRE ?
 ;----------------------
 scheduler:
-	READ_RGMII_CFG	r2, GRegs.speed_f		; update speed/duplex fields
 	qbbs	sch_10, GRegs.speed_f, f_half_d ; don't check col if full duplex
 ; if TX is idle and colission is set, probably it is from the
 ; previouse packet. Just wait
