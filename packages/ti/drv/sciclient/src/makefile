@@ -17,12 +17,12 @@ PACKAGE_SRCS_COMMON =
 ifeq ($(SOC),$(filter $(SOC), am65xx))
   SRCDIR += soc/V0
   INCDIR += soc/V0
-  GEN_FILE = $(PDK_INSTALL_PATH)/ti/drv/sciclient/soc/V0/sciclient_firmware_V0.h
+  GEN_FILE = soc/V0/sciclient_firmware_V0.h
 endif
 ifeq ($(SOC),$(filter $(SOC), j721e j7200))
   SRCDIR += soc/V1
   INCDIR += soc/V1
-  GEN_FILE = $(PDK_INSTALL_PATH)/ti/drv/sciclient/soc/V1/sciclient_firmware_V1.h
+  GEN_FILE = soc/V1/sciclient_firmware_V1.h
 endif
 
 # List all the external components/interfaces, whose interface header files
@@ -69,7 +69,7 @@ PACKAGE_SRCS_COMMON += soc/sysfw/binaries/ti-sci-firmware-am65x-hs.bin
 endif
 
 
-FIRMWARE_HEADER_GEN=$(PDK_INSTALL_PATH)/ti/drv/sciclient/tools/firmwareHeaderGen.sh
+FIRMWARE_HEADER_GEN=tools/firmwareHeaderGen.sh
 ifeq ($(BUILD_HS),yes)
 	FIRMWARE_HEADER_GEN_SUFFIX=-hs
 else
