@@ -265,7 +265,6 @@ $3:	qbbc	no_psi, r1, 3
 
 no_psi: jmp psi_idle2
 psi_idle3:
-	READ_RGMII_CFG	r1, GRrtu.speed_f
 	CALL_SUB	sstate_00, psi_idle
 	jmp	psi_idle
 
@@ -314,8 +313,35 @@ mgr_pkt:
 
 mgr_pkt10:
 	qbne	mgr_pkt20, r2.b2, 0x02	; set port state
-	; execute it here
-	jmp	mgr_unknown
+	ldi32	r0, FW_CONFIG
+	sbbo	&r2, r0, CMD_PARAM, 4   ; store the command to smem
+	ldi32	r1, RTU_SETPORT
+	sbbo	&r1, r0, CFG_RTU_STATUS, 4; tell PRU about the command
+	; usually CFG_RTU_STATUS can be updated by RTU only, but
+	; we don't want pru to execute the command in endless loop.
+	; so pru updates CFG_RTU_STATUS status when it has finished the
+	; command
+	ldi32	r1, PRU_DONE
+mgr_pkt11:
+	add	r0, r0, 0	; nop
+	lbbo	&r9, r0, CFG_RTU_STATUS, 4
+	qbne	mgr_pkt11, r9, r1
+	ldi32	r9, RTU_READY
+	sbbo	&r9, r0, CFG_RTU_STATUS, 4
+	; pru is done, lets update speed_f on rtu
+ .if $isdefed("SLICE0")
+	and	r2.b0, r2.b0, 0x0e
+	and	GRrtu.speed_f, GRrtu.speed_f, 0xf1
+ .else
+	lsl	r2.b0, r2.b0, 4
+	and	r2.b0, r2.b0, 0xe0
+	and	GRrtu.speed_f, GRrtu.speed_f, 0x1f
+ .endif
+	or	GRrtu.speed_f, GRrtu.speed_f, r2.b0
+	; OK, tell host we are done
+	ldi32	r2, 0x81020001	; response OK
+	mov	r2.b1, GRrtu.seq_num
+	SEND_MGR_PKT
 	jmp	mgr_pkt02
 
 mgr_pkt20:
