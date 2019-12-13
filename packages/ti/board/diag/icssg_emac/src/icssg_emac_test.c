@@ -457,17 +457,14 @@ static void BoardDiag_appInit(void)
  */
 static void BoardDiag_appTestSendPkts(uint32_t portNum)
 {
-#ifdef DIAG_STRESS_TEST
     if(gTxPktCount < PKT_SEND_COUNT)
     {
-        UART_printf("Sending Packet: %d\n", (gTxPktCount+1));
         EMAC_PKT_DESC_T *p_pkt_desc = BoardDiag_AppAllocPkt(portNum,
                                                             TEST_PKT_SIZE);
         if(p_pkt_desc!=NULL)
         {
           memcpy (p_pkt_desc->pDataBuffer, &test_pkt[0], TEST_PKT_SIZE);
           p_pkt_desc->AppPrivate   = (uint32_t)p_pkt_desc;
-          p_pkt_desc->Flags        = EMAC_PKT_FLAG_SOP | EMAC_PKT_FLAG_EOP;
           p_pkt_desc->ValidLen     = TEST_PKT_SIZE;
           p_pkt_desc->DataOffset   = 0;
           p_pkt_desc->PktChannel   = 0;
@@ -476,39 +473,11 @@ static void BoardDiag_appTestSendPkts(uint32_t portNum)
           p_pkt_desc->PktFrags     = 1;
           p_pkt_desc->pNext        = NULL;
           p_pkt_desc->pPrev        = NULL;
-          
-
           emac_send(portNum, p_pkt_desc);
           gTxPktCount++;
         }  
     }
-#else
-    uint32_t index;
-    uint32_t pkt_send_count =0;
-    for (index = 0; index < PKT_SEND_COUNT; index++)
-    {
-        UART_printf("Sending Packet: %d\n", (index+1));
-        EMAC_PKT_DESC_T *p_pkt_desc = BoardDiag_AppAllocPkt(portNum,
-                                                            TEST_PKT_SIZE);
-       if(p_pkt_desc!=NULL)
-        {
-          memcpy (p_pkt_desc->pDataBuffer, &test_pkt[0], TEST_PKT_SIZE);
-          p_pkt_desc->AppPrivate   = (uint32_t)p_pkt_desc;
-          p_pkt_desc->Flags        = EMAC_PKT_FLAG_SOP | EMAC_PKT_FLAG_EOP;
-          p_pkt_desc->ValidLen     = TEST_PKT_SIZE;
-          p_pkt_desc->DataOffset   = 0;
-          p_pkt_desc->PktChannel   = 0;
-          p_pkt_desc->PktLength    = TEST_PKT_SIZE;
-          p_pkt_desc->BufferLen    = TEST_PKT_SIZE;
-          p_pkt_desc->PktFrags     = 1;
-          p_pkt_desc->pNext        = NULL;
-          p_pkt_desc->pPrev        = NULL;
 
-          emac_send(portNum, p_pkt_desc);
-          pkt_send_count++;
-	   }
-    }
-#endif
 }
 
 /**
@@ -533,7 +502,6 @@ void BoardDiag_AppTestRxPktCb(uint32_t portNum, EMAC_PKT_DESC_T *pDesc)
     {
         pkt_rcvd = 1;
         pkt_rcv_count++;
-        UART_printf("Received Packet: %d\n", pkt_rcv_count);
     }
     else
     {
@@ -1031,6 +999,52 @@ void BoardDiag_IcssgUdmaInit(void)
     }
 }
 
+
+/**
+ * \brief  emac test BoardDiag_IcssgEmacTestDisplayResults
+ *
+ * This function displays results and returns test results per port
+ *
+ * \param   
+            portNum         port humber
+            pktRcvCount     pakckets received per port
+ *
+ * \return  void
+ *              0  - in case of success
+ *              1  - in case of failure
+ *
+ */
+
+int8_t BoardDiag_IcssgEmacTestDisplayResults(uint32_t portNum, uint32_t pktRcvCount)
+{
+    int8_t retVal;
+    UART_printf("\nPackets Sent: %d, Packets Received: %d\n",
+                PKT_SEND_COUNT, pktRcvCount);
+    if (pktRcvCount == PKT_SEND_COUNT)
+    {
+        if (portNum == (EMAC_MAX_PORTS_ICSS -1))
+            UART_printf("Port %d Send to Port %d Receive Test Passed!!\n",
+                    portNum, (portNum  -1));
+        else
+            UART_printf("Port %d Send to Port %d Receive Test Passed!!\n",
+                    portNum, (portNum  +1));
+        retVal = 0;
+    }
+    else
+    {
+        if (portNum == (EMAC_MAX_PORTS_ICSS-1))
+            UART_printf("Port %d Send to Port %d Receive Test Failed!!\n",
+                    portNum, (portNum  -1));
+        else
+            UART_printf("Port %d Send to Port %d Receive Test Failed!!\n",
+                    portNum, (portNum  +1));
+        retVal = -1;
+    }
+    return retVal;
+}
+
+
+
 /**
  * \brief  emac test function
  *
@@ -1070,11 +1084,8 @@ int8_t BoardDiag_IcssgEmacTestInterposer(void)
     UART_printf("\n\nReading Ethernet PHY Register Dump...\n");
     for(portNum = startPort; portNum < EMAC_MAX_PORTS_ICSS; portNum++)
     {
-        if (1 == interposerCardPresent)
-        {
-            if((portNum == 2) || (portNum == 3))
-                 continue;
-        }
+        if((portNum == 2) || (portNum == 3))
+            continue;
         ret = BoardDiag_getPhyRegDump(portNum);
         if(ret != 0)
         {
@@ -1101,64 +1112,43 @@ int8_t BoardDiag_IcssgEmacTestInterposer(void)
         }
     }
 #if defined(ICSSG_PORT2PORT_TEST)
+    uint32_t index;
     for(portNum = startPort; portNum < EMAC_MAX_PORTS_ICSS;portNum++)
     {
+        gTxPktCount = 0;
+        pkt_rcv_count = 0;
         /* with presence of interposer card, we dont send on ports 0 and 2 */
-        if (1 == interposerCardPresent)
-        {
-            if((portNum == 0) || (portNum == 2))
-                 continue;
-        }
+        if((portNum == 0) || (portNum == 2))
+             continue;
         UART_printf("\n\nSending Packets on Port - %d\n", portNum);
-        BoardDiag_appTestSendPkts(portNum);
-        /* Wait to allow packets to come back */
-        BOARD_delay(1000);
-        if (1== interposerCardPresent)
+        for (index = 0; index < PKT_SEND_COUNT; index++)
         {
-            if (portNum == 1)
-            {
-                UART_printf("\nReceiving Packets on Port - %d\n", (portNum-1));
-                emac_poll_pkt(portNum-1);
-            }
-            else if (portNum == 3)
-            {
-                UART_printf("\nReceiving Packets on Port - %d\n", (portNum-1));
-                emac_poll_pkt(portNum-1);
-            }
-            else if (portNum == 4)
-            {
-                UART_printf("\nReceiving Packets on Port - %d\n", (portNum + 1));
-                emac_poll_pkt(portNum + 1);
-            }
-            else if (portNum == 5)
-            {
-                UART_printf("\nReceiving Packets on Port - %d\n", (portNum -1));
-                emac_poll_pkt(portNum - 1);
-            }
+            BoardDiag_appTestSendPkts(portNum);
+            /* Wait to allow packets to come back */
+            BOARD_delay(1000);
+                if (portNum == 1)
+                {
+                    emac_poll_pkt(portNum-1);
+                }
+                else if (portNum == 3)
+                {
+                    emac_poll_pkt(portNum-1);
+                }
+                else if (portNum == 4)
+                {
+                    emac_poll_pkt(portNum + 1);
+                }
+                else if (portNum == 5)
+                {
+                    emac_poll_pkt(portNum - 1);
+                }
         }
-        else
+
+        ret = BoardDiag_IcssgEmacTestDisplayResults(portNum, pkt_rcv_count);
+        if (ret == -1)
         {
-            UART_printf("\nReceiving Packets on Port - %d\n", (portNum + 1));
-            emac_poll_pkt(portNum + 1);
-        }
-        if (pkt_rcv_count == PKT_SEND_COUNT)
-        {
-            UART_printf("\nPackets Sent: %d, Packets Received: %d\n",
-                        PKT_SEND_COUNT, pkt_rcv_count);
-            UART_printf("Port %d Send to Port %d Receive Test Passed!\n",
-                        portNum, (portNum + 1));
-            ret = 0;
-        }
-        else
-        {
-            UART_printf("\nPackets Sent: %d, Packets Received: %d\n",
-                        PKT_SEND_COUNT, pkt_rcv_count);
-            UART_printf("Port %d Send to Port %d Receive Test Failed!!\n",
-                        portNum, (portNum + 1));
-            ret = -1;
             break;
         }
-        pkt_rcv_count = 0;
     }
 
     for(portNum = startPort; portNum < EMAC_MAX_PORTS_ICSS; portNum++)
@@ -1202,16 +1192,10 @@ int8_t BoardDiag_IcssgEmacTest(void)
 {
     int8_t  ret;
     uint32_t portNum;
-    uint8_t startInstance = 0;
     uint32_t startPort;
     PRUICSS_Config  *prussCfg;
-#if defined(DIAG_STRESS_TEST)
     uint32_t index;
-    uint32_t timeout;
-    char rdBuf = 'y';
-#endif
 
-    startInstance = startInstance;
 
 #ifdef DIAG_STRESS_TEST
     UART_printf  ("**********************************************\n");
@@ -1224,7 +1208,6 @@ int8_t BoardDiag_IcssgEmacTest(void)
 #endif
 
 #if defined (am65xx_idk)
-    startInstance = PRUICCSS_INSTANCE_ONE;
     startPort     = 0;
 
     /* Check for the IDK board version
@@ -1244,23 +1227,16 @@ int8_t BoardDiag_IcssgEmacTest(void)
             }
         }
     }
-
 #else
-    startInstance = PRUICCSS_INSTANCE_THREE;
     startPort     = 4;
 #endif
 
-	UART_printf("\n\nPerforming UDMA driver init...\n");
-	BoardDiag_IcssgUdmaInit();
+    UART_printf("\n\nPerforming UDMA driver init...\n");
+    BoardDiag_IcssgUdmaInit();
 
     UART_printf("\n\nReading Ethernet PHY Register Dump...\n");
     for(portNum = startPort; portNum < EMAC_MAX_PORTS_ICSS; portNum++)
     {
-        if (1 == interposerCardPresent)
-        {
-            if((portNum == 0) || (portNum == 2))
-                 continue;
-        }
         ret = BoardDiag_getPhyRegDump(portNum);
         if(ret != 0)
         {
@@ -1285,28 +1261,20 @@ int8_t BoardDiag_IcssgEmacTest(void)
         {
             return ret;
         }
-#if !defined(DIAG_STRESS_TEST) && !defined(ICSSG_PORT2PORT_TEST)
-        else
-        {
-            Board_init(BOARD_INIT_ETH_PHY);
-            ret = BoardDiag_emacCableDisconTest(portNum);
-        }
-#endif
     }
 
-#if defined(ICSSG_PORT2PORT_TEST)
-    for(portNum = startPort; portNum < EMAC_MAX_PORTS_ICSS;)
-    {
-    	/* with presence of interposer card, we dont send on ports 0 and 2 */
-        if (1 == interposerCardPresent)
-        {
-            if((portNum == 0) || (portNum == 2))
-                 continue;
-        }
 #if defined(DIAG_STRESS_TEST)
+    for(portNum = startPort; portNum < EMAC_MAX_PORTS_ICSS;portNum++)
+    {
+        uint32_t timeout;
+        char rdBuf = 'y';
         UART_printf("\n\nSending Packets on Port - %d\n", portNum);
-        UART_printf("Receiving Packets on Port - %d\n\n", (portNum + 1));
-
+        if (portNum == (EMAC_MAX_PORTS_ICSS-1))
+            UART_printf("Receiving Packets on Port - %d\n\n", (portNum -1));
+        else
+            UART_printf("Receiving Packets on Port - %d\n\n", (portNum + 1));
+        gTxPktCount = 0;
+        pkt_rcv_count = 0;
         for (index = 0; index < PKT_SEND_COUNT; index++)
         {
             pkt_rcvd = 0;
@@ -1316,7 +1284,10 @@ int8_t BoardDiag_IcssgEmacTest(void)
 
             while(pkt_rcvd == 0)
             {
-                emac_poll_pkt(portNum + 1);
+                if ((portNum % 2U) == 0)
+                    emac_poll_pkt(portNum +1);
+                else
+                    emac_poll_pkt(portNum - 1);
                 /* Wait 1msec */
                 BOARD_delay(1000);
                 timeout++;
@@ -1351,115 +1322,46 @@ int8_t BoardDiag_IcssgEmacTest(void)
                 goto end_test;
             }
         }
-        gTxPktCount = 0;
-#else
-        UART_printf("\n\nSending Packets on Port - %d\n", portNum);
-        BoardDiag_appTestSendPkts(portNum);
-        /* Wait to allow packets to come back */
-        BOARD_delay(1000);
-        UART_printf("\nReceiving Packets on Port - %d\n", (portNum + 1));
-        emac_poll_pkt(portNum + 1);
-#endif
-        if (pkt_rcv_count == PKT_SEND_COUNT)
+
+        ret = BoardDiag_IcssgEmacTestDisplayResults(portNum, pkt_rcv_count);
+        if (ret == -1)
         {
-            UART_printf("\nPackets Sent: %d, Packets Received: %d\n",
-                        PKT_SEND_COUNT, pkt_rcv_count);
-            UART_printf("Port %d Send to Port %d Receive Test Passed!\n",
-                        portNum, (portNum + 1));
-            ret = 0;
-        }
-        else
-        {
-            UART_printf("\nPackets Sent: %d, Packets Received: %d\n",
-                        PKT_SEND_COUNT, pkt_rcv_count);
-            UART_printf("Port %d Send to Port %d Receive Test Failed!!\n",
-                        portNum, (portNum + 1));
-            ret = -1;
             break;
         }
-        pkt_rcv_count = 0;
-
-#if defined(DIAG_STRESS_TEST)
-        UART_printf("\n\nSending Packets on Port - %d\n", (portNum + 1));
-        UART_printf("Receiving Packets on Port - %d\n", portNum);
-
-        for (index = 0; index < PKT_SEND_COUNT; index++)
-        {
-            pkt_rcvd = 0;
-            timeout  = 0;
-
-            BoardDiag_appTestSendPkts(portNum + 1);
-
-            while(pkt_rcvd == 0)
-            {
-                emac_poll_pkt(portNum);
-                /* Wait 1msec */
-                BOARD_delay(1000);
-                timeout++;
-                if(timeout >= BOARD_DIAG_ICSSEMAC_TEST_TIMEOUT)
-                {
-                    UART_printf("\nReceive Timeout!\n");
-                    ret = -1;
-                    break;
-                }
-            }
-
-            /* Check if there a input from console to break the test */
-            rdBuf = (char)BoardDiag_getUserInput(BOARD_UART_INSTANCE);
-            if((rdBuf == 'b') || (rdBuf == 'B'))
-            {
-                UART_printf("Received Test Termination... Exiting the Test\n\n");
-                UART_printf("\nPackets Sent: %d, Packets Received: %d\n",
-                            gTxPktCount, pkt_rcv_count);
-
-                if (pkt_rcv_count != gTxPktCount)
-                {
-                    UART_printf("Port %d Send to Port %d Receive Test Failed!\n",
-                                (portNum + 1), portNum);
-                    ret = -1;
-                }
-                else
-                {
-                    UART_printf("Port %d Send to Port %d Receive Test Passed!\n",
-                                (portNum + 1), portNum);
-                    ret = 0;
-                }
-
-                goto end_test;
-            }
-        }
-
-        gTxPktCount = 0;
-#else
-        UART_printf("\n\nSending Packets on Port - %d\n", (portNum + 1));
-        BoardDiag_appTestSendPkts(portNum + 1);
-        /* Wait to allow packets to come back */
-        BOARD_delay(1000);
-        UART_printf("\nReceiving Packets on Port - %d\n", portNum);
-        emac_poll_pkt(portNum);
-#endif
-        if (pkt_rcv_count == PKT_SEND_COUNT)
-        {
-            UART_printf("\nPackets Sent: %d, Packets Received: %d\n",
-                        PKT_SEND_COUNT, pkt_rcv_count);
-            UART_printf("Port %d Send to Port %d Receive Test Passed!\n",
-                        (portNum + 1), portNum);
-            ret = 0;
-        }
-        else
-        {
-            UART_printf("\nPackets Sent: %d, Packets Received: %d\n",
-                        PKT_SEND_COUNT, pkt_rcv_count);
-            UART_printf("Port %d Send to Port %d Receive Test Failed!!\n",
-                        (portNum + 1), portNum);
-            ret = -1;
-            break;
-        }
-
-        pkt_rcv_count = 0;
-
-        portNum += 2;
     }
+#else
+        for(portNum = startPort; portNum < EMAC_MAX_PORTS_ICSS;portNum++)
+        {
+            UART_printf("\n\nSending Packets on Port - %d\n", portNum);
+            if (portNum == (EMAC_MAX_PORTS_ICSS-1))
+                UART_printf("Receiving Packets on Port - %d\n\n", (portNum -1));
+            else
+                UART_printf("Receiving Packets on Port - %d\n\n", (portNum + 1));
+            gTxPktCount = 0;
+            pkt_rcv_count = 0;
+            for (index = 0; index < PKT_SEND_COUNT; index++)
+            {
+                pkt_rcvd = 0;
+                BoardDiag_appTestSendPkts(portNum);
+ 
+                while(pkt_rcvd == 0)
+                {
+                    if (portNum == (EMAC_MAX_PORTS_ICSS-1))
+                        emac_poll_pkt(portNum - 1);
+                    else
+                        emac_poll_pkt(portNum +1);
+                    /* Wait 1msec */
+                    BOARD_delay(1000);
+                }
+            }
+            ret = BoardDiag_IcssgEmacTestDisplayResults(portNum, pkt_rcv_count);
+            if (ret == -1)
+            {
+                break;
+            }
+        }
+
+#endif
 
 #if defined(DIAG_STRESS_TEST)
 end_test:
@@ -1483,11 +1385,9 @@ end_test:
     }
 
     UART_printf("All Tests Completed\n");
-#endif /* ICSSG_PORT2PORT_TEST */
 
     return ret;
 }
-
 /**
  * \brief  main function
  *
