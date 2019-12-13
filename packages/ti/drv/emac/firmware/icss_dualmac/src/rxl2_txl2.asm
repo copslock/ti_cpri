@@ -354,6 +354,25 @@ skip_chk01:
 	; rtu initiated set port state command
 	; let's execute it now
 	lbbo	&r9, r0, CMD_PARAM, 4
+
+	; we wait until TX is idle. In that state
+s_chk01:qbeq	s_chk02, GRegs.tx.b.state, TX_S_IDLE
+	qbne	s_chk01, GRegs.tx.b.state, TX_S_ERR
+	ldi	GRegs.tx.b.state, TX_S_IDLE ; TODO: do we need to handle the error?
+s_chk02:
+	; if we are in half duplex mode, we might need to IPC to PRU
+	; to release buffer. We believe we have to do that only
+	; if GRegs.ret_cnt > 0; otherwise it is either not hald duplex mode
+	; or IPC was issued at TX_EOF in case successful transmission or max retries
+
+	qbeq	s_chk04, GRegs.ret_cnt, 0
+	qbbs	s_chk03, GRegs.tx.b.flags, f_next_dma
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_E_FLAG
+	qba	s_chk04
+s_chk03:
+	SPIN_TOG_LOCK_LOC PRU_RTU_EOD_P_FLAG
+s_chk04:
+	ldi	GRegs.ret_cnt, 0
  .if $isdefed("SLICE0")
 	and	r9.b0, r9.b0, 0x0e
 	and	GRegs.speed_f, GRegs.speed_f, 0xf1
