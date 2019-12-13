@@ -1,0 +1,796 @@
+===========
+Trace Layer
+===========
+
+Trace Layer Overview
+====================
+
+The ability to output human readable trace messages is necessary to be
+able to properly debug firmware operation. However, due to the potential
+for huge amounts of messages due to fast transitions in firewalls,
+clocks, etc, a compact trace format that can be easily machine parsed is
+required as well. A global 'trace' layer is provided so that any
+sub-system present in the firmware has the ability to output information
+in a common way over a user configured interface.
+
+Trace Configuration
+===================
+
+All built-in trace options can be selectively enabled during runtime
+as described in :ref:`pub_boardcfg_debug_console`. The trace destinations are
+configurable as build options but by default are built in and usage of
+them is left up to the aforementioned board configuration.
+
+In the interest of allowing debug of early boot within System Firmware the
+default state of all :ref:`Board Config Debug <pub_boardcfg_debug_console>`
+configurable trace sources and destinations is enabled. Once the
+``TISCI_MSG_BOARD_CONFIG`` message is received, the values within
+``boardcfg_dbg_cfg`` immediately take effect and only the configured
+trace sources and destinations will be in use until reboot. However,
+this means that the earliest boot messages before TISCI_MSG_BOARD_CONFIG
+from System Firmware will always be printed.
+
+.. warning::
+
+   Keeping trace enabled will have considerable impact on performance.
+   While useful for debug, there are many trace points throughout the code
+   and waiting for each print to occur, especially if all trace destinations
+   are enabled, can add considerable to each subsystem init and TISCI message
+   response. If performance is a system requirement trace should be disabled.
+
+All trace debug and trace print messages will be routed as strings over
+the UART or memory buffer as there is only a single resource for each of
+these. ITM has multiple channels available that will be partitioned as
+described below:
+
++--------------------+----------------------------------+
+| ITM Channel Number |              Usage               |
++====================+==================================+
+| 0                  | Trace print strings.             |
++--------------------+----------------------------------+
+| 1                  | Baseport Trace debug.            |
++--------------------+----------------------------------+
+| 2                  | Security Trace debug.            |
++--------------------+----------------------------------+
+| 3                  | Resource Management Trace debug. |
++--------------------+----------------------------------+
+| 4                  | Power Management Trace debug.    |
++--------------------+----------------------------------+
+
+Trace Memory Buffer Location
+----------------------------
+
+The trace memory buffer is located within the firmware memory. Information
+about the location and size can be found below.
+
++-----------+------------------+-----------+
+| SoC       | Base Address     | Size      |
++===========+==================+===========+
+| AM65x     | 0x44083000       | 0x1000    |
++-----------+------------------+-----------+
+| J721e     | 0x44083000       | 0x1000    |
++-----------+------------------+-----------+
+
+Trace Debug Data Format
+=======================
+
+The Trace Debug API supports the sending of arbitrary u32's to the
+various Trace destinations. By defining a common convention for these
+u32's to represent data they can be used to describe events within the
+system. The below format describes the standard meaning of each bit inside
+the u32.
+
++-----------------------+-----------+--------------------------------------------------------------+
+|         Type          | Bit Index |                             Use                              |
++=======================+===========+==============================================================+
+| Domain ID             | 31 - 29   | Identifies which domain this debug code belongs to.          |
++-----------------------+-----------+--------------------------------------------------------------+
+| Action ID             | 28 - 22   | Identifies the action this code represents, domain specific. |
++-----------------------+-----------+--------------------------------------------------------------+
+| Message Specific Data | 21 - 0    | Additional data specific to the domain and action ID.        |
++-----------------------+-----------+--------------------------------------------------------------+
+
+Optionally, a sub-action ID can be specified as part of the standard message
+data field in order to provide more granular trace data per subsystem.  The
+below format describes the meaning for each bit inside the u32 when the
+optional sub-action ID is utilized.
+
++-----------------------+-----------+--------------------------------------------------------------+
+|         Type          | Bit Index |                             Use                              |
++=======================+===========+==============================================================+
+| Domain ID             | 31 - 29   | Identifies which domain this debug code belongs to.          |
++-----------------------+-----------+--------------------------------------------------------------+
+| Action ID             | 28 - 22   | Identifies the action this code represents, domain specific. |
++-----------------------+-----------+--------------------------------------------------------------+
+| Sub-Action ID         | 21 - 16   | Identifies the sub-action this code represents, domain       |
+|                       |           | specific.                                                    |
++-----------------------+-----------+--------------------------------------------------------------+
+| Message Specific Data | 15 - 0    | Additional data specific to the domain and action ID.        |
++-----------------------+-----------+--------------------------------------------------------------+
+
+.. _pub_trace_debug_data_format_domain_id:
+
+Domain ID
+---------
+
++-------------+-------+------------------------------------------------+
+| Domain Name | Value |                      Use                       |
++=============+=======+================================================+
+| Baseport    | 0     | Debug trace is from Baseport Domain.           |
++-------------+-------+------------------------------------------------+
+| Security    | 1     | Debug trace is from Security Domain            |
++-------------+-------+------------------------------------------------+
+| RM          | 2     | Debug trace is from Resource Management Domain |
++-------------+-------+------------------------------------------------+
+| PM          | 3     | Debug trace is from Power Management Domain.   |
++-------------+-------+------------------------------------------------+
+| Reserved    | 4     | Reserved for future use.                       |
++-------------+-------+------------------------------------------------+
+| Reserved    | 5     | Reserved for future use.                       |
++-------------+-------+------------------------------------------------+
+| Reserved    | 6     | Reserved for future use.                       |
++-------------+-------+------------------------------------------------+
+| Reserved    | 7     | Reserved for future use.                       |
++-------------+-------+------------------------------------------------+
+
+Messages sent using any reserved Domain IDs will be ignored.
+
+.. _pub_trace_debug_data_format_action_id:
+
+Action & Optional Sub-Action IDs
+--------------------------------
+
+Below is a listing of the Action IDs and Sub-Action IDs for each domain along
+with how the Message Specific Data (MSD) is to be interpreted.
+
+The Sub-Action IDs are optionally used by domain owners to provide more
+granular data for each Action ID.  Use of Sub-Action IDs restricts the action
+data per trace to 16-bits wide.
+
+.. _pub_trace_debug_data_format_action_id_baseport:
+
+Baseport Action IDs
+^^^^^^^^^^^^^^^^^^^
+
++--------------------------+-------+-----------------------------+---------------------------+-----------------------------------------------------------------+
+|        Action ID         | Value |             Use             |          MSD Use          |                              Notes                              |
++==========================+=======+=============================+===========================+=================================================================+
+| BP_INIT_COMPLETE         | 0     | OSAL/Baseport init complete | Unused                    |                                                                 |
++--------------------------+-------+-----------------------------+---------------------------+-----------------------------------------------------------------+
+| TISCI_MSG_RECEIVED       | 1     | TISCI Message received      | (21-16) Queue ID          | When TISCI_MSG_RECEIVED is followed by TISCI_MSG_SENDER_HOST_ID |
+|                          |       |                             | (15-0) TISCI ID           | with the same Queue ID, the reported TISCI ID and HOST ID are   |
+|                          |       |                             |                           | guaranteed to have come from the same received TISCI message.   |
+|                          |       |                             |                           | Queue ID is an arbitrary value used for this purpose.           |
++--------------------------+-------+-----------------------------+---------------------------+-----------------------------------------------------------------+
+| TISCI_MSG_SENDER_HOST_ID | 2     | Host ID of sent Message     | (21-16) Queue ID          | See note above for TISCI_MSG_RECEIVED.                          |
+|                          |       |                             | (15-0) Host ID of request |                                                                 |
++--------------------------+-------+-----------------------------+---------------------------+-----------------------------------------------------------------+
+| RESERVED                 | 10    | N/A                         | N/A                       |                                                                 |
++--------------------------+-------+-----------------------------+---------------------------+-----------------------------------------------------------------+
+| TRACE_DATA_VERSION       | 16    | OSAL/Baseport trace data    | (19-12) Version major     | Any System Firmware trace parsing utilities should be able to   |
+|                          |       | version.                    | (11-0) Version minor      | comprehend the trace version when decoding trace logs           |
++--------------------------+-------+-----------------------------+---------------------------+-----------------------------------------------------------------+
+| SYSFW_VERSION            | 17    | System Firmware version     | (15-8) Version            |                                                                 |
+|                          |       |                             | (7-4) Subversion          |                                                                 |
+|                          |       |                             | (3-0) Patch               |                                                                 |
++--------------------------+-------+-----------------------------+---------------------------+-----------------------------------------------------------------+
+| GENERIC_DEBUG            | 127   | Generic Debug Message       | Any use.                  |                                                                 |
++--------------------------+-------+-----------------------------+---------------------------+-----------------------------------------------------------------+
+
+.. _pub_trace_debug_data_format_action_id_security:
+
+Security Action IDs
+^^^^^^^^^^^^^^^^^^^
+
++-----------------+-------+-----------------------------------+-----------------+
+|    Action ID    | Value |                Use                |     MSD Use     |
++=================+=======+===================================+=================+
+| RESERVED        | 0x1   | RESERVED                          | NA              |
++-----------------+-------+-----------------------------------+-----------------+
+| Security        | 0x2   | Indicates progress of             | Bit [0] - 0 =>  |
+| Init            |       | post-boardconfig security         | start, 1 => end |
+|                 |       | initialization                    |                 |
++-----------------+-------+-----------------------------------+-----------------+
+| FAIL (modifier) | 0x40  | Action failed when action bit set | N/A             |
++-----------------+-------+-----------------------------------+-----------------+
+| Generic         | 127   | Generic Debug message             | Any use.        |
+| Debug           |       |                                   |                 |
++-----------------+-------+-----------------------------------+-----------------+
+
+.. _pub_trace_debug_data_format_action_id_resource:
+
+Resource Management Action IDs & Sub-Action IDs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+|        Action ID            | Value |          Use          | Sub-Action ID               | Value |               MSD Use               |
++=============================+=======+=======================+=============================+=======+=====================================+
+| RM_INIT                     | 0     | RM init complete      | N/A                         | N/A   | N/A                                 |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RM_CORE_INIT                | 1     | RM core init          | N/A                         | N/A   | N/A                                 |
+|                             |       | complete              |                             |       |                                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RA_INIT                     | 3     | RA driver init        | N/A                         | N/A   | N/A                                 |
+|                             |       | complete              |                             |       |                                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RING_CONFIGURE              | 4     | NavSS ring            | DEVICE_ID                   | 0     | Ring accelerator Device ID          |
+|                             |       | configuration         |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | Ring index                          |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_HI              | 7     | Upper 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_LO              | 8     | Lower 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RING_VIRTID                 | 10    | ring Virt ID                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RING_MODE                   | 11    | ring mode                           |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RING_SIZE                   | 12    | ring size                           |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RING_BA_LO_HI               | 13    | Upper 16-bits of base address lo    |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RING_BA_LO_LO               | 14    | Lower 16-bits of base address lo    |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RING_COUNT_HI               | 15    | Upper 4-bits of count               |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RING_COUNT_LO               | 16    | Lower 16-bits of count              |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RING_ORDERID                | 17    | ring Order ID                       |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RING_GET_CFG                | 5     | Get NavSS ring        | DEVICE_ID                   | 0     | Ring accelerator Device ID          |
+|                             |       | configuration         |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | Ring index                          |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | GET_RESET_CFG               | 2     | Configuration retrieval type        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RING_VALIDATE_INDEX         | 6     | NavSS ring index      | INDEX                       | 1     | Ring index                          |
+|                             |       | validation            +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | SS_DEVICE_ID                | 5     | NavSS subsystem device ID           |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RING_MON_CFG                | 7     | NavSS ring monitor    | DEVICE_ID                   | 0     | Ring accelerator Device ID          |
+|                             |       | configuration         |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | Ring monitor index                  |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_HI              | 7     | Upper 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_LO              | 8     | Lower 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RING_MONITOR_SOURCE         | 18    | Monitor source                      |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RING_MONITOR_MODE           | 19    | Monitor mode                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RING_MONITOR_QUEUE          | 20    | Queue, or ring, to monitor          |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RING_OES_SET                | 8     | Set OES register in   | DEVICE_ID                   | 0     | Ring accelerator Device ID          |
+|                             |       | NavSS ring            |                             |       |                                     |
+|                             |       | accelerator           |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | Ring index                          |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | EVENT                       | 3     | Global event                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | OES_REG_INDEX               | 4     | OES register index                  |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RING_OES_GET                | 9     | Get OES register in   | DEVICE_ID                   | 0     | Ring accelerator Device ID          |
+|                             |       | NavSS ring            |                             |       |                                     |
+|                             |       | accelerator           |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | Ring index                          |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | EVENT                       | 3     | Global event                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | OES_REG_INDEX               | 4     | OES register index                  |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_INIT                  | 12    | UDMAP driver init     | N/A                         | N/A   | N/A                                 |
+|                             |       | complete              |                             |       |                                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_TX_CH_SET_THRD_ID     | 13    | Set NavSS UDMAP       | INDEX                       | 1     | Transmit channel index              |
+|                             |       | transmit channel      +-----------------------------+-------+-------------------------------------+
+|                             |       | thread ID             | SS_DEVICE_ID                | 5     | NavSS subsystem device ID           |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_THREAD_ID           | 30    | PSI-L thread ID                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_TX_CH_CFG             | 14    | NavSS UDMAP transmit  | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | channel configuration |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | transmit channel index              |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_HI              | 7     | Upper 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_LO              | 8     | Lower 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_PAUSE_ON_ERR        | 10    | Pause on error                      |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_ATYPE               | 11    | Channel atype                       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_TYPE                | 12    | Channel type                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_FETCH_SIZE          | 13    | Fetch size                          |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_CQ_QNUM             | 14    | Completion queue number             |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_PRIORITY            | 15    | Priority                            |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_QOS                 | 16    | QoS                                 |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_ORDERID             | 17    | Order ID                            |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_SCHED_PRIORITY      | 18    | Scheduling priority                 |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_BURST_SIZE          | 31    | Burst size                          |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_TX_CH_FILT_EINFO       | 32    | Filter extended info                |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_TX_CH_FILT_PSWORDS     | 33    | Filter PS words                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_TX_CH_SUPR_TDPKT       | 34    | Teardown packet suppression         |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_TX_CH_CREDIT_COUNT     | 35    | Channel credit count                |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_TX_CH_FDEPTH           | 36    | Channel fdepth                      |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_TX_CH_TDTYPE           | 37    | Channel teardown type               |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_TX_CH_GET_CFG         | 15    | Get NavSS UDMAP       | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | transmit channel      |                             |       |                                     |
+|                             |       | configuration         +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | UDMAP transmit channel index        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | GET_RESET_CFG               | 2     | Configuration retrieval type        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_GCFG_CFG              | 16    | NavSS UDMAP GCFG      | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | region configuration  |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_HI              | 7     | Upper 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_LO              | 8     | Lower 16-bits of valid_params       |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_RX_CH_SET_THRD_ID     | 20    | Set NavSS UDMAP       | INDEX                       | 1     | Receive channel index               |
+|                             |       | receive channel       +-----------------------------+-------+-------------------------------------+
+|                             |       | thread ID             | SS_DEVICE_ID                | 5     | NavSS subsystem device ID           |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_THREAD_ID           | 30    | PSI-L thread ID                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_RX_CH_CFG             | 21    | NavSS UDMAP receive   | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | channel configuration |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | receive channel index               |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_HI              | 7     | Upper 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_LO              | 8     | Lower 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_PAUSE_ON_ERR        | 10    | Pause on error                      |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_ATYPE               | 11    | Channel atype                       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_TYPE                | 12    | Channel type                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_FETCH_SIZE          | 13    | Fetch size                          |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_CQ_QNUM             | 14    | Completion queue number             |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_PRIORITY            | 15    | Priority                            |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_QOS                 | 16    | QoS                                 |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_ORDERID             | 17    | Order ID                            |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_SCHED_PRIORITY      | 18    | Scheduling priority                 |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_CH_BURST_SIZE          | 31    | Burst size                          |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_RX_CH_FLOW_ID_START    | 32    | Flow ID start                       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_RX_CH_FLOW_ID_COUNT    | 33    | Flow ID count                       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_RX_CH_IGNORE_SHORT     | 34    | Ignore long                         |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_RX_CH_IGNORE_LONG      | 35    | Ignore short                        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_RX_CH_GET_CFG         | 22    | Get NavSS UDMAP       | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | receive channel       |                             |       |                                     |
+|                             |       | configuration         +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | UDMAP receive channel index         |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | GET_RESET_CFG               | 2     | Configuration retrieval type        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_GCFG_GET_CFG          | 23    | Get NavSS UDMAP       | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | GCFG region           |                             |       |                                     |
+|                             |       | configuration         +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | GET_RESET_CFG               | 2     | Configuration retrieval type        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| PROXY_INIT                  | 24    | Proxy driver init     | N/A                         | N/A   | N/A                                 |
+|                             |       | complete              |                             |       |                                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| PROXY_CFG                   | 25    | NavSS proxy           | DEVICE_ID                   | 0     | Proxy Device ID                     |
+|                             |       | configuration         |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | Proxy index                         |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_HI              | 7     | Upper 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_LO              | 8     | Lower 16-bits of valid_params       |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| PROXY_OES_SET               | 26    | Set OES register in   | DEVICE_ID                   | 0     | Proxy Device ID                     |
+|                             |       | NavSS Proxy           |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | Proxy index                         |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | EVENT                       | 3     | Global event                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | OES_REG_INDEX               | 4     | OES register index                  |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| PROXY_OES_GET               | 27    | Get OES register in   | DEVICE_ID                   | 0     | Proxy Device ID                     |
+|                             |       | NavSS Proxy           |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | Proxy index                         |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | EVENT                       | 3     | Global event                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | OES_REG_INDEX               | 4     | OES register index                  |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_FLOW_CFG              | 29    | NavSS UDMAP receive   | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | flow configuration    |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | receive flow index                  |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_HI              | 7     | Upper 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_LO              | 8     | Lower 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_EINFO_PRESENT  | 10    | extended info present               |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_PSINFO_PRESENT | 11    | psinfo present                      |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_ERROR_HANDLING | 12    | error handling                      |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_DESC_TYPE         | 13    | descriptor type                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_SOP_OFFSET     | 14    | SOP offset                          |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_PS_LOCATION    | 15    | PS location                         |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_SRC_TAG_SEL       | 16    | Source tag selector                 |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_DEST_TAG_SEL      | 17    | Destination tag selector            |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_DEST_QNUM      | 18    | Destination queue number            |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_FDQ0_SZ0_QNUM  | 19    | FDQ0 SZ0 queue number               |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_FDQ1_QNUM      | 20    | FDQ1 queue number                   |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_FDQ2_QNUM      | 21    | FDQ2 queue number                   |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_FDQ3_QNUM      | 22    | FDQ3 queue number                   |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_FLOW_SZ_CFG           | 30    | NavSS UDMAP receive   | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | flow size threshold   |                             |       |                                     |
+|                             |       | configuration         +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | receive flow index                  |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_HI              | 7     | Upper 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_LO              | 8     | Lower 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_FDQ0_SZ1_QNUM  | 23    | FDQ0 SZ1 queue number               |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_FDQ0_SZ2_QNUM  | 24    | FDQ0 SZ2 queue number               |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_FDQ0_SZ3_QNUM  | 25    | FDQ0 SZ3 queue number               |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | UDMA_FLOW_RX_SIZE_THRESH_EN | 26    | size threshold routing enable       |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_OES_SET               | 31    | Set OES register in   | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | NavSS UDMAP           |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | Channel index                       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | EVENT                       | 3     | Global event                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | OES_REG_INDEX               | 4     | OES register index                  |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_OES_GET               | 32    | Get OES register in   | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | NavSS UDMAP           |                             |       |                                     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | Channel index                       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | EVENT                       | 3     | Global event                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | OES_REG_INDEX               | 4     | OES register index                  |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_FLOW_GET_CFG          | 33    | Get NavSS UDMAP       | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | receive flow          |                             |       |                                     |
+|                             |       | configuration         +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | INDEX                       | 1     | UDMAP receive flow index            |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | GET_RESET_CFG               | 2     | Configuration retrieval type        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| UDMAP_FLOW_SZ_GET_CFG       | 34    | Get NavSS UDMAP       | DEVICE_ID                   | 0     | UDMAP Device ID                     |
+|                             |       | receive flow size     |                             |       |                                     |
+|                             |       | threshold             +-----------------------------+-------+-------------------------------------+
+|                             |       | configuration         | INDEX                       | 1     | UDMAP receive flow index            |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | GET_RESET_CFG               | 2     | Configuration retrieval type        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| PSIL_INIT                   | 35    | PSI-L driver init     | N/A                         | N/A   | N/A                                 |
+|                             |       | complete              |                             |       |                                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| PSIL_PAIR                   | 36    | Pair NavSS PSI-L      | DEVICE_ID                   | 0     | PSI-L proxy device ID               |
+|                             |       | threads               +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_SRC_THREAD             | 10    | PSI-L source thread                 |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_DST_THREAD             | 11    | PSI-L destination thread            |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_THREAD_ENABLED         | 12    | PSI-L thread enabled prior to       |
+|                             |       |                       |                             |       | pairing                             |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| PSIL_READ                   | 38    | Read NavSS PSI-L      | DEVICE_ID                   | 0     | PSI-L proxy device ID               |
+|                             |       | thread configuration  +-----------------------------+-------+-------------------------------------+
+|                             |       | register              | PSIL_THREAD                 | 15    | PSI-L thread                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_THREAD_CFG_REG_ADDR    | 16    | Thread configuration register addr  |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_THREAD_CFG_REG_VAL_HI  | 17    | Upper 16-bits of register value     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_THREAD_CFG_REG_VAL_LO  | 18    | Lower 16-bits of register value     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| PSIL_WRITE                  | 39    | Write NavSS PSI-L     | DEVICE_ID                   | 0     | PSI-L proxy device ID               |
+|                             |       | thread configuration  +-----------------------------+-------+-------------------------------------+
+|                             |       | register              | PSIL_THREAD                 | 15    | PSI-L thread                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_THREAD_CFG_REG_ADDR    | 16    | Thread configuration register addr  |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_THREAD_CFG_REG_VAL_HI  | 17    | Upper 16-bits of written value      |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_THREAD_CFG_REG_VAL_LO  | 18    | Lower 16-bits of written value      |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| PSIL_UNPAIR                 | 40    | Unpair NavSS PSI-L    | DEVICE_ID                   | 0     | PSI-L proxy device ID               |
+|                             |       | threads               +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_SRC_THREAD             | 10    | PSI-L source thread                 |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_DST_THREAD             | 11    | PSI-L destination thread            |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_THREAD_DISABLED        | 13    | PSI-L thread disabled prior to      |
+|                             |       |                       |                             |       | unpairing                           |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | PSIL_SRC_THREAD_PEER        | 14    | Source thread peer register thread  |
+|                             |       |                       |                             |       | value                               |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| PSIL_DRU_DST_OFFSET         | 41    | DRU thread offset for | DEVICE_ID                   | 0     | PSI-L proxy device ID               |
+|                             |       | UTC control           +-----------------------------+-------+-------------------------------------+
+|                             |       | programming           | PSIL_THREAD                 | 15    | PSI-L thread                        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| IRQ_INIT                    | 43    | IRQ driver init       | N/A                         | N/A   | N/A                                 |
+|                             |       | complete              |                             |       |                                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| IRQ_SET                     | 44    | Program interrupt     | VALID_PARAM_HI              | 7     | Upper 16-bits of valid_params       |
+|                             |       | route                 +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_LO              | 8     | Lower 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_IA_ID                   | 10    | IA device ID                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_GLOBAL_EVENT            | 11    | Global event                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_DST_HOST_IRQ            | 12    | Destination host IRQ input index    |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_SECONDARY_HOST          | 13    | Secondary host ID                   |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_SRC_ID                  | 14    | Interrupt source device ID          |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_SRC_INDEX               | 15    | Interrupt source index              |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_DST_ID                  | 16    | Interrupt destination device ID     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_VINT                    | 17    | Virtual interrupt                   |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_VINT_STATUS_BIT_INDEX   | 18    | Virtual interrupt status bit        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| IRQ_RELEASE                 | 45    | Clear interrupt       | VALID_PARAM_HI              | 7     | Upper 16-bits of valid_params       |
+|                             |       | route                 +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | VALID_PARAM_LO              | 8     | Lower 16-bits of valid_params       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_IA_ID                   | 10    | IA device ID                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_GLOBAL_EVENT            | 11    | Global event                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_DST_HOST_IRQ            | 12    | Destination host IRQ input index    |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_SECONDARY_HOST          | 13    | Secondary host ID                   |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_SRC_ID                  | 14    | Interrupt source device ID          |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_SRC_INDEX               | 15    | Interrupt source index              |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_DST_ID                  | 16    | Interrupt destination device ID     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_VINT                    | 17    | Virtual interrupt                   |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IRQ_VINT_STATUS_BIT_INDEX   | 18    | Virtual interrupt status bit        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| IRQ_IA_INIT                 | 48    | IA driver init        | N/A                         | N/A   | N/A                                 |
+|                             |       | complete              |                             |       |                                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| IRQ_IA_MAP_VINT             | 49    | Map an event to an IA | DEVICE_ID                   | 0     | IA device ID                        |
+|                             |       | virtual interrupt     +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IA_VINT                     | 10    | Virtual interrupt                   |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IA_GLOBAL_EVENT             | 11    | Global event                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IA_VINT_STATUS_BIT          | 12    | Virtual interrupt status bit        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| IRQ_IA_UNMAP_VINT           | 50    | Unmap an event from   | DEVICE_ID                   | 0     | IA device ID                        |
+|                             |       | an IA virtual         +-----------------------------+-------+-------------------------------------+
+|                             |       | interrupt             | IA_VINT                     | 10    | Virtual interrupt                   |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IA_GLOBAL_EVENT             | 11    | Global event                        |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IA_VINT_STATUS_BIT          | 12    | Virtual interrupt status bit        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| IRQ_IR_INIT                 | 52    | IR driver init        | N/A                         | N/A   | N/A                                 |
+|                             |       | complete              |                             |       |                                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| IRQ_IR_CFG                  | 53    | Configured IR input   | DEVICE_ID                   | 0     | IR device ID                        |
+|                             |       | to output mapping     +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IR_INPUT                    | 10    | IR input index                      |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IR_OUTPUT                   | 11    | IR output index                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| IRQ_IR_CLR                  | 54    | Cleared IR input      | DEVICE_ID                   | 0     | IR device ID                        |
+|                             |       | to output mapping     +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IR_INPUT                    | 10    | IR input index                      |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | IR_OUTPUT                   | 11    | IR output index                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RESASG_VALIDATE_BRDCFG_LIST | 58    | RM board              | RESASG_UTYPE                | 6     | Resource assignment unique type     |
+|                             |       | configuration         +-----------------------------+-------+-------------------------------------+
+|                             |       | resource              | RESASG_VALIDATE_HOST        | 10    | host ID                             |
+|                             |       | assignment            +-----------------------------+-------+-------------------------------------+
+|                             |       | validation            | RESASG_VALIDATE_RES_START   | 11    | Resource range start                |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RESASG_VALIDATE_RES_NUM     | 12    | Resource range number               |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RESASG_FIREWALL_CFG         | 59    | RM resource           | INDEX                       | 1     | Resource index                      |
+|                             |       | assignment firewall   +-----------------------------+-------+-------------------------------------+
+|                             |       | configuration         | RESASG_UTYPE                | 6     | Resource assignment unique type     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RESASG_FWL_ID               | 13    | Channelized firewall ID             |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RESASG_FWL_CH               | 14    | Channelized firewall channel        |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RESASG_VALIDATE_RESOURCE    | 60    | RM validate           | INDEX                       | 1     | Resource index                      |
+|                             |       | resource against      +-----------------------------+-------+-------------------------------------+
+|                             |       | board configuration   | RESASG_UTYPE                | 6     | Resource assignment unique type     |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RESASG_VALIDATE_HOST        | 10    | host ID                             |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| RESOURCE_GET                | 61    | Retrieve a resource   | RESASG_UTYPE                | 6     | Resource assignment unique type     |
+|                             |       | range for a host      +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RESOURCE_GET_TYPE           | 10    | Resource type                       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RESOURCE_GET_SUBTYPE        | 11    | Resource subtype                    |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RESOURCE_GET_RANGE_START    | 12    | Resource range start                |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RESOURCE_GET_RANGE_NUM      | 13    | Resource range number               |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | RESOURCE_GET_SECONDARY_HOST | 14    | Secondary host                      |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| DEVGRP_VALIDATE             | 62    | Validate device       | DEVICE_ID                   | 0     | Device ID                           |
+|                             |       | against current RM    +-----------------------------+-------+-------------------------------------+
+|                             |       | device group          | DEVGRP_BOARDCFG             | 10    | RM Board configuration devgrp       |
+|                             |       |                       +-----------------------------+-------+-------------------------------------+
+|                             |       |                       | DEVGRP_DEVICE               | 11    | RM managed device devgrp            |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| FAIL (modifier)             | 0x40  | Action failed when    | N/A                         | N/A   | N/A                                 |
+|                             |       | action bit set        |                             |       |                                     |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+| GENERIC_DEBUG               | 127   | Generic Debug Message | N/A                         | N/A   | Any use.                            |
++-----------------------------+-------+-----------------------+-----------------------------+-------+-------------------------------------+
+
+.. _pub_trace_debug_data_format_action_id_power:
+
+Power Management Action IDs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++---------------------+-------+----------------------------------------+----------------------------------------+
+|      Action ID      | Value |                   Use                  |                MSD Use                 |
++=====================+=======+========================================+========================================+
+| DEVICE_ON           | 0     | Device has been turned on           .  | Device ID                              |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| DEVICE_OFF          | 1     | Device has been turned off.            | Device ID                              |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| CLOCK_ENABLE        | 2     | Clock has been enabled.                | Clock ID                               |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| CLOCK_DISABLE       | 3     | Clock has been disabled.               | Clock ID                               |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| CLOCK_SET_RATE      | 4     | Clock frequency has been changed.      | [21:17] - Clock frequency, exponent    |
+|                     |       |                                        | [16:10] - Clock frequency, significand |
+|                     |       |                                        | [9:0]   - Clock ID                     |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| CLOCK_SET_PARENT    | 5     | Clock parent has been changed.         | [21:10] - New parent ID                |
+|                     |       |                                        | [9:0]   - Clock ID                     |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| MSG_RECEIVED        | 6     | TI-SCI message received                | Message ID                             |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| MSG_PARAM_DEV_CLK_ID| 7     | TI-SCI message content: dev/clk-ids    | [10:21] - Clock ID                     |
+|                     |       |                                        | [9:0]   - Device ID                    |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| MSG_PARAM_VAL       | 8     | TI-SCI message content: value          | Target value                           |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| WAKE_ARM            | 9     | ARM wakeup event received              | Host ID                                |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| WAKE_HANDLER        | 10    | Wakeup handler executed                | Interrupt ID                           |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| PD_GET              | 11    | Powerdomain get                        | [21:20]   - PSC ID                     |
+|                     |       |                                        | [19:14]   - Powerdomain ID             |
+|                     |       |                                        | [13:0]    - PD Use count               |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| PD_PUT              | 12    | Powerdomain put                        | [21:20]   - PSC ID                     |
+|                     |       |                                        | [19:14]   - Powerdomain ID             |
+|                     |       |                                        | [13:0]    - PD Use count               |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| SET_LOCAL_RESET     | 13    | Set local reset                        | [21:20]   - PSC ID                     |
+|                     |       |                                        | [19:14]   - Powerdomain ID             |
+|                     |       |                                        | [0]       - Enable (1) / Disable (0)   |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| MODULE_GET          | 14    | Module get                             | [21:20]   - PSC ID                     |
+|                     |       |                                        | [19:14]   - LPSC ID                    |
+|                     |       |                                        | [13:0]    - Module Use count           |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| MODULE_PUT          | 15    | Module put                             | [21:20]   - PSC ID                     |
+|                     |       |                                        | [19:14]   - LPSC ID                    |
+|                     |       |                                        | [13:0]    - Module Use count           |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| RETENTION_GET       | 16    | Retention put                          | [21:20]   - LPSC ID                    |
+|                     |       |                                        | [19:14]   - Powerdomain ID             |
+|                     |       |                                        | [13:0]    - Module Retention count     |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| RETENTION_PUT       | 17    | Retention put                          | [21:20]   - LPSC ID                    |
+|                     |       |                                        | [19:14]   - Powerdomain ID             |
+|                     |       |                                        | [13:0]    - Module Retention count     |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| PD_INIT             | 18    | Powerdomain init                       | [19:14]   - Powerdomain ID             |
+|                     |       |                                        | [21:20]   - PSC ID                     |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| PSC_INV_DATA        | 19    | Invalid PSC Data                       | N/A                                    |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| PD_TRANS_TIMEOUT    | 20    | Powerdomain Transition timeout         | [21:20]   - PSC ID                     |
+|                     |       |                                        | [19:14]   - Powerdomain ID             |
+|                     |       |                                        | [2:0]     - Priv Position information  |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| PD_INV_DEP_DATA     | 21    | Powerdomain Invalid Dep Data           | [21:20]   - Dependent PD ID            |
+|                     |       |                                        | [19:14]   - Powerdomain ID             |
+|                     |       |                                        | [2:0]     - Priv Position information  |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| PD_RSTDNE_TIMEOUT   | 22    | Powerdomain resetdone timeout          | [21:20]   - PSC ID                     |
+|                     |       |                                        | [19:14]   - Powerdomain ID             |
+|                     |       |                                        | [2:0]     - Priv Position information  |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| PM_INIT             | 32    | Power Management Init                  | [20]      - Power Init result          |
+|                     |       |                                        | [19]      - Modules defer result       |
+|                     |       |                                        | [18:16]   - Index of start module      |
+|                     |       |                                        | [15:0]    - Error value                |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| PM_DEV_INIT         | 33    | Power Management device init           | [21:12]   - Device ID                  |
+|                     |       |                                        | [11:0]    - Error value                |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| FAIL (modifier)     | 0x40  | Action failed when action bit set      | N/A                                    |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| EXCLUSIVE_BUSY      | 123   | Other hosts have enabled the device    | [21:12]   - Device ID                  |
+|                     |       | which exclusive access has been        | [11:6]    - Requesting host ID         |
+|                     |       | requested                              | [5:0]     - One of other host IDs      |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| EXCLUSIVE_DEVICE    | 124   | Another host has exclusive access      | [21:8]    - Device ID                  |
+|                     |       | to the requested device                | [7:0]     - Requesting host ID         |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| INVALID_STATE       | 125   | API attempted to set invalid state     | Target state                           |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| BAD_DEVICE          | 126   | API received bad device ID             | Device ID                              |
++---------------------+-------+----------------------------------------+----------------------------------------+
+| GENERIC_DEBUG       | 127   | Generic Debug Message                  | Any use.                               |
++---------------------+-------+----------------------------------------+----------------------------------------+

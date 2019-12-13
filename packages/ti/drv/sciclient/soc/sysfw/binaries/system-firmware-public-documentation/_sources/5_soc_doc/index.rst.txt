@@ -1,0 +1,44 @@
+.. _pub_soc_family_doc:
+
+############################################
+Chapter 5: SoC Family Specific Documentation
+############################################
+
+==============
+AM6 SoC Family
+==============
+
+.. toctree::
+   :maxdepth: 1
+
+   am6x/hosts
+   am6x/devices
+   am6x/clocks
+   am6x/resasg_types
+   am6x/irq_sources
+   am6x/irq_dsts
+   am6x/navss
+   am6x/sec_proxy
+   am6x/processors
+   am6x/runtime_keystore
+   am6x/firewalls
+   am6x/soc_devgrps
+
+================
+J721E SoC Family
+================
+
+.. toctree::
+   :maxdepth: 1
+
+   j721e/hosts
+   j721e/devices
+   j721e/clocks
+   j721e/resasg_types
+   j721e/irq_sources
+   j721e/irq_dsts
+   j721e/navss
+   j721e/sec_proxy
+   j721e/processors
+   j721e/firewalls
+   j721e/soc_devgrps

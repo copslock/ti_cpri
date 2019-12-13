@@ -30,7 +30,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /**
- *  \file sciclient_defaultBoardcfg.h
+ *  \file V1/sciclient_defaultBoardcfg.h
  *
  *  \brief File defining tisci_local_rm_boardcfg for boardCfg RM .
  *
@@ -44,8 +44,8 @@
 /* ========================================================================== */
 #include <ti/csl/csl_types.h>
 #include <ti/drv/sciclient/sciclient.h>
-#include <ti/drv/sciclient/include/tisci/tisci_boardcfg.h>
-#include <ti/drv/sciclient/soc/V1/tisci_resasg_types.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/tisci_boardcfg.h>
+#include <ti/drv/sciclient/soc/sysfw/include/j721e/tisci_resasg_types.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -71,13 +71,12 @@ extern const struct tisci_boardcfg_sec gBoardConfigLow_security;
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
 /* ========================================================================== */
-/* Number of entries of type tisci_boardcfg_rm_resasg_entry for RM resource
-*   assignment*/
-#define TISCI_BOARDCFG_RM_RESASG_ENTRIES (136U)
 
 struct tisci_local_rm_boardcfg {
     struct tisci_boardcfg_rm      rm_boardcfg;
-    struct tisci_boardcfg_rm_resasg_entry resasg_entries[TISCI_BOARDCFG_RM_RESASG_ENTRIES];
+    /**< RM board configuration */
+    struct tisci_boardcfg_rm_resasg_entry resasg_entries[TISCI_BOARDCFG_RM_RESASG_ENTRIES_MAX];
+    /**< Resource Assignment Entries */
 };
 #endif
 

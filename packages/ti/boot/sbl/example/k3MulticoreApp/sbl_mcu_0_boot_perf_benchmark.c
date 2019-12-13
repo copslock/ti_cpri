@@ -163,15 +163,15 @@ static int32_t BOOT_PERF_TEST_sysfwInit(void)
 #endif
 
 #if defined(SBL_SKIP_SYSFW_INIT) || defined(SBL_SKIP_BRD_CFG_BOARD)
-    Sciclient_BoardCfgPrms_t sblPerfTestBoardCfgPrms={(uint32_t)&sblPerfTestBoardCfg,0, sizeof(sblPerfTestBoardCfg)};
+    Sciclient_BoardCfgPrms_t sblPerfTestBoardCfgPrms={(uint32_t)&sblPerfTestBoardCfg,0, sizeof(sblPerfTestBoardCfg), DEVGRP_ALL};
 #endif
 
 #if defined(SBL_SKIP_SYSFW_INIT) || defined(SBL_SKIP_BRD_CFG_RM)
-    Sciclient_BoardCfgPrms_t sblPerfTestBoardCfgRmPrms={(uint32_t)&sblPerfTestBoardCfg_rm,0, sizeof(sblPerfTestBoardCfg_rm)};
+    Sciclient_BoardCfgPrms_t sblPerfTestBoardCfgRmPrms={(uint32_t)&sblPerfTestBoardCfg_rm,0, sizeof(sblPerfTestBoardCfg_rm), DEVGRP_ALL};
 #endif
 
 #if defined(SBL_SKIP_SYSFW_INIT) || defined(SBL_SKIP_BRD_CFG_SEC)
-    Sciclient_BoardCfgPrms_t sblPerfTestBoardCfgSecPrms={(uint32_t)&sblPerfTestBoardCfg_sec,0, sizeof(sblPerfTestBoardCfg_sec)};
+    Sciclient_BoardCfgPrms_t sblPerfTestBoardCfgSecPrms={(uint32_t)&sblPerfTestBoardCfg_sec,0, sizeof(sblPerfTestBoardCfg_sec), DEVGRP_ALL};
 #endif
     BOOT_PERF_TEST_CacheCleanInvalidateDcacheSetWay();
 

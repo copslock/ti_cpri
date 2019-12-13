@@ -135,7 +135,6 @@ int32_t Sciclient_procBootReleaseProcessor(uint8_t  processorId,
  *  \param  processorId     Index of the processor
  *                          Refer \ref Sciclient_ProcessorIds.
  *  \param  hostId          Index of the Host
- *                          Refer \ref Sciclient_SecProxyHostIds
  *  \param  timeout         Gives a sense of how long to wait for the operation.
  *                          Refer \ref Sciclient_ServiceOperationTimeout.
  *  \return CSL_PASS on success, else failure
@@ -154,7 +153,6 @@ int32_t Sciclient_procBootHandoverProcessor(uint8_t  processorId,
  *
  *  \param  configReq       Configuration parameters for the processor.
  *                          Refer #tisci_msg_proc_set_config_req
- *                          Refer \ref Sciclient_PmDeviceIds.
  *  \param  timeout         Gives a sense of how long to wait for the operation.
  *                          Refer \ref Sciclient_ServiceOperationTimeout.
  *  \return CSL_PASS on success, else failure

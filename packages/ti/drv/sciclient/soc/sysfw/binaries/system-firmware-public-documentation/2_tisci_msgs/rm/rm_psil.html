@@ -1,0 +1,667 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Resource Management PSI-L TISCI Message Description &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../../index.html"/>
+        <link rel="up" title="Chapter 2: TISCI Message Documentation" href="../index.html"/>
+        <link rel="next" title="Security X509 Certificate Documentation" href="../security/sec_cert_format.html"/>
+        <link rel="prev" title="Resource Management UDMAP TISCI Message Description" href="rm_udmap.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.10.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapter 2: TISCI Message Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general">General</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#power-management-pm">Power Management (PM)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#resource-management-rm">Resource Management (RM)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rm_irq.html">Resource Management IRQ TISCI Message Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rm_proxy.html">Resource Management Proxy TISCI Message Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rm_ra.html">Resource Management Ring Accelerator TISCI Message Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rm_udmap.html">Resource Management UDMAP TISCI Message Description</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Resource Management PSI-L TISCI Message Description</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-rm-psil-pair-psi-l-pair">TISCI_MSG_RM_PSIL_PAIR - PSI-L Pair</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-rm-psil-unpair-psi-l-unpair">TISCI_MSG_RM_PSIL_UNPAIR - PSI-L Unpair</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-rm-psil-read-psi-l-thread-configuration-register-read">TISCI_MSG_RM_PSIL_READ - PSI-L Thread Configuration Register Read</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-rm-psil-write-psi-l-thread-configuration-register-write">TISCI_MSG_RM_PSIL_WRITE - PSI-L Thread Configuration Register Write</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#secure-management">Secure Management</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../5_soc_doc/index.html">Chapter 5: SoC Family Specific Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Chapter 2: TISCI Message Documentation</a> &raquo;</li>
+      
+    <li>Resource Management PSI-L TISCI Message Description</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="resource-management-psi-l-tisci-message-description">
+<h1>Resource Management PSI-L TISCI Message Description<a class="headerlink" href="#resource-management-psi-l-tisci-message-description" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This chapter provides information on usage of the RM PSI-L management TISCI
+message API parameters.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">TISCI Message ID</th>
+<th class="head">Message Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0x1280</td>
+<td><a class="reference internal" href="#pub-rm-public-psil-pair"><span class="std std-ref">TISCI_MSG_RM_PSIL_PAIR</span></a></td>
+</tr>
+<tr class="row-odd"><td>0x1281</td>
+<td><a class="reference internal" href="#pub-rm-public-psil-unpair"><span class="std std-ref">TISCI_MSG_RM_PSIL_UNPAIR</span></a></td>
+</tr>
+<tr class="row-even"><td>0x1282</td>
+<td><a class="reference internal" href="#pub-rm-public-psil-read"><span class="std std-ref">TISCI_MSG_RM_PSIL_READ</span></a></td>
+</tr>
+<tr class="row-odd"><td>0x1283</td>
+<td><a class="reference internal" href="#pub-rm-public-psil-write"><span class="std std-ref">TISCI_MSG_RM_PSIL_WRITE</span></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tisci-msg-rm-psil-pair-psi-l-pair">
+<span id="pub-rm-public-psil-pair"></span><h2>TISCI_MSG_RM_PSIL_PAIR - PSI-L Pair<a class="headerlink" href="#tisci-msg-rm-psil-pair-psi-l-pair" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>psil pair</strong> TISCI message API is used to pair a SoC Navigator Subsystem
+source thread to a destination thread. Pairing the threads enables both threads
+and the source thread’s registers are programmed using the destination thread’s
+thread width and credit count capabilities. UDMAP channels mapped to PSI-L
+source and destination threads in the pair request will have their THRD_ID
+register programmed with the remote thread ID value.</p>
+<p>The host requesting a <strong>psil pair</strong> operation for threads mapped to UDMAP
+channels must be the owner, or the supervisor of the host owning, the UDMAP
+channels. Therefore, <strong>psil pair</strong> operations for UDMAP mapped threads must take
+place after the channel(s) are allocated and configured. For threads not mapped
+to UDMAP channels, the host requesting the <strong>psil pair</strong> operation must have
+access through the region firewall covering the entity to which the thread is
+mapped.</p>
+<p>The <strong>psil pair</strong> API can be used to pair source and destination threads within
+any Navigator Subsystem on the device.</p>
+<div class="section" id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tisci-message-id">
+<h3>TISCI Message ID<a class="headerlink" href="#tisci-message-id" title="Permalink to this headline">¶</a></h3>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_RM_PSIL_PAIR</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x1280U)</span></code></p>
+<p>RM TISCI message to pair PSI-L source and destination threads</p>
+</p>
+</div>
+<div class="section" id="psi-l-pair-message-parameters">
+<h3>PSI-L Pair Message Parameters<a class="headerlink" href="#psi-l-pair-message-parameters" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="16%" />
+<col width="40%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Valid Values</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>Generic TISCI message header (8 bytes)</td>
+<td><a class="reference internal" href="../../5_soc_doc/am6x/hosts.html"><span class="doc">Valid Host IDs</span></a></td>
+<td>Generic TISCI message header. Contains the message ID, host ID, sequence number, and any flags</td>
+</tr>
+<tr class="row-odd"><td>nav_id</td>
+<td>u32</td>
+<td><a class="reference internal" href="../../5_soc_doc/am6x/navss.html#pub-soc-am6x-navss-ids"><span class="std std-ref">Valid Navigator Subsystem Device IDs</span></a></td>
+<td>The SoC-specific Device ID of the Navigator subsystem in which the PSI-L proxy is located.</td>
+</tr>
+<tr class="row-even"><td>src_thread</td>
+<td>u32</td>
+<td><a class="reference internal" href="../../5_soc_doc/am6x/navss.html#pub-soc-am6x-psil-thread-ids"><span class="std std-ref">Valid Navigator Subsystem PSI-L Source Thread Indices</span></a></td>
+<td>Specifies the PSI-L source thread ID to be paired to the destination ID.</td>
+</tr>
+<tr class="row-odd"><td>dst_thread</td>
+<td>u32</td>
+<td><a class="reference internal" href="../../5_soc_doc/am6x/navss.html#pub-soc-am6x-psil-thread-ids"><span class="std std-ref">Valid Navigator Subsystem PSI-L Destination Thread Indices</span></a></td>
+<td>Specifies the PSI-L destination thread ID to be aired to the source thread ID.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="tisci-msg-rm-psil-unpair-psi-l-unpair">
+<span id="pub-rm-public-psil-unpair"></span><h2>TISCI_MSG_RM_PSIL_UNPAIR - PSI-L Unpair<a class="headerlink" href="#tisci-msg-rm-psil-unpair-psi-l-unpair" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>psil unpair</strong> TISCI message API is used to unpair a SoC Navigator
+Subsystem source thread from a destination thread. Unpairing the threads
+disables both threads and clears the source thread’s registers. UDMAP channels
+mapped to PSI-L source and destination threads in the unpair request will have
+their THRD_ID register cleared.</p>
+<p>The host requesting a <strong>psil unpair</strong> operation for threads mapped to UDMAP
+channels must be the owner, or the supervisor of the host owning, the UDMAP
+channels. Therefore, <strong>psil unpair</strong> operations for UDMAP mapped threads must
+take place before the channel(s) are freed. For threads not mapped to UDMAP
+channels, the host requesting the <strong>psil unpair</strong> operation must have access
+through the region firewall covering the entity to which the thread is mapped.</p>
+<p>The <strong>psil unpair</strong> API can be used to unpair source and destination threads
+within any Navigator Subsystem on the device.</p>
+<div class="section" id="id1">
+<h3>Usage<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id2">
+<h3>TISCI Message ID<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_RM_PSIL_UNPAIR</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x1281U)</span></code></p>
+<p>RM TISCI message to unpair PSI-L source and destination threads</p>
+</p>
+</div>
+<div class="section" id="psi-l-unpair-message-parameters">
+<h3>PSI-L Unpair Message Parameters<a class="headerlink" href="#psi-l-unpair-message-parameters" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="16%" />
+<col width="40%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Valid Values</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>Generic TISCI message header (8 bytes)</td>
+<td><a class="reference internal" href="../../5_soc_doc/am6x/hosts.html"><span class="doc">Valid Host IDs</span></a></td>
+<td>Generic TISCI message header. Contains the message ID, host ID, sequence number, and any flags</td>
+</tr>
+<tr class="row-odd"><td>nav_id</td>
+<td>u32</td>
+<td><a class="reference internal" href="../../5_soc_doc/am6x/navss.html#pub-soc-am6x-navss-ids"><span class="std std-ref">Valid Navigator Subsystem Device IDs</span></a></td>
+<td>The SoC-specific Device ID of the Navigator subsystem in which the PSI-L proxy is located.</td>
+</tr>
+<tr class="row-even"><td>src_thread</td>
+<td>u32</td>
+<td><a class="reference internal" href="../../5_soc_doc/am6x/navss.html#pub-soc-am6x-psil-thread-ids"><span class="std std-ref">Valid Navigator Subsystem PSI-L Source Thread Indices</span></a></td>
+<td>Specifies the PSI-L source thread ID to be unpaired from the destination ID.</td>
+</tr>
+<tr class="row-odd"><td>dst_thread</td>
+<td>u32</td>
+<td><a class="reference internal" href="../../5_soc_doc/am6x/navss.html#pub-soc-am6x-psil-thread-ids"><span class="std std-ref">Valid Navigator Subsystem PSI-L Destination Thread Indices</span></a></td>
+<td>Specifies the PSI-L destination thread ID to be unpaired from the source thread ID.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="tisci-msg-rm-psil-read-psi-l-thread-configuration-register-read">
+<span id="pub-rm-public-psil-read"></span><h2>TISCI_MSG_RM_PSIL_READ - PSI-L Thread Configuration Register Read<a class="headerlink" href="#tisci-msg-rm-psil-read-psi-l-thread-configuration-register-read" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>psil read</strong> TISCI message API is used to read a PSI-L thread’s
+configuration registers via a PSI-L configuration proxy.</p>
+<div class="section" id="id3">
+<h3>Usage<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id4">
+<h3>TISCI Message ID<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_RM_PSIL_READ</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x1282U)</span></code></p>
+<p>RM TISCI message to read PSI-L thread RT registers via the PSI-L proxy</p>
+</p>
+</div>
+<div class="section" id="message-data-structures">
+<h3>Message Data Structures<a class="headerlink" href="#message-data-structures" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_rm_psil_read_req</strong></p>
+<p>Reads the specified thread real-time configuration register from a specified PSI-L thread using the PSI-L configuration proxy.  The host requesting the read operation for threads mapped to UDMAP channels must be the owner, or the supervisor of the host owning, the UDMAP channels.  For threads not mapped to UDMAP channels, the host requesting the read operation must have access through the region firewall covering the entity to which the thread is mapped.  The PSI-L configuration proxy used to read thread’s configuration registers is based on the Navigator Subsystem specified by &#64;ref nav_id.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="11%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Standard TISCI header</td>
+</tr>
+<tr class="row-odd"><td>valid_params</td>
+<td>u32</td>
+<td>Bitfield defining validity of PSI-L read parameters.  This field is unused at the moment but exists if expansion of the API is needed in the future.</td>
+</tr>
+<tr class="row-even"><td>nav_id</td>
+<td>u16</td>
+<td>SoC device ID of Navigator Subsystem whose PSI-L config proxy is used to read from the thread.</td>
+</tr>
+<tr class="row-odd"><td>thread</td>
+<td>u16</td>
+<td>PSI-L thread ID within the PSI-L System thread map.</td>
+</tr>
+<tr class="row-even"><td>taddr</td>
+<td>u16</td>
+<td>Thread’s configuration register address to read.</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p><p><strong>struct tisci_msg_rm_psil_read_resp</strong></p>
+<p>Response to reading a PSI-L thread real-time register</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="27%" />
+<col width="56%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Standard TISCI header</td>
+</tr>
+<tr class="row-odd"><td>data</td>
+<td>u32</td>
+<td>Register value returned by read operation</td>
+</tr>
+</tbody>
+</table>
+</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-rm-psil-write-psi-l-thread-configuration-register-write">
+<span id="pub-rm-public-psil-write"></span><h2>TISCI_MSG_RM_PSIL_WRITE - PSI-L Thread Configuration Register Write<a class="headerlink" href="#tisci-msg-rm-psil-write-psi-l-thread-configuration-register-write" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>psil write</strong> TISCI message API is used to write a PSI-L thread’s
+configuration registers via a PSI-L configuration proxy.</p>
+<div class="section" id="id5">
+<h3>Usage<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id6">
+<h3>TISCI Message ID<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_RM_PSIL_WRITE</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x1283U)</span></code></p>
+<p>RM TISCI message to write PSI-L thread RT registers via the PSI-L proxy</p>
+</p>
+</div>
+<div class="section" id="id7">
+<h3>Message Data Structures<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_rm_psil_write_req</strong></p>
+<p>Write to the specified thread real-time configuration register in a specified PSI-L thread using the PSI-L configuration proxy.  The host requesting the read operation for threads mapped to UDMAP channels must be the owner, or the supervisor of the host owning, the UDMAP channels.  For threads not mapped to UDMAP channels, the host requesting the write operation must have access through the region firewall covering the entity to which the thread is mapped.  The PSI-L configuration proxy used to write thread’s configuration registers is based on the Navigator Subsystem specified by &#64;ref nav_id.  A read back verify is not performed for thread registers written via the PSI-L configuration proxy.  The configuration register field formats are not fully known by the PSI-L driver.  Therefore, it is up to the application to utilize &#64;ref tisci_msg_rm_psil_read_req to read back and verify what was written.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="11%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Standard TISCI header</td>
+</tr>
+<tr class="row-odd"><td>valid_params</td>
+<td>u32</td>
+<td>Bitfield defining validity of PSI-L write parameters.  This field is unused at the moment but exists if expansion of the API is needed in the future.</td>
+</tr>
+<tr class="row-even"><td>nav_id</td>
+<td>u16</td>
+<td>SoC device ID of Navigator Subsystem whose PSI-L config proxy is used to write to the thread.</td>
+</tr>
+<tr class="row-odd"><td>thread</td>
+<td>u16</td>
+<td>PSI-L thread ID within the PSI-L System thread map.</td>
+</tr>
+<tr class="row-even"><td>taddr</td>
+<td>u16</td>
+<td>Thread’s configuration register address to write.</td>
+</tr>
+<tr class="row-odd"><td>data</td>
+<td>u32</td>
+<td>32-bit word to write to the thread configuration register.</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p><p><strong>struct tisci_msg_rm_psil_write_resp</strong></p>
+<p>Response to writing a PSI-L thread real-time register</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="37%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>Standard TISCI header</td>
+</tr>
+</tbody>
+</table>
+</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../security/sec_cert_format.html" class="btn btn-neutral float-right" title="Security X509 Certificate Documentation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rm_udmap.html" class="btn btn-neutral" title="Resource Management UDMAP TISCI Message Description" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'19.10.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

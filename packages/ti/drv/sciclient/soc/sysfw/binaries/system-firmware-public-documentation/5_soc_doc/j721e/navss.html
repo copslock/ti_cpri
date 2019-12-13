@@ -1,0 +1,1043 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>j721e Navigator Subsystem Descriptions &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../../index.html"/>
+        <link rel="up" title="Chapter 5: SoC Family Specific Documentation" href="../index.html"/>
+        <link rel="next" title="J721E Secure Proxy Descriptions" href="sec_proxy.html"/>
+        <link rel="prev" title="j721e Peripheral Interrupt Destination Descriptions" href="irq_dsts.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.10.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapter 5: SoC Family Specific Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#am6-soc-family">AM6 SoC Family</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#j721e-soc-family">J721E SoC Family</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="hosts.html">J721E Host Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">J721E Devices Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clocks.html">J721E Clock Identifiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="resasg_types.html">j721e Board Configuration Resource Assignment Type Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_sources.html">j721e Peripheral Interrupt Source Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_dsts.html">j721e Peripheral Interrupt Destination Descriptions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">j721e Navigator Subsystem Descriptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-device-ids">Navigator Subsystem Device IDs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-ring-indices">Navigator Subsystem Ring Indices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-channel-and-flow-indices">Navigator Subsystem Channel and Flow Indices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-virtual-interrupts">Navigator Subsystem Virtual Interrupts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-global-events">Navigator Subsystem Global Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-proxies">Navigator Subsystem Proxies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigator-subsystem-psi-l-source-and-destination-thread-ids">Navigator Subsystem PSI-L Source and Destination Thread IDs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sec_proxy.html">J721E Secure Proxy Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="processors.html">J721E Processor Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firewalls.html">J721E Firewall Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="soc_devgrps.html">J721E Device Group descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Chapter 5: SoC Family Specific Documentation</a> &raquo;</li>
+      
+    <li>j721e Navigator Subsystem Descriptions</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="j721e-navigator-subsystem-descriptions">
+<h1>j721e Navigator Subsystem Descriptions<a class="headerlink" href="#j721e-navigator-subsystem-descriptions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This chapter provides information on the Navigator Subsystems in the j721e SoC.
+Some System Firmware TISCI messages take Navigator Subsystem specific inputs.
+This chapter provides information on the valid values for applicable TISCI
+message parameters.</p>
+</div>
+<div class="section" id="navigator-subsystem-device-ids">
+<span id="pub-soc-j721e-navss-ids"></span><h2>Navigator Subsystem Device IDs<a class="headerlink" href="#navigator-subsystem-device-ids" title="Permalink to this headline">¶</a></h2>
+<p>Some System Firmware TISCI message APIs require the device ID of the Navigator
+Subsystem to be modified as part of the request. Based on <a class="reference internal" href="devices.html"><span class="doc">j721e Device IDs</span></a> these are the valid Navigator Subsystem device IDs.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="51%" />
+<col width="49%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Interrupt Aggregator Device Name</th>
+<th class="head">Interrupt Aggregator Device ID</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>J721E_DEV_NAVSS0_MODSS_INTAGGR_0</td>
+<td>207</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_MODSS_INTAGGR_1</td>
+<td>208</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_UDMASS_INTAGGR_0</td>
+<td>209</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_INTAGGR_0</td>
+<td>233</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Ring Accelerator Device Name</th>
+<th class="head">Ring Accelerator Device ID</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>J721E_DEV_NAVSS0_RINGACC_0</td>
+<td>211</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_RINGACC_0</td>
+<td>235</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="63%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">UDMA Device Name</th>
+<th class="head">UDMA Device ID</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>J721E_DEV_NAVSS0_UDMAP_0</td>
+<td>212</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_UDMAP_0</td>
+<td>236</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="61%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Proxy Device Name</th>
+<th class="head">Proxy Device ID</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>J721E_DEV_NAVSS0_PROXY_0</td>
+<td>210</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_PROXY_0</td>
+<td>234</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="51%" />
+<col width="49%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">PSI-L Proxy Navigator Device Name</th>
+<th class="head">PSI-L Proxy Navigator Device ID</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>J721E_DEV_NAVSS512L_MAIN_0</td>
+<td>199</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS_MCU_J7_MCU_0</td>
+<td>232</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="navigator-subsystem-ring-indices">
+<span id="pub-soc-j721e-navss-rings"></span><h2>Navigator Subsystem Ring Indices<a class="headerlink" href="#navigator-subsystem-ring-indices" title="Permalink to this headline">¶</a></h2>
+<p>This section describes valid Navigator Subsystem Ring Accelerator ring indices
+for each Navigator ring type. The ring index and type ID are used in some Ring
+Accelerator based TISCI messages.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Resources marked as reserved for use by DMSC <strong>cannot</strong> be assigned to a
+host within the RM Board Configuration resource assignment array.  The RM
+Board Configuration is rejected if an overlap with a reserved resource is
+detected.</p>
+</div>
+<p><strong>NAVSS0_RINGACC_0</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Ring Type</th>
+<th class="head">Ring Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>UDMAP_TX_UH</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-odd"><td>UDMAP_TX_H</td>
+<td>4 to 15</td>
+</tr>
+<tr class="row-even"><td>UDMAP_TX</td>
+<td>16 to 139</td>
+</tr>
+<tr class="row-odd"><td>UDMAP_TX_EXT</td>
+<td>140 to 299</td>
+</tr>
+<tr class="row-even"><td>UDMAP_RX_UH</td>
+<td>300 to 303</td>
+</tr>
+<tr class="row-odd"><td>UDMAP_RX_H</td>
+<td>304 to 315</td>
+</tr>
+<tr class="row-even"><td>UDMAP_RX</td>
+<td>316 to 439</td>
+</tr>
+<tr class="row-odd"><td>GP</td>
+<td>440 to 973</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">Monitor Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Ring Monitors</td>
+<td>0 to 31</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MCU_NAVSS0_RINGACC_0</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="64%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Ring Type</th>
+<th class="head">Ring Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>UDMAP_TX_H</td>
+<td>0 to 1</td>
+</tr>
+<tr class="row-odd"><td>UDMAP_TX</td>
+<td>2 to 45</td>
+</tr>
+<tr class="row-even"><td>UDMAP_TX
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>46 to 47</td>
+</tr>
+<tr class="row-odd"><td>UDMAP_RX_H</td>
+<td>48 to 49</td>
+</tr>
+<tr class="row-even"><td>UDMAP_RX</td>
+<td>50 to 92</td>
+</tr>
+<tr class="row-odd"><td>UDMAP_RX
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>93 to 95</td>
+</tr>
+<tr class="row-even"><td>GP</td>
+<td>96 to 251</td>
+</tr>
+<tr class="row-odd"><td>GP
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>252 to 255</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&#160;</th>
+<th class="head">Monitor Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Ring Monitors</td>
+<td>0 to 31</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="navigator-subsystem-channel-and-flow-indices">
+<span id="pub-soc-j721e-udmap-channel-and-flow-indices"></span><h2>Navigator Subsystem Channel and Flow Indices<a class="headerlink" href="#navigator-subsystem-channel-and-flow-indices" title="Permalink to this headline">¶</a></h2>
+<p>This section describes valid Navigator Subsystem UDMA transmit channel and
+receive channel indices for each Navigator UDMA channel type. The receive flow
+index range has no type information since it’s required for receive flows.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Resources marked as reserved for use by DMSC <strong>cannot</strong> be assigned to a
+host within the RM Board Configuration resource assignment array.  The RM
+Board Configuration is rejected if an overlap with a reserved resource is
+detected.</p>
+</div>
+<p><strong>NAVSS0_UDMAP_0</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Tx Channel Type</th>
+<th class="head">Tx Channel Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>TX_UHCHAN</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-odd"><td>TX_HCHAN</td>
+<td>4 to 15</td>
+</tr>
+<tr class="row-even"><td>TX_CHAN</td>
+<td>16 to 139</td>
+</tr>
+<tr class="row-odd"><td>TX_ECHAN</td>
+<td>140 to 299</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Rx Channel Type</th>
+<th class="head">Rx Channel Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>RX_UHCHAN</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-odd"><td>RX_HCHAN</td>
+<td>4 to 15</td>
+</tr>
+<tr class="row-even"><td>RX_CHAN</td>
+<td>16 to 139</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Rx Flow Type</th>
+<th class="head">Rx Flow Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DEFAULT</td>
+<td>0 to 139</td>
+</tr>
+<tr class="row-odd"><td>CONFIGURABLE</td>
+<td>140 to 299</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MCU_NAVSS0_UDMAP_0</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Tx Channel Type</th>
+<th class="head">Tx Channel Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>TX_HCHAN</td>
+<td>0 to 1</td>
+</tr>
+<tr class="row-odd"><td>TX_CHAN</td>
+<td>2 to 45</td>
+</tr>
+<tr class="row-even"><td>TX_CHAN
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>46 to 47</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Rx Channel Type</th>
+<th class="head">Rx Channel Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>RX_HCHAN</td>
+<td>0 to 1</td>
+</tr>
+<tr class="row-odd"><td>RX_CHAN</td>
+<td>2 to 44</td>
+</tr>
+<tr class="row-even"><td>RX_CHAN
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>45 to 47</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Rx Flow Type</th>
+<th class="head">Rx Flow Index Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DEFAULT</td>
+<td>0 to 44</td>
+</tr>
+<tr class="row-odd"><td>DEFAULT
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>45 to 47</td>
+</tr>
+<tr class="row-even"><td>CONFIGURABLE</td>
+<td>48 to 95</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="navigator-subsystem-virtual-interrupts">
+<span id="pub-soc-j721e-vints"></span><h2>Navigator Subsystem Virtual Interrupts<a class="headerlink" href="#navigator-subsystem-virtual-interrupts" title="Permalink to this headline">¶</a></h2>
+<p>This section describes Navigator Subsystem virtual interrupts.  The virtual
+interrupts are used in interrupt management based TISCI messages.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Resources marked as reserved for use by DMSC <strong>cannot</strong> be assigned to a
+host within the RM Board Configuration resource assignment array.  The RM
+Board Configuration is rejected if an overlap with a reserved resource is
+detected.</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="56%" />
+<col width="44%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Interrupt Aggregator Name</th>
+<th class="head">Virtual Interrupt Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>J721E_DEV_NAVSS0_MODSS_INTAGGR_0</td>
+<td>0 to 63</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_MODSS_INTAGGR_1</td>
+<td>0 to 63</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_UDMASS_INTAGGR_0
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>0 to 37</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_UDMASS_INTAGGR_0</td>
+<td>38 to 255</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_NAVSS0_INTAGGR_0
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>0 to 7</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_INTAGGR_0</td>
+<td>8 to 255</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="navigator-subsystem-global-events">
+<span id="pub-soc-j721e-global-events"></span><h2>Navigator Subsystem Global Events<a class="headerlink" href="#navigator-subsystem-global-events" title="Permalink to this headline">¶</a></h2>
+<p>This section describes Navigator Subsystem global events.  The global events are
+used in interrupt management based TISCI messages.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Resources marked as reserved for use by DMSC <strong>cannot</strong> be assigned to a
+host within the RM Board Configuration resource assignment array.  The RM
+Board Configuration is rejected if an overlap with a reserved resource is
+detected.</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="61%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Global Event Name</th>
+<th class="head">Global Event Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>NAVSS0_UDMASS_INTAGGR_0 SEVT
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>0 to 37</td>
+</tr>
+<tr class="row-odd"><td>NAVSS0_UDMASS_INTAGGR_0 SEVT</td>
+<td>38 to 4607</td>
+</tr>
+<tr class="row-even"><td>MCU_NAVSS0_INTAGGR_0 SEVT
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>16384 to 16391</td>
+</tr>
+<tr class="row-odd"><td>MCU_NAVSS0_INTAGGR_0 SEVT</td>
+<td>16392 to 17919</td>
+</tr>
+<tr class="row-even"><td>NAVSS0_MODSS_INTAGGR_0 SEVT</td>
+<td>20480 to 21503</td>
+</tr>
+<tr class="row-odd"><td>NAVSS0_MODSS_INTAGGR_1 SEVT</td>
+<td>22528 to 23551</td>
+</tr>
+<tr class="row-even"><td>NAVSS0_UDMASS_INTAGGR_0 MEVT</td>
+<td>32768 to 33279</td>
+</tr>
+<tr class="row-odd"><td>MCU_NAVSS0_INTAGGR_0 MEVT</td>
+<td>34816 to 34943</td>
+</tr>
+<tr class="row-even"><td>NAVSS0_UDMASS_INTAGGR_0 GEVT</td>
+<td>36864 to 37375</td>
+</tr>
+<tr class="row-odd"><td>MCU_NAVSS0_INTAGGR_0 GEVT</td>
+<td>39936 to 40191</td>
+</tr>
+<tr class="row-even"><td>NAVSS0_UDMAP_0 TRIGGER</td>
+<td>49152 to 50175</td>
+</tr>
+<tr class="row-odd"><td>MCU_NAVSS0_UDMAP_0 TRIGGER</td>
+<td>56320 to 56575</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="navigator-subsystem-proxies">
+<span id="pub-soc-j721e-proxies"></span><h2>Navigator Subsystem Proxies<a class="headerlink" href="#navigator-subsystem-proxies" title="Permalink to this headline">¶</a></h2>
+<p>This section describes Navigator Subsystem proxy proxies.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Resources marked as reserved for use by DMSC <strong>cannot</strong> be assigned to a
+host within the RM Board Configuration resource assignment array.  The RM
+Board Configuration is rejected if an overlap with a reserved resource is
+detected.</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="70%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Proxy Name</th>
+<th class="head">Proxy Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>J721E_DEV_NAVSS0_PROXY_0</td>
+<td>0 to 63</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_PROXY_0
+(<strong>RESERVED BY SYSTEM FIRMWARE</strong>)</td>
+<td>0 to 0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_NAVSS0_PROXY_0</td>
+<td>1 to 63</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="navigator-subsystem-psi-l-source-and-destination-thread-ids">
+<span id="pub-soc-j721e-psil-thread-ids"></span><h2>Navigator Subsystem PSI-L Source and Destination Thread IDs<a class="headerlink" href="#navigator-subsystem-psi-l-source-and-destination-thread-ids" title="Permalink to this headline">¶</a></h2>
+<p>This section describes valid Navigator Subsystem PSI-L source and destination
+thread IDs for each thread type. The thread IDs are used in the PSI-L based
+TISCI messages.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">PSI-L threads marked as reserved for use by DMSC <strong>cannot</strong> be assigned be
+linked to another thread.</p>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="68%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Thread Type</th>
+<th class="head">Thread Range</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>udmap0_trstrm_tx</td>
+<td>0x8 to 0x8</td>
+</tr>
+<tr class="row-odd"><td>udmap0_cfgstrm_tx</td>
+<td>0x20 to 0x20</td>
+</tr>
+<tr class="row-even"><td>navss_main_udmap0_tx</td>
+<td>0x1000 to 0x108b</td>
+</tr>
+<tr class="row-odd"><td>navss_main_saul0_rx</td>
+<td>0x4000 to 0x4003</td>
+</tr>
+<tr class="row-even"><td>navss_main_icssg0_rx</td>
+<td>0x4100 to 0x4104</td>
+</tr>
+<tr class="row-odd"><td>navss_main_icssg1_rx</td>
+<td>0x4200 to 0x4204</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_debug_ccmcu_rx</td>
+<td>0x4300 to 0x4302</td>
+</tr>
+<tr class="row-odd"><td>navss_main_pdma_main_debug_mainc66_rx</td>
+<td>0x4304 to 0x4305</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_mcasp_g0_rx</td>
+<td>0x4400 to 0x4402</td>
+</tr>
+<tr class="row-odd"><td>navss_main_pdma_main_aasrc_rx</td>
+<td>0x4404 to 0x440b</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_mcasp_g1_rx</td>
+<td>0x4500 to 0x4508</td>
+</tr>
+<tr class="row-odd"><td>navss_main_pdma_main_misc_g0_rx</td>
+<td>0x4600 to 0x460a</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_misc_g1_rx</td>
+<td>0x460c to 0x4616</td>
+</tr>
+<tr class="row-odd"><td>navss_main_pdma_main_misc_g2_rx</td>
+<td>0x4618 to 0x4622</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_misc_g3_rx</td>
+<td>0x4624 to 0x462e</td>
+</tr>
+<tr class="row-odd"><td>navss_main_pdma_main_usart_g0_rx</td>
+<td>0x4700 to 0x4701</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_usart_g1_rx</td>
+<td>0x4702 to 0x4703</td>
+</tr>
+<tr class="row-odd"><td>navss_main_pdma_main_usart_g2_rx</td>
+<td>0x4704 to 0x4709</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_mcan_rx</td>
+<td>0x470c to 0x4729</td>
+</tr>
+<tr class="row-odd"><td>navss_main_msmc0_rx</td>
+<td>0x4800 to 0x481f</td>
+</tr>
+<tr class="row-even"><td>navss_main_vpac_tc0_cc_rx</td>
+<td>0x4820 to 0x483f</td>
+</tr>
+<tr class="row-odd"><td>navss_main_vpac_tc1_cc_rx</td>
+<td>0x4840 to 0x487f</td>
+</tr>
+<tr class="row-even"><td>navss_main_dmpac_tc0_cc_rx</td>
+<td>0x4880 to 0x489f</td>
+</tr>
+<tr class="row-odd"><td>navss_main_csi_rx</td>
+<td>0x4900 to 0x49ff</td>
+</tr>
+<tr class="row-even"><td>navss_main_cpsw9_rx</td>
+<td>0x4a00 to 0x4a00</td>
+</tr>
+<tr class="row-odd"><td>navss_mcu_udmap0_tx</td>
+<td>0x6000 to 0x602d</td>
+</tr>
+<tr class="row-even"><td>navss_mcu_udmap0_tx
+(<strong>Reserved by System Firmware</strong>)</td>
+<td>0x602e to 0x602f</td>
+</tr>
+<tr class="row-odd"><td>navss_mcu_pdma_cpsw0_rx</td>
+<td>0x7000 to 0x7000</td>
+</tr>
+<tr class="row-even"><td>navss_mcu_pdma_mcu0_rx</td>
+<td>0x7100 to 0x7106</td>
+</tr>
+<tr class="row-odd"><td>navss_mcu_pdma_mcu1_rx</td>
+<td>0x7200 to 0x7207</td>
+</tr>
+<tr class="row-even"><td>navss_mcu_pdma_mcu2_rx</td>
+<td>0x7300 to 0x7303</td>
+</tr>
+<tr class="row-odd"><td>navss_mcu_pdma_adc_rx</td>
+<td>0x7400 to 0x7403</td>
+</tr>
+<tr class="row-even"><td>navss_mcu_saul0_rx
+(<strong>Reserved by System Firmware</strong>)</td>
+<td>0x7500 to 0x7501</td>
+</tr>
+<tr class="row-odd"><td>navss_mcu_saul0_rx</td>
+<td>0x7502 to 0x7503</td>
+</tr>
+<tr class="row-even"><td>navss_main_udmap0_rx</td>
+<td>0x9000 to 0x908b</td>
+</tr>
+<tr class="row-odd"><td>navss_main_saul0_tx</td>
+<td>0xc000 to 0xc001</td>
+</tr>
+<tr class="row-even"><td>navss_main_icssg0_tx</td>
+<td>0xc100 to 0xc108</td>
+</tr>
+<tr class="row-odd"><td>navss_main_icssg1_tx</td>
+<td>0xc200 to 0xc208</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_mcasp_g0_tx</td>
+<td>0xc400 to 0xc402</td>
+</tr>
+<tr class="row-odd"><td>navss_main_pdma_main_aasrc_tx</td>
+<td>0xc404 to 0xc40b</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_mcasp_g1_tx</td>
+<td>0xc500 to 0xc508</td>
+</tr>
+<tr class="row-odd"><td>navss_main_pdma_main_misc_g0_tx</td>
+<td>0xc600 to 0xc60a</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_misc_g1_tx</td>
+<td>0xc60c to 0xc616</td>
+</tr>
+<tr class="row-odd"><td>navss_main_pdma_main_misc_g2_tx</td>
+<td>0xc618 to 0xc622</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_misc_g3_tx</td>
+<td>0xc624 to 0xc62e</td>
+</tr>
+<tr class="row-odd"><td>navss_main_pdma_main_usart_g0_tx</td>
+<td>0xc700 to 0xc701</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_usart_g1_tx</td>
+<td>0xc702 to 0xc703</td>
+</tr>
+<tr class="row-odd"><td>navss_main_pdma_main_usart_g2_tx</td>
+<td>0xc704 to 0xc709</td>
+</tr>
+<tr class="row-even"><td>navss_main_pdma_main_mcan_tx</td>
+<td>0xc70c to 0xc729</td>
+</tr>
+<tr class="row-odd"><td>navss_main_msmc0_tx</td>
+<td>0xc800 to 0xc81f</td>
+</tr>
+<tr class="row-even"><td>navss_main_vpac_tc0_cc_tx</td>
+<td>0xc820 to 0xc83f</td>
+</tr>
+<tr class="row-odd"><td>navss_main_vpac_tc1_cc_tx</td>
+<td>0xc840 to 0xc87f</td>
+</tr>
+<tr class="row-even"><td>navss_main_dmpac_tc0_cc_tx</td>
+<td>0xc880 to 0xc89f</td>
+</tr>
+<tr class="row-odd"><td>navss_main_csi_tx</td>
+<td>0xc900 to 0xc9ff</td>
+</tr>
+<tr class="row-even"><td>navss_main_cpsw9_tx</td>
+<td>0xca00 to 0xca07</td>
+</tr>
+<tr class="row-odd"><td>navss_mcu_udmap0_rx</td>
+<td>0xe000 to 0xe02c</td>
+</tr>
+<tr class="row-even"><td>navss_mcu_udmap0_rx
+(<strong>Reserved by System Firmware</strong>)</td>
+<td>0xe02d to 0xe02f</td>
+</tr>
+<tr class="row-odd"><td>navss_mcu_pdma_cpsw0_tx</td>
+<td>0xf000 to 0xf007</td>
+</tr>
+<tr class="row-even"><td>navss_mcu_pdma_mcu0_tx</td>
+<td>0xf100 to 0xf106</td>
+</tr>
+<tr class="row-odd"><td>navss_mcu_pdma_mcu1_tx</td>
+<td>0xf200 to 0xf207</td>
+</tr>
+<tr class="row-even"><td>navss_mcu_pdma_mcu2_tx</td>
+<td>0xf300 to 0xf303</td>
+</tr>
+<tr class="row-odd"><td>navss_mcu_pdma_adc_tx</td>
+<td>0xf400 to 0xf3ff</td>
+</tr>
+<tr class="row-even"><td>navss_mcu_saul0_tx
+(<strong>Reserved by System Firmware</strong>)</td>
+<td>0xf500 to 0xf500</td>
+</tr>
+<tr class="row-odd"><td>navss_mcu_saul0_tx</td>
+<td>0xf501 to 0xf501</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sec_proxy.html" class="btn btn-neutral float-right" title="J721E Secure Proxy Descriptions" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="irq_dsts.html" class="btn btn-neutral" title="j721e Peripheral Interrupt Destination Descriptions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'19.10.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

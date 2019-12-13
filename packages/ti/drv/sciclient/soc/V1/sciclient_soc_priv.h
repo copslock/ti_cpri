@@ -31,7 +31,7 @@
  *
  */
 /**
- *  \file sciclient_soc_priv.h
+ *  \file V1/sciclient_soc_priv.h
  *
  *  \brief Private J721E specific SOC file
  */

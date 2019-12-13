@@ -1,0 +1,2273 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>j721e Peripheral Interrupt Source Descriptions &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../../index.html"/>
+        <link rel="up" title="Chapter 5: SoC Family Specific Documentation" href="../index.html"/>
+        <link rel="next" title="j721e Peripheral Interrupt Destination Descriptions" href="irq_dsts.html"/>
+        <link rel="prev" title="j721e Board Configuration Resource Assignment Type Descriptions" href="resasg_types.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.10.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapter 5: SoC Family Specific Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#am6-soc-family">AM6 SoC Family</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#j721e-soc-family">J721E SoC Family</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="hosts.html">J721E Host Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="devices.html">J721E Devices Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="clocks.html">J721E Clock Identifiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="resasg_types.html">j721e Board Configuration Resource Assignment Type Descriptions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">j721e Peripheral Interrupt Source Descriptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event-based-interrupt-source-ids">Event-Based Interrupt Source IDs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-event-interrupt-source-ids">Non-Event Interrupt Source IDs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="irq_dsts.html">j721e Peripheral Interrupt Destination Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="navss.html">j721e Navigator Subsystem Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sec_proxy.html">J721E Secure Proxy Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="processors.html">J721E Processor Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="firewalls.html">J721E Firewall Descriptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="soc_devgrps.html">J721E Device Group descriptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Chapter 5: SoC Family Specific Documentation</a> &raquo;</li>
+      
+    <li>j721e Peripheral Interrupt Source Descriptions</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="j721e-peripheral-interrupt-source-descriptions">
+<h1>j721e Peripheral Interrupt Source Descriptions<a class="headerlink" href="#j721e-peripheral-interrupt-source-descriptions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This chapter provides information on peripheral interrupt source IDs that are
+permitted in the j721e SoC.  The interrupt source IDs represent outputs from SoC
+peripherals capable of generating an egress interrupt or event signal. The
+System Firmware interrupt management TISCI message APIs take interrupt source
+IDs as input to set and release interrupt routes between source peripherals and
+destination host processors.</p>
+</div>
+<div class="section" id="event-based-interrupt-source-ids">
+<span id="pub-soc-j721e-event-int-src-list"></span><h2>Event-Based Interrupt Source IDs<a class="headerlink" href="#event-based-interrupt-source-ids" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="11%" />
+<col width="39%" />
+<col width="22%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Device Name</th>
+<th class="head">Device ID</th>
+<th class="head">Interrupt Source Name</th>
+<th class="head">Interrupt Source Index</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>J721E_DEV_NAVSS0_RINGACC_0</td>
+<td>211</td>
+<td>Ring events</td>
+<td>0 to 973</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_RINGACC_0</td>
+<td>211</td>
+<td>Ring monitor events</td>
+<td>1024 to 1055</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_RINGACC_0</td>
+<td>211</td>
+<td>Ring global error event</td>
+<td>2048</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_RINGACC_0</td>
+<td>235</td>
+<td>Ring events</td>
+<td>0 to 255</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_NAVSS0_RINGACC_0</td>
+<td>235</td>
+<td>Ring monitor events</td>
+<td>1024 to 1055</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_RINGACC_0</td>
+<td>235</td>
+<td>Ring global error event</td>
+<td>2048</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_UDMAP_0</td>
+<td>212</td>
+<td>UDMA transmit channel OES events</td>
+<td>0 to 299</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_UDMAP_0</td>
+<td>212</td>
+<td>UDMA transmit channel EOES events</td>
+<td>512 to 811</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_UDMAP_0</td>
+<td>212</td>
+<td>UDMA receive channel OES events</td>
+<td>1024 to 1163</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_UDMAP_0</td>
+<td>212</td>
+<td>UDMA receive channel EOES events</td>
+<td>1280 to 1419</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_UDMAP_0</td>
+<td>212</td>
+<td>UDMA global configuration invalid flow event</td>
+<td>1536</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_UDMAP_0</td>
+<td>236</td>
+<td>UDMA transmit channel OES events</td>
+<td>0 to 47</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_NAVSS0_UDMAP_0</td>
+<td>236</td>
+<td>UDMA transmit channel EOES events</td>
+<td>512 to 559</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_UDMAP_0</td>
+<td>236</td>
+<td>UDMA receive channel OES events</td>
+<td>1024 to 1071</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_NAVSS0_UDMAP_0</td>
+<td>236</td>
+<td>UDMA receive channel EOES events</td>
+<td>1280 to 1327</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_UDMAP_0</td>
+<td>236</td>
+<td>UDMA global configuration invalid flow event</td>
+<td>1536</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_PROXY_0</td>
+<td>210</td>
+<td>Proxy events</td>
+<td>0 to 63</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_PROXY_0</td>
+<td>234</td>
+<td>Proxy events</td>
+<td>0 to 63</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="non-event-interrupt-source-ids">
+<span id="pub-soc-j721e-non-event-int-src-list"></span><h2>Non-Event Interrupt Source IDs<a class="headerlink" href="#non-event-interrupt-source-ids" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="36%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Device Name</th>
+<th class="head">Device ID</th>
+<th class="head">Interrupt Source Design Name</th>
+<th class="head">Interrupt Source Index</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>J721E_DEV_AASRC0</td>
+<td>139</td>
+<td>err_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_AASRC0</td>
+<td>139</td>
+<td>infifo_level 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_AASRC0</td>
+<td>139</td>
+<td>ingroup_level 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_AASRC0</td>
+<td>139</td>
+<td>outfifo_level 0</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_AASRC0</td>
+<td>139</td>
+<td>outgroup_level 0</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_COMPUTE_CLUSTER0_CLEC</td>
+<td>6</td>
+<td>soc_events_out_level 0 to 31</td>
+<td>0 to 31</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_CPSW0</td>
+<td>19</td>
+<td>cpts_comp 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_CPSW0</td>
+<td>19</td>
+<td>cpts_genf0 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_CPSW0</td>
+<td>19</td>
+<td>cpts_genf1 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_CPSW0</td>
+<td>19</td>
+<td>cpts_sync 0</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_CPSW0</td>
+<td>19</td>
+<td>evnt_pend 0</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_CPSW0</td>
+<td>19</td>
+<td>mdio_pend 0</td>
+<td>5</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_CPSW0</td>
+<td>19</td>
+<td>stat_pend 0</td>
+<td>6</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_CSI_RX_IF0</td>
+<td>26</td>
+<td>csi_err_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_CSI_RX_IF0</td>
+<td>26</td>
+<td>csi_irq 0</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_CSI_RX_IF0</td>
+<td>26</td>
+<td>csi_level 0</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_CSI_RX_IF1</td>
+<td>27</td>
+<td>csi_err_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_CSI_RX_IF1</td>
+<td>27</td>
+<td>csi_irq 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_CSI_RX_IF1</td>
+<td>27</td>
+<td>csi_level 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_CSI_TX_IF0</td>
+<td>28</td>
+<td>csi_interrupt 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_CSI_TX_IF0</td>
+<td>28</td>
+<td>csi_level 0</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DCC0</td>
+<td>30</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DCC1</td>
+<td>31</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DCC10</td>
+<td>41</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DCC11</td>
+<td>42</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DCC12</td>
+<td>43</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DCC2</td>
+<td>32</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DCC3</td>
+<td>33</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DCC4</td>
+<td>34</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DCC5</td>
+<td>36</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DCC6</td>
+<td>37</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DCC7</td>
+<td>38</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DCC8</td>
+<td>39</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DCC9</td>
+<td>40</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DDR0</td>
+<td>47</td>
+<td>ddrss_controller 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DDR0</td>
+<td>47</td>
+<td>ddrss_hs_phy_global_error 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DDR0</td>
+<td>47</td>
+<td>ddrss_pll_freq_change_req 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DDR0</td>
+<td>47</td>
+<td>ddrss_v2a_other_err_lvl 0</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DECODER0</td>
+<td>144</td>
+<td>irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DSS0</td>
+<td>152</td>
+<td>dss_inst0_dispc_func_irq_proc0 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DSS0</td>
+<td>152</td>
+<td>dss_inst0_dispc_func_irq_proc1 0</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DSS0</td>
+<td>152</td>
+<td>dss_inst0_dispc_safety_error_irq_proc0 0</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DSS0</td>
+<td>152</td>
+<td>dss_inst0_dispc_safety_error_irq_proc1 0</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DSS0</td>
+<td>152</td>
+<td>dss_inst0_dispc_secure_irq_proc0 0</td>
+<td>4</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DSS0</td>
+<td>152</td>
+<td>dss_inst0_dispc_secure_irq_proc1 0</td>
+<td>5</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_DSS_DSI0</td>
+<td>150</td>
+<td>dsi_0_func_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_DSS_EDP0</td>
+<td>151</td>
+<td>intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_ECAP0</td>
+<td>80</td>
+<td>ecap_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_ECAP1</td>
+<td>81</td>
+<td>ecap_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_ECAP2</td>
+<td>82</td>
+<td>ecap_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_EHRPWM0</td>
+<td>83</td>
+<td>epwm_etint 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_EHRPWM0</td>
+<td>83</td>
+<td>epwm_tripzint 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_EHRPWM1</td>
+<td>84</td>
+<td>epwm_etint 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_EHRPWM1</td>
+<td>84</td>
+<td>epwm_tripzint 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_EHRPWM2</td>
+<td>85</td>
+<td>epwm_etint 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_EHRPWM2</td>
+<td>85</td>
+<td>epwm_tripzint 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_EHRPWM3</td>
+<td>86</td>
+<td>epwm_etint 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_EHRPWM3</td>
+<td>86</td>
+<td>epwm_tripzint 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_EHRPWM4</td>
+<td>87</td>
+<td>epwm_etint 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_EHRPWM4</td>
+<td>87</td>
+<td>epwm_tripzint 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_EHRPWM5</td>
+<td>88</td>
+<td>epwm_etint 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_EHRPWM5</td>
+<td>88</td>
+<td>epwm_tripzint 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_ELM0</td>
+<td>89</td>
+<td>elm_porocpsinterrupt_lvl 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_ENCODER0</td>
+<td>153</td>
+<td>irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_EQEP0</td>
+<td>94</td>
+<td>eqep_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_EQEP1</td>
+<td>95</td>
+<td>eqep_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_EQEP2</td>
+<td>96</td>
+<td>eqep_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_ESM0</td>
+<td>97</td>
+<td>esm_int_cfg_lvl 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_ESM0</td>
+<td>97</td>
+<td>esm_int_hi_lvl 0</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_ESM0</td>
+<td>97</td>
+<td>esm_int_low_lvl 0</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_GPIO0</td>
+<td>105</td>
+<td>gpio_bank 0 to 7</td>
+<td>0 to 7</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_GPIO1</td>
+<td>106</td>
+<td>gpio_bank 0 to 2</td>
+<td>0 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_GPIO2</td>
+<td>107</td>
+<td>gpio_bank 0 to 7</td>
+<td>0 to 7</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_GPIO3</td>
+<td>108</td>
+<td>gpio_bank 0 to 2</td>
+<td>0 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_GPIO4</td>
+<td>109</td>
+<td>gpio_bank 0 to 7</td>
+<td>0 to 7</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_GPIO5</td>
+<td>110</td>
+<td>gpio_bank 0 to 2</td>
+<td>0 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_GPIO6</td>
+<td>111</td>
+<td>gpio_bank 0 to 7</td>
+<td>0 to 7</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_GPIO7</td>
+<td>112</td>
+<td>gpio_bank 0 to 2</td>
+<td>0 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_GPMC0</td>
+<td>115</td>
+<td>gpmc_sinterrupt 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_GTC0</td>
+<td>61</td>
+<td>gtc_push_event 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_I2C0</td>
+<td>187</td>
+<td>pointrpend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_I2C1</td>
+<td>188</td>
+<td>pointrpend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_I2C2</td>
+<td>189</td>
+<td>pointrpend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_I2C3</td>
+<td>190</td>
+<td>pointrpend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_I2C4</td>
+<td>191</td>
+<td>pointrpend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_I2C5</td>
+<td>192</td>
+<td>pointrpend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_I2C6</td>
+<td>193</td>
+<td>pointrpend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_I3C0</td>
+<td>116</td>
+<td>i3c__int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN0</td>
+<td>156</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN0</td>
+<td>156</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN1</td>
+<td>158</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN1</td>
+<td>158</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN10</td>
+<td>168</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN10</td>
+<td>168</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN11</td>
+<td>169</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN11</td>
+<td>169</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN12</td>
+<td>170</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN12</td>
+<td>170</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN13</td>
+<td>171</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN13</td>
+<td>171</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN2</td>
+<td>160</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN2</td>
+<td>160</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN3</td>
+<td>161</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN3</td>
+<td>161</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN4</td>
+<td>162</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN4</td>
+<td>162</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN5</td>
+<td>163</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN5</td>
+<td>163</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN6</td>
+<td>164</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN6</td>
+<td>164</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN7</td>
+<td>165</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN7</td>
+<td>165</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN8</td>
+<td>166</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN8</td>
+<td>166</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCAN9</td>
+<td>167</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCAN9</td>
+<td>167</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP0</td>
+<td>174</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP0</td>
+<td>174</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP1</td>
+<td>175</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP1</td>
+<td>175</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP10</td>
+<td>184</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP10</td>
+<td>184</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP11</td>
+<td>185</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP11</td>
+<td>185</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP2</td>
+<td>176</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP2</td>
+<td>176</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP3</td>
+<td>177</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP3</td>
+<td>177</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP4</td>
+<td>178</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP4</td>
+<td>178</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP5</td>
+<td>179</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP5</td>
+<td>179</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP6</td>
+<td>180</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP6</td>
+<td>180</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP7</td>
+<td>181</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP7</td>
+<td>181</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP8</td>
+<td>182</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP8</td>
+<td>182</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCASP9</td>
+<td>183</td>
+<td>rec_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCASP9</td>
+<td>183</td>
+<td>xmit_intr_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCSPI0</td>
+<td>266</td>
+<td>intr_spi 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCSPI1</td>
+<td>267</td>
+<td>intr_spi 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCSPI2</td>
+<td>268</td>
+<td>intr_spi 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCSPI3</td>
+<td>269</td>
+<td>intr_spi 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCSPI4</td>
+<td>270</td>
+<td>intr_spi 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCSPI5</td>
+<td>271</td>
+<td>intr_spi 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCSPI6</td>
+<td>272</td>
+<td>intr_spi 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCSPI7</td>
+<td>273</td>
+<td>intr_spi 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_ADC0</td>
+<td>0</td>
+<td>gen_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_ADC1</td>
+<td>1</td>
+<td>gen_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_CPSW0</td>
+<td>18</td>
+<td>cpts_comp 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_CPSW0</td>
+<td>18</td>
+<td>cpts_genf0 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_CPSW0</td>
+<td>18</td>
+<td>cpts_genf1 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_CPSW0</td>
+<td>18</td>
+<td>cpts_sync 0</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_CPSW0</td>
+<td>18</td>
+<td>evnt_pend 0</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_CPSW0</td>
+<td>18</td>
+<td>mdio_pend 0</td>
+<td>5</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_CPSW0</td>
+<td>18</td>
+<td>stat_pend 0</td>
+<td>6</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_DCC0</td>
+<td>44</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_DCC1</td>
+<td>45</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_DCC2</td>
+<td>46</td>
+<td>intr_done_level 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_ESM0</td>
+<td>98</td>
+<td>esm_int_cfg_lvl 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_ESM0</td>
+<td>98</td>
+<td>esm_int_hi_lvl 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_ESM0</td>
+<td>98</td>
+<td>esm_int_low_lvl 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_FSS0_FSAS_0</td>
+<td>101</td>
+<td>ecc_intr_err_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_FSS0_FSAS_0</td>
+<td>101</td>
+<td>otfa_intr_err_pend 0</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_FSS0_HYPERBUS1P0_0</td>
+<td>102</td>
+<td>hpb_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_FSS0_OSPI_0</td>
+<td>103</td>
+<td>ospi_lvl_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_FSS0_OSPI_1</td>
+<td>104</td>
+<td>ospi_lvl_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_I2C0</td>
+<td>194</td>
+<td>pointrpend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_I2C1</td>
+<td>195</td>
+<td>pointrpend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_I3C0</td>
+<td>117</td>
+<td>i3c__int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_I3C1</td>
+<td>118</td>
+<td>i3c__int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_MCAN0</td>
+<td>172</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_MCAN0</td>
+<td>172</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_MCAN1</td>
+<td>173</td>
+<td>mcanss_ext_ts_rollover_lvl_int 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_MCAN1</td>
+<td>173</td>
+<td>mcanss_mcan_lvl_int 0 to 1</td>
+<td>1 to 2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_MCSPI0</td>
+<td>274</td>
+<td>intr_spi 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_MCSPI1</td>
+<td>275</td>
+<td>intr_spi 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_MCSPI2</td>
+<td>276</td>
+<td>intr_spi 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_NAVSS0_MCRC_0</td>
+<td>238</td>
+<td>dma_event_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_NAVSS0_MCRC_0</td>
+<td>238</td>
+<td>intaggr_vintr_pend 0</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_SA2_UL0</td>
+<td>265</td>
+<td>sa_ul_pka 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_SA2_UL0</td>
+<td>265</td>
+<td>sa_ul_trng 0</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_TIMER0</td>
+<td>35</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_TIMER1</td>
+<td>71</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_TIMER2</td>
+<td>72</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_TIMER3</td>
+<td>73</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_TIMER4</td>
+<td>74</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_TIMER5</td>
+<td>75</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_TIMER6</td>
+<td>76</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_TIMER7</td>
+<td>77</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_TIMER8</td>
+<td>78</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MCU_TIMER9</td>
+<td>79</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MCU_UART0</td>
+<td>149</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MLB0</td>
+<td>186</td>
+<td>mlbss_mlb_ahb_int 0 to 1</td>
+<td>0 to 1</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MLB0</td>
+<td>186</td>
+<td>mlbss_mlb_int 0</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MMCSD0</td>
+<td>91</td>
+<td>emmcss_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_MMCSD1</td>
+<td>92</td>
+<td>emmcsdss_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_MMCSD2</td>
+<td>93</td>
+<td>emmcsdss_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_CPTS_0</td>
+<td>201</td>
+<td>event_pend_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_MAILBOX_0</td>
+<td>214</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_MAILBOX_1</td>
+<td>215</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_MAILBOX_10</td>
+<td>224</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_MAILBOX_11</td>
+<td>225</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_MAILBOX_2</td>
+<td>216</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_MAILBOX_3</td>
+<td>217</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_MAILBOX_4</td>
+<td>218</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_MAILBOX_5</td>
+<td>219</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_MAILBOX_6</td>
+<td>220</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_MAILBOX_7</td>
+<td>221</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_MAILBOX_8</td>
+<td>222</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_MAILBOX_9</td>
+<td>223</td>
+<td>pend_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_MCRC_0</td>
+<td>227</td>
+<td>dma_event_intr 0 to 3</td>
+<td>0 to 3</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_MCRC_0</td>
+<td>227</td>
+<td>intaggr_vintr_pend 0</td>
+<td>4</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_TBU_0</td>
+<td>228</td>
+<td>io_tbu0_ras_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_TCU_0</td>
+<td>229</td>
+<td>tcu_cmd_sync_ns_intr 0</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_TCU_0</td>
+<td>229</td>
+<td>tcu_cmd_sync_s_intr 0</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_TCU_0</td>
+<td>229</td>
+<td>tcu_event_q_ns_intr 0</td>
+<td>5</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_TCU_0</td>
+<td>229</td>
+<td>tcu_event_q_s_intr 0</td>
+<td>6</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_TCU_0</td>
+<td>229</td>
+<td>tcu_global_ns_intr 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS0_TCU_0</td>
+<td>229</td>
+<td>tcu_global_s_intr 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS0_TCU_0</td>
+<td>229</td>
+<td>tcu_ras_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_cpts_comp 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_cpts_genf0 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_cpts_hw1_push 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_cpts_pend 0</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_cpts_sync 0</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_downstream_pulse 0</td>
+<td>5</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_error_pulse 0</td>
+<td>6</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_flr_pulse 0</td>
+<td>7</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_hot_reset_pulse 0</td>
+<td>8</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_legacy_pulse 0</td>
+<td>9</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_link_state_pulse 0</td>
+<td>10</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_local_level 0</td>
+<td>11</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_phy_level 0</td>
+<td>12</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_ptm_valid_pulse 0</td>
+<td>13</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE0</td>
+<td>239</td>
+<td>pcie_pwr_state_pulse 0</td>
+<td>14</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_cpts_comp 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_cpts_genf0 0</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_cpts_hw1_push 0</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_cpts_pend 0</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_cpts_sync 0</td>
+<td>4</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_downstream_pulse 0</td>
+<td>5</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_error_pulse 0</td>
+<td>6</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_flr_pulse 0</td>
+<td>7</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_hot_reset_pulse 0</td>
+<td>8</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_legacy_pulse 0</td>
+<td>9</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_link_state_pulse 0</td>
+<td>10</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_local_level 0</td>
+<td>11</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_phy_level 0</td>
+<td>12</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_ptm_valid_pulse 0</td>
+<td>13</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE1</td>
+<td>240</td>
+<td>pcie_pwr_state_pulse 0</td>
+<td>14</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_cpts_comp 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_cpts_genf0 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_cpts_hw1_push 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_cpts_pend 0</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_cpts_sync 0</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_downstream_pulse 0</td>
+<td>5</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_error_pulse 0</td>
+<td>6</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_flr_pulse 0</td>
+<td>7</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_hot_reset_pulse 0</td>
+<td>8</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_legacy_pulse 0</td>
+<td>9</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_link_state_pulse 0</td>
+<td>10</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_local_level 0</td>
+<td>11</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_phy_level 0</td>
+<td>12</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_ptm_valid_pulse 0</td>
+<td>13</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE2</td>
+<td>241</td>
+<td>pcie_pwr_state_pulse 0</td>
+<td>14</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_cpts_comp 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_cpts_genf0 0</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_cpts_hw1_push 0</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_cpts_pend 0</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_cpts_sync 0</td>
+<td>4</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_downstream_pulse 0</td>
+<td>5</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_error_pulse 0</td>
+<td>6</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_flr_pulse 0</td>
+<td>7</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_hot_reset_pulse 0</td>
+<td>8</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_legacy_pulse 0</td>
+<td>9</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_link_state_pulse 0</td>
+<td>10</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_local_level 0</td>
+<td>11</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_phy_level 0</td>
+<td>12</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_ptm_valid_pulse 0</td>
+<td>13</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PCIE3</td>
+<td>242</td>
+<td>pcie_pwr_state_pulse 0</td>
+<td>14</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PRU_ICSSG0</td>
+<td>119</td>
+<td>pr1_edc0_sync0_out 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PRU_ICSSG0</td>
+<td>119</td>
+<td>pr1_edc0_sync1_out 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PRU_ICSSG0</td>
+<td>119</td>
+<td>pr1_edc1_sync0_out 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PRU_ICSSG0</td>
+<td>119</td>
+<td>pr1_edc1_sync1_out 0</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PRU_ICSSG0</td>
+<td>119</td>
+<td>pr1_host_intr_pend 0 to 7</td>
+<td>4 to 11</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PRU_ICSSG0</td>
+<td>119</td>
+<td>pr1_host_intr_req 0 to 7</td>
+<td>12 to 19</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PRU_ICSSG0</td>
+<td>119</td>
+<td>pr1_iep0_cmp_intr_req 0 to 15</td>
+<td>20 to 35</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PRU_ICSSG0</td>
+<td>119</td>
+<td>pr1_iep1_cmp_intr_req 0 to 15</td>
+<td>36 to 51</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PRU_ICSSG0</td>
+<td>119</td>
+<td>pr1_rx_sof_intr_req 0 to 1</td>
+<td>52 to 53</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PRU_ICSSG0</td>
+<td>119</td>
+<td>pr1_tx_sof_intr_req 0 to 1</td>
+<td>54 to 55</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PRU_ICSSG1</td>
+<td>120</td>
+<td>pr1_edc0_sync0_out 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PRU_ICSSG1</td>
+<td>120</td>
+<td>pr1_edc0_sync1_out 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PRU_ICSSG1</td>
+<td>120</td>
+<td>pr1_edc1_sync0_out 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PRU_ICSSG1</td>
+<td>120</td>
+<td>pr1_edc1_sync1_out 0</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PRU_ICSSG1</td>
+<td>120</td>
+<td>pr1_host_intr_pend 0 to 7</td>
+<td>4 to 11</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PRU_ICSSG1</td>
+<td>120</td>
+<td>pr1_host_intr_req 0 to 7</td>
+<td>12 to 19</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PRU_ICSSG1</td>
+<td>120</td>
+<td>pr1_iep0_cmp_intr_req 0 to 15</td>
+<td>20 to 35</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PRU_ICSSG1</td>
+<td>120</td>
+<td>pr1_iep1_cmp_intr_req 0 to 15</td>
+<td>36 to 51</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_PRU_ICSSG1</td>
+<td>120</td>
+<td>pr1_rx_sof_intr_req 0 to 1</td>
+<td>52 to 53</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_PRU_ICSSG1</td>
+<td>120</td>
+<td>pr1_tx_sof_intr_req 0 to 1</td>
+<td>54 to 55</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_RTI24</td>
+<td>254</td>
+<td>intr_wwd 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_RTI25</td>
+<td>255</td>
+<td>intr_wwd 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_SA2_UL0</td>
+<td>264</td>
+<td>sa_ul_pka 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_SA2_UL0</td>
+<td>264</td>
+<td>sa_ul_trng 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER0</td>
+<td>49</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER1</td>
+<td>50</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER10</td>
+<td>60</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER11</td>
+<td>62</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER12</td>
+<td>63</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER13</td>
+<td>64</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER14</td>
+<td>65</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER14</td>
+<td>65</td>
+<td>timer_pwm 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER15</td>
+<td>66</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER15</td>
+<td>66</td>
+<td>timer_pwm 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER16</td>
+<td>67</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER16</td>
+<td>67</td>
+<td>timer_pwm 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER17</td>
+<td>68</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER17</td>
+<td>68</td>
+<td>timer_pwm 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER18</td>
+<td>69</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER18</td>
+<td>69</td>
+<td>timer_pwm 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER19</td>
+<td>70</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER19</td>
+<td>70</td>
+<td>timer_pwm 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER2</td>
+<td>51</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER3</td>
+<td>52</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER4</td>
+<td>53</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER5</td>
+<td>54</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER6</td>
+<td>55</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER7</td>
+<td>57</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_TIMER8</td>
+<td>58</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_TIMER9</td>
+<td>59</td>
+<td>intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_UART0</td>
+<td>146</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_UART1</td>
+<td>278</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_UART2</td>
+<td>279</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_UART3</td>
+<td>280</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_UART4</td>
+<td>281</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_UART5</td>
+<td>282</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_UART6</td>
+<td>283</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_UART7</td>
+<td>284</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_UART8</td>
+<td>285</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_UART9</td>
+<td>286</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_UFS0</td>
+<td>277</td>
+<td>ufs_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_USB0</td>
+<td>288</td>
+<td>host_system_error 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_USB0</td>
+<td>288</td>
+<td>irq 0 to 7</td>
+<td>1 to 8</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_USB0</td>
+<td>288</td>
+<td>otgirq 0</td>
+<td>9</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_USB1</td>
+<td>289</td>
+<td>host_system_error 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_USB1</td>
+<td>289</td>
+<td>irq 0 to 7</td>
+<td>1 to 8</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_USB1</td>
+<td>289</td>
+<td>otgirq 0</td>
+<td>9</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_VPFE0</td>
+<td>291</td>
+<td>ccdc_intr_pend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_VPFE0</td>
+<td>291</td>
+<td>rat_exp_intr 0</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_WKUP_ESM0</td>
+<td>99</td>
+<td>esm_int_cfg_lvl 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_WKUP_ESM0</td>
+<td>99</td>
+<td>esm_int_hi_lvl 0</td>
+<td>1</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_WKUP_ESM0</td>
+<td>99</td>
+<td>esm_int_low_lvl 0</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_WKUP_GPIO0</td>
+<td>113</td>
+<td>gpio_bank 0 to 5</td>
+<td>0 to 5</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_WKUP_GPIO1</td>
+<td>114</td>
+<td>gpio_bank 0 to 5</td>
+<td>0 to 5</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_WKUP_I2C0</td>
+<td>197</td>
+<td>pointrpend 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_WKUP_UART0</td>
+<td>287</td>
+<td>usart_irq 0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_WKUP_VTM0</td>
+<td>154</td>
+<td>therm_lvl_gt_th1_intr 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_WKUP_VTM0</td>
+<td>154</td>
+<td>therm_lvl_gt_th2_intr 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_WKUP_VTM0</td>
+<td>154</td>
+<td>therm_lvl_lt_th0_intr 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_COMPUTE_CLUSTER_J7ES_TB_VDC_MAIN_0</td>
+<td>3</td>
+<td>gic_output_waker_gic_pwr0_wake_request 0 to 1</td>
+<td>0 to 1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS512L_MAIN_0</td>
+<td>199</td>
+<td>cpts0_comp 0</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS512L_MAIN_0</td>
+<td>199</td>
+<td>cpts0_genf0 0</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS512L_MAIN_0</td>
+<td>199</td>
+<td>cpts0_genf1 0</td>
+<td>2</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS512L_MAIN_0</td>
+<td>199</td>
+<td>cpts0_genf2 0</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS512L_MAIN_0</td>
+<td>199</td>
+<td>cpts0_genf3 0</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>J721E_DEV_NAVSS512L_MAIN_0</td>
+<td>199</td>
+<td>cpts0_genf4 0</td>
+<td>5</td>
+</tr>
+<tr class="row-even"><td>J721E_DEV_NAVSS512L_MAIN_0</td>
+<td>199</td>
+<td>cpts0_genf5 0</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="irq_dsts.html" class="btn btn-neutral float-right" title="j721e Peripheral Interrupt Destination Descriptions" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="resasg_types.html" class="btn btn-neutral" title="j721e Board Configuration Resource Assignment Type Descriptions" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'19.10.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

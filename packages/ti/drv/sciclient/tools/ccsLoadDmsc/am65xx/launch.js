@@ -55,11 +55,11 @@ disableGelLoad = 0;
 if (disableGelLoad == 0)
 {
     //Path to GEL files
-    gelFilePath = "C:/ti/ccsv8/ccs_base/emulation/boards/am65x/gel/";
+    gelFilePath = "/ti/ccs910/ccs/ccs_base/emulation/boards/am65x/gel";
 }
 // Path to the directory in which this file would be residing. CCS expects
 // absolute paths to load the binaries.
-thisJsFileDirectory = "pdk/packages/ti/drv/sciclient/tools/ccsLoadDmsc";
+thisJsFileDirectory = "/pdk/packages/ti/drv/sciclient/tools/ccsLoadDmsc/am65xx/";
 //<!!!!!! EDIT THIS !!!!!>
 
 // Import the DSS packages into our namespace to save on typing
@@ -84,7 +84,7 @@ function printVars()
 function connectTargets()
 {
     /* Set timeout of 20 seconds */
-    script.setScriptTimeout(20000);
+    script.setScriptTimeout(60000);
     updateScriptVars();
     sysResetVar=dsDMSC_0.target.getResetType(1);
     sysResetVar.issueReset();
@@ -98,7 +98,7 @@ function connectTargets()
     dsDMSC_0.target.connect();
     print("Loading DMSC Firmware...");
     // Load the DMSC firmware
-    dsDMSC_0.memory.loadRaw(0, 0x40000, thisJsFileDirectory +"/../../soc/V0/ti-sci-firmware-am65x-gp.bin", 32, false);
+    dsDMSC_0.memory.loadRaw(0, 0x40000, thisJsFileDirectory +"/../../../soc/sysfw/binaries/ti-sci-firmware-am65x-gp.bin", 32, false);
     print("DMSC Firmware Load Done...");
     // Set Stack pointer and Program Counter
     stackPointer = dsDMSC_0.memory.readWord(0, 0x40000);
@@ -117,9 +117,9 @@ function connectTargets()
         // Load the GEL. This can be removed if the GEL is already linked with the target ccxml
         dsMCU1_0.expression.evaluate('GEL_LoadGel("'+gelFilePath+'/M4_DDR39SS/M4_R5orA53_Startup.gel")');
     }
-	print("Running the board configuration initialization from R5!");
+    print("Running the board configuration initialization from R5!");
     // Load the board configuration init file.
-    dsMCU1_0.memory.loadProgram(thisJsFileDirectory +"/am65xx/sciclient_ccs_init_mcu1_0_release.xer5f");
+    dsMCU1_0.memory.loadProgram(thisJsFileDirectory +"/sciclient_ccs_init_mcu1_0_release.xer5f");
     // Halt the R5F and re-run.
     dsMCU1_0.target.halt();
     dsMCU1_0.target.reset();
@@ -136,12 +136,12 @@ function disconnectTargets()
     dsDMSC_0.target.disconnect();
     // Reset the R5F to be in clean state.
     dsMCU1_0.target.reset();
-	print("Initializing DDR!");
+    print("Initializing DDR!");
     // Execute DDR initialization script from R5F.
     try
     {
         dsMCU1_0.expression.evaluate("DDR4_800MHz_Initialization_for_EVM()");
-		dsMCU1_0.expression.evaluate("timer0_cleanup()");
+        dsMCU1_0.expression.evaluate("timer0_cleanup()");
     }
     catch(e)
     {

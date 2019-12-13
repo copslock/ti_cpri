@@ -11,3 +11,5 @@ tools/bin2c/bin2c.out
 package/*
 Settings.h
 Settings.xdc
+soc/V0/sciclient_firmware_V0.h
+soc/V1/sciclient_firmware_V1.h

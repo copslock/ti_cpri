@@ -31,7 +31,7 @@
  *
  */
 /**
- *  \file sciclient_soc_priv.h
+ *  \file V0/sciclient_soc_priv.h
  *
  *  \brief Private AM65xx specific SOC file
  */

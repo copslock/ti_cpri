@@ -1,0 +1,494 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Device Group Primer &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../index.html"/>
+        <link rel="up" title="Chapter 6: Topic User Guides" href="index.html"/>
+        <link rel="prev" title="Asymmetric Key Services" href="asymmetric_key_services.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.10.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../2_tisci_msgs/index.html">Chapter 2: TISCI Message Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../5_soc_doc/index.html">Chapter 5: SoC Family Specific Documentation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Chapter 6: Topic User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="secure_boot_signing.html">Signing binaries for Secure Boot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hs_boardcfg_signing.html">Signing Board Configuration on HS devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asymmetric_key_services.html">Asymmetric Key Services</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Device Group Primer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#definition">Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#devgrp-values">DEVGRP values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-models">Usage models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#usage-model-1-enable-all-devices">Usage Model 1: Enable all devices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage-model-2-incremental-initialization">Usage Model 2: Incremental initialization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Chapter 6: Topic User Guides</a> &raquo;</li>
+      
+    <li>Device Group Primer</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="device-group-primer">
+<h1>Device Group Primer<a class="headerlink" href="#device-group-primer" title="Permalink to this headline">¶</a></h1>
+<p>This document provides a quick primer on what device group is
+and provides guidance on usage of device groups.</p>
+<div class="section" id="introduction">
+<span id="pub-devgrp-usage-intro"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>A typical SoC has a large number of peripherals such as I2C, UART etc.
+In an optimized boot flow mode, we typically need to startup a limited
+set of peripherals and incrementally increase the usage of the SoC.
+Motivation for this usage can be one of two reasons:</p>
+<ul class="simple">
+<li>Hardware functionality is limited for varied reasons
+(Such as voltage not enabled for a domain etc..).</li>
+<li>Limited peripherals initialized implies lesser time required for initialization
+functions in System Firmware and applications can perform time critical activities earlier.</li>
+</ul>
+<p>System Firmware provides a scheme where we can choose one of the two
+initialization models:</p>
+<ul class="simple">
+<li>Bring up everything during the configuration sequences so that application software
+(HLOS/Bootloader..) can operate on any peripheral it desires.</li>
+<li>Start up a limited set of peripheral set and incrementally add capability to control
+additional resources of the SoC.</li>
+</ul>
+<p>The above mentioned schemes are mutually exclusive since the product
+use cases are specific in the manner of usage of peripheral sets. We
+shall go into more in-depth discussion later in this document.</p>
+</div>
+<div class="section" id="definition">
+<span id="pub-devgrp-definition"></span><h2>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h2>
+<p>In the simplest of terms, we call “Device Group” or DEVGRP as a
+concept to organize a logical set of peripherals to provide services.</p>
+<p>Each device group enables a set of peripherals that can be
+operated upon when the domain initialization for that domain is
+invoked with the corresponding boardconfig API calls such as
+<a class="reference internal" href="../3_boardcfg/BOARDCFG.html#pub-boardcfg-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG</span></a></p>
+<p>The specific grouping of device instances are documented in the SoC
+specific documentation.</p>
+</div>
+<div class="section" id="devgrp-values">
+<span id="pub-devgrp-values"></span><h2>DEVGRP values<a class="headerlink" href="#devgrp-values" title="Permalink to this headline">¶</a></h2>
+<p>Device group identification follows a generic bitfield format.</p>
+<ul class="simple">
+<li>devgrp_t type is u8 (8 bits)</li>
+<li>Values for the field is defined as follows:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="7%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Device Group</th>
+<th class="head">Value</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DEVGRP_ALL</td>
+<td>0</td>
+<td>SoC SYSFW devgrp any: NOT TO BE used for SoC data.
+This implies that specific sequenced devgrp is NOT used.
+This functionality is SoC boot mode specific.
+Allows for all peripherals for the specific domain to be used</td>
+</tr>
+<tr class="row-odd"><td>DEVGRP_00</td>
+<td>1 &lt;&lt; 0</td>
+<td>SoC specific Devgrp 0.
+Please refer to <a class="reference internal" href="../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">SoC information</span></a> for validity in the specific SoC.
+This implies that specific sequenced devgrp is used.
+This enables the peripherals listed accessible for this group.</td>
+</tr>
+<tr class="row-even"><td>DEVGRP_01</td>
+<td>1 &lt;&lt; 1</td>
+<td>SoC specific Devgrp 1.
+Please refer to <a class="reference internal" href="../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">SoC information</span></a> for validity in the specific SoC.
+This implies that specific sequenced devgrp is used.
+This enables the peripherals listed accessible for this group.</td>
+</tr>
+<tr class="row-odd"><td>DEVGRP_02</td>
+<td>1 &lt;&lt; 2</td>
+<td>SoC specific Devgrp 2.
+Please refer to <a class="reference internal" href="../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">SoC information</span></a> for validity in the specific SoC.
+This implies that specific sequenced devgrp is used.
+This enables the peripherals listed accessible for this group.</td>
+</tr>
+<tr class="row-even"><td>DEVGRP_03</td>
+<td>1 &lt;&lt; 3</td>
+<td>SoC specific Devgrp 3.
+Please refer to <a class="reference internal" href="../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">SoC information</span></a> for validity in the specific SoC.
+This implies that specific sequenced devgrp is used.
+This enables the peripherals listed accessible for this group.</td>
+</tr>
+<tr class="row-odd"><td>DEVGRP_04</td>
+<td>1 &lt;&lt; 4</td>
+<td>SoC specific Devgrp 4.
+Please refer to <a class="reference internal" href="../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">SoC information</span></a> for validity in the specific SoC.
+This implies that specific sequenced devgrp is used.
+This enables the peripherals listed accessible for this group.</td>
+</tr>
+<tr class="row-even"><td>DEVGRP_05</td>
+<td>1 &lt;&lt; 5</td>
+<td>SoC specific Devgrp 5.
+Please refer to <a class="reference internal" href="../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">SoC information</span></a> for validity in the specific SoC.
+This implies that specific sequenced devgrp is used.
+This enables the peripherals listed accessible for this group.</td>
+</tr>
+<tr class="row-odd"><td>DEVGRP_06</td>
+<td>1 &lt;&lt; 6</td>
+<td>SoC specific Devgrp 6.
+Please refer to <a class="reference internal" href="../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">SoC information</span></a> for validity in the specific SoC.
+This implies that specific sequenced devgrp is used.
+This enables the peripherals listed accessible for this group.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<ul class="last simple">
+<li>User MUST be careful NOT to use DEVGRP_ALL when using DEVGRP_00 to DEVGRP_06. The usage is mutually exclusive.</li>
+<li>SoC specific peripheral grouping is predefined and NOT configurable by user.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="usage-models">
+<span id="pub-devgrp-usage-model"></span><h2>Usage models<a class="headerlink" href="#usage-models" title="Permalink to this headline">¶</a></h2>
+<p>As mentioned in previous sections, there are two valid models of
+usage. This section deals with each valid mode of operation.</p>
+<div class="section" id="usage-model-1-enable-all-devices">
+<span id="pub-devgrp-usage-model1"></span><h3>Usage Model 1: Enable all devices<a class="headerlink" href="#usage-model-1-enable-all-devices" title="Permalink to this headline">¶</a></h3>
+<p>In this usage model, we don’t really know upfront as to the usage of peripherals in the system.
+Typical example is running generic community software OR boot time is not of concern.</p>
+<p>Sequence of calls could be:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG.html#pub-boardcfg-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG</span></a> (devgrp = DEVGRP_ALL)</li>
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG_PM.html#pub-boardcfg-pm-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_PM</span></a> (devgrp = DEVGRP_ALL)</li>
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG_RM.html#pub-boardcfg-rm-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_RM</span></a> (devgrp = DEVGRP_ALL)</li>
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG_SEC.html#pub-boardcfg-security-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_SECURITY</span></a> (devgrp = DEVGRP_ALL)</li>
+<li>Do other activities</li>
+</ul>
+<p>In this sequence of initialization, all domains are initialized
+equally and further System Firmware services are now operational corresponding
+to that domain after each domain initialization is complete.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<ul class="last simple">
+<li>User MUST be careful NOT to mix DEVGRP_ALL usage with <a class="reference internal" href="#pub-devgrp-usage-model2"><span class="std std-ref">incremental initialization</span></a>.</li>
+<li>Because this usage model initializes the entire SoC at boot, applications sensitive to boot time latency
+should first try to use <a class="reference internal" href="#pub-devgrp-usage-model2"><span class="std std-ref">incremental initialization</span></a> to optimize boot time by
+only initializing what is needed.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="usage-model-2-incremental-initialization">
+<span id="pub-devgrp-usage-model2"></span><h3>Usage Model 2: Incremental initialization<a class="headerlink" href="#usage-model-2-incremental-initialization" title="Permalink to this headline">¶</a></h3>
+<p>In this usage model, we don’t enable access to all resources on
+the SoC. Instead, we incrementally add responsibility for System Firmware
+to introduce control over wider parts of SoC. This is achieved by
+incrementally invoking increasing order of devgrp permitted by the
+SoC. Each devgrp indicates a specific group of peripherals and
+resources that System Firmware takes ownership of. The specific group of
+peripherals for a given devgrp can vary SoC to SoC.</p>
+<p>For each of the DEVGRP_00, DEVGRP_01 definitions, please refer to
+<a class="reference internal" href="../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">SoC information</span></a> devgrp section to get
+details corresponding to the SoC.</p>
+<p>Sequence of calls could be:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG.html#pub-boardcfg-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG</span></a> (devgrp = DEVGRP_00)</li>
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG_PM.html#pub-boardcfg-pm-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_PM</span></a> (devgrp = DEVGRP_00)</li>
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG_RM.html#pub-boardcfg-rm-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_RM</span></a> (devgrp = DEVGRP_00)</li>
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG_SEC.html#pub-boardcfg-security-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_SECURITY</span></a> (devgrp = DEVGRP_00)</li>
+<li>Do time critical activities here including critical peripherals in DEVGRP_00
+that are now controlled by System Firmware</li>
+<li>At a convenient point in time, invoke initialization for remaining set of peripherals</li>
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG.html#pub-boardcfg-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG</span></a> (devgrp = DEVGRP_01)</li>
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG_PM.html#pub-boardcfg-pm-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_PM</span></a> (devgrp = DEVGRP_01)</li>
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG_RM.html#pub-boardcfg-rm-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_RM</span></a> (devgrp = DEVGRP_01)</li>
+<li><a class="reference internal" href="../3_boardcfg/BOARDCFG_SEC.html#pub-boardcfg-security-tisci"><span class="std std-ref">TISCI_MSG_BOARD_CONFIG_SECURITY</span></a> (devgrp = DEVGRP_01)</li>
+<li>Do other activities</li>
+<li>Steps above are repeated for all DEVGRPs relevant for the SoC to make sure
+that full SoC functionality is enabled.</li>
+</ul>
+<p>To compare with <a class="reference internal" href="#pub-devgrp-usage-model1"><span class="std std-ref">Enable all</span></a> model, if
+absolutely no operation is performed by the application other than
+invoking the boardconfig APIs, the state of the SoC at the end of
+initialization of all valid devgrps should be equal to the state of
+the SoC with DEVGRP_ALL being invoked.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>Even though it is permitted to use a bitfield mix such as DEVGRP_00|DEVGRP_01,
+users are expected to be familiar with hardware architecture to understand the
+dependencies and side effects of invalid usage.</li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<ul class="last simple">
+<li>User MUST be careful NOT to mix usage with <a class="reference internal" href="#pub-devgrp-usage-model1"><span class="std std-ref">Enable all</span></a>.</li>
+<li>Users are strongly recommended to read <a class="reference internal" href="../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">SoC information</span></a> for validity
+of various devgrps in a specific SoC.</li>
+<li>User must be careful NOT to access resources OR invoke system firmware services that can be impacted
+by peripherals or domains not initialized by each stage of devgrp. System Firmware does not provide protection
+schemes to prevent or detect such usage.</li>
+<li>User must be careful NOT to confuse hardware “domains” with similar sounding names used in devgrps.
+devgrps is a software defined logical grouping of peripherals which may be a subset of a domain OR may
+span physical domains.</li>
+<li>Users should be careful NOT to re-initialize a devgrp that is already initialized. Checks and
+protection  for invalid attempts are not performed in sysfw in the interest of primary function
+of high speed initialization. You may use the debug functionality
+<a class="reference internal" href="../3_boardcfg/BOARDCFG.html#pub-boardcfg-debug-console"><span class="std std-ref">Board Config Debug</span></a> to track down invalid usage.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="asymmetric_key_services.html" class="btn btn-neutral" title="Asymmetric Key Services" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'19.10.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

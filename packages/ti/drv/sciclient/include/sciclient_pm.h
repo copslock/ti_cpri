@@ -95,13 +95,11 @@ extern "C" {
  *  \n<b>Response</b>:   #tisci_msg_set_device_resp
  *
  *  \param  moduleId        Module for which the state should be set.
- *                          Refer \ref Sciclient_PmDeviceIds.
+ *                          Refer @ref Sciclient_PmDeviceIds.
  *  \param  state           Module State requested.
- *                          Refer \ref Sciclient_PmSetDevice.
  *  \param  reqFlag         Can be TISCI_MSG_FLAG_AOR/TISCI_MSG_FLAG_AOP ORRed  
  *                          with additional flag that can be set to alter the
  *                          device state.
- *                          Refer \ref Sciclient_PmSetDeviceMsgFlags.                         
  *  \param  timeout         Gives a sense of how long to wait for the operation.
  *                          Refer \ref Sciclient_ServiceOperationTimeout.
  *  \return CSL_PASS on success, else failure
@@ -122,7 +120,6 @@ int32_t Sciclient_pmSetModuleState(uint32_t moduleId,
  *  \param  moduleId         Module for which the state should be set.
  *                           Refer \ref Sciclient_PmDeviceIds.
  *  \param  moduleState      Module State returned.
- *                           Refer \ref Sciclient_PmGetDeviceMsgResp.
  *  \param  resetState       Programmed state of the reset lines.
  *  \param  contextLossState Indicates how many times the device has lost
  *                           context. A driver can use this monotonic counter
@@ -147,9 +144,7 @@ int32_t Sciclient_pmGetModuleState(uint32_t  moduleId,
  *  \n<b>Response</b>:   #tisci_msg_set_device_resets_resp
  *
  *  \param  moduleId        Module for which the state should be set.
- *                          Refer \ref Sciclient_PmDeviceIds.
- *  \param  resetBit        Module Reset Bit to be set. TODO: Get reset IDs.
- *                          Refer \ref Sciclient_PmGetDeviceMsgResp.
+ *  \param  resetBit        Module Reset Bit to be set.
  *                          1 - Assert the reset
  *                          0 - Deassert the reset
  *                          Note this convention is opposite of PSC MDCTL
@@ -172,15 +167,11 @@ int32_t Sciclient_pmSetModuleRst(uint32_t moduleId,
  *  \n<b>Response</b>:   #tisci_msg_set_clock_resp
  *
  *  \param  moduleId        Module for which the state should be set.
- *                          Refer \ref Sciclient_PmDeviceIds.
  *  \param  clockId         Clock Id for the module.
- *                          Refer \ref Sciclient_PmModuleClockIds.
  *  \param  state           Clock State requested.
- *                          Refer \ref Sciclient_PmSetClockMsgState.
  *  \param  additionalFlag  Certain flags can also be set to alter the clock
- *                          state. Refer \ref Sciclient_PmSetClockMsgFlag.
+ *                          state. 
  *  \param  timeout         Gives a sense of how long to wait for the operation.
- *                          Refer \ref Sciclient_ServiceOperationTimeout.
  *  \return CSL_PASS on success, else failure
  */
 int32_t Sciclient_pmModuleClkRequest(uint32_t moduleId,
@@ -200,7 +191,6 @@ int32_t Sciclient_pmModuleClkRequest(uint32_t moduleId,
  *  \param  clockId         Clock Id for the module.
  *                          Refer \ref Sciclient_PmModuleClockIds.
  *  \param  state           Clock State returned.
- *                          Refer \ref Sciclient_PmGetClockMsgState.
  *  \param  timeout         Gives a sense of how long to wait for the operation.
  *                          Refer \ref Sciclient_ServiceOperationTimeout.
  *  \return CSL_PASS on success, else failure
@@ -307,8 +297,7 @@ int32_t Sciclient_pmGetModuleClkNumParent(uint32_t  moduleId,
  *  \param  freqHz          Frequency of the clock in Hertz.
  *  \param  timeout         Gives a sense of how long to wait for the operation.
  *                          Refer \ref Sciclient_ServiceOperationTimeout.
- *  \param  additionalFlag  Additional flags for the request .Refer
- *                          \ref Sciclient_PmSetClockMsgFlag .
+ *  \param  additionalFlag  Additional flags for the request.
  *  \return CSL_PASS on success, else failure
  */
 int32_t Sciclient_pmSetModuleClkFreq(uint32_t moduleId,
@@ -342,8 +331,7 @@ int32_t Sciclient_pmSetModuleClkFreq(uint32_t moduleId,
  *  \param  maxFreqHz       Frequency of the clock in Hertz(Max Limit).
  *  \param  timeout         Gives a sense of how long to wait for the operation.
  *                          Refer \ref Sciclient_ServiceOperationTimeout.
- *  \param  additionalFlag  Additional flags for the request .Refer
- *                          \ref Sciclient_PmSetDeviceMsgFlags .
+ *  \param  additionalFlag  Additional flags for the request.
  *  \return CSL_PASS on success, else failure
  */
 int32_t Sciclient_pmSetModuleClkFreqRange(uint32_t moduleId,
@@ -531,10 +519,10 @@ int32_t Sciclient_pmDeviceReset(uint32_t timeout);
 
 /**
  *  \brief   This API would check if the given module Id is valid for the
- *           device. The module Id that is referred to is
- *           \ref Sciclient_PmDeviceIds.
+ *           device. 
  *
- *  \param  modId          Module Index to be checked.
+ *  \param  modId       Module Index to be checked.
+ *
  *  \return CSL_PASS on success, else failure
  */
 int32_t Sciclient_pmIsModuleValid(uint32_t modId);

@@ -1,0 +1,650 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TISCI PM Device API Documentation &mdash; TISCI User Guide</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="TISCI User Guide" href="../../index.html"/>
+        <link rel="up" title="Chapter 2: TISCI Message Documentation" href="../index.html"/>
+        <link rel="next" title="TISCI PM Clock API Documentation" href="clocks.html"/>
+        <link rel="prev" title="TISCI General Message API Documentation" href="../general/core.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> TISCI
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                19.10.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../1_intro/index.html">Chapter 1: Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Chapter 2: TISCI Message Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general">General</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#power-management-pm">Power Management (PM)</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">TISCI PM Device API Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-set-device">TISCI_MSG_SET_DEVICE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-get-device">TISCI_MSG_GET_DEVICE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tisci-msg-set-device-resets">TISCI_MSG_SET_DEVICE_RESETS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clocks.html">TISCI PM Clock API Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sysreset.html">TISCI PM System Reset API Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#resource-management-rm">Resource Management (RM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#secure-management">Secure Management</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../3_boardcfg/index.html">Chapter 3: Board Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../4_trace/index.html">Chapter 4: Interpreting Trace Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../5_soc_doc/index.html">Chapter 5: SoC Family Specific Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../6_topic_user_guides/index.html">Chapter 6: Topic User Guides</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">TISCI</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Chapter 2: TISCI Message Documentation</a> &raquo;</li>
+      
+    <li>TISCI PM Device API Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tisci-pm-device-api-documentation">
+<h1>TISCI PM Device API Documentation<a class="headerlink" href="#tisci-pm-device-api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This document describes the TISCI API set for configuring and controlling the
+devices within the system.</p>
+<div class="section" id="device-configuration-and-control-apis">
+<h3>Device configuration and control APIs<a class="headerlink" href="#device-configuration-and-control-apis" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">TISCI Message ID</th>
+<th class="head">Message Name</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0x0200</td>
+<td><a class="reference internal" href="#pm-devices-msg-set-device"><span class="std std-ref">TISCI_MSG_SET_DEVICE</span></a></td>
+</tr>
+<tr class="row-odd"><td>0x0201</td>
+<td><a class="reference internal" href="#pm-devices-msg-get-device"><span class="std std-ref">TISCI_MSG_GET_DEVICE</span></a></td>
+</tr>
+<tr class="row-even"><td>0x0202</td>
+<td><a class="reference internal" href="#pm-devices-msg-set-device-resets"><span class="std std-ref">TISCI_MSG_SET_DEVICE_RESETS</span></a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Reference <a class="reference internal" href="../../5_soc_doc/index.html#pub-soc-family-doc"><span class="std std-ref">Chapter 5: SoC Family Specific Documentation</span></a> to see device IDs for your SoC.</p>
+</div>
+</div>
+<div class="section" id="macros-used-in-this-document">
+<h3>Macros Used in this Document<a class="headerlink" href="#macros-used-in-this-document" title="Permalink to this headline">¶</a></h3>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_FLAG_DEVICE_WAKE_ENABLED</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">BIT(8)</span></code></p>
+<p>Configure the device to be a wake source. The meaning of this flag will
+ vary slightly from device to device and from SoC to SoC but it
+ generally allows the device to wake the SoC out of low power states.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_FLAG_DEVICE_RESET_ISO</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">BIT(9)</span></code></p>
+<p>Enable reset isolation for this device.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_FLAG_DEVICE_EXCLUSIVE</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">BIT(10)</span></code></p>
+<p>Claim a device exclusively. When passed with STATE_RETENTION or STATE_ON,
+ it will claim the device exclusively. If another host already has this
+ device set to STATE_RETENTION or STATE_ON, the message will fail. Once
+ successful, other hosts attempting to set STATE_RETENTION or STATE_ON
+ will fail.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_VALUE_DEVICE_SW_STATE_AUTO_OFF</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">0</span></code></p>
+<p>Used by TISCI_MSG_SET_DEVICE to turn device off when possible. This
+ must be used in conjunction with SoC dependencies to identify the
+ overall power domain state being achieved.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_VALUE_DEVICE_SW_STATE_RETENTION</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">1</span></code></p>
+<p>Used by TISCI_MSG_SET_DEVICE to disable device but keep in retention.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_VALUE_DEVICE_SW_STATE_ON</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">2</span></code></p>
+<p>Used by TISCI_MSG_SET_DEVICE to turn device on for usage.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_VALUE_DEVICE_HW_STATE_OFF</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">0</span></code></p>
+<p>TISCI_MSG_GET_DEVICE sets this as current state to indicate device
+ is off.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_VALUE_DEVICE_HW_STATE_ON</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">1</span></code></p>
+<p>TISCI_MSG_GET_DEVICE sets this as current state to indicate device
+ is on.</p>
+</p>
+<p><p><code class="docutils literal"><span class="pre">TISCI_MSG_VALUE_DEVICE_HW_STATE_TRANS</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">2</span></code></p>
+<p>TISCI_MSG_GET_DEVICE sets this as current state to indicate device is
+ transitioning between states. When a device stays in this state it is
+ typically due to the fact that some resource that the device is
+ dependent on (example IRQs) are pending preventing completion of
+ hardware handshake. Please refer to Technical Reference Manual for
+ additional information.</p>
+</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-set-device">
+<span id="pm-devices-msg-set-device"></span><h2>TISCI_MSG_SET_DEVICE<a class="headerlink" href="#tisci-msg-set-device" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="objective">
+<h3>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h3>
+<p>Request for a device state to be set.</p>
+</div>
+<div class="section" id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>This is used to request or release a device. For example: When the device is
+requested for operation, state is set to MSG_DEVICE_SW_STATE_ON. When the usage
+of the device is complete and released, the same request with state set as
+MSG_DEVICE_SW_STATE_AUTO_OFF is invoked. Based on exclusive access request,
+multiple processing entities can share a specific hardware block, however, this
+must be carefully used keeping the full system view in mind.</p>
+</div>
+<div class="section" id="tisci-message-id">
+<h3>TISCI Message ID<a class="headerlink" href="#tisci-message-id" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_SET_DEVICE</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x0200U)</span></code></p>
+</div>
+<div class="section" id="message-data-structures">
+<h3>Message Data Structures<a class="headerlink" href="#message-data-structures" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_set_device_req</strong></p>
+<p>Set the desired state of the device.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="31%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header</td>
+</tr>
+<tr class="row-odd"><td>id</td>
+<td>u32</td>
+<td>Indicates which device to modify</td>
+</tr>
+<tr class="row-even"><td>reserved</td>
+<td>u32</td>
+<td>Field is ignored</td>
+</tr>
+<tr class="row-odd"><td>state</td>
+<td>u8</td>
+<td>The desired state of the device.</td>
+</tr>
+</tbody>
+</table>
+<p>Certain flags can also be set to alter the device state:
+ TISCI_MSG_FLAG_DEVICE_WAKE_ENABLED, TISCI_MSG_FLAG_DEVICE_RESET_ISO,
+ TISCI_MSG_FLAG_DEVICE_EXCLUSIVE</p>
+</p>
+<p><p><strong>struct tisci_msg_set_device_resp</strong></p>
+<p>Empty response for TISCI_MSG_SET_DEVICE</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="24%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header to provide ACK/NAK flags to the host.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.</p>
+</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-get-device">
+<span id="pm-devices-msg-get-device"></span><h2>TISCI_MSG_GET_DEVICE<a class="headerlink" href="#tisci-msg-get-device" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Objective<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Retrieve the hardware block state.</p>
+</div>
+<div class="section" id="id2">
+<h3>Usage<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>This requests information regarding the state of a device including the device’s
+programmed state, current state, number of resets, and the number of times a
+device lost context.</p>
+</div>
+<div class="section" id="id3">
+<h3>TISCI Message ID<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_GET_DEVICE</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x0201U)</span></code></p>
+</div>
+<div class="section" id="id4">
+<h3>Message Data Structures<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_get_device_req</strong></p>
+<p>Request to get device based on id.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="31%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header.</td>
+</tr>
+<tr class="row-odd"><td>id</td>
+<td>u32</td>
+<td>Indicates which device to modify</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p><p><strong>struct tisci_msg_get_device_resp</strong></p>
+<p>Response to get device request.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="9%" />
+<col width="82%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header.</td>
+</tr>
+<tr class="row-odd"><td>context_loss_count</td>
+<td>u32</td>
+<td>Indicates how many times the device has lost context. A driver can use this monotonic counter to determine if the device has lost context since the last time this message was exchanged.</td>
+</tr>
+<tr class="row-even"><td>resets</td>
+<td>u32</td>
+<td>Programmed state of the reset lines.</td>
+</tr>
+<tr class="row-odd"><td>programmed_state</td>
+<td>u8</td>
+<td>The state as programmed by set_device.</td>
+</tr>
+<tr class="row-even"><td>current_state</td>
+<td>u8</td>
+<td>The actual state of the hardware.</td>
+</tr>
+</tbody>
+</table>
+</p>
+</div>
+</div>
+<div class="section" id="tisci-msg-set-device-resets">
+<span id="pm-devices-msg-set-device-resets"></span><h2>TISCI_MSG_SET_DEVICE_RESETS<a class="headerlink" href="#tisci-msg-set-device-resets" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id5">
+<h3>Objective<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>Set the state of device reset state.</p>
+</div>
+<div class="section" id="id6">
+<h3>Usage<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>Message Type</strong></td>
+<td>Normal</td>
+</tr>
+<tr class="row-even"><td><strong>Secure Queue Only?</strong></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>This is used to set or release various resets of the hardware block. This is
+typically used for hardware blocks which require special handling prior to
+specific resets being released. Typical example is when starting up a processing
+entity like ICSS/DSP, the device must be requested with resets asserted,
+required firmware loaded and the required resets released in appropriate order
+for operation of the device.</p>
+</div>
+<div class="section" id="id7">
+<h3>TISCI Message ID<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal"><span class="pre">TISCI_MSG_SET_DEVICE_RESETS</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">(0x0202U)</span></code></p>
+</div>
+<div class="section" id="id8">
+<h3>Message Data Structures<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p><p><strong>struct tisci_msg_set_device_resets_req</strong></p>
+<p>Set the desired state of the resets of a device.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="4%" />
+<col width="6%" />
+<col width="90%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header.</td>
+</tr>
+<tr class="row-odd"><td>id</td>
+<td>u32</td>
+<td>Indicates which device to modify</td>
+</tr>
+<tr class="row-even"><td>resets</td>
+<td>u32</td>
+<td>A bit field of resets for the device. The meaning, behavior, and usage of the reset flags are device specific. Altough the flags can be set independently of device state, the firmware will control when resets are actually set to insure compliance with the SoC specific reset requirements.</td>
+</tr>
+</tbody>
+</table>
+</p>
+<p><p><strong>struct tisci_msg_set_device_resets_resp</strong></p>
+<p>Empty response for TISCI_MSG_SET_DEVICE_RESETS</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="24%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>hdr</td>
+<td>struct tisci_header</td>
+<td>TISCI header to provide ACK/NAK flags to the host.</td>
+</tr>
+</tbody>
+</table>
+<p>Although this message is essentially empty and contains only a header
+ a full data structure is created for consistency in implementation.</p>
+</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="clocks.html" class="btn btn-neutral float-right" title="TISCI PM Clock API Documentation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../general/core.html" class="btn btn-neutral" title="TISCI General Message API Documentation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">&copy; Copyright 2016-2019</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'19.10.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+
+        $('body').on("mousewheel", function () {
+            // Remove default behavior
+            event.preventDefault();
+            // Scroll without smoothing
+            var wheelDelta = event.wheelDelta;
+            var currentScrollPosition = window.pageYOffset;
+            window.scrollTo(0, currentScrollPosition - wheelDelta);
+        });
+      });
+  </script>
+   
+
+</body>
+</html>

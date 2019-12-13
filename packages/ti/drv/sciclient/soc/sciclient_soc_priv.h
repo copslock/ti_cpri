@@ -31,7 +31,7 @@
  *
  */
 /**
- *  \file sciclient_soc_priv.h
+ *  \file soc/sciclient_soc_priv.h
  *
  *  \brief Private SOC file
  */

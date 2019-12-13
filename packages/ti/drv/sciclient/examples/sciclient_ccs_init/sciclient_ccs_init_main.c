@@ -51,6 +51,7 @@
 #include <ti/csl/hw_types.h>
 #include <sciclient.h>
 #include <ti/board/board.h>
+#include <ti/drv/sciclient/src/sciclient_priv.h>
 
 /* ========================================================================== */
 /*                           Macros & Typedefs                                */
@@ -68,8 +69,8 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
 {
     /* tisci_boardcfg_abi_rev */
     .rev = {
-        .boardcfg_abi_maj = TISCI_BOARDCFG_ABI_MAJ_VALUE,
-        .boardcfg_abi_min = TISCI_BOARDCFG_ABI_MIN_VALUE,
+        .tisci_boardcfg_abi_maj = TISCI_BOARDCFG_ABI_MAJ_VALUE,
+        .tisci_boardcfg_abi_min = TISCI_BOARDCFG_ABI_MIN_VALUE,
     },
 
     /* tisci_boardcfg_control */
@@ -148,6 +149,27 @@ __attribute__(( aligned(128), section(".boardcfg_data") )) =
 };
 #endif
 
+uint32_t sciclientInitTimeStamp[30] = {0};
+uint32_t sciclientInitTimeCount = 0;
+
+void dmtimer0_read()
+{
+	sciclientInitTimeStamp[sciclientInitTimeCount] =  *(volatile uint32_t*)0x4413303C;
+	sciclientInitTimeCount = (sciclientInitTimeCount + 1)%30;
+}
+void dmtimer0_enable()
+{
+	/* Unlock the the PM Ctrl registers */
+	*(volatile uint32_t *)0x44130020 = 0x8a6b7cda;
+	*(volatile uint32_t *)0x44130024 = 0x823caef9;
+	/* Set the DMTimer Source to be MOSC Clock - 25 MHz for AM65x */
+	*(volatile uint32_t *)0x44130200 = 0x2;
+	/* Start the timer */
+	*(volatile uint32_t *)0x44133038 = 0x3;
+	sciclientInitTimeCount = 0;
+        dmtimer0_read();
+}
+
 /* ========================================================================== */
 /*                         Structure Declarations                             */
 /* ========================================================================== */
@@ -210,17 +232,20 @@ static int32_t App_getRevisionTest(void)
     };
 
     status = Sciclient_init(&config);
-
+    dmtimer0_enable();
     if (CSL_PASS == status)
     {
         Sciclient_BoardCfgPrms_t boardCfgPrms =
         {
             .boardConfigLow = (uint32_t) &gBoardConfigLow_debug,
             .boardConfigHigh = 0,
-            .boardConfigSize = sizeof(gBoardConfigLow_debug)
+            .boardConfigSize = sizeof(gBoardConfigLow_debug),
+            .devGrp = DEVGRP_00
         };
         printf(" \nDMSC Board Configuration with Debug enable \n");
+        dmtimer0_read();
         status = Sciclient_boardCfg(&boardCfgPrms);
+        dmtimer0_read();
     }
     else
     {
@@ -228,10 +253,29 @@ static int32_t App_getRevisionTest(void)
     }
     if (CSL_PASS == status)
     {
-        status = Sciclient_boardCfgPm(NULL);
+        Sciclient_BoardCfgPrms_t boardCfgPrms_pm =
+        {
+            .boardConfigLow = 0,
+            .boardConfigHigh = 0,
+            .boardConfigSize = 0,
+            .devGrp = DEVGRP_00
+        };
+        printf("\nSciclient Board Configuration has passed \n");
+        dmtimer0_read();
+        status = Sciclient_boardCfgPm(&boardCfgPrms_pm);
+        dmtimer0_read();
         if (status == CSL_PASS)
         {
-            status = Sciclient_boardCfgRm(NULL);
+            Sciclient_BoardCfgPrms_t boardCfgPrms_rm =
+            {
+                .boardConfigLow = (uint32_t) &gBoardConfigLow_rm,
+                .boardConfigHigh = 0,
+                .boardConfigSize = sizeof(gBoardConfigLow_rm),
+                .devGrp = DEVGRP_00
+            };
+            dmtimer0_read();
+            status = Sciclient_boardCfgRm(&boardCfgPrms_rm);
+            dmtimer0_read();
         }
         else
         {
@@ -239,7 +283,17 @@ static int32_t App_getRevisionTest(void)
         }
         if (status == CSL_PASS)
         {
-            status = Sciclient_boardCfgSec(NULL) ;
+            Sciclient_BoardCfgPrms_t boardCfgPrms_security =
+            {
+                .boardConfigLow = (uint32_t) &gBoardConfigLow_security,
+                .boardConfigHigh = 0,
+                .boardConfigSize = sizeof(gBoardConfigLow_security),
+                .devGrp = DEVGRP_00
+            };
+            printf("\nSciclient PM Board Configuration has Passed \n");
+            dmtimer0_read();
+            status = Sciclient_boardCfgSec(&boardCfgPrms_security) ;
+            dmtimer0_read();
         }
         else
         {
@@ -249,6 +303,65 @@ static int32_t App_getRevisionTest(void)
     else
     {
         printf("\nSciclient Common Board Configuration has failed \n");
+    }
+    if (CSL_PASS == status)
+    {
+        printf ("\nSciclient Dev Group 00 initilization done");
+        printf ("\nSciclient Dev Group 01 initilization started");
+        Sciclient_BoardCfgPrms_t boardCfgPrms =
+        {
+            .boardConfigLow = (uint32_t) &gBoardConfigLow_debug,
+            .boardConfigHigh = 0,
+            .boardConfigSize = sizeof(gBoardConfigLow_debug),
+            .devGrp = DEVGRP_01
+        };
+        printf(" \nDMSC Board Configuration with Debug enable \n");
+        status = Sciclient_boardCfg(&boardCfgPrms);
+    }
+    if (CSL_PASS == status)
+    {
+        Sciclient_BoardCfgPrms_t boardCfgPrms_pm =
+        {
+            .boardConfigLow = 0,
+            .boardConfigHigh = 0,
+            .boardConfigSize = 0,
+            .devGrp = DEVGRP_01
+        };
+        status = Sciclient_boardCfgPm(&boardCfgPrms_pm);
+        if (status == CSL_PASS)
+        {
+            Sciclient_BoardCfgPrms_t boardCfgPrms_rm =
+            {
+                .boardConfigLow = (uint32_t) &gBoardConfigLow_rm,
+                .boardConfigHigh = 0,
+                .boardConfigSize = sizeof(gBoardConfigLow_rm),
+                .devGrp = DEVGRP_01
+            };
+            status = Sciclient_boardCfgRm(&boardCfgPrms_rm);
+        }
+        else
+        {
+            printf("\nSciclient PM Board Configuration has failed \n");
+        }
+        if (status == CSL_PASS)
+        {
+            Sciclient_BoardCfgPrms_t boardCfgPrms_security =
+            {
+                .boardConfigLow = (uint32_t) &gBoardConfigLow_security,
+                .boardConfigHigh = 0,
+                .boardConfigSize = sizeof(gBoardConfigLow_security),
+                .devGrp = DEVGRP_01
+            };
+            status = Sciclient_boardCfgSec(&boardCfgPrms_security) ;
+        }
+        else
+        {
+            printf("\nSciclient RM Board Configuration has failed \n");
+        }
+    }
+    else
+    {
+        printf("\nSciclient Devgrp_01 Board Configuration has failed \n");
     }
     if (status == CSL_PASS)
     {
@@ -283,11 +396,11 @@ static int32_t App_getRevisionTest(void)
     #if !defined(SOC_J721E)
     if (status == CSL_PASS)
     {
-	/* Set DDR PLL to 400 Mhz. SYSFW default sets this to 333.33 Mhz */
-	/* Comment this code if LPDDR is used */
-	setPLLClk(TISCI_DEV_DDRSS0, TISCI_DEV_DDRSS0_BUS_DDRSS_BYP_4X_CLK, CSL_DDR_PLL_CLK_FREQ);
-	if (CSL_PASS == status)
-	{
+        /* Set DDR PLL to 400 Mhz. SYSFW default sets this to 333.33 Mhz */
+        /* Comment this code if LPDDR is used */
+        setPLLClk(TISCI_DEV_DDRSS0, TISCI_DEV_DDRSS0_BUS_DDRSS_BYP_4X_CLK, CSL_DDR_PLL_CLK_FREQ);
+        if (CSL_PASS == status)
+        {
             printf(" DDR PLL set to %f MHz \n", (float)(CSL_DDR_PLL_CLK_FREQ/1000000) );
         }
         else

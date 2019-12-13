@@ -40,7 +40,7 @@
  * \par IMPORTANT NOTE
  *   <b> The interfaces defined in this package are bound to change.
  *   Release notes/user guide list the additional limitation/restriction
- *   of this module/interfaces. </b> See also \ref TI_DISCLAIMER. \n
+ *   of this module/interfaces. </b> \n
  *   <b> Refer to top level user guide for detailed features,
  *    limitations and usage description.
  *    </b>
@@ -216,16 +216,92 @@
 /* ========================================================================== */
 
 #include <stdint.h>
+#include <stddef.h>
+
+/* TISCI Include */
+#define TISCI_BIT(n)  (1UL << (n))
+
+/**
+ * \brief Defines the sysfw DEVGRP type. This is meant to be used in code
+ * or data structures that require distinction of devgrps.
+ */
+typedef uint8_t devgrp_t;
+
+/* External definitions */
+
+/**
+ * SoC SYSFW devgrp any: NOT TO BE used for SoC data.
+ * This implies that specific sequenced devgrp is NOT used
+ */
+#define DEVGRP_ALL              (0x00U)
+
+/** SoC defined SYSFW devgrp 00 */
+#define DEVGRP_00               ((0x01U) << 0U)
+/** SoC defined SYSFW devgrp 01 */
+#define DEVGRP_01               ((0x01U) << 1U)
+/** SoC defined SYSFW devgrp 02 */
+#define DEVGRP_02               ((0x01U) << 2U)
+/** SoC defined SYSFW devgrp 03 */
+#define DEVGRP_03               ((0x01U) << 3U)
+/** SoC defined SYSFW devgrp 04 */
+#define DEVGRP_04               ((0x01U) << 4U)
+/** SoC defined SYSFW devgrp 05 */
+#define DEVGRP_05               ((0x01U) << 5U)
+/** SoC defined SYSFW devgrp 06 */
+#define DEVGRP_06               ((0x01U) << 6U)
+
+/** SYSFW internal usage ONLY */
+
+/** Module belonging solely to DMSC operations */
+#define DEVGRP_DMSC             ((0x01U) << 7U)
+/** Match everything - STRICTLY INTERNAL USAGE ONLY */
+#define DEVGRP_DMSC_ALL         (0xFFU)
+
+/**
+ * Maximum number of devgrps that are supported by SYSFW.
+ * Derived from the above definitions
+ */
+#define MAX_NUM_DEVGRPS (8U)
+
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/tisci_protocol.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/tisci_boardcfg_macros.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/tisci_boardcfg.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/tisci_core.h>
+#if defined (SOC_AM65XX)
+#include <ti/drv/sciclient/soc/sysfw/include/am65x/tisci_resasg_types.h>
+#include <ti/drv/sciclient/soc/sysfw/include/am65x/tisci_hosts.h>
+#include <ti/drv/sciclient/soc/sysfw/include/am65x/tisci_sec_proxy.h>
+#include <ti/drv/sciclient/soc/sysfw/include/am65x/tisci_boardcfg_constraints.h>
+#endif
+#if defined (SOC_J721E) || defined (SOC_J7200)
+#include <ti/drv/sciclient/soc/sysfw/include/j721e/tisci_resasg_types.h>
+#include <ti/drv/sciclient/soc/sysfw/include/j721e/tisci_hosts.h>
+#include <ti/drv/sciclient/soc/sysfw/include/j721e/tisci_sec_proxy.h>
+#include <ti/drv/sciclient/soc/sysfw/include/j721e/tisci_boardcfg_constraints.h>
+#endif
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_sec_macros.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_firewall.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_procboot.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_keystore.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_rng.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/security/tisci_sa2ul_pka.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/pm/tisci_pm_clock.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/pm/tisci_pm_device.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/pm/tisci_pm_core.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_ra.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_irq.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_udmap.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_psil.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_shared.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_core.h>
 
 #include <ti/drv/sciclient/include/sciclient_soc.h>
-
-#include <ti/drv/sciclient/include/tisci/tisci_includes.h>
-
 #include <ti/drv/sciclient/include/sciclient_pm.h>
 #include <ti/drv/sciclient/include/sciclient_rm.h>
 #include <ti/drv/sciclient/include/sciclient_genericMsgs.h>
 #include <ti/drv/sciclient/include/sciclient_procboot.h>
 #include <ti/drv/sciclient/include/sciclient_boardcfg.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

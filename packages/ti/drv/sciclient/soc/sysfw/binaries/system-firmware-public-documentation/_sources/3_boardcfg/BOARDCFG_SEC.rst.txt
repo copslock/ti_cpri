@@ -1,0 +1,171 @@
+============================
+Security Board Configuration
+============================
+
+.. _pub_boardcfg_sec_intro:
+
+Security Configuration in System Firmware
+=========================================
+
+The security portion of system firmware has options that can be configured
+independently of the main Board Configuration. In addition, initialization of
+the secure portion of the system firmware can be deferred until this secure
+board configuration is sent to allow tuning of the system boot time.
+
+.. warning::
+
+   This message MUST be sent in order to initialize the security capabilities of
+   system firmware. Until it is received no security functionality is available.
+
+A standalone board configuration message contains the security
+data within a flat-typed array.  The security data is provided
+separately to reduce DMSC boot time.  The security board cfg message
+is sent any time after the boot notification message is sent and has no
+dependence upon receipt of the standard board configuration message.
+
+.. note::
+
+  Security Board configuration requires to be signed and encrypted on HS devices
+  to ensure authenticity and protect secrets. Please refer to
+  :doc:`../6_topic_user_guides/hs_boardcfg_signing` on how to sign and encrypt
+  board configuration on HS devices.
+
+.. _pub_boardcfg_security_tisci:
+
+TISCI API for Security Board Config
+-----------------------------------
+
+The following are the parameters required in the TI-SCI message to pass security
+board configuration data to DMSC after DMSC sends boot notification complete.
+The security board configuration message is not dependent on receipt of the
+standard board configuration message.
+
+Usage
+^^^^^
+
++------------------------+--------+
+| **Message Type**       | Normal |
++------------------------+--------+
+| **Secure Queue Only?** | Yes    |
++------------------------+--------+
+
+TISCI Message ID
+^^^^^^^^^^^^^^^^
+
+.. sysfwapimacro:: TISCI_MSG_BOARD_CONFIG_SECURITY
+
+Message Data Structures
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. sysfwapistruct:: tisci_msg_board_config_security_req
+
+
+.. note::
+
+   Even though the security board configuration structure contains the
+   ``boardcfg_security_devgrp`` member, it is ignored. Initialization of
+   firewalls is performed for a devgrp when it is enabled via the core board
+   configuration message. This is necessary to ensure isolation. See
+   :doc:`./BOARDCFG`.
+
+   The reamining security services are initialized when the |sec_bcfg| is
+   received for the first time. Subsequent |sec_bcfg| messages do not have
+   any effect on operation of |sysfw|.
+
+.. sysfwapistruct:: tisci_msg_board_config_security_resp
+
+.. warning::
+
+   The boardcfg data structures described below **must** be placed in
+   MCU OCMC SRAM. The address used in the TISCI message will be
+   in MCU OCMC SRAM.
+
+.. _pub_boardcfg_sec:
+
+Configuration substructure enumeration
+--------------------------------------
+
+This is a fixed size c-structure which both defines the format of the
+configuration as well as reserves DMSC memory to store the
+configuration. The boardcfg_sec data structure makes use of the same
+:ref:`pub_boardcfg_abi_rev` structure for the top level and
+:ref:`pub_boardcfg_subhdr` for each member structure as the top level
+boardcfg structure does..
+
++--------------------+------------------------------------+-----------------------------------------------------------+
+|      Element       |             Type                   |                        Description                        |
++====================+====================================+===========================================================+
+| boardcfg_abi_rev   | :ref:`pub_boardcfg_abi_rev`        | Board Config ABI version (separate from DMSC ABI version) |
++--------------------+------------------------------------+-----------------------------------------------------------+
+| processor_acl_list | :ref:`pub_boardcfg_proc_acl`       | Processor access control list configuration               |
++--------------------+------------------------------------+-----------------------------------------------------------+
+| host_hierarchy     | :ref:`pub_boardcfg_host_hierarchy` | Host hierarchy configuration                              |
++--------------------+------------------------------------+-----------------------------------------------------------+
+
+
+.. _pub_boardcfg_proc_acl:
+
+Design for Processor Access List
+--------------------------------
+
+Access Control List for various Processors in the SoC.
+
+.. _pub_boardcfg_proc:
+
+boardcfg_proc
+^^^^^^^^^^^^^
+
++------------------+---------------------------------------------------------------+------------------------------------+
+|     Element      |                             Type                              |            Description             |
++==================+===============================================================+====================================+
+| subhdr           | :ref:`pub_boardcfg_subhdr`                                    | Magic and size for integrity check |
++------------------+---------------------------------------------------------------+------------------------------------+
+| proc_access_list | :ref:`processor_access_list <pub_processor_access_list>` [32] | Processor access description       |
++------------------+---------------------------------------------------------------+------------------------------------+
+
+.. _pub_processor_access_list:
+
+Processor access list entry
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
++----------------------------+------+-------------------------------------------------------------------------------+
+|          Element           | Type |                                  Description                                  |
++============================+======+===============================================================================+
+| processor_id               | u8   | Processor ID (mandatory) - Use 0 to mark unused                               |
++----------------------------+------+-------------------------------------------------------------------------------+
+| proc_access_master         | u16  | Recovery Host ID or Primary control master host ID (mandatory)                |
++----------------------------+------+-------------------------------------------------------------------------------+
+| proc_access_secondary[0-2] | u16  | Other Host IDs that can control this processor(set to DMSC host ID if unused) |
++----------------------------+------+-------------------------------------------------------------------------------+
+
+.. _pub_boardcfg_host_hierarchy:
+
+Design for Host Hierarchy
+-------------------------
+
+Host Hierarchy for various processing entities in the SoC.  Host hierarchy
+defines the supervisory tree for all processing entities in the SoC.
+
+boardcfg_host_hierarchy
+^^^^^^^^^^^^^^^^^^^^^^^
+
++------------------------+----------------------------------------------------------+------------------------------------+
+|     Element            |                              Type                        |            Description             |
++========================+==========================================================+====================================+
+| subhdr                 | :ref:`pub_boardcfg_subhdr`                               | Magic and size for integrity check |
++------------------------+----------------------------------------------------------+------------------------------------+
+| host_hierarchy_entries | :ref:`host_hierarchy_entries <pub_host_hierarchy>` [32]  | Host hierarchy description         |
++------------------------+----------------------------------------------------------+------------------------------------+
+
+.. _pub_host_hierarchy:
+
+Host hierarchy entry
+^^^^^^^^^^^^^^^^^^^^
+
++--------------------+------+--------------------------------------------------------------+
+|          Element   | Type |                                  Description                 |
++====================+======+==============================================================+
+| host_id            | u8   | Processing entity Host ID (mandatory) - Use 0 to mark unused |
++--------------------+------+--------------------------------------------------------------+
+| supervisor_host_id | u8   | Supervisor Host ID                                           |
++--------------------+------+--------------------------------------------------------------+

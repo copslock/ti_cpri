@@ -66,16 +66,16 @@
 /*                          Function Declarations                             */
 /* ========================================================================== */
 
-/**<
+/**
  *  \brief   Gives the address for status register for a particular thread.
  *
  *  \param   thread    Index of the thread.
  *
- *  \return  address.
+ *  \return  address   address of the thread status
  */
 static inline uint32_t Sciclient_threadStatusReg(uint32_t thread);
 
-/**<
+/**
  *  \brief   Read a 32 bit word from the thread.
  *
  *  \param   thread    Index of the thread to be read from.
@@ -85,7 +85,7 @@ static inline uint32_t Sciclient_threadStatusReg(uint32_t thread);
  */
 static inline uint32_t Sciclient_readThread32(uint32_t thread, uint8_t idx);
 
-/**<
+/**
  *  \brief   Read the current thread count.
  *
  *  \param   thread    Index of the thread to be read from.
@@ -94,18 +94,17 @@ static inline uint32_t Sciclient_readThread32(uint32_t thread, uint8_t idx);
  */
 static inline uint32_t Sciclient_readThreadCount(uint32_t thread);
 
-/**<
+/**
  *  \brief   Validate thread has no errors and has space to accept the next
  *           message.
  *
  *  \param   thread    Index of the thread.
- *  \param   timeout   Wait for timeout if operation is complete.
  *
  *  \return  status    Status of the message.
  */
 static int32_t Sciclient_verifyThread(uint32_t thread);
 
-/**<
+/**
  *  \brief   Check if there are credits to write to the thread.
  *
  *  \param   thread    Index of the thread.
@@ -115,10 +114,11 @@ static int32_t Sciclient_verifyThread(uint32_t thread);
  */
 static int32_t Sciclient_waitThread(uint32_t thread, uint32_t timeout);
 
-/**<
+/**
  *  \brief   API to send the message to the thread.
  *
  *  \param   thread         Index of the thread.
+ *  \param   pSecHeader     Pointer to the security header extension.
  *  \param   pHeader        Pointer to the header structure.
  *  \param   pPayload       Pointer to the payload structure.
  *  \param   payloadSize    Size of the payload.
@@ -131,7 +131,7 @@ static void Sciclient_sendMessage(uint32_t        thread,
                                   const uint8_t  *pPayload,
                                   uint32_t        payloadSize);
 
-/**<
+/**
  *  \brief   API to identify which mode the CPU is operating in. This utility
  *           function would read CPU related registers to know which mode
  *           (secure or non secure) the CPU is in and then would determine the
@@ -139,13 +139,13 @@ static void Sciclient_sendMessage(uint32_t        thread,
  *           a given code, users of SCICLENT would need to modify this function
  *           and recompile.
  *
- *  \param   None
+ *  \param   messageType The Message ID to be checked.
  *
  *  \return  retVal     SCICLENT Context of the CPU
  */
 static uint32_t Sciclient_getCurrentContext(uint16_t messageType);
 
-/**<
+/**
  *  \brief   This utility function would find the proxy map context id for
  *           'gSciclientMap' corresponding to a particular interrupt number.
  *
@@ -155,7 +155,7 @@ static uint32_t Sciclient_getCurrentContext(uint16_t messageType);
  */
 static int32_t Sciclient_contextIdFromIntrNum(uint32_t intrNum);
 
-/**<
+/**
  *  \brief   API to flush/remove all outstanding messages on a thread .
  *
  *  \param   thread    Index of the thread.
@@ -164,7 +164,7 @@ static int32_t Sciclient_contextIdFromIntrNum(uint32_t intrNum);
  */
 static void Sciclient_flush(uint32_t thread);
 
-/**<
+/**
  *  \brief   ISR called when a response is received from DMSC.
  *
  *  \param   arg    Not used.
@@ -440,10 +440,10 @@ int32_t Sciclient_init(const Sciclient_ConfigPrms_t *pCfgPrms)
                     evtCfg.rtMap = 0x3C;
                     evtCfg.extEvtNum = 0x0;
                     evtCfg.c7xEvtNum = SCICLIENT_C7X_NON_SECURE_INTERRUPT_NUM;
-		    /* Clec interrupt number 1024 is connected to GIC interrupt number 32 in J721E.
-		     * Due to this for CLEC programming one needs to add an offset of 992 (1024 - 32)
-		     * to the event number which is shared between GIC and CLEC.
-		     */
+                    /* Clec interrupt number 1024 is connected to GIC interrupt number 32 in J721E.
+                     * Due to this for CLEC programming one needs to add an offset of 992 (1024 - 32)
+                     * to the event number which is shared between GIC and CLEC.
+                     */
                     CSL_clecConfigEvent(regs, CSLR_COMPUTE_CLUSTER0_GIC500SS_SPI_NAVSS0_INTR_ROUTER_0_OUTL_INTR_189 + 992, &evtCfg);
                     intrPrms.corepacConfig.priority = 1U;
                 }
@@ -496,10 +496,10 @@ int32_t Sciclient_init(const Sciclient_ConfigPrms_t *pCfgPrms)
                     evtCfg.rtMap = 0x3C;
                     evtCfg.extEvtNum = 0x0;
                     evtCfg.c7xEvtNum = SCICLIENT_C7X_SECURE_INTERRUPT_NUM;
-		    /* Clec interrupt number 1024 is connected to GIC interrupt number 32 in J721E.
-		     * Due to this for CLEC programming one needs to add an offset of 992 (1024 - 32)
-		     * to the event number which is shared between GIC and CLEC.
-		     */
+                    /* Clec interrupt number 1024 is connected to GIC interrupt number 32 in J721E.
+                     * Due to this for CLEC programming one needs to add an offset of 992 (1024 - 32)
+                     * to the event number which is shared between GIC and CLEC.
+                     */
                     CSL_clecConfigEvent(regs, CSLR_COMPUTE_CLUSTER0_GIC500SS_SPI_NAVSS0_INTR_ROUTER_0_OUTL_INTR_191 + 992, &evtCfg);
                     intrPrms.corepacConfig.priority = 1U;
                 }
@@ -541,7 +541,7 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
     uint8_t           localSeqId;
     uintptr_t         key = 0U;
     uint32_t          timeToWait;
-    struct tisci_header header;
+    struct tisci_header *header;
     uint8_t *pSecHeader = NULL;
     struct tisci_sec_header secHeader;
     uint32_t numWords = 0U;
@@ -576,7 +576,14 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
                 secHeader.rsvd = (uint16_t)0;
                 pSecHeader = (uint8_t * )(&secHeader);
             }
-            txPayloadSize = pReqPrm->reqPayloadSize;
+            if (pReqPrm->reqPayloadSize > 0U)
+            {
+                txPayloadSize = pReqPrm->reqPayloadSize - sizeof(struct tisci_header);
+            }
+            else
+            {
+                txPayloadSize = 0U;
+            }
             if (txPayloadSize > gSciclient_maxMsgSizeBytes)
             {
                 status = CSL_EBADARGS;
@@ -585,8 +592,14 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
             {
                 status = CSL_EBADARGS;
             }
-
-            rxPayloadSize = pRespPrm->respPayloadSize;
+            if (pRespPrm->respPayloadSize > 0U)
+            {
+                rxPayloadSize = pRespPrm->respPayloadSize - sizeof(struct tisci_header);
+            }
+            else
+            {
+                rxPayloadSize = 0U;
+            }
             if (rxPayloadSize > gSciclient_maxMsgSizeBytes)
             {
                 status = CSL_EBADARGS;
@@ -598,7 +611,7 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
             }
             else
             {
-                pLocalRespPayload = (uint32_t *)(pRespPrm->pRespPayload);
+                pLocalRespPayload = (uint32_t *)(pRespPrm->pRespPayload + sizeof(struct tisci_header));
             }
         }
         else
@@ -613,6 +626,7 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
 
     if (CSL_PASS == status)
     {
+        struct tisci_msg_version_req *dummyHdr = (struct tisci_msg_version_req *)pReqPrm->pReqPayload;
         /* Construct header */
         /*This is done to remove stray messages(due to timeout) in a thread
         * in case of "polling". */
@@ -621,11 +635,12 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
         {
             Sciclient_flush(rxThread);
         }
-        header.type = pReqPrm->messageType;
-        header.host = (uint8_t) gSciclientMap[contextId].hostId;
+        header = &dummyHdr->hdr;
+        header->type = pReqPrm->messageType;
+        header->host = (uint8_t) gSciclientMap[contextId].hostId;
         localSeqId = (uint8_t) gSciclientHandle.currSeqId;
-        header.seq = localSeqId;
-        header.flags = pReqPrm->flags;
+        header->seq = localSeqId;
+        header->flags = pReqPrm->flags;
         gSciclientHandle.currSeqId = (gSciclientHandle.currSeqId + 1U) %
                                     SCICLIENT_MAX_QUEUE_SIZE;
         if (gSciclientHandle.currSeqId == 0U)
@@ -649,8 +664,8 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
     {
         /* Send Message */
         initialCount = Sciclient_readThreadCount(rxThread);
-        Sciclient_sendMessage(txThread, pSecHeader ,(uint8_t *) &header,
-                              (pReqPrm->pReqPayload),
+        Sciclient_sendMessage(txThread, pSecHeader ,(uint8_t *) header,
+                              (pReqPrm->pReqPayload + sizeof(struct tisci_header)),
                               txPayloadSize);
 
         /* Verify thread status before reading/writing */
@@ -688,7 +703,7 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
         {
             /* Check the seqId of response*/
             status = CSL_ETIMEOUT;
-            timeToWait =  pReqPrm->timeout;;
+            timeToWait =  pReqPrm->timeout;
             while (timeToWait > 0U)
             {
                 if ((pLocalRespHdr->seq == (uint32_t) localSeqId))
