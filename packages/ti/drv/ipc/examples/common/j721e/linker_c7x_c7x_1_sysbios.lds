@@ -106,7 +106,7 @@ SECTIONS
 
     .cinit      >       C7X_DDR_SPACE  /* could be part of const */
     .init_array >       C7X_DDR_SPACE  /* C++ initializations */
-    .stack      >       C7X_DDR_SPACE  ALIGN(0x2000)
+    .stack      >       C7X_DDR_SPACE  ALIGN(0x20000) /* Needed for Nested ISR handling */
     .args       >       C7X_DDR_SPACE
     .cio        >       C7X_DDR_SPACE
     .const      >       C7X_DDR_SPACE
