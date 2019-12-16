@@ -384,61 +384,73 @@ MMCSD_Error MMCSD_configSocIntrPath(const void *hwAttrs_ptr, bool setIntrPath)
         {
             dst_id = TISCI_DEV_R5FSS1_CORE1; /* Main R5 -SS1 - CPU1*/ 
         }
-    }    
+    } 
+    
+       
     src_index = hwAttrs->eventId;  /* Index coming from the peripheral */
     dst_host_irq = hwAttrs->intNum;  /* By default it is set for MCU R5 */
-
-      
-   if(setIntrPath) {
-    memset (&rmIrqReq,0,sizeof(rmIrqReq));	   
-
-    rmIrqReq.secondary_host         = TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST;
-    rmIrqReq.src_id = src_id;
-    rmIrqReq.src_index = src_index;  /* This is the event coming out of 
-    the peripheral */
-
-    /* Set the destination interrupt */ 
-    rmIrqReq.valid_params |= TISCI_MSG_VALUE_RM_DST_ID_VALID;
-    rmIrqReq.valid_params |= TISCI_MSG_VALUE_RM_DST_HOST_IRQ_VALID;
-
-    /* Set the destination based on the core */
-    rmIrqReq.dst_id       = dst_id;
-    rmIrqReq.dst_host_irq       = dst_host_irq;
-
-   } else 
+   
+   if( (src_id == TISCI_DEV_MMCSD0) &&
+       ((r5CpuInfo.grpId == (uint32_t)CSL_ARM_R5_CLUSTER_GROUP_ID_1) ||
+       (r5CpuInfo.grpId == (uint32_t)CSL_ARM_R5_CLUSTER_GROUP_ID_2) ))
    {
-      memset (&rmIrqRelease,0,sizeof(rmIrqRelease));
-
-      rmIrqRelease.secondary_host         = TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST;
-      rmIrqRelease.src_id = src_id;
-      rmIrqRelease.src_index = src_index;  /* This is the event coming out of 
-    the peripheral */
+     /* Nothing to be configured as the MMCSD0 -> MAIN R5 does not need any configuration.
+      * It is direct to the core, bypassing INTR and MAIN2MCU RTR. Hence there is no
+      * firmware involvment needed. Consequently, the interrupt path configuration should
+      * bypassed entirely.
+      */
+      ret = MMCSD_OK;
+   } else
+   {
+      
+    if(setIntrPath) {
+      memset (&rmIrqReq,0,sizeof(rmIrqReq));	   
+      rmIrqReq.secondary_host         = TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST;
+      rmIrqReq.src_id = src_id;
+      rmIrqReq.src_index = src_index;  /* This is the event coming out of 
+      the peripheral */
 
       /* Set the destination interrupt */ 
-      rmIrqRelease.valid_params |= TISCI_MSG_VALUE_RM_DST_ID_VALID;
-      rmIrqRelease.valid_params |= TISCI_MSG_VALUE_RM_DST_HOST_IRQ_VALID;
+      rmIrqReq.valid_params |= TISCI_MSG_VALUE_RM_DST_ID_VALID;
+      rmIrqReq.valid_params |= TISCI_MSG_VALUE_RM_DST_HOST_IRQ_VALID;
 
-     /* Set the destination based on the core */
-     rmIrqRelease.dst_id       = dst_id;
-     rmIrqRelease.dst_host_irq = dst_host_irq;
-   } 
-    
+      /* Set the destination based on the core */
+      rmIrqReq.dst_id       = dst_id;
+      rmIrqReq.dst_host_irq       = dst_host_irq;
 
-    /* Config event */
-    if(setIntrPath) {
-       retVal = Sciclient_rmIrqSet(
+     } else 
+     {
+       memset (&rmIrqRelease,0,sizeof(rmIrqRelease));
+
+       rmIrqRelease.secondary_host         = TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST;
+       rmIrqRelease.src_id = src_id;
+       rmIrqRelease.src_index = src_index;  /* This is the event coming out of 
+       the peripheral */
+
+       /* Set the destination interrupt */ 
+       rmIrqRelease.valid_params |= TISCI_MSG_VALUE_RM_DST_ID_VALID;
+       rmIrqRelease.valid_params |= TISCI_MSG_VALUE_RM_DST_HOST_IRQ_VALID;
+
+       /* Set the destination based on the core */
+       rmIrqRelease.dst_id       = dst_id;
+       rmIrqRelease.dst_host_irq = dst_host_irq;
+     } 
+     /* Config event */
+     if(setIntrPath) {
+        retVal = Sciclient_rmIrqSet(
                     (const struct tisci_msg_rm_irq_set_req *)&rmIrqReq, 
                      &rmIrqResp, 
                      SCICLIENT_SERVICE_WAIT_FOREVER);
-     } else {
-       retVal = Sciclient_rmIrqRelease(
+      } else {
+        retVal = Sciclient_rmIrqRelease(
                     (const struct tisci_msg_rm_irq_release_req *)&rmIrqRelease,
                      SCICLIENT_SERVICE_WAIT_FOREVER);
-	 }               
-    if(CSL_PASS != retVal)
-    {
+	  }               
+      if(CSL_PASS != retVal)
+      {
 	   ret = MMCSD_ERR_SET_SOC_INTERRUPT_PATH;
-	}
+	  }
+	}  
 #endif
  	return(ret);
 }
