@@ -79,8 +79,8 @@ int32_t Sciclient_msmcQuery(const struct tisci_query_msmc_req *req,
     Sciclient_ReqPrm_t sciReq;
     sciReq.messageType    = TISCI_MSG_QUERY_MSMC;
     sciReq.flags          = TISCI_MSG_FLAG_AOP;
-    sciReq.pReqPayload    = (const uint8_t *) 0;
-    sciReq.reqPayloadSize = (uint32_t) 0;
+    sciReq.pReqPayload    = (const uint8_t *) req;
+    sciReq.reqPayloadSize = (uint32_t) sizeof (struct tisci_query_msmc_req);
     sciReq.timeout        = timeout;
 
     Sciclient_RespPrm_t sciResp;

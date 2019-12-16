@@ -215,13 +215,13 @@ int32_t App_getRevisionTestPol(void)
         NULL,
         1
     };
-
+    struct tisci_msg_version_req request;
     const Sciclient_ReqPrm_t      reqPrm =
     {
         TISCI_MSG_VERSION,
         TISCI_MSG_FLAG_AOP,
-        NULL,
-        0,
+        (uint8_t *) &request,
+        sizeof(request),
         SCICLIENT_SERVICE_WAIT_FOREVER
     };
 
@@ -281,12 +281,13 @@ int32_t App_getRevisionTestIntr(void)
         NULL
     };
 
+    struct tisci_msg_version_req request;
     const Sciclient_ReqPrm_t      reqPrm =
     {
         TISCI_MSG_VERSION,
         TISCI_MSG_FLAG_AOP,
-        NULL,
-        0,
+        (uint8_t *) &request,
+        sizeof(request),
         SCICLIENT_SERVICE_WAIT_FOREVER
     };
     struct tisci_msg_version_resp response;
@@ -343,12 +344,12 @@ static int32_t App_invalidReqPrmTest(void)
         SCICLIENT_SERVICE_OPERATION_MODE_INTERRUPT,
         NULL
     };
-
+    struct tisci_msg_version_req request;
     const Sciclient_ReqPrm_t      reqPrm_badTxSize =
     {
         TISCI_MSG_VERSION,
         TISCI_MSG_FLAG_AOP,
-        NULL,
+        (uint8_t*) &request,
         100,
         SCICLIENT_SERVICE_WAIT_FOREVER
     };
@@ -357,7 +358,7 @@ static int32_t App_invalidReqPrmTest(void)
     {
         TISCI_MSG_VERSION,
         TISCI_MSG_FLAG_AOP,
-        NULL,
+        (uint8_t*)&request,
         0,
         SCICLIENT_SERVICE_WAIT_FOREVER
     };
@@ -426,13 +427,13 @@ static int32_t App_timeoutTest(void)
         SCICLIENT_SERVICE_OPERATION_MODE_INTERRUPT,
         NULL
     };
-
+    struct tisci_msg_version_req request;
     const Sciclient_ReqPrm_t      reqPrm =
     {
         TISCI_MSG_VERSION,
         TISCI_MSG_FLAG_AOP,
-        NULL,
-        0,
+        (uint8_t *)&request,
+        sizeof(request),
         (uint32_t)0x0A
     };
     struct tisci_msg_version_resp response;

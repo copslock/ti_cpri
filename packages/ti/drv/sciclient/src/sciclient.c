@@ -627,6 +627,14 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
     if (CSL_PASS == status)
     {
         struct tisci_msg_version_req *dummyHdr = (struct tisci_msg_version_req *)pReqPrm->pReqPayload;
+        if (dummyHdr == NULL)
+        {
+            status = CSL_EBADARGS;
+        }
+    }
+    if (CSL_PASS == status)
+    {
+        struct tisci_msg_version_req *dummyHdr = (struct tisci_msg_version_req *)pReqPrm->pReqPayload;
         /* Construct header */
         /*This is done to remove stray messages(due to timeout) in a thread
         * in case of "polling". */
@@ -831,12 +839,13 @@ int32_t Sciclient_abiCheck(void)
     int32_t status = CSL_PASS;
     /* Send getRevision message for ABI Revision Check */
     /*THINK: What should be the appropriate timeout value here? */
+    struct tisci_msg_version_req request;
     const Sciclient_ReqPrm_t      reqPrm =
     {
         TISCI_MSG_VERSION,
         TISCI_MSG_FLAG_AOP,
-        NULL,
-        0,
+        (uint8_t *) &request,
+        sizeof (request),
         SCICLIENT_SERVICE_WAIT_FOREVER
     };
 

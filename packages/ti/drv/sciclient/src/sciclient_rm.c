@@ -142,11 +142,10 @@ int32_t Sciclient_rmIrqRelease(const struct tisci_msg_rm_irq_release_req *req,
     sciReq.timeout        = timeout;
 
     Sciclient_RespPrm_t sciResp ;
+    struct tisci_msg_rm_irq_release_resp resp;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = NULL;
-    sciResp.respPayloadSize = 0;
-
-
+    sciResp.pRespPayload    = (uint8_t *)&resp;
+    sciResp.respPayloadSize = sizeof(resp);
 
     r = Sciclient_service(&sciReq, &sciResp);
     if ((r != CSL_PASS) ||
@@ -533,11 +532,10 @@ int32_t Sciclient_rmPsilPair(const struct tisci_msg_rm_psil_pair_req *req,
     sciReq.timeout        = timeout;
 
     Sciclient_RespPrm_t sciResp ;
+    struct tisci_msg_rm_psil_pair_resp resp;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = NULL;
-    sciResp.respPayloadSize = 0;
-
-
+    sciResp.pRespPayload    = (uint8_t*)&resp;
+    sciResp.respPayloadSize = sizeof(resp);
 
     r = Sciclient_service(&sciReq, &sciResp);
     if ((r != CSL_PASS) ||
@@ -560,11 +558,10 @@ int32_t Sciclient_rmPsilUnpair(const struct tisci_msg_rm_psil_unpair_req *req,
     sciReq.timeout        = timeout;
 
     Sciclient_RespPrm_t sciResp ;
+    struct tisci_msg_rm_psil_unpair_resp resp;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = NULL;
-    sciResp.respPayloadSize = 0;
-
-
+    sciResp.pRespPayload    = (uint8_t *)&resp;
+    sciResp.respPayloadSize = sizeof(resp);
 
     r = Sciclient_service(&sciReq, &sciResp);
     if ((r != CSL_PASS) ||
@@ -592,8 +589,6 @@ int32_t Sciclient_rmPsilRead(const struct tisci_msg_rm_psil_read_req *req,
     sciResp.pRespPayload    = (uint8_t *) resp;
     sciResp.respPayloadSize = (uint32_t) sizeof(*resp);
 
-
-
     r = Sciclient_service(&sciReq, &sciResp);
     if ((r != CSL_PASS) ||
         ((sciResp.flags & TISCI_MSG_FLAG_ACK) != TISCI_MSG_FLAG_ACK)) {
@@ -615,11 +610,10 @@ int32_t Sciclient_rmPsilWrite(const struct tisci_msg_rm_psil_write_req *req,
     sciReq.timeout        = timeout;
 
     Sciclient_RespPrm_t sciResp ;
+    struct tisci_msg_rm_psil_write_resp resp;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = NULL;
-    sciResp.respPayloadSize = 0;
-
-
+    sciResp.pRespPayload    = (uint8_t*)&resp;
+    sciResp.respPayloadSize = sizeof(resp);
 
     r = Sciclient_service(&sciReq, &sciResp);
     if ((r != CSL_PASS) ||
