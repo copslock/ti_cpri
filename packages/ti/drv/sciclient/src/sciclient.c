@@ -752,10 +752,16 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
 
         if (trailBytes > 0U)
         {
-            *(pLocalRespPayload + i) = Sciclient_readThread32(
-                rxThread,
-                ((uint8_t)i +
-                 SCICLIENT_HEADER_SIZE_IN_WORDS+gSecHeaderSizeWords));
+            uint32_t tempWord = Sciclient_readThread32(
+                    rxThread,
+                    ((uint8_t)i +
+                     SCICLIENT_HEADER_SIZE_IN_WORDS+gSecHeaderSizeWords));
+            uint8_t * pTempWord = (uint8_t*) &tempWord;
+            uint32_t bytes;
+            for (bytes = 0U; bytes < trailBytes; bytes++)
+            {
+                *(uint8_t*)((uint32_t)pLocalRespPayload + i + bytes) = *(pTempWord + bytes);
+            }
         }
 
         /* Read the last register of the rxThread */

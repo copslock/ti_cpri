@@ -393,7 +393,7 @@ int32_t Sciclient_pmGetModuleClkNumParent(uint32_t  moduleId,
 {
     int32_t retVal = CSL_PASS;
 
-    struct tisci_msg_get_num_clock_parents_req request;
+    struct tisci_msg_get_num_clock_parents_req request = {0};
     request.device = (uint32_t) moduleId;
 
     /* If clockId is larger than 8-bit max, we use clk32 to specify the
