@@ -253,7 +253,7 @@ int32_t IpcUtils_HeapCreate(IpcUtils_HeapHandle *pHndl,
         rtnVal = IpcUtils_Qcreate(&pHndl->qHandle);
         if (IPC_SOK == rtnVal)
         {
-            tempBufPtr = param->buf;
+            tempBufPtr = (uint8_t *)param->buf;
             for (idx = 0U; idx < param->numBlocks; idx++)
             {
                 tempBufPtr += param->blockSize;

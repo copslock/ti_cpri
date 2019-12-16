@@ -220,24 +220,23 @@ export ex03_linux_bios_2core_echo_test_$(SOC)_CORELIST
 ipc_EXAMPLE_LIST += ex03_linux_bios_2core_echo_test
 
 # IPC performance_test
-APP_NAME = ipc_perf_test
-$(APP_NAME)_COMP_LIST = $(APP_NAME)
-$(APP_NAME)_RELPATH = ti/drv/ipc/examples/
-$(APP_NAME)_PATH = $(PDK_IPC_COMP_PATH)/examples/$(APP_NAME)
-$(APP_NAME)_BOARD_DEPENDENCY = yes
-$(APP_NAME)_CORE_DEPENDENCY = yes
-$(APP_NAME)_XDC_CONFIGURO = yes
-export $(APP_NAME)_COMP_LIST
-export $(APP_NAME)_BOARD_DEPENDENCY
-export $(APP_NAME)_CORE_DEPENDENCY
-export $(APP_NAME)_XDC_CONFIGURO
-$(APP_NAME)_PKG_LIST = $(APP_NAME)
-$(APP_NAME)_INCLUDE = $($(APP_NAME)_PATH)
-$(APP_NAME)_BOARDLIST = $(drvipc_BOARDLIST)
-export $(APP_NAME)_BOARDLIST
-$(APP_NAME)_$(SOC)_CORELIST = $(drvipc_$(SOC)_CORELIST)
-export $(APP_NAME)_$(SOC)_CORELIST
-ipc_EXAMPLE_LIST += $(APP_NAME)
+ipc_perf_test_COMP_LIST = ipc_perf_test
+ipc_perf_test_RELPATH = ti/drv/ipc/examples/ipc_perf_test
+ipc_perf_test_PATH = $(PDK_IPC_COMP_PATH)/examples/ipc_perf_test
+ipc_perf_test_BOARD_DEPENDENCY = yes
+ipc_perf_test_CORE_DEPENDENCY = yes
+ipc_perf_test_XDC_CONFIGURO = yes
+export ipc_perf_test_COMP_LIST
+export ipc_perf_test_BOARD_DEPENDENCY
+export ipc_perf_test_CORE_DEPENDENCY
+export ipc_perf_test_XDC_CONFIGURO
+ipc_perf_test_PKG_LIST = ipc_perf_test
+ipc_perf_test_INCLUDE = $(ipc_perf_test_PATH)
+ipc_perf_test_BOARDLIST = $(drvipc_BOARDLIST)
+export ipc_perf_test_BOARDLIST
+ipc_perf_test_$(SOC)_CORELIST = $(drvipc_$(SOC)_CORELIST)
+export ipc_perf_test_$(SOC)_CORELIST
+ipc_EXAMPLE_LIST += ipc_perf_test
 
 
 export ipc_LIB_LIST
