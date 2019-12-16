@@ -63,6 +63,13 @@ extern "C" {
 /* WKUP CTRL base address + offset to beginning of PAD CONFIG section */
 #define WKUP_PMUX_CTRL	(CSL_WKUP_CTRL_MMR0_CFG0_BASE + 0x1C000)
 
+/* Default pinmux configuration of UART Tx pin used by ROM/SBL */
+#define BOARD_MCU_UART_TX_PINMUX_VAL            (PIN_MODE(4) | ((PIN_PULL_DISABLE) & \
+                                                 (~PIN_PULL_DIRECTION & ~PIN_INPUT_ENABLE)))
+#define BOARD_MCU_UART_TX_PINMUX_ADDR           (WKUP_PMUX_CTRL + PIN_MCU_OSPI1_D2)
+#define BOARD_MCU_UART_TX_LOCK_KICK_ADDR        (CSL_WKUP_CTRL_MMR0_CFG0_BASE + \
+                                                 CSL_WKUP_CTRL_MMR_CFG0_LOCK7_KICK0)
+
 /**
  *  \brief    This function used to set the specified pinMux
  *            mode for a specified pinMux offset address register.
@@ -76,6 +83,19 @@ extern "C" {
  *
  */
 void Board_pinMuxSetMode(uint32_t offset, uint32_t mode);
+
+/**
+ * \brief  Board UART Tx pinmuxing enable function
+ *
+ * Enables pinmux for the UART Tx pin of the default UART instance used
+ * by ROM/SBL.
+ *
+ * \param   void
+ *
+ * \return  void
+ *
+ */
+void Board_uartTxPinmuxConfig(void);
 
 #ifdef __cplusplus
 }

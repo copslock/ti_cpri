@@ -193,8 +193,11 @@ int main()
     /* Any SoC specific Init. */
     SBL_SocEarlyInit();
 
-    /* Board pinmux. */
-    Board_init(BOARD_INIT_PINMUX_CONFIG);
+    if (SBL_LOG_LEVEL > SBL_LOG_ERR)
+    {
+        /* Configure UART Tx pinmux. */
+        Board_uartTxPinmuxConfig();
+    }
 
     SBL_ADD_PROFILE_POINT;
 
@@ -233,6 +236,11 @@ int main()
 
     /* Load SYSFW. */
     SBL_SciClientInit();
+
+    SBL_ADD_PROFILE_POINT;
+
+    /* Board pinmux. */
+    Board_init(BOARD_INIT_PINMUX_CONFIG);
 
     SBL_ADD_PROFILE_POINT;
 

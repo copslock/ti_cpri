@@ -311,6 +311,8 @@ typedef enum
 /* Value for indicating SoC MCU domain */
 #define BOARD_SOC_DOMAIN_MCU     (2U)
 
+void Board_uartTxPinmuxConfig(void);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

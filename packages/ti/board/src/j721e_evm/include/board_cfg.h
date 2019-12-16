@@ -45,6 +45,10 @@
 extern "C" {
 #endif
 
+#include <ti/board/board.h>
+#include <ti/board/src/j721e_evm/include/board_pinmux.h>
+#include <ti/csl/soc/j721e/src/cslr_wkup_ctrl_mmr.h>
+
 /* Board ID information */
 #define BOARD_INFO_CPU_NAME     "j721e"
 #define BOARD_INFO_BOARD_NAME   "j721e_evm"
@@ -390,6 +394,12 @@ extern "C" {
 #define BOARD_MCSPI_MASTER_INSTANCE                     (1)
 #define BOARD_MCSPI_SLAVE_INSTANCE                      (1)
 
+/* Default pinmux configuration of UART Tx pin used by ROM/SBL */
+#define BOARD_MCU_UART_TX_PINMUX_VAL                    (PIN_MODE(0U) | ((PIN_PULL_DISABLE) & \
+                                                         (~PIN_PULL_DIRECTION & ~PIN_INPUT_ENABLE)))
+#define BOARD_MCU_UART_TX_PINMUX_ADDR                   (BOARD_WKUP_PMUX_CTRL_ADDR + PIN_WKUP_GPIO0_12)
+#define BOARD_MCU_UART_TX_LOCK_KICK_ADDR                (CSL_WKUP_CTRL_MMR0_CFG0_BASE + \
+                                                         CSL_WKUP_CTRL_MMR_CFG0_LOCK7_KICK0)
 
 #ifdef __cplusplus
 }
