@@ -99,7 +99,9 @@ fi
 
 export SYSFW_SE_CUST_CERT=$SCI_CLIENT_OUT_SOC_DIR/sysfw_cert.bin
 export SYSFW_SE_SIGNED=$SCI_CLIENT_OUT_SOC_DIR/sysfw.bin
-export SBL_CERT_GEN=$ROOTDIR/ti/build/makerules/x509CertificateGen.sh
+
+# SBL_CERT_GEN may already be depending on how this is called
+export SBL_CERT_GEN="${SBL_CERT_GEN:-$ROOTDIR/ti/build/makerules/x509CertificateGen.sh}"
 
 # Confirm ROOTDIR is correct, if not error out.
 if [ ! -f $SBL_CERT_GEN ]; then
