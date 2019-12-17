@@ -294,6 +294,7 @@ typedef uint8_t devgrp_t;
 #include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_psil.h>
 #include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_shared.h>
 #include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_core.h>
+#include <ti/drv/sciclient/soc/sysfw/include/tisci/rm/tisci_rm_proxy.h>
 
 #include <ti/drv/sciclient/include/sciclient_soc.h>
 #include <ti/drv/sciclient/include/sciclient_pm.h>

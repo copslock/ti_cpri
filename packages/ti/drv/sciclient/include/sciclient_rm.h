@@ -627,6 +627,30 @@ int32_t Sciclient_rmPsilRead(const struct tisci_msg_rm_psil_read_req *req,
 int32_t Sciclient_rmPsilWrite(const struct tisci_msg_rm_psil_write_req *req,
                               uint32_t timeout);
 
+/**
+ *  \brief Proxy Configuration Request
+ *
+ * The proxy_cfg TISCI message API is used to configure the channelized
+ * firewalls of a Navigator Subsystem proxy. The proxy index must be assigned
+ * to the host defined in the TISCI header via the RM board configuration resource
+ * assignment range list. The channelized firewalls covering the proxy error events
+ * are configured to only give DMSC write access. The proxy target data control
+ * region channelized firewalls are configured to give the assigned host read and
+ * write access.
+ *
+ *  \n<b>Message</b>:    #TISCI_MSG_RM_PROXY_CFG
+ *  \n<b>Request</b>:    #tisci_msg_rm_proxy_cfg_req
+ *
+ *  \param  req             Pointer to proxy config payload
+ *
+ *  \param  timeout         Gives a sense of how long to wait for the operation.
+ *                          Refer \ref Sciclient_ServiceOperationTimeout.
+ *
+ *  \return CSL_PASS on success, else failure
+ */
+int32_t Sciclient_rmSetProxyCfg(const struct tisci_msg_rm_proxy_cfg_req *req,
+                                uint32_t timeout);
+
 #ifdef __cplusplus
 }
 #endif

@@ -624,6 +624,31 @@ int32_t Sciclient_rmPsilWrite(const struct tisci_msg_rm_psil_write_req *req,
     return r;
 }
 
+int32_t Sciclient_rmSetProxyCfg(const struct tisci_msg_rm_proxy_cfg_req *req, uint32_t timeout)
+{
+    int32_t r;
+    Sciclient_ReqPrm_t sciReq ;
+    sciReq.messageType = TISCI_MSG_RM_PROXY_CFG;
+    sciReq.flags       = TISCI_MSG_FLAG_AOP;
+    sciReq.pReqPayload    = (const uint8_t *) req;
+    sciReq.reqPayloadSize = (uint32_t) sizeof(*req);
+    sciReq.timeout        = timeout;
+
+    Sciclient_RespPrm_t sciResp ;
+    struct tisci_msg_rm_proxy_cfg_resp resp;
+    sciResp.flags           = 0;
+    sciResp.pRespPayload    = (uint8_t*)&resp;
+    sciResp.respPayloadSize = sizeof(resp);
+
+    r = Sciclient_service(&sciReq, &sciResp);
+    if ((r != CSL_PASS) ||
+        ((sciResp.flags & TISCI_MSG_FLAG_ACK) != TISCI_MSG_FLAG_ACK)) {
+        r = CSL_EFAIL;
+    }
+
+    return r;
+}
+
 
 /* -------------------------------------------------------------------------- */
 /*                 Internal Function Definitions                              */
