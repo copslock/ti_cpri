@@ -1063,12 +1063,15 @@ void usbDwcDcdEpEvntHandler(usbDwcDcdDevice_t *dwc3, usbDwcDcdEvnt_t *usbDwcDcdE
                 {
                     /* This is a request for in transfer complete */
                     /* Update length to be equal to length transferred */
+                    usb_osalCacheInvalidate(&bulkInTrb, sizeof(usbDEpTrb_t));
                     req->length = req->length - bulkInTrb.bufSize;
                     req->reqComplete(dwc3->pDcdCore->pGadgetObject, req);
                 }
                 else if(DWC_BULK_OUT_PHY_EP == usbDwcDcdEvnt->dEpEvnt.phEpNum)
                 {
+                    usb_osalCacheInvalidate(&bulkOutTrb, sizeof(usbDEpTrb_t));
                     req->length = req->length - bulkOutTrb.bufSize;
+					usb_osalCacheInvalidate((void *)bulkOutTrb.bufPtrLow, req->length);
                     req->reqComplete(dwc3->pDcdCore->pGadgetObject, req);
                 }
                 break;
