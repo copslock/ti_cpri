@@ -66,6 +66,8 @@ extern uint8_t ICSS_EMAC_testLclMac3[6];
 /* ========================================================================== */
 static uint8_t ICSS_EMAC_broadcastMac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 static uint8_t ICSS_EMAC_fwSwitchTestMac[6] = {0x02, 0xDE, 0xAD, 0xBE, 0xEF, 0x69};
+static uint8_t ICSS_EMAC_fwSwitchTestMac1[6] = {0x02, 0x01, 0x01, 0x01, 0x01, 0x69};
+static uint8_t ICSS_EMAC_fwSwitchTestMac2[6] = {0x02, 0x02, 0x02, 0x02, 0x02, 0x69};
 static uint8_t ICSS_EMAC_mcBpduMac[6] = {0x01, 0x80, 0xC2, 0x00, 0x00, 0x00};
 static uint8_t ICSS_EMAC_vlanBpduMac[6] = {0x01, 0x00, 0x0C, 0xCC, 0xCC, 0xCD};
 
@@ -159,12 +161,22 @@ void stp_switch_test(ICSS_EmacHandle icssEmacHandle, ICSS_EmacPktInfo rxPktInfo)
   ICSS_EMAC_testTotalPktRcvd++;  
 
   /* It is possible that we have received some extraneous traffic... */
-  /* ... only analyze packets recieved from/to test MAC address. */
-  if(0 == memcmp(&ICSS_EMAC_testPacketArrayInstance2[0],
-		 &ICSS_EMAC_fwSwitchTestMac[0], 6) ||
-     0 == memcmp(&ICSS_EMAC_testPacketArrayInstance2[6],
-		 &ICSS_EMAC_fwSwitchTestMac[0], 6)) {
-
+  /* ... only analyze packets recieved from/to test MAC addresses */
+  if( (0 == memcmp(&ICSS_EMAC_testPacketArrayInstance2[0], /* Test MAC 0 */
+		   &ICSS_EMAC_fwSwitchTestMac[0], 6))
+       || (0 == memcmp(&ICSS_EMAC_testPacketArrayInstance2[6],
+		       &ICSS_EMAC_fwSwitchTestMac[0], 6))
+       
+       || (0 == memcmp(&ICSS_EMAC_testPacketArrayInstance2[0], /* Test MAC 1 */
+		       &ICSS_EMAC_fwSwitchTestMac1[0], 6))
+       || (0 == memcmp(&ICSS_EMAC_testPacketArrayInstance2[6],
+		       &ICSS_EMAC_fwSwitchTestMac1[0], 6))
+       
+       || (0 == memcmp(&ICSS_EMAC_testPacketArrayInstance2[0], /* Test MAC 2 */
+		       &ICSS_EMAC_fwSwitchTestMac2[0], 6))
+       || (0 == memcmp(&ICSS_EMAC_testPacketArrayInstance2[6],
+		       &ICSS_EMAC_fwSwitchTestMac2[0], 6)) ) {
+	
     /* For this test, only increase the RcvdPort2 stats when receive packet from test address */
     testPktsRcvd++; /* PRU2 ETH 0 */
     

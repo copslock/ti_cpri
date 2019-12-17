@@ -327,12 +327,29 @@ FB_PROMISCUOUS_MODE_ENABLE:
     ; the frame DST address matches with our own address
     SET	MII_RCV.rx_flags , MII_RCV.rx_flags , host_rcv_flag_shift ; set flag that host queue will receive data
     .if    $defined("TWO_PORT_CFG")
+    .if    !$defined("ICSS_STP_SWITCH") ; STP needs to do an FDB lookup
     QBA		FB_LT_VT
+    .endif
     .else
     QBA		FB_LT_VT_2
     .endif
     
 FB_UNICAST_DA_NO_MATCH:
+    .if $defined("ICSS_STP_SWITCH")
+    ;; Linux needs to also check if the packet is destined for the other port MAC
+    LDI    RCV_TEMP_REG_1.w0, PORT_MAC_ADDR ; Read from other port DMEM
+    LBCO   &RCV_TEMP_REG_1, PRU_CROSS_DMEM, RCV_TEMP_REG_1.w0, 6 ; 6 bytes of MAC
+
+    ; check if DA matches with other port MAC address
+    QBNE   FB_UNICAST_DA_NO_MATCH_OTHER_PORT, Ethernet.DstAddr_0123, RCV_TEMP_REG_1
+    QBNE   FB_UNICAST_DA_NO_MATCH_OTHER_PORT, Ethernet.DstAddr_45, RCV_TEMP_REG_2.w0
+
+    ; the frame DST address matches with other port addr
+    SET	MII_RCV.rx_flags , MII_RCV.rx_flags , host_rcv_flag_shift ; set flag that host queue will receive data
+
+FB_UNICAST_DA_NO_MATCH_OTHER_PORT:
+    .endif
+    
     .if    $defined("TWO_PORT_CFG")
 
     .if $defined("ICSS_STP_SWITCH")
@@ -341,17 +358,29 @@ FDB_LOCK:
     ; Take the lock and check for timeout
     LDI RCV_TEMP_REG_1.w0, 0x8F
     M_SPIN_LOCK RCV_TEMP_REG_4.b2, RCV_TEMP_REG_1.w0    
-    QBNE  FDB_DST_LOOKUP, RCV_TEMP_REG_4.b2, 0 ; continue if no timeout
+    QBNE  FDB_CHECK_DST, RCV_TEMP_REG_4.b2, 0 ; continue if no timeout
     
     ; Flood/insert upon timeout
     SET   MII_RCV.rx_flags , MII_RCV.rx_flags , host_rcv_flag_shift
     SET   R22, R22, PKT_FLOODED__R22_BIT
     QBA   FDB_UNLOCK
 
-FDB_DST_LOOKUP:
+FDB_CHECK_DST:
     ; If the packet is multi/broadcast, then skip DST lookup
-    QBBS  FDB_DST_LOOKUP_END, EthByte.DstByte_0, 0
+    QBBS  FDB_SRC_LOOKUP, EthByte.DstByte_0, 0
+
+    ; If the packet is not destined for the Host, continue with DST lookup
+    QBBC  FDB_DST_LOOKUP, MII_RCV.rx_flags, host_rcv_flag_shift
     
+    ; Set the local STP state to "Learning" as a way to ensure we can check the
+    ; .. SRC address but not forward the packet. This will not affect the global
+    ; .. STP state.
+    AND   STP_STATE__R22_BYTE, STP_STATE__R22_BYTE, STP_STATE__R22_INV_MASK ; clr STP state in R22
+    OR    STP_STATE__R22_BYTE, STP_STATE__R22_BYTE, STP_STATE_LEARNING
+
+    QBA   FDB_SRC_LOOKUP ; skip DST lookup
+    
+FDB_DST_LOOKUP:
     ; Look up the destination in the FDB to determine if it needs to be flooded or directly forwarded
     M_UNICAST_FDB_HASH_LOOKUP     EthWord.DstWord_01, EthWord.DstWord_23, Ethernet.DstAddr_45, RCV_TEMP_REG_1.b2
 
