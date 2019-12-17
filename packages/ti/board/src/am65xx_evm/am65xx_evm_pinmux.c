@@ -134,3 +134,13 @@ Board_STATUS Board_pinmuxConfig (void)
 
     return BOARD_SOK;
 }
+
+void Board_uartTxPinmuxConfig(void)
+{
+    /* Unlock partition lock kick */
+    HW_WR_REG32(BOARD_MCU_UART_TX_LOCK_KICK_ADDR, KICK0_UNLOCK_VAL);
+    HW_WR_REG32(BOARD_MCU_UART_TX_LOCK_KICK_ADDR + 4U, KICK1_UNLOCK_VAL);
+
+    /* Configure pinmux for UART Tx pin */
+    HW_WR_REG32(BOARD_MCU_UART_TX_PINMUX_ADDR, BOARD_MCU_UART_TX_PINMUX_VAL);
+}

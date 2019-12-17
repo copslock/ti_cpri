@@ -95,7 +95,6 @@ extern "C" {
 #include <stdint.h>
 
 #include <ti/csl/hw_types.h>
-#include <ti/board/board_cfg.h>
 
 /**
   * @brief  The following definitions are for handling cache alignment on the board.
@@ -129,14 +128,7 @@ extern "C" {
  */
 typedef int32_t Board_STATUS;
 
-/* This file needs to be included for doing hyperflash pinmux, the file also
- * needs Board_STATUS and hence the inclusion of the board_pinmux.h happens
- * here
- */
-
-#if defined (j721e_evm)
-#include <ti/board/src/j721e_evm/include/board_pinmux.h>
-#endif
+#include <ti/board/board_cfg.h>
 
 /** Board status OK */
 #define BOARD_SOK                           0
