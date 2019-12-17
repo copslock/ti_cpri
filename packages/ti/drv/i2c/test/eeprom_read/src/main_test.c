@@ -860,9 +860,6 @@ void I2c_appC7xPreInit(void)
     {
         CSL_clecConfigEvent(clecBaseAddr, i, &cfgClec);
     }
-
-    /* Switch now */
-    CSL_c7xSecSupv2NonSecSupv();
 #endif
 
     return;

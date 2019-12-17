@@ -588,9 +588,6 @@ void App_SciclientC7xPreInit(void)
     cfgClec.extEvtNum         = 0;
     cfgClec.c7xEvtNum         = 14;
     CSL_clecConfigEvent(clecBaseAddr, i, &cfgClec);
-
-    /* Switch now */
-    CSL_c7xSecSupv2NonSecSupv();
 #endif
 
     return;

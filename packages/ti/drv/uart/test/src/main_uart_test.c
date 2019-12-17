@@ -2458,7 +2458,7 @@ Int main()
 
     /* Set the task priority higher than the default priority (1) */
     taskParams.priority = 2;
-    taskParams.stackSize = 0x4000;
+    taskParams.stackSize = 0x6000;
 
     task = Task_create(taskFxn, &taskParams, &eb);
     if (task == NULL) {
@@ -2560,9 +2560,6 @@ void Uart_appC7xPreInit(void)
     {
         CSL_clecConfigEvent(clecBaseAddr, i, &cfgClec);
     }
-
-    /* Switch now */
-    CSL_c7xSecSupv2NonSecSupv();
 #endif
 
     return;
