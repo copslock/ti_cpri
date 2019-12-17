@@ -68,6 +68,16 @@ typedef enum PRUICSS_MaxInstances_s
    PRUICCSS_INSTANCE_THREE=3,
    PRUICCSS_INSTANCE_MAX=4
 }PRUICSS_MaxInstances;
+#elif defined(SOC_J721E)
+/*!
+ *  @brief    PRUICSS Instance IDs
+ */
+typedef enum PRUICSS_MaxInstances_s
+{
+   PRUICCSS_INSTANCE_ONE=1,
+   PRUICCSS_INSTANCE_TWO=2,
+   PRUICCSS_INSTANCE_MAX=3
+}PRUICSS_MaxInstances;
 #else
 /*!
  *  @brief    PRUICSS Instance IDs

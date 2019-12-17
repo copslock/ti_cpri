@@ -29,37 +29,6 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/*
- * Copyright (c) 2015, Texas Instruments Incorporated
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * *  Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * *  Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * *  Neither the name of Texas Instruments Incorporated nor the names of
- *    its contributors may be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
- * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 /** ============================================================================
  *  @file       pruicss.h
  *
@@ -84,23 +53,22 @@ extern "C" {
 #include <stddef.h>
 #include <ti/drv/pruss/soc/pruicss_soc.h>
 
-#define PRUICSS_NUM_PRU_HOSTS        (10U)
-#define PRUICSS_NUM_PRU_CHANNELS     (10U)
-#define PRUICSS_NUM_PRU_SYS_EVTS     (64U)
-#define PRUICSS_MAX_WAIT_EVENTS	     (10U)
+#define PRUICSS_NUM_PRU_HOSTS           (10U)
+#define PRUICSS_NUM_PRU_CHANNELS        (10U)
+#define PRUICSS_NUM_PRU_SYS_EVTS        (64U)
+#define PRUICSS_MAX_WAIT_EVENTS         (10U)
 
-#define PRUICSS_PRU0_DATARAM         (0U)
-#define PRUICSS_PRU1_DATARAM         (1U)
-#define PRUICSS_PRU0_IRAM            (2U)
-#define PRUICSS_PRU1_IRAM            (3U)
-#define PRUICSS_SHARED_DATARAM       (4U)
-#define	PRUICSS_CFG                  (5U)
-#define	PRUICSS_UART                 (6U)
-#define	PRUICSS_IEP                  (7U)
-#define	PRUICSS_ECAP                 (8U)
-#define	PRUICSS_MII_RT               (9U)
-#define	PRUICSS_MDIO                 (10U)
-
+#define PRUICSS_PRU0_DATARAM            (0U)
+#define PRUICSS_PRU1_DATARAM            (1U)
+#define PRUICSS_PRU0_IRAM               (2U)
+#define PRUICSS_PRU1_IRAM               (3U)
+#define PRUICSS_SHARED_DATARAM          (4U)
+#define    PRUICSS_CFG                  (5U)
+#define    PRUICSS_UART                 (6U)
+#define    PRUICSS_IEP                  (7U)
+#define    PRUICSS_ECAP                 (8U)
+#define    PRUICSS_MII_RT               (9U)
+#define    PRUICSS_MDIO                 (10U)
 
 /**< Invalid Intc Mux number, intc Mux not used if assigned PRUSS_INVALID_INTC_MUX_NUM */
 #define PRUSS_INVALID_INTC_MUX_NUM      ((uint32_t)0xffff)
@@ -128,11 +96,7 @@ typedef enum PRUICSS_ConstTblEntry_s
 /***********************************************************************
 *  Macros to support dynamic chip detecting feature
 ***********************************************************************/
-
-
-
 typedef void *(*prussdrv_function_handler) (void * buf);
-
 
 /*!
  *  @brief      PRUICSS system to channel map
@@ -167,19 +131,15 @@ typedef struct PRUICSS_ChannelToHostMap_s
      /*Enabled SYSEVTs - Range:0..63
      {-1} indicates end of list*/
      int8_t sysevts_enabled[PRUICSS_NUM_PRU_SYS_EVTS];
-
       /*SysEvt to Channel map. SYSEVTs - Range:0..63 Channels -Range: 0..9
      {-1, -1} indicates end of list*/
      PRUICSS_SysevtToChannelMap sysevt_to_channel_map[PRUICSS_NUM_PRU_SYS_EVTS];
-
      /*Channel to Host map.Channels -Range: 0..9  HOSTs - Range:0..9
      {-1, -1} indicates end of list*/
      PRUICSS_ChannelToHostMap channel_to_host_map[PRUICSS_NUM_PRU_CHANNELS];
-
      /*10-bit mask - Enable Host0-Host9 {Host0/1:PRU0/1, Host2..9 : PRUEVT_OUT0..7)*/
      uint32_t host_enable_bitmask;
  }PRUICSS_IntcInitData;
-
 
 /*!
  *  @brief     brief PRUICSS Global configuration
@@ -202,14 +162,12 @@ extern  PRUICSS_Config pruss_config[];
  */
 typedef struct PRUICSS_IrqFunMap_s
 {
-
-	PRUICSSDRV_IRQ_HANDLER irqHandler;
-	/**< Interrupt handler*/
-	void* semHandle;
+    PRUICSSDRV_IRQ_HANDLER  irqHandler;
+    /**< Interrupt handler*/
+    void*                   semHandle;
     /**< Binary semaphore to wait on */
-    void* handle;
+    void*                   handle;
 }PRUICSS_IrqFunMap;
-
 
 /**
  *  \brief PRU Firmware binary header
@@ -218,14 +176,13 @@ typedef struct PRUICSS_IrqFunMap_s
 typedef struct PRUICSS_FirmwareBinHeader_s
 {
 
-	uint32_t image_size;
+    uint32_t    image_size;
     /**< Image size */
-	uint32_t load_addr;
+    uint32_t    load_addr;
     /**< Address to which this binary need to be loaded */
-	uint32_t run_addr;
+    uint32_t    run_addr;
     /**< Address at which the execution should start */
 }PRUICSS_FirmwareBinHeader;
-
 
 /*!
  *  @brief PRUICSS interrupt config structure 
@@ -234,23 +191,23 @@ typedef struct PRUICSS_FirmwareBinHeader_s
  */
 typedef struct PRUICSS_IntrCfg_s
 {
-     uint32_t pruEvtoutNum;  /**< PRU Event number */
-     uint8_t waitEnable;         /**< Flag specifying whether application can wait on this interrupt
+     uint32_t               pruEvtoutNum;  /**< PRU Event number */
+     uint8_t                waitEnable;         /**< Flag specifying whether application can wait on this interrupt
                                                 using PRUICSSPruWaitEvent function */
-    PRUICSSDRV_IRQ_HANDLER irqHandler; /**< Pointer to a function which will be called on interrupt.*/
+    PRUICSSDRV_IRQ_HANDLER  irqHandler; /**< Pointer to a function which will be called on interrupt.*/
     /**< DSP: int vector number; ARM: GIC int number (peripheral event ID + 32) */
-    uint32_t          intNum;
+    uint32_t                intNum;
     /**< CorePac specific Event ID, input to CorePac interrupt controller */
-    uint32_t          eventId;
+    uint32_t                eventId;
      /**< intc mux number, Keystone inc mux is Chip Interrupt Controller
        if assigned -1, system resource manager will decide the mux num */
-    int32_t           intcMuxNum;
+    int32_t                 intcMuxNum;
      /**< intc mux input event ID, for Keystone, it is the input event to CIC
        if assigned -1, system resource manager will decide the mux input event ID */
-    int32_t           intcMuxInEvent;
+    int32_t                 intcMuxInEvent;
      /**< intc mux output event ID, for Keystone, it is the Host interrupt num
        if assigned -1, system resource manager will decide the mux output event ID */
-    int32_t           intcMuxOutEvent;
+    int32_t                 intcMuxOutEvent;
 
  }PRUICSS_IntrCfg;
 
@@ -274,7 +231,7 @@ PRUICSS_Handle  PRUICSS_create(PRUICSS_Config *config ,int32_t instance);
 /**
  * @brief   This function Executes the program in the specified PRU \n
  *
- * @param 	handle    Pruss's driver handle
+ * @param     handle    Pruss's driver handle
  * @param   pruNum    PRU instance number.\n
  *
  * @return  0 in case of successful transition, -1 otherwise. \n
@@ -283,7 +240,7 @@ int32_t PRUICSS_pruExecProgram(PRUICSS_Handle handle,int32_t pruNum );
 /**
  * @brief   Routine to
  *
- * @param 	handle              Pruss's driver handle
+ * @param   handle              Pruss's driver handle
  * @param   pru_instance        PRU instance number
  * @param   spi_offset          Offset on SPI flash to where this need to be flashed
  *
@@ -296,7 +253,7 @@ int8_t PRUICSS_loadBinary (PRUICSS_Handle handle, uint8_t pru_instance,uint32_t 
 /**
  * @brief  This function waits for a System event to happen \n
  *
- * @param 	handle              Pruss's driver handle
+ * @param   handle              Pruss's driver handle
  * @param   pruEvtoutNum        The AINTC Event number.\n
  *
  * @return  0 in case of successful transition, -1 otherwise. \n
@@ -315,9 +272,9 @@ int32_t PRUICSS_pruIntcInit(PRUICSS_Handle handle, const PRUICSS_IntcInitData * 
 
 /**
  * \brief  This function generates and INTC event, waits for AINTC event and
- *		   clears an INTC event \n
+ *           clears an INTC event \n
  *
- * @param   handle     Pruss's driver handle
+ * @param   handle         Pruss's driver handle
  * @param   sendEventNum   Event number.\n
  * @param   pruEvtoutNum   PRU Event number.\n
  * @param   ackEventNum    Acknowlodegement event number.\n
@@ -325,34 +282,33 @@ int32_t PRUICSS_pruIntcInit(PRUICSS_Handle handle, const PRUICSS_IntcInitData * 
  * \return  0 in case of successful transition, -1 otherwise. \n
  */
 int32_t PRUICSS_pruSendWaitCearEvent(PRUICSS_Handle handle,uint32_t sendEventNum,
-										uint32_t pruEvtoutNum,
-										uint32_t ackEventNum
-										);
+                                        uint32_t pruEvtoutNum,
+                                        uint32_t ackEventNum
+                                        );
 /**
  * @brief  This function Registers an Interrupt Handler for an event.\n
  *
- * @param   handle     Pruss's driver handle
+ * @param   handle          Pruss's driver handle
  *
- * @param   pruEvtoutNum   The ARM side event number.\n
+ * @param   pruEvtoutNum    The ARM side event number.\n
  *
- * @param	intrNum        Interrupt number of MPU/C66x
+ * @param   intrNum         Interrupt number of MPU/C66x
  *
- * @param	eventNum       Event number of PRUICSS
+ * @param   eventNum        Event number of PRUICSS
  *
- * @param	waitEnable     Flag specifying whether application can wait on this interrupt
- * 						   using PRUICSSPruWaitEvent function
+ * @param   waitEnable      Flag specifying whether application can wait on this interrupt
+ *                            using PRUICSSPruWaitEvent function
  *
- * @param   irqHandler     Pointer to a function which will be called on interrupt.\n
+ * @param   irqHandler      Pointer to a function which will be called on interrupt.\n
  *
  *
  * \return  0 in case of successful registration, -1 otherwise. \n
  */
 int32_t PRUICSS_registerIrqHandler(PRUICSS_Handle handle,uint32_t pruEvtoutNum,
                            int32_t intrNum,
-						   int32_t eventNum,
-						   uint8_t waitEnable,
-						   PRUICSSDRV_IRQ_HANDLER irqHandler
-						   );
+                           int32_t eventNum,
+                           uint8_t waitEnable,
+                           PRUICSSDRV_IRQ_HANDLER irqHandler);
 
 /**
  * @brief  This function Registers an Interrupt Handler for an event.\n
@@ -360,7 +316,7 @@ int32_t PRUICSS_registerIrqHandler(PRUICSS_Handle handle,uint32_t pruEvtoutNum,
  * @param   handle     Pruss's driver handle
  *
  *
- * @param	intrCfg        pointer to interrupt configuration parameter
+ * @param    intrCfg        pointer to interrupt configuration parameter
  *
  * \return  0 in case of successful registration, -1 otherwise. \n
  */
@@ -372,24 +328,23 @@ int32_t PRUICSS_registerIrqHandler2(PRUICSS_Handle handle,
  * @brief  This function sets the buffer pointer for PRU. The contents of this buffer will be \n
  *         loaded to IRAM.\n
  *
- * @param   handle     Pruss's driver handle
- * @param   pruNum     The PRU number.\n
- * @param   buffer	   Pointer to buffer.\n
+ * @param   handle      Pruss's driver handle
+ * @param   pruNum      The PRU number.\n
+ * @param   buffer      Pointer to buffer.\n
  * @param   numBytes    Number of bytes in the buffer.\n
  *
  * @return  0 in case of successful transition, -1 otherwise. \n
  */
 int32_t PRUICSS_setPRUBuffer(PRUICSS_Handle handle,
                          uint32_t pruNum,
-						 void *buffer,
-						 uint32_t numBytes);
-
+                         void *buffer,
+                         uint32_t numBytes);
 
 /**
  * @brief   Configure PIN_MUX_SEL
  *
  * @param   handle     Pruss's driver handle
- * @param	regVal		value to be written
+ * @param    regVal        value to be written
  *
  * @return  None.
  *
@@ -402,8 +357,8 @@ void PRUICSS_pinMuxConfig(PRUICSS_Handle handle, uint64_t regVal);
 /**
  * @brief    Resets PRU: \n
  *
- * @param   handle     Pruss's driver handle
- * @param    pruNum          PRU instance number[0 or 1].
+ * @param   handle      Pruss's driver handle
+ * @param   pruNum      PRU instance number[0 or 1].
  *
  * @return   0 in case of successful reset, -1 otherwise.
  **/
@@ -411,8 +366,8 @@ int32_t PRUICSS_pruReset(PRUICSS_Handle handle ,uint8_t pruNum);
 /**
  * @brief    Disables PRU: \n
  *
- * @param   handle     Pruss's driver handle
- * @param    pruNum          PRU instance number[0 or 1].
+ * @param   handle      Pruss's driver handle
+ * @param   pruNum      PRU instance number[0 or 1].
  *
  * @return   0 in case of successful disable, -1 otherwise.
  **/
@@ -421,8 +376,8 @@ int32_t PRUICSS_pruDisable(PRUICSS_Handle handle,uint8_t pruNum);
 /**
  * @brief    Enables PRU: \n
  *
- * @param    handle     Pruss's driver handle
- * @param    pruNum          PRU instance number[0 or 1].
+ * @param   handle      Pruss's driver handle
+ * @param   pruNum      PRU instance number[0 or 1].
  *
  * @return   0 in case of successful enable, -1 otherwise.
  **/
@@ -430,8 +385,8 @@ int32_t PRUICSS_pruEnable(PRUICSS_Handle handle,uint8_t pruNum);
 /**
  * @brief    Enables PRU Cycle Counter: \n
  *
- * @param    handle     Pruss's driver handle
- * @param    pruNum     PRU instance number[0 or 1].
+ * @param   handle     Pruss's driver handle
+ * @param   pruNum     PRU instance number[0 or 1].
  *
  * @return   0 in case of successful enable, -1 otherwise.
  **/
@@ -440,18 +395,19 @@ int32_t PRUICSS_pruCounterEnable(PRUICSS_Handle handle,uint8_t pruNum);
  *
  *  @brief   This function writes the given data to PRU memory
  *
- * @param     handle     Pruss's driver handle
- * @param     pruMem         PRU Memory Macro [DATARAM0_PHYS_BASE
- * @param     wordoffset     Offset at which the write will happen.
- * @param     source_mem     Source memory[ Array of uint32_tegers ]
- * @param     bytelength     Total number of bytes to be writen
+ * @param    handle         Pruss's driver handle
+ * @param    pruMem         PRU Memory Macro
+ * @param    wordoffset     Offset at which the write will happen.
+ * @param    source_mem     Source memory[ Array of uint32_tegers ]
+ * @param    bytelength     Total number of bytes to be writen
  *
- * pruMem can have values
- *		PRU0_DATARAM\n
- *		PRU0_IRAM\n
- *		PRU1_DATARAM\n
- *		PRU1_IRAM\n
- * 		PRUICSS_SHARED_DATARAM
+ * pruMem can have the following values
+ *      PRU_ICSS_SHARED_RAM\n
+ *      PRU_ICSS_DATARAM(n) where n is the PRU number\n
+ *      PRU_ICSS_IRAM(n) where n = 0 for PRU0,n = 1 for PRU1, n = 2 for RTU0, n = 3 for RTU1, maintaing this for backward compabitility , should use macros below\n
+ *      PRU_ICSS_IRAM_PRU(n) where n = 0 for PRU0,n = 1 for PRU1\n
+ *      PRU_ICSS_IRAM_RTU(n) where n = 0 for RTU0,n = 1 for RTU1\n
+ *      PRU_ICSS_IRAM_TXPRU(n) where n = 0 for TXPRU0,n = 1 for TXPRU1
  * @return                    word length written or 0 on error.
  *
  **/
@@ -459,24 +415,24 @@ int32_t PRUICSS_pruWriteMemory(PRUICSS_Handle handle,
                            uint32_t pruMem,
                            uint32_t wordoffset,
                            const uint32_t *source_mem,
-                           uint32_t bytelength
-						   );
+                           uint32_t bytelength);
 /**
  *
  *  @brief   This function reads from PRU memory and stores in block of memory
  *
- * @param     handle     Pruss's driver handle
- * @param     pruMem         PRU Memory Macro
- * @param     wordoffset     Offset at which the read will happen.
- * @param     dest_mem       Destination memory[ Array of uint32_tegers ]
- * @param     bytelength     Total number of bytes to be read
+ * @param     handle        Pruss's driver handle
+ * @param     pruMem        PRU Memory Macro
+ * @param     wordoffset    Offset at which the read will happen.
+ * @param     dest_mem      Destination memory[ Array of uint32_tegers ]
+ * @param     bytelength    Total number of bytes to be read
  *
- * pruMem can have values
- *      PRU0_DATARAM\n
- *      PRU0_IRAM\n
- *      PRU1_DATARAM\n
- *      PRU1_IRAM\n
- *      PRUICSS_SHARED_DATARAM
+ * pruMem can have the following values
+ *      PRU_ICSS_SHARED_RAM\n
+ *      PRU_ICSS_DATARAM(n) where n is the PRU number\n
+ *      PRU_ICSS_IRAM(n) where n = 0 for PRU0,n = 1 for PRU1, n = 2 for RTU0, n = 3 for RTU1, maintaing this for backward compabitility , should use macros below\n
+ *      PRU_ICSS_IRAM_PRU(n) where n = 0 for PRU0,n = 1 for PRU1\n
+ *      PRU_ICSS_IRAM_RTU(n) where n = 0 for RTU0,n = 1 for RTU1\n
+ *      PRU_ICSS_IRAM_TXPRU(n) where n = 0 for TXPRU0,n = 1 for TXPRU1
  * @return                    word length read or 0 on error.
  *
  **/
@@ -491,21 +447,22 @@ int32_t PRUICSS_pruReadMemory(
  *
  *  @brief   This function initializes the PRU memory to zero
  *
- * @param     handle     Pruss's driver handle
- * @param     pruMem         PRU Memory Macro [DATARAM0_PHYS_BASE
+ * @param    handle     Pruss's driver handle
+ * @param    pruMem     PRU Memory Macro
  *
- * pruMem can have values
- *		PRU0_DATARAM\n
- *		PRU0_IRAM\n
- *		PRU1_DATARAM\n
- *		PRU1_IRAM\n
- * 		PRUICSS_SHARED_DATARAM
+ * pruMem can have the following values
+ *      PRU_ICSS_SHARED_RAM\n
+ *      PRU_ICSS_DATARAM(n) where n is the PRU number\n
+ *      PRU_ICSS_IRAM(n) where n = 0 for PRU0,n = 1 for PRU1, n = 2 for RTU0, n = 3 for RTU1, maintaing this for backward compabitility , should use macros below\n
+ *      PRU_ICSS_IRAM_PRU(n) where n = 0 for PRU0,n = 1 for PRU1\n
+ *      PRU_ICSS_IRAM_RTU(n) where n = 0 for RTU0,n = 1 for RTU1\n
+ *      PRU_ICSS_IRAM_TXPRU(n) where n = 0 for TXPRU0,n = 1 for TXPRU1
  * @return                    word length written or 0 on error.
  *
  **/
 int32_t PRUICSS_pruInitMemory(PRUICSS_Handle handle,
                            uint32_t pruMem
-                        			   );
+                                       );
 
 /**
  * @brief  This function Generates an INTC event \n
@@ -519,7 +476,7 @@ int32_t PRUICSS_pruSendEvent(PRUICSS_Handle handle,uint32_t eventnum);
 
 
 /**
- * @brief  This function clears an INTC event \n
+ * @brief   his function clears an INTC event \n
  *
  * @param   handle     Pruss's driver handle
  * @param   eventnum   The INTC Event number.\n
@@ -529,23 +486,23 @@ int32_t PRUICSS_pruSendEvent(PRUICSS_Handle handle,uint32_t eventnum);
 int32_t PRUICSS_pruClearEvent(PRUICSS_Handle handle,uint32_t eventnum);
 
 /**
- * @brief  This function returns the address of PRU components.
+ * @brief   This function returns the address of PRU components.
  *
- * @param   handle     Pruss's driver handle
- * @param   pru_ram_id   PRU components' Id. \n
- * @param   address  Memory to which address to be copied. \n
+ * @param   handle      Pruss's driver handle
+ * @param   pru_ram_id  PRU components' Id. \n
+ * @param   address     Memory to which address to be copied. \n
  *
  * @return 0 in case of success, -1 otherwise. \n
  **/
 int32_t PRUICSS_mapPruMem(PRUICSS_Handle handle,uint32_t pru_ram_id, void **address);
 
 /**
- * @brief  This function returns the base address of peripheral IO modules.
+ * @brief   This function returns the base address of peripheral IO modules.
  *
  * @param   per_id   Peripheral Module's Id.
  *
- * @param   handle     Pruss's driver handle
- * @param   address  Memory to which address to be copied. \n
+ * @param   handle      Pruss's driver handle
+ * @param   address     Memory to which address to be copied. \n
  *
  * @return 0 in case of success, -1 otherwise. \n
  **/
@@ -558,13 +515,12 @@ void PRUICSS_enableOCPMasterAccess(PRUICSS_Handle handle );
  *
  */
 uint32_t PRUICSS_detectHWVersion(void);
-
 /**
- * @brief    Get PRU ICSS version \n
+ * @brief   Get PRU ICSS version \n
  *
- * @param    handle     Pruss's driver handle
+ * @param   handle     Pruss's driver handle
  *
- * @return   PRU ICSS version
+ * @return  PRU ICSS version
  **/
 uint32_t PRUICSS_getICSSVersion(PRUICSS_Handle handle);
 /**
@@ -636,6 +592,26 @@ int32_t PRUICSS_setGpMuxSel(PRUICSS_Handle handle, uint8_t pruNum, uint32_t mode
  *
  */
 int32_t PRUICSS_setIepClkSrc(PRUICSS_Handle handle,  uint32_t source);
+
+
+/**
+ *
+ *  @brief   This function writes the given data to PRU instruction memory
+ *
+ * @param     handle        Pruss's driver handle
+ * @param     core          PRU core
+ * @param     wordoffset    Offset at which the write will happen.
+ * @param     source_mem    Source memory[ Array of uint32_tegers ]
+ * @param     bytelength    Total number of bytes to be writen
+ *
+ * @return                    word length written or 0 on error.
+ *
+ **/
+int32_t PRUICSS_pruWriteImem( PRUICSS_Handle handle,
+                                      uint32_t core,
+                                      uint32_t wordoffset,
+                                      const uint32_t *source_mem,
+                                      uint32_t bytelength );
 
 #ifdef __cplusplus
 }

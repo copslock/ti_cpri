@@ -4,7 +4,7 @@
  * @brief  This is device specific configuration file .
  */
 /*
- * Copyright (c) 2016-2018, Texas Instruments Incorporated
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,14 +36,9 @@
  */
 /** ============================================================================*/
 
-
-#include <stdint.h>
+#include <ti/csl/soc.h>
 #include <ti/drv/pruss/pruicss.h>
 #include <ti/drv/pruss/soc/pruicss_v1.h>
-
-
-
-#include <ti/csl/soc/k2g/src/cslr_soc.h>
 
 /* PRUICSS configuration structure */
 PRUICSS_HwAttrs prussInitCfg[2] =
@@ -69,11 +64,17 @@ PRUICSS_HwAttrs prussInitCfg[2] =
        0U,
        0U,
        0U,
+       0U,
+       0U,
+       0U,
+       0U,
        CSL_ICSS_0_DATA_RAM_8KB_0_REGS_SIZE,
        CSL_ICSS_0_DATA_RAM_8KB_1_REGS_SIZE,
        CSL_ICSS_0_INST_RAM_16KB_0_REGS_SIZE,
        CSL_ICSS_0_INST_RAM_16KB_1_REGS_SIZE,
        CSL_ICSS_0_DATA_RAM_64KB_REGS_SIZE,
+       0U,
+       0U,
        0U,
        0U,
      },
@@ -98,11 +99,17 @@ PRUICSS_HwAttrs prussInitCfg[2] =
        0U,
        0U,
        0U,
-       CSL_ICSS_0_DATA_RAM_8KB_0_REGS_SIZE,
-       CSL_ICSS_0_DATA_RAM_8KB_1_REGS_SIZE,
-       CSL_ICSS_0_INST_RAM_16KB_0_REGS_SIZE,
-       CSL_ICSS_0_INST_RAM_16KB_1_REGS_SIZE,
-       CSL_ICSS_0_DATA_RAM_64KB_REGS_SIZE,
+       0U,
+       0U,
+       0U,
+       0U,
+       CSL_ICSS_1_DATA_RAM_8KB_0_REGS_SIZE,
+       CSL_ICSS_1_DATA_RAM_8KB_1_REGS_SIZE,
+       CSL_ICSS_1_INST_RAM_16KB_0_REGS_SIZE,
+       CSL_ICSS_1_INST_RAM_16KB_1_REGS_SIZE,
+       CSL_ICSS_1_DATA_RAM_64KB_REGS_SIZE,
+       0U,
+       0U,
        0U,
        0U
      }
