@@ -760,7 +760,9 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
             uint32_t bytes;
             for (bytes = 0U; bytes < trailBytes; bytes++)
             {
-                *(uint8_t*)((uint32_t)pLocalRespPayload + i + bytes) = *(pTempWord + bytes);
+                uint8_t * address = (uint8_t*)pLocalRespPayload;
+                uint8_t value = *(uint8_t*)(pTempWord + bytes);
+                *(uint8_t*)(address + i + bytes) = value;
             }
         }
 
