@@ -352,6 +352,31 @@ int32_t TimerP_getDefaultFreqHi(uint32_t timerId)
 }
 
 #if defined (BUILD_MCU)
+uint32_t TimerP_mapId(uint32_t id)
+{
+    uint32_t translate_id;
+
+    CSL_ArmR5CPUInfo info;
+
+    CSL_armR5GetCpuID(&info);
+
+    if (info.grpId == (uint32_t)CSL_ARM_R5_CLUSTER_GROUP_ID_0)
+    {
+        translate_id = id;
+    }
+    else
+    {
+        /*
+         * The interrupt events of Main domain's DM Timer instance 12  - 19
+         * are directly connected to the MAIN Pulsar VIMs.
+         * This translation matches to sysbios implementation, where id=0 is
+         * for dmTimer12, id =1 is for dmTimer13 etc.
+         */
+        translate_id = id + 12U;
+    }
+    return (translate_id);
+}
+
 void TimerP_updateDefaultInfoTbl(void)
 {
     uint32_t         i;

@@ -121,7 +121,6 @@ static TimerP_Status TimerP_dmTimerDeviceCfg(TimerP_Struct *timer, uint32_t base
 static TimerP_Status TimerP_dmTimerInitObj(TimerP_Struct *timer, TimerP_Fxn tickFxn, const TimerP_Params *params);
 static TimerP_Status TimerP_dmTimerInstanceInit(TimerP_Struct *timer, uint32_t id, TimerP_Fxn tickFxn, const TimerP_Params *params);
 
-
 /*
  * This private function returns the base address of the timer based on
  * the ID passed in.
@@ -534,6 +533,10 @@ static TimerP_Status TimerP_dmTimerInstanceInit(TimerP_Struct *timer, uint32_t i
     }  
 
     gTimerAnyMask =  timer->availMask;
+
+#if defined (BUILD_MCU)
+    tempId = TimerP_mapId(tempId);
+#endif
 
     /* Initialize the timer state object */
     timer->timerId = tempId; /* Record the timer Id */

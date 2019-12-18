@@ -176,6 +176,15 @@ int32_t TimerP_getDefaultFreqHi(uint32_t timerId)
 }
 
 #if defined (BUILD_MCU)
+uint32_t TimerP_mapId(uint32_t id)
+{
+    /*
+     * Pulsar R5 SS is always on the MCU domain
+     * use the default info table configuration,
+     * no need to map the id.
+     */
+    return (id);
+}
 void TimerP_updateDefaultInfoTbl(void)
 {
     /*
