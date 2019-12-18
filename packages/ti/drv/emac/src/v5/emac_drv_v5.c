@@ -3170,10 +3170,15 @@ static void emac_icssg_update_link_params(uint32_t port_num, uint32_t virt_port_
             {
                 CSL_CPGMAC_SL_enableGigabit(emac_mcb.port_cb[port_num].hCpswRegs,0);
             }
+            else
+            {
+                CSL_CPGMAC_SL_disableGigabit(emac_mcb.port_cb[port_num].hCpswRegs,0);
+            }
         }
         else
         {
             CSL_CPGMAC_SL_disableFullDuplex(emac_mcb.port_cb[port_num].hCpswRegs,0);
+            CSL_CPGMAC_SL_disableGigabit(emac_mcb.port_cb[port_num].hCpswRegs,0);
         }
     }
     /* ICSSG ports */
