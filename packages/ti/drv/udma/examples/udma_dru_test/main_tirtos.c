@@ -118,6 +118,8 @@ static Void taskFxn(UArg a0, UArg a1)
                BOARD_INIT_UART_STDIO;
     Board_init(boardCfg);
 
+    Udma_appC66xIntrConfig();
+
     Udma_druTest();
 
     return;
