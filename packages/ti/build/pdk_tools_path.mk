@@ -73,6 +73,7 @@ ifeq ($(OS),Windows_NT)
 else
   #Paths for linux machine
   export TOOLCHAIN_PATH_GCC_ARCH64 ?= $(TOOLS_INSTALL_PATH)/gcc-linaro-$(GCC_ARCH64_VERSION)-x86_64_aarch64-elf
+endif
 
   export TOOLCHAIN_PATH_QNX_A72    ?= $(QNX_HOST)/usr/bin
   export TOOLCHAIN_PATH_A53        ?= $(TOOLCHAIN_PATH_GCC_ARCH64)
@@ -100,7 +101,6 @@ else
   export GCC_ARM_NONE_TOOLCHAIN    ?= $(SDK_INSTALL_PATH)/gcc-$(GCC_CROSS_TOOL_PREFIX)$(GCC_CROSS_TOOL_TAG)
   export TI_CGT6x_INSTALL_DIR      ?= $(SDK_INSTALL_PATH)/c6000_7.4.16
   export M4_TOOLCHAIN_INSTALL_DIR  ?= $(TOOLCHAIN_PATH_M4)
-endif
 
 ifeq ($(SOC),$(filter $(SOC), am335x))
   export HARDLIB_PATH ?= $(TOOLCHAIN_PATH_A8)/lib/gcc/arm-none-eabi/$(GCC_VERSION_HARDLIB)/hard

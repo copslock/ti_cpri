@@ -163,6 +163,8 @@ export DISABLE_RECURSE_DEPS ?= no
 # Default C++ build flag, yes or no
 export CPLUSPLUS_BUILD ?= no
 
+include $(PDK_INSTALL_PATH)/ti/build/pdk_tools_path.mk
+
 #use <module>_PATH variable as makefile internally expects PATH variable this way for external component path
 export pdk_PATH := $(PDK_INSTALL_PATH)
 export bios_PATH := $(BIOS_INSTALL_PATH)
@@ -199,7 +201,6 @@ ifeq ($(MAKERULEDIR), )
 endif
 include $(MAKERULEDIR)/build_config.mk
 include $(MAKERULEDIR)/platform.mk
-include $(PDK_INSTALL_PATH)/ti/build/pdk_tools_path.mk
 include $(MAKERULEDIR)/env.mk
 
 export PRUCORE_LIST = $(CORE_LIST_PRU)

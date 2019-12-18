@@ -1,4 +1,6 @@
 
+PDK_INSTALL_PATH ?= $(abspath ../../)
+
 include $(PDK_INSTALL_PATH)/ti/build/Rules.make
 
 XDC = $(XDC_INSTALL_PATH)/xdc
