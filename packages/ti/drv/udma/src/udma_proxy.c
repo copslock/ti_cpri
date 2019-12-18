@@ -76,6 +76,7 @@ int32_t Udma_proxyAlloc(Udma_DrvHandle drvHandle,
                         uint16_t proxyNum)
 {
     int32_t     retVal = UDMA_SOK;
+    struct tisci_msg_rm_proxy_cfg_req req;
 
     /* Error check */
     if((NULL_PTR == drvHandle) || (NULL_PTR == proxyHandle))
@@ -111,6 +112,23 @@ int32_t Udma_proxyAlloc(Udma_DrvHandle drvHandle,
             else
             {
                 proxyHandle->proxyNum = proxyNum;
+            }
+        }
+    }
+
+    if(UDMA_SOK == retVal)
+    {
+        req.valid_params = 0U;
+        req.nav_id       = drvHandle->devIdProxy;
+        req.index        = proxyHandle->proxyNum;
+        retVal = Sciclient_rmSetProxyCfg(&req, UDMA_SCICLIENT_TIMEOUT);
+        if(UDMA_SOK != retVal)
+        {
+            Udma_printf(drvHandle, "[Error] SciClient Set proxy config failed!!!\n");
+            if (UDMA_PROXY_ANY == proxyNum)
+            {
+                /* Free-up resources */
+                Udma_rmFreeProxy(proxyHandle->proxyNum, drvHandle);
             }
         }
     }

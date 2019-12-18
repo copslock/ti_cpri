@@ -494,6 +494,7 @@ void Udma_initDrvHandle(Udma_DrvHandle drvHandle)
         drvHandle->maxProxy             = CSL_NAVSS_MCU_PROXY_NUM_PROXIES;
         drvHandle->maxRingMon           = CSL_NAVSS_MCU_RINGACC_NUM_MONITORS;
         drvHandle->devIdRing            = TISCI_DEV_MCU_NAVSS0_RINGACC0;
+        drvHandle->devIdProxy           = TISCI_DEV_MCU_NAVSS0_PROXY_0;
         drvHandle->devIdUdma            = TISCI_DEV_MCU_NAVSS0_UDMAP0;
         drvHandle->devIdPsil            = TISCI_DEV_MCU_NAVSS0;
     }
@@ -505,6 +506,7 @@ void Udma_initDrvHandle(Udma_DrvHandle drvHandle)
         drvHandle->maxProxy             = CSL_NAVSS_MAIN_PROXY_NUM_PROXIES;
         drvHandle->maxRingMon           = CSL_NAVSS_MAIN_RINGACC_NUM_MONITORS;
         drvHandle->devIdRing            = TISCI_DEV_NAVSS0_RINGACC0;
+        drvHandle->devIdProxy           = TISCI_DEV_NAVSS0_PROXY_0;
         drvHandle->devIdUdma            = TISCI_DEV_NAVSS0_UDMAP0;
         drvHandle->devIdPsil            = TISCI_DEV_NAVSS0;
     }

@@ -376,6 +376,8 @@ struct Udma_DrvObj
     /**< PSIL RM ID */
     uint16_t                devIdIa;
     /**< IA RM ID */
+    uint16_t                devIdProxy;
+    /**< Proxy RM ID */
     uint16_t                devIdCore;
     /**< Core RM ID */
     uint32_t                druCoreId;
