@@ -333,7 +333,7 @@ void IOLink_powerSwitchTask(UArg arg0){
     HW_WR_REG32((SOC_CONTROL_MODULE_REG + CTRL_CONF_CCDC1_DATA0), 0x13000007); /* configure CAM1_DAT0 pin to as GPIO4_14 */
 
     /* fault signals */
-    HW_WR_REG32((SOC_CONTROL_MODULE_REG + CTRL_CONF_CCDC1_DATA1), 0x13070007); /* configure CAM1_DAT1 pin to as GPIO4_14 */
+    HW_WR_REG32((SOC_CONTROL_MODULE_REG + CTRL_CONF_CCDC1_DATA1), 0x13070007); /* configure CAM1_DAT1 pin to as GPIO4_15 */
     HW_WR_REG32((SOC_CONTROL_MODULE_REG + CTRL_CONF_UART1_RXD), 0x13070007); /* configure UART1_RXD pin to as GPIO0_14 */
 
 

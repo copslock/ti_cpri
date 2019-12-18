@@ -53,7 +53,7 @@ GPIO_PinConfig gpioPinConfigs[] =
     GPIO_DEVICE_CONFIG(4u + 1u, 16u) |
     GPIO_CFG_OUTPUT,
 
-    /* Output pin : AM437x_IDK_YEL1_LED */
+    /* Output pin : SN65HVS882 LD pin */
     GPIO_DEVICE_CONFIG(3u + 1u, 1u) |
     GPIO_CFG_OUTPUT,
 
