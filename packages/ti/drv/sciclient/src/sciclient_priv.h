@@ -93,7 +93,7 @@ extern "C" {
  */
 typedef struct
 {
-    uint8_t context;
+    uint32_t context;
     /**< context(sec/non-sec) **/
 
     uint32_t hostId;

@@ -635,6 +635,8 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
     if (CSL_PASS == status)
     {
         struct tisci_msg_version_req *dummyHdr = (struct tisci_msg_version_req *)pReqPrm->pReqPayload;
+        uint8_t * pFlags;
+        uint32_t numBytes;
         /* Construct header */
         /*This is done to remove stray messages(due to timeout) in a thread
         * in case of "polling". */
@@ -648,7 +650,18 @@ int32_t Sciclient_service(const Sciclient_ReqPrm_t *pReqPrm,
         header->host = (uint8_t) gSciclientMap[contextId].hostId;
         localSeqId = (uint8_t) gSciclientHandle.currSeqId;
         header->seq = localSeqId;
-        header->flags = pReqPrm->flags;
+        pFlags = (uint8_t*)&pReqPrm->flags;
+        /* This is done in such a fashion as the C66x does not honor a non word aligned
+         * write.
+         */
+        for (numBytes = 0; numBytes < sizeof(pReqPrm->flags); numBytes++)
+        {
+            uint8_t *pDestFlags = ((uint8_t*)&header->flags) + numBytes;
+            *pDestFlags = *pFlags;
+            pFlags++;
+             
+        }
+        
         gSciclientHandle.currSeqId = (gSciclientHandle.currSeqId + 1U) %
                                     SCICLIENT_MAX_QUEUE_SIZE;
         if (gSciclientHandle.currSeqId == 0U)
