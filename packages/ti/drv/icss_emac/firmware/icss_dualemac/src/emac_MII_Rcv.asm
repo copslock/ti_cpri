@@ -1080,6 +1080,11 @@ LESS_THAN_32_BYTES_RCVD:
     .if $defined(PTP)
     JAL     RCV_TEMP_REG_3.w2, FN_TIMESTAMP_GPTP_PACKET
 
+    .if $defined("ICSS_DUAL_EMAC_BUILD")
+    ; For DualEMAC, check here to skip host rcv to properly drop sync frames not from master
+    QBBC    NB_PROCESS_32BYTES_CHECK_FLAGS_QUEUE_NOT_FULL, MII_RCV.rx_flags, host_rcv_flag_shift     ; MII_RCV.rx_flags.host_rcv_flag
+    .endif
+
     LDI    RCV_TEMP_REG_3.w2, PTP_IPV4_UDP_E2E_ENABLE
     LBCO   &RCV_TEMP_REG_3.b2, ICSS_SHARED_CONST, RCV_TEMP_REG_3.w2, 1
     QBEQ   PTP_NOT_ENABLED_RX_B1, RCV_TEMP_REG_3.b2, 0
