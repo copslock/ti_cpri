@@ -88,13 +88,8 @@ extern "C" {
 #define PRINT_RESULTS               ('g')
 #define PARSER_QUIT                 ('q')
 /* @} */
-#if defined (__C7100__) || defined (_TMS320C6X)
-#define App_sciclientPrintf printf
-#define App_sciclientGetChar getchar
-#else
 #define App_sciclientPrintf UART_printf
 #define App_sciclientGetChar UART_getc
-#endif
 
 /*Change this to 0 for interactive UT*/
 #define APP_SCICLIENT_UT_AUTORUN 1

@@ -156,6 +156,15 @@ void App_sciclientPrintResults(void);
  */
 void App_sciclientUARTConfig(void);
 
+/**
+ * \brief   Set the interrupt config for C66x Timer interrupts.
+ *
+ * \param   None.
+ *
+ * \return  None
+ */
+void App_sciclientC66xIntrConfig(void);
+
 /* ========================================================================== */
 /*                            Global Variables                                */
 /* ========================================================================== */
@@ -177,6 +186,7 @@ int32_t App_sciclientParser(void)
     App_sciclientTestParams_t *testParams;
 
     App_sciclientConsoleInit();
+    App_sciclientC66xIntrConfig();
     App_sciclientResultInit();
 
     while (!done)
@@ -593,4 +603,39 @@ void App_SciclientC7xPreInit(void)
     return;
 }
 
+void App_sciclientC66xIntrConfig(void)
+{
+#if defined (_TMS320C6X)
+    struct tisci_msg_rm_irq_set_req     rmIrqReq = {0};
+    struct tisci_msg_rm_irq_set_resp    rmIrqResp = {0};
+    Sciclient_init(NULL);
+    /* On C66x builds we define OS timer tick in the configuration file to
+     * trigger event #21 for C66x_1 and #20 for C66x_2. Map
+     * DMTimer 0 interrupt to these events through DMSC RM API.
+     */
+    rmIrqReq.valid_params           = TISCI_MSG_VALUE_RM_DST_ID_VALID |
+                                      TISCI_MSG_VALUE_RM_DST_HOST_IRQ_VALID;
+    rmIrqReq.src_id                 = TISCI_DEV_TIMER0;
+    rmIrqReq.src_index              = 0U;
+#if defined (BUILD_C66X_1)
+    rmIrqReq.dst_id                 = TISCI_DEV_C66SS0_CORE0;
+    rmIrqReq.dst_host_irq           = 21U;
+#endif
+#if defined (BUILD_C66X_2)
+    rmIrqReq.dst_id                 = TISCI_DEV_C66SS1_CORE0;
+    rmIrqReq.dst_host_irq           = 20U;
+#endif
+    /* Unused params */
+    rmIrqReq.global_event           = 0U;
+    rmIrqReq.ia_id                  = 0U;
+    rmIrqReq.vint                   = 0U;
+    rmIrqReq.vint_status_bit_index  = 0U;
+    rmIrqReq.secondary_host         = TISCI_MSG_VALUE_RM_UNUSED_SECONDARY_HOST;
+
+    Sciclient_rmIrqSet(&rmIrqReq, &rmIrqResp, 0xFFFFFFFFU);
+    Sciclient_deinit();
+#endif
+
+    return;
+}
 

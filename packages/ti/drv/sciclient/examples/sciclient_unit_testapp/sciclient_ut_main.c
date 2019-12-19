@@ -139,18 +139,15 @@ int main(void)
     #endif
 
     Task_Params_init(&taskParams);
-    taskParams.priority = 14;
+    taskParams.priority = 2;
     taskParams.stack        = gAppTskStackMain;
     taskParams.stackSize    = sizeof (gAppTskStackMain);
 
     Error_init(&eb);
-    App_sciclientConsoleInit();
-
+    
     task = Task_create(mainTask, &taskParams, &eb);
-
     if(NULL==task)
     {
-        App_sciclientPrintf("Task_create() mainTask failed! \n");
         BIOS_exit(0);
     }
 
@@ -166,7 +163,7 @@ void mainTask(UArg arg0, UArg arg1)
     (void)arg1;
 
     volatile uint32_t loopForever = 1U;
-
+    
     App_sciclientParser();
 
     while(loopForever);
@@ -507,3 +504,6 @@ void InitMmu(void)
     Osal_initMmuDefault();
 }
 #endif
+
+
+
