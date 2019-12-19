@@ -34,4 +34,8 @@ SECTIONS
     .sysmem     : {} align(8)    > DDR0
     .stack      : {} align(4)    > DDR0
     .data_buffer: {} palign(128) > DDR0
+
+    .benchmark_buffer: (NOLOAD) {} align (8) > DDR0
+    
+    
 }

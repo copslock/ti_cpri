@@ -117,5 +117,7 @@ SECTIONS
     }
 
     ipc_data_buffer:       > C7X_DDR_SPACE
+    .benchmark_buffer:     > C7X_DDR_SPACE ALIGN (32) 
+    
     .resource_table: { __RESOURCE_TABLE = .;} > C7X_EXT_D
 }
