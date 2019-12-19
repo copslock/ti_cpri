@@ -46,7 +46,7 @@
 /* ========================================================================== */
 
 #include <ti/board/src/j721e_evm/include/pinmux.h>
-#include <ti/board/src/j721e_evm/AM7xxx_pinmux.h>
+#include <ti/board/src/j721e_evm/J721E_pinmux.h>
 #include <ti/csl/csl_types.h>
 
 #ifdef __cplusplus
