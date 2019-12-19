@@ -116,7 +116,7 @@ int32_t Sciclient_rmIrqSet(const struct tisci_msg_rm_irq_set_req *req,
 
     Sciclient_RespPrm_t sciResp ;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = (uint8_t *) 0;
+    sciResp.pRespPayload    = (uint8_t *) resp;
     sciResp.respPayloadSize = (uint32_t) sizeof(*resp);
 
 
@@ -170,7 +170,7 @@ int32_t Sciclient_rmRingCfg(const struct tisci_msg_rm_ring_cfg_req *req,
 
     Sciclient_RespPrm_t sciResp ;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = (uint8_t *) 0;
+    sciResp.pRespPayload    = (uint8_t *) resp;
     sciResp.respPayloadSize = (uint32_t) sizeof(*resp);
 
     r = Sciclient_service(&sciReq, &sciResp);
@@ -222,7 +222,7 @@ int32_t Sciclient_rmRingMonCfg(const struct tisci_msg_rm_ring_mon_cfg_req *req,
 
     Sciclient_RespPrm_t sciResp ;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = (uint8_t *) 0;
+    sciResp.pRespPayload    = (uint8_t *) resp;
     sciResp.respPayloadSize = (uint32_t) sizeof(*resp);
 
     r = Sciclient_service(&sciReq, &sciResp);
@@ -249,7 +249,7 @@ int32_t Sciclient_rmUdmapGcfgCfg(
 
     Sciclient_RespPrm_t sciResp ;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = (uint8_t *) 0;
+    sciResp.pRespPayload    = (uint8_t *) resp;
     sciResp.respPayloadSize = (uint32_t) sizeof(*resp);
 
 
@@ -307,7 +307,7 @@ int32_t Sciclient_rmUdmapTxChCfg(
 
     Sciclient_RespPrm_t sciResp ;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = (uint8_t *) 0;
+    sciResp.pRespPayload    = (uint8_t *) resp;
     sciResp.respPayloadSize = (uint32_t) sizeof(*resp);
 
 
@@ -363,7 +363,7 @@ int32_t Sciclient_rmUdmapRxChCfg(
 
     Sciclient_RespPrm_t sciResp ;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = (uint8_t *) 0;
+    sciResp.pRespPayload    = (uint8_t *) resp;
     sciResp.respPayloadSize = (uint32_t) sizeof(*resp);
 
 
@@ -421,7 +421,7 @@ int32_t Sciclient_rmUdmapFlowCfg(
 
     Sciclient_RespPrm_t sciResp ;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = (uint8_t *) 0;
+    sciResp.pRespPayload    = (uint8_t *) resp;
     sciResp.respPayloadSize = (uint32_t) sizeof(*resp);
 
 
@@ -477,7 +477,7 @@ int32_t Sciclient_rmUdmapFlowSizeThreshCfg(
 
     Sciclient_RespPrm_t sciResp ;
     sciResp.flags           = 0;
-    sciResp.pRespPayload    = (uint8_t *) 0;
+    sciResp.pRespPayload    = (uint8_t *) resp;
     sciResp.respPayloadSize = (uint32_t) sizeof(*resp);
 
 
