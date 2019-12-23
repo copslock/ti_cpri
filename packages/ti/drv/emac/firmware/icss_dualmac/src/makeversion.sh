@@ -50,10 +50,6 @@ else
 	version='noversion' 
 fi
 
-# Truncate so that .version_string is less than 32 bytes
-# ... 24 = 32 - len("Version ")
-version=`echo $version | cut -c -24`
-
 if [ $version != 'noversion' ]; then
 	echo -n '	.string	"Version '$version'"' > version_file.h  
 else
